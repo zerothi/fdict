@@ -1,3 +1,4 @@
+.SUFFIXES: .f90 .o .a
 include ./arch.make
 
 .PHONY: default
@@ -27,4 +28,4 @@ clean:
 	-rm -f mods.inc nullify.inc delete.inc types.inc funcs.inc
 
 # Dependencies
-var.o: prep_var
+var.o: | prep_var
