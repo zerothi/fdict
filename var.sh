@@ -3,6 +3,7 @@
 # Define here the number of dimensions for the 5 different
 # Variables
 declare -A N
+N[a]=0 # character
 N[s]=3 # single
 N[d]=3 # double
 N[c]=3 # single complex
@@ -13,6 +14,7 @@ N[l]=3 # long integer
 
 # Names of the different short-hands
 declare -A name
+name[a]="character(250)"
 name[s]="real(sp)"
 name[d]="real(dp)"
 name[c]="complex(sp)"

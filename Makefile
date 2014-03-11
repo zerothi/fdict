@@ -16,6 +16,10 @@ $(LIBVAR): $(VAR_OBJS)
 	$(AR) $(ARFLAGS) $(LIBVAR) $(VAR_OBJS)
 	$(RANLIB) $(LIBVAR)
 
+.PHONY: test
+test: lib
+	(cd test ; $(MAKE))
+
 .PHONY: prep_var
 prep_var:
 	./var.sh
