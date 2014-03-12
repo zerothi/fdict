@@ -5,9 +5,10 @@ source settings.sh
 # The different settings used in this
 vars=(s d c z b i l)
 
+
 {
 _psnl "interface operator(.KV.)"
-for v in ${vars[@]} ; do
+for v in a ${vars[@]} ; do
     for d in `seq 0 ${N[$v]}` ; do
 	modproc dict_kv $v $d
     done

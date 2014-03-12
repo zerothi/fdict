@@ -3,7 +3,7 @@
 source settings.sh
 
 # The different settings used in this
-vars=(a s d c z b i l)
+vars=(VS s d c z b i l)
 
 # Print out to the mod file
 {
@@ -55,7 +55,7 @@ done
 
 
 {
-for v in v ${vars[@]} ; do
+for v in ${vars[@]} ; do
     _ps "${name[$v]}, pointer :: "
     for d in `seq 0 ${N[$v]}` ; do
 	_ps "$v$d$(dim_to_size $d)=>null()"
@@ -71,7 +71,7 @@ done
 
 {
 _psnl "#include 'settings.inc'"
-for v in v ${vars[@]} ; do
+for v in ${vars[@]} ; do
     for d in `seq 0 ${N[$v]}` ; do
 	_psnl "if ( this%t == '$v$d' ) then"
 	_psnl "#define DIM $d"
@@ -84,7 +84,7 @@ done
 
 
 {
-for v in v ${vars[@]} ; do
+for v in ${vars[@]} ; do
     for d in `seq 0 ${N[$v]}` ; do
 	_psnl "if ( this%t == '$v$d' ) then"
 	_psnl "this%$v$d ASS_ACC rhs%$v$d"
@@ -96,7 +96,7 @@ done
 
 
 {
-for v in v ${vars[@]} ; do
+for v in ${vars[@]} ; do
     for d in `seq 0 ${N[$v]}` ; do
 	_psnl "if ( this%t == '$v$d' ) then"
 	_psnl "ret = associated(this%$v$d,rhs%$v$d)"

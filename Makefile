@@ -21,13 +21,14 @@ test: lib
 	(cd test ; $(MAKE))
 
 .PHONY: prep
+SED_DEL = 's/NEWLINE/\n/g;/^$$/d;/^\!.*&/d'
 prep:
 	./var.sh
-	fpp -P var.F90 | sed -e "s/NEWLINE/\n/g;/^$$/d" > tmp.F90 
-	fpp -P tmp.F90 | sed -e "s/NEWLINE/\n/g;/^$$/d" > var.f90
+	fpp -P var.F90 | sed -e $(SED_DEL) > tmp.F90 
+	fpp -P tmp.F90 | sed -e $(SED_DEL) > var.f90
 	./dictionary.sh
-	fpp -P dictionary.F90 | sed -e "s/NEWLINE/\n/g;/^$$/d" > tmp.F90 
-	fpp -P tmp.F90 | sed -e "s/NEWLINE/\n/g;/^$$/d" > dictionary.f90
+	fpp -P dictionary.F90 | sed -e $(SED_DEL) > tmp.F90 
+	fpp -P tmp.F90 | sed -e $(SED_DEL) > dictionary.f90
 
 .PHONY: clean
 clean:

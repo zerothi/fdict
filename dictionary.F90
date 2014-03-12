@@ -7,6 +7,7 @@
 ! Only to be used for not-for-profit development/applications.
 module dictionary
 
+  use iso_var_str
   use variable
 
   implicit none
@@ -79,7 +80,7 @@ module dictionary
   ! HASH-comparisons are MUCH faster...
   ! hence we store all values in an incremental fashion in terms
   ! of the HASH-value
-  integer, parameter :: HASH_SIZE = 9857 ! a prime !
+  integer, parameter :: HASH_SIZE = 32237 ! a prime !
   integer, parameter :: HASH_MULT = 31
   
   ! Retrieve the value from a dictionary list by specifying the key...
@@ -90,6 +91,9 @@ module dictionary
      module procedure d_value_from_key
   end interface operator( .LOOKUP. )
 
+  interface len
+     module procedure len_
+  end interface len
 
   ! Concatenate dicts or list of dicts to list of dicts
   interface operator( // )
@@ -147,10 +151,15 @@ contains
   pure function hash_val(key) result(val)
     character(len=*), intent(in) :: key
     integer :: val
-    integer :: i
+    integer :: i, fac
     val = 0
+    fac = mod(iachar(key(1:1)),4)
     do i = 1 , min(DICT_KEY_LENGTH,len_trim(key))
-       val = val + iachar(key(i:i))
+       val = val + iachar(key(i:i)) + fac * iachar(key(i:i))
+       fac = fac + 1
+       if ( fac > 3 ) then
+          fac = -2
+       end if
     end do
     ! A hash has to be distinguished from the "empty"
     val = 1 + mod(val*HASH_MULT,HASH_SIZE)
@@ -270,6 +279,8 @@ contains
     type(dict), intent(in) :: d1,d2
     type(dict) :: d
     type(d_entry), pointer :: ladd,lnext
+    ! currently this doesn't work with empty dicts
+    ! WE NEED TO FIX THIS
     call dict_copy(d1,d)
     ladd => d2%first
     do 
@@ -347,11 +358,11 @@ contains
   end subroutine d_insert
 
   ! Retrieve the length of the dictionary...
-  pure function len(d)
+  pure function len_(d)
     type(dict), intent(in) :: d
-    integer :: len
-    len = d%len
-  end function len
+    integer :: len_
+    len_ = d%len
+  end function len_
 
   function d_next(d)
     type(dict), intent(in) :: d
@@ -383,12 +394,21 @@ contains
     type(dict), intent(in)  :: d
     type(dict)  :: ld
     ld = .first. d
-    d_loop: do 
-       if ( .empty. ld ) exit d_loop
-       write(*,*) trim(.key. ld) !,' : ',trim(.val. ld)
+    do while ( .not. .empty. ld ) 
+       write(*,*) trim(.key. ld),.hash.ld
        ld = .next. ld
-    end do d_loop
+    end do
   end subroutine dict_print
+
+  function dict_kv_a0(key,val) result(this)
+    character(len=*), intent(in) :: key
+    character(len=*), intent(in) :: val
+    type(dict) :: this
+    type(var_str) :: str
+    this = new_d_key(key)
+    str = val
+    call assign(this%first%value,str)
+  end function dict_kv_a0
 
 #include 'dict_funcs.inc'
 

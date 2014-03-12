@@ -3,7 +3,8 @@
 # Define here the number of dimensions for the different types
 # Variables
 declare -A N
-N[v]=0 # variable
+N[VAR]=0 # variable
+N[VS]=0 # variable-string
 N[a]=0 # character
 N[s]=3 # single
 N[d]=3 # double
@@ -16,8 +17,9 @@ N[l]=3 # long integer
 # Names of the different short-hands
 # DONT change these
 declare -A name
-name[v]="type(var)"
-name[a]="type(var_str)"
+name[VAR]="type(var)"
+name[VS]="type(var_str)"
+name[a]="character(len=*)"
 name[s]="real(sp)"
 name[d]="real(dp)"
 name[c]="complex(sp)"
