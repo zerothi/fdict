@@ -16,7 +16,7 @@ module variable
   
   type :: var
      character(len=2) :: t = '  '
-#include 'types.inc'
+#include 'var_content.inc'
   end type var
   public :: var
 
@@ -34,7 +34,7 @@ module variable
   end interface nullify
   public :: nullify
 
-#include 'mods.inc'
+#include 'var_interface.inc'
 
 contains
 
@@ -46,16 +46,17 @@ contains
     
   subroutine delete_(this)
     type(var), intent(inout) :: this
-#include 'delete.inc'
+#include 'var_delete.inc'
+    call nullify(this)
   end subroutine delete_
 
   subroutine nullify_(this)
     type(var), intent(inout) :: this
-#include 'nullify.inc'
+#include 'var_nullify.inc'
     this%t = '  '
   end subroutine nullify_
 
-#include 'funcs.inc'
+#include 'var_funcs.inc'
 
 end module variable
 

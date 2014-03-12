@@ -1,43 +1,9 @@
 #!/bin/bash
 
-# Define here the number of dimensions for the 5 different
-# Variables
-declare -A N
-N[a]=0 # character
-N[s]=3 # single
-N[d]=3 # double
-N[c]=3 # single complex
-N[z]=3 # double complex
-N[b]=3 # logical
-N[i]=3 # integer
-N[l]=3 # long integer
+source settings.sh
 
-# Names of the different short-hands
-# DONT change these
-declare -A name
-name[a]="type(var_str)"
-name[s]="real(sp)"
-name[d]="real(dp)"
-name[c]="complex(sp)"
-name[z]="complex(dp)"
-name[b]="logical"
-name[i]="integer(is)"
-name[l]="integer(il)"
-
-
+# The different settings used in this
 vars=(a s d c z b i l)
-
-function _ps { printf "%b" "$@" ; }
-function _psnl { printf "%b\n" "$@" ; }
-function interface {
-    local sub=$1 ; shift
-    local sn=$1  ; shift
-    local dim=$1 ; shift
-    while [ $# -gt 0 ]; do
-	_psnl "module procedure ${sub}_${1}_$sn$dim"
-	shift
-    done
-}
 
 # Print out to the mod file
 {
@@ -47,9 +13,10 @@ args="get set"
 _psnl "interface $sub"
 for v in ${vars[@]} ; do
     for d in `seq 0 ${N[$v]}` ; do
-	interface $sub $v $d $args
+	modproc $sub $v $d $args
     done
 done
+modproc $sub v 0
 _psnl "end interface $sub"
 _psnl "public :: $sub"
 done
@@ -58,14 +25,15 @@ for sub in eq ne lt gt ge le ; do
 _psnl "interface operator(.$sub.)"
 for v in ${vars[@]} ; do
     for d in `seq 0 ${N[$v]}` ; do
-	interface $sub $v $d l r
+	modproc $sub $v $d l r
     done
 done
+modproc $sub v 0
 _psnl "end interface operator(.$sub.)"
 _psnl "public :: operator(.$sub.)"
 done
 fi
-} > mods.inc
+} > var_interface.inc
 
 {
 for v in ${vars[@]} ; do
@@ -73,7 +41,7 @@ for v in ${vars[@]} ; do
 	_psnl "nullify(this%$v$d)"
     done
 done
-} > nullify.inc
+} > var_nullify.inc
 
 {
 for v in ${vars[@]} ; do
@@ -81,34 +49,10 @@ for v in ${vars[@]} ; do
 	_psnl "if (associated(this%$v$d)) deallocate(this%$v$d)"
     done
 done
-_psnl "call nullify(this)"
-} > delete.inc
-
-function dim_to_size {
-    case $1 in
-	1)
-	    _ps "(:)" ;;
-	2)
-	    _ps "(:,:)" ;;
-	3)
-	    _ps "(:,:,:)" ;;
-	4)
-	    _ps "(:,:,:,:)" ;;
-	5)
-	    _ps "(:,:,:,:,:)" ;;
-	6)
-	    _ps "(:,:,:,:,:,:)" ;;
-	0)
-	    ;;
-	*)
-	    echo "You are requesting a too large array size."
-	    return 1
-	    ;;
-    esac
-}
+} > var_delete.inc
 
 {
-for v in ${vars[@]} ; do
+for v in v ${vars[@]} ; do
     _ps "${name[$v]}, pointer :: "
     for d in `seq 0 ${N[$v]}` ; do
 	_ps "$v$d$(dim_to_size $d)=>null()"
@@ -119,10 +63,10 @@ for v in ${vars[@]} ; do
 	fi
     done
 done
-} > types.inc
+} > var_content.inc
 
 {
-_psnl "#include 'var.inc'"
+_psnl "#include 'settings.inc'"
 _psnl "#undef VAR_PREC"
 for v in ${vars[@]} ; do
     _psnl "#define VAR_TYPE ${name[$v]}"
@@ -134,11 +78,11 @@ for v in ${vars[@]} ; do
 	fi
 	_psnl "#define VAR $v$d"
 	_psnl "#define DIM $d"
-	_psnl "#include 'funcs_inc.inc'"
+	_psnl "#include 'var_funcs_inc.inc'"
 	_psnl "#undef VAR"
 	_psnl "#undef DIM"
 	_psnl "#undef DIMS"
     done
     _psnl "#undef VAR_TYPE"
 done
-} > funcs.inc
+} > var_funcs.inc

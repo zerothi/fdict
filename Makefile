@@ -5,16 +5,16 @@ include ./arch.make
 default: lib
 
 # The different libraries
-VAR_OBJS  = var.o iso_var_str.o
+OBJS  = var.o iso_var_str.o dictionary.o
 
-LIBVAR  = libvar.a
+LIB  = libvardict.a
 
 .PHONY: lib
-lib: $(LIBVAR)
+lib: $(LIB)
 
-$(LIBVAR): $(VAR_OBJS)
-	$(AR) $(ARFLAGS) $(LIBVAR) $(VAR_OBJS)
-	$(RANLIB) $(LIBVAR)
+$(LIB): $(OBJS)
+	$(AR) $(ARFLAGS) $(LIB) $(OBJS)
+	$(RANLIB) $(LIB)
 
 .PHONY: test
 test: lib
@@ -25,12 +25,18 @@ prep:
 	./var.sh
 	fpp -P var.F90 | sed -e "s/NEWLINE/\n/g" > tmp.F90 
 	fpp -P tmp.F90 var.f90
+	./dictionary.sh
+	fpp -P dictionary.F90 | sed -e "s/NEWLINE/\n/g" > tmp.F90 
+	fpp -P tmp.F90 dictionary.f90
 
 .PHONY: clean
 clean:
-	-rm -f $(VAR_OBJS) $(LIBVAR) *.o *.mod tmp.F90 var.f90
-	-rm -f mods.inc nullify.inc delete.inc types.inc funcs.inc
+	-rm -f $(OBJS) $(LIB) *.o *.mod tmp.F90 var.f90 dictionary.f90
+	-rm -f dict_funcs.inc dict_interface.inc
+	-rm -f var_nullify.inc var_delete.inc var_content.inc var_funcs.inc var_interface.inc
 
 # Dependencies
+dictionary.f90: | prep
+dictionary.o: var.o | prep
 var.f90: | prep
 var.o: iso_var_str.o | prep
