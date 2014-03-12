@@ -98,8 +98,8 @@ module dictionary
   ! Concatenate dicts or list of dicts to list of dicts
   interface operator( // )
      module procedure d_cat_d
-     module procedure ds_cat_d
-     module procedure d_cat_ds
+     !module procedure ds_cat_d
+     !module procedure d_cat_ds
   end interface operator( // )
 
   
@@ -279,9 +279,13 @@ contains
     type(dict), intent(in) :: d1,d2
     type(dict) :: d
     type(d_entry), pointer :: ladd,lnext
-    ! currently this doesn't work with empty dicts
-    ! WE NEED TO FIX THIS
+    if ( .empty. d1 ) then
+       if ( .empty. d2 ) return
+       call dict_copy(d2,d)
+       return
+    end if
     call dict_copy(d1,d)
+    if ( .empty. d2 ) return
     ladd => d2%first
     do 
        ! step ...
@@ -292,24 +296,24 @@ contains
     end do
   end function d_cat_d
 
-  function d_cat_ds(d,ds) result(this)
-    type(dict), intent(in) :: d,ds(:)
-    type(dict) :: this
-    integer :: i
-    call dict_copy(d,this)
-    do i = 1 , size(ds)
-       this = this//ds(i)
-    end do
-  end function d_cat_ds
-  function ds_cat_d(ds,d) result(this)
-    type(dict), intent(in) :: ds(:),d
-    type(dict) :: this
-    integer :: i
-    call dict_copy(d,this)
-    do i = 1 , size(ds)
-       this = ds(i)//this
-    end do
-  end function ds_cat_d
+!  function d_cat_ds(d,ds) result(this)
+!    type(dict), intent(in) :: d,ds(:)
+!    type(dict) :: this
+!    integer :: i
+!    call dict_copy(d,this)
+!    do i = 1 , size(ds)
+!       this = this//ds(i)
+!    end do
+!  end function d_cat_ds
+!  function ds_cat_d(ds,d) result(this)
+!    type(dict), intent(in) :: ds(:),d
+!    type(dict) :: this
+!    integer :: i
+!    call dict_copy(d,this)
+!    do i = 1 , size(ds)
+!       this = ds(i)//this
+!    end do
+!  end function ds_cat_d
 
   subroutine d_insert(d,entry)
     type(dict),    intent(inout) :: d

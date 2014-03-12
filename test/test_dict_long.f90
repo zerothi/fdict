@@ -11,8 +11,6 @@ program test_dict
   character(len=10) :: key
   integer :: i,j,k
 
-
-  dic = ('first'.kv.1)
   do k = 1 , N
      do j = 1 , N
         do i = 1 , N
@@ -25,6 +23,6 @@ program test_dict
   ! print all the values
   call dict_print(dic)
 
-  print '(a,i0,a)','Added ',N**3,' keys and looped through them...'
+  print '(2(a,i0))','Added ',N**3,' keys and looped through them...',len(dic)
 
 end program test_dict
