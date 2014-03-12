@@ -129,16 +129,6 @@ module dictionary
      module procedure d_ne_d
   end interface operator( .NE. )
 
-  ! Checks for a dict to be in a dict list (uses .EQ. so in both key and value)
-  interface operator( .IN. )
-     module procedure char_in_d
-  end interface operator( .IN. )
-
-  ! Checks for a dict to not be in a dict list (uses .EQ. so not in both key and value)
-  interface operator( .NIN. )
-     module procedure char_nin_d
-  end interface operator( .NIN. )
-
   ! Steps one time in the dictionary
   interface operator( .NEXT. )
      module procedure d_next
@@ -197,7 +187,7 @@ contains
   function value(d) 
     type(dict), intent(in) :: d
     type(var) :: value
-    value = d%first%value
+    call assign(value,d%first%value)
   end function value
 
   ! Returns the hash value of the dictionary first item...
@@ -219,8 +209,7 @@ contains
     call delete(val)
     hash = hash_val(key)
     ld = .first. d
-    search: do
-       if ( .empty. ld ) exit search
+    search: do while ( .not. (.empty. ld) )
        if (      hash  < .hash. ld ) then
           exit search
        else if ( hash  > .hash. ld ) then
@@ -256,45 +245,6 @@ contains
     bool = .not. (d1 .eq. d2)
   end function d_ne_d
 
-  ! Compares a dict against a dict list.
-  ! Will use .EQ. to tesh for their equivalence.
-  ! Returns true in the case of 'd' is in 'ds'
-  function char_in_d(char,d) result(bool)
-    character(len=*), intent(in) :: char
-    type(dict), intent(in) :: d
-    logical :: bool
-    type(dict) :: ld
-    integer :: hash
-    hash = hash_val(char)
-    ld = .first. d
-    search: do
-       if ( .empty. ld ) exit search
-       if (      hash  < .hash. ld ) then
-          exit search
-       else if ( hash  > .hash. ld ) then
-          ! Do nothing (quick step to next search)
-       else if ( hash == .hash. ld ) then
-          if ( char == (.key. ld) ) then
-             bool = .true.
-             return
-          end if
-       end if
-       ld = .next. ld
-    end do search
-    bool = .false.
-  end function char_in_d
-
-  ! Compares a dict against a dict list.
-  ! Will use .EQ. to test for their equivalence.
-  ! Returns true in the case of 'd' is NOT in 'ds'
-  function char_nin_d(char,d) result(bool)
-    character(len=*), intent(in) :: char
-    type(dict), intent(in) :: d
-    logical :: bool
-    integer :: i
-    bool = .not. (char.in.d)
-  end function char_nin_d
-
   ! Concatenate two dictionaries to one dictionary...
   ! it does not work with elemental as the 
   function d_cat_d(d1,d2) result(d)
@@ -312,14 +262,12 @@ contains
     end do
   end function d_cat_d
 
-!  ! Concatenate a dictinoray and a list of dictionaries to one dictionary
   function d_cat_ds(d,ds) result(this)
     type(dict), intent(in) :: d,ds(:)
     type(dict) :: this
     integer :: i
     call dict_copy(d,this)
     do i = 1 , size(ds)
-       ! Concatenate...
        this = this//ds(i)
     end do
   end function d_cat_ds
@@ -329,7 +277,6 @@ contains
     integer :: i
     call dict_copy(d,this)
     do i = 1 , size(ds)
-       ! The order does not matter...
        this = ds(i)//this
     end do
   end function ds_cat_d
