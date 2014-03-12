@@ -13,8 +13,9 @@ N[i]=3 # integer
 N[l]=3 # long integer
 
 # Names of the different short-hands
+# DONT change these
 declare -A name
-name[a]="character(250)"
+name[a]="type(var_str)"
 name[s]="real(sp)"
 name[d]="real(dp)"
 name[c]="complex(sp)"
@@ -24,7 +25,7 @@ name[i]="integer(is)"
 name[l]="integer(il)"
 
 
-vars=(s d c z b i l)
+vars=(a s d c z b i l)
 
 function _ps { printf "%b" "$@" ; }
 function _psnl { printf "%b\n" "$@" ; }
@@ -40,24 +41,28 @@ function interface {
 
 # Print out to the mod file
 {
-for sub in assign associate ; do
-echo interface $sub 
+for sub in assign associate associatd ; do
+args="get set"
+[ "$sub" == "associatd" ] && args="l r"
+_psnl "interface $sub"
 for v in ${vars[@]} ; do
     for d in `seq 0 ${N[$v]}` ; do
-	interface $sub $v $d get set
+	interface $sub $v $d $args
     done
 done
-echo end interface $sub
+_psnl "end interface $sub"
+_psnl "public :: $sub"
 done
 if [ 1 -eq 0 ]; then
 for sub in eq ne lt gt ge le ; do
-echo "interface operator(.$sub.)"
+_psnl "interface operator(.$sub.)"
 for v in ${vars[@]} ; do
     for d in `seq 0 ${N[$v]}` ; do
 	interface $sub $v $d l r
     done
 done
-echo "end interface operator(.$sub.)"
+_psnl "end interface operator(.$sub.)"
+_psnl "public :: operator(.$sub.)"
 done
 fi
 } > mods.inc
@@ -93,6 +98,12 @@ function dim_to_size {
 	    _ps "(:,:,:,:,:)" ;;
 	6)
 	    _ps "(:,:,:,:,:,:)" ;;
+	0)
+	    ;;
+	*)
+	    echo "You are requesting a too large array size."
+	    return 1
+	    ;;
     esac
 }
 

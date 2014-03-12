@@ -1,28 +1,35 @@
-program test1
+program tests
 
   use iso_var_str
   use variable
 
   implicit none
   
-  integer, parameter :: dp = selected_real_kind(p=10)
+  integer, parameter :: dp = selected_real_kind(p=15)
 
   type(var) :: va , vb
   real(dp) :: a, b(2), c(2,2)
   real(dp), pointer :: pa =>null(), pb(:)=>null(), pc(:,:)=>null()
-  type(var_str) :: sa, sb
-  character(len=20) :: ca, cb
   logical :: success
   
-  a = 1.0_dp
-  b = 2._dp
-  c = 3._dp
-  
+  a      = 1.0_dp
+  b(:)   = 2._dp
+  c(:,:) = 3._dp
+
+  ! do 'va = a'
   call assign(va,a)
   print '(a2,tr1,f4.2)',va%t,va%d0
+  ! associate pa with va 'pa => va'
   call associate(pa,va,success=success)
   if ( success ) then
      print *,'Success: ',pa
+  end if
+  if ( associatd(pa,va) ) then
+     print *,'Associated: ',pa
+  end if
+  call associate(pb,va,success=success)
+  if ( .not. success ) then
+     print *,'Success, not associated'
   end if
 
   call assign(va,b)
@@ -35,12 +42,4 @@ program test1
   call assign(va,1)
   print '(a2,tr1,i0)',va%t,va%i0
 
-  ca = 'hello world'
-  sa = ca
-  call assign(va,sa)
-
-  call assign(sb,va)
-  cb = sb
-  print *,cb
-
-end program test1
+end program tests

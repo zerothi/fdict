@@ -2,15 +2,22 @@
 
 include ../arch.make
 
-.PHONY: default
-default: test1
+.PHONY: default test
+default: test
+
+test: tests testd
 
 LIBVAR  = ../libvar.a
 FFLAGS += -I../
-test1: test1.o
+
+tests: tests.o $(LIBVAR)
+	$(FC) -o $@ $^ $(FFLAGS) $(LIBVAR)
+	./$@
+
+testd: testd.o $(LIBVAR)
 	$(FC) -o $@ $^ $(FFLAGS) $(LIBVAR)
 	./$@
 
 .PHONY: clean
 clean:
-	-rm -f test1 *.o *.mod
+	-rm -f tests testd *.o *.mod

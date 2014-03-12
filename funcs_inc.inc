@@ -3,9 +3,11 @@ subroutine ROUTINE(assign_set,VAR)(this,rhs,dealloc)
   VAR_TYPE, intent(in)DIMS :: rhs
   logical, intent(in), optional :: dealloc
   logical :: ldealloc
+  ! collect deallocation option (default as =)
   ldealloc = .true.
   if(present(dealloc))ldealloc = dealloc
   if (.not. ldealloc) then
+     ! if we don't deallocate, nullify
      call nullify(this)
      this%t = STR(VAR)
 ALLOC(VAR,rhs)
@@ -50,12 +52,14 @@ subroutine ROUTINE(associate_get,VAR)(lhs,this,dealloc,success)
   logical :: ldealloc, lsuccess
   lsuccess = this%t==STR(VAR)
   if (present(success)) success = lsuccess
-  if (.not. lsuccess ) return
   ldealloc = .false.
   if(present(dealloc))ldealloc = dealloc
+  ! there is one problem, say if lhs is not nullified...
   if (ldealloc.and.associated(lhs)) then
      deallocate(lhs)
+     nullify(lhs)
   end if
+  if (.not. lsuccess ) return
   lhs => THIS(VAR)
 end subroutine ROUTINE(associate_get,VAR)
 subroutine ROUTINE(associate_set,VAR)(this,rhs,dealloc)
@@ -73,6 +77,25 @@ subroutine ROUTINE(associate_set,VAR)(this,rhs,dealloc)
   this%t = STR(VAR)
   THIS(VAR) => rhs
 end subroutine ROUTINE(associate_set,VAR)
+
+pure function ROUTINE(associatd_l,VAR)(lhs,this) result(ret)
+  VAR_TYPE, pointer DIMS :: lhs
+  type(var), intent(in) :: this
+  logical :: ret
+  ret = this%t==STR(VAR)
+  if (ret) then	
+     ret = associated(lhs,THIS(VAR))
+  endif
+end function ROUTINE(associatd_l,VAR)
+pure function ROUTINE(associatd_r,VAR)(this,rhs) result(ret)
+  type(var), intent(in) :: this
+  VAR_TYPE, pointer DIMS :: rhs
+  logical :: ret
+  ret = this%t==STR(VAR)
+  if (ret) then	
+     ret = associated(THIS(VAR),rhs)
+  endif
+end function ROUTINE(associatd_r,VAR)
 
 ! All boolean functions
 #ifdef BOOLEANS

@@ -3,6 +3,8 @@
 ! This means
 module variable
 
+  use iso_var_str
+
   implicit none
 
   private 
@@ -33,10 +35,6 @@ module variable
   public :: nullify
 
 #include 'mods.inc'
-  public :: assign, associate
-  public :: operator(.eq.), operator(.ne.)
-  public :: operator(.lt.), operator(.le.)
-  public :: operator(.gt.), operator(.ge.)
 
 contains
 

@@ -5,7 +5,7 @@ include ./arch.make
 default: lib
 
 # The different libraries
-VAR_OBJS  = var.o
+VAR_OBJS  = var.o iso_var_str.o
 
 LIBVAR  = libvar.a
 
@@ -20,8 +20,8 @@ $(LIBVAR): $(VAR_OBJS)
 test: lib
 	(cd test ; $(MAKE))
 
-.PHONY: prep_var
-prep_var:
+.PHONY: prep
+prep:
 	./var.sh
 	fpp -P var.F90 | sed -e "s/NEWLINE/\n/g" > tmp.F90 
 	fpp -P tmp.F90 var.f90
@@ -32,4 +32,5 @@ clean:
 	-rm -f mods.inc nullify.inc delete.inc types.inc funcs.inc
 
 # Dependencies
-var.o: | prep_var
+var.f90: | prep
+var.o: iso_var_str.o | prep
