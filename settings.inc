@@ -1,26 +1,17 @@
-#! When dealing with preprocessors that
-#! are passed by defines we need it to be
-#! passed further down.
-#! Hence we use one extra level of expansion
-
-#! Concatenation routine
 #define _cc2_1(x,y) _cc2_2(x,y)
 #define _cc2_2(x,y) x ## y
 #define _cc3_1(x,y,z) _cc3_2(x,y,z)
 #define _cc3_2(x,y,z) x ## y ## z
 
-#! String routine
 #define _str1(x) _str2(x)
 #define _str2(x) #x
 
 
-#! Common macros to create names etc
 #define ROUTINE(base,var) _cc3_1(base,_,var)
 #define STR(x) _str1(x)
 #define THIS(x) this ## % ## x
 
 
-#! Allocate routine
 #define ALLOC(v,ref) \
 #if DIM == 0 NEWLINE\
     allocate(THIS(v)) NEWLINE\

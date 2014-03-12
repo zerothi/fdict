@@ -35,6 +35,7 @@ done
 fi
 } > var_interface.inc
 
+
 {
 for v in ${vars[@]} ; do
     for d in `seq 0 ${N[$v]}` ; do
@@ -43,6 +44,7 @@ for v in ${vars[@]} ; do
 done
 } > var_nullify.inc
 
+
 {
 for v in ${vars[@]} ; do
     for d in `seq 0 ${N[$v]}` ; do
@@ -50,6 +52,7 @@ for v in ${vars[@]} ; do
     done
 done
 } > var_delete.inc
+
 
 {
 for v in v ${vars[@]} ; do
@@ -64,6 +67,45 @@ for v in v ${vars[@]} ; do
     done
 done
 } > var_content.inc
+
+
+{
+_psnl "#include 'settings.inc'"
+for v in v ${vars[@]} ; do
+    for d in `seq 0 ${N[$v]}` ; do
+	_psnl "if ( this%t == '$v$d' ) then"
+	_psnl "#define DIM $d"
+	_psnl "ALLOC($v$d,rhs%$v$d)"
+	[ $d -lt ${N[$v]} ] && _ps "else"
+    done
+    _psnl "endif"
+done
+} > var_var_alloc.inc
+
+
+{
+for v in v ${vars[@]} ; do
+    for d in `seq 0 ${N[$v]}` ; do
+	_psnl "if ( this%t == '$v$d' ) then"
+	_psnl "this%$v$d ASS_ACC rhs%$v$d"
+	[ $d -lt ${N[$v]} ] && _ps "else"
+    done
+    _psnl "endif"
+done
+} > var_var_set.inc
+
+
+{
+for v in v ${vars[@]} ; do
+    for d in `seq 0 ${N[$v]}` ; do
+	_psnl "if ( this%t == '$v$d' ) then"
+	_psnl "ret = associated(this%$v$d,rhs%$v$d)"
+	[ $d -lt ${N[$v]} ] && _ps "else"
+    done
+    _psnl "endif"
+done
+} > var_var_assoc.inc
+
 
 {
 _psnl "#include 'settings.inc'"

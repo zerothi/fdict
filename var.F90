@@ -56,6 +56,73 @@ contains
     this%t = '  '
   end subroutine nullify_
 
+subroutine assign_v0(this,rhs,dealloc)
+  type(var), intent(inout) :: this
+  type(var), intent(in) :: rhs
+  logical, intent(in), optional :: dealloc
+  logical :: ldealloc
+  ! collect deallocation option (default as =)
+  ldealloc = .true.
+  if(present(dealloc))ldealloc = dealloc
+  if (.not. ldealloc) then
+     ! if we don't deallocate, nullify
+     call nullify(this)
+     this%t = rhs%t
+
+#include 'var_var_alloc.inc'
+
+  else
+     ldealloc = this%t /= rhs%t
+     if (ldealloc) then
+        call delete(this)
+        this%t = rhs%t
+
+#include 'var_var_alloc.inc'
+
+     end if
+  end if
+
+#define ASS_ACC =
+#include 'var_var_set.inc'
+
+end subroutine assign_v0
+
+subroutine associate_v0(this,rhs,dealloc)
+  type(var), intent(inout) :: this
+  type(var), intent(in) :: rhs
+  logical, intent(in), optional :: dealloc
+  logical :: ldealloc
+  ! collect deallocation option (default as =)
+  ldealloc = .true.
+  if(present(dealloc))ldealloc = dealloc
+  if (.not. ldealloc) then
+     ! if we don't deallocate, nullify
+     call nullify(this)
+     this%t = rhs%t
+  else
+     ldealloc = this%t /= rhs%t
+     if (ldealloc) then
+        call delete(this)
+        this%t = rhs%t
+     end if
+  end if
+
+#define ASS_ACC =>
+#include 'var_var_set.inc'
+
+end subroutine associate_v0
+
+pure function associatd_v0(this,rhs) result(ret)
+  type(var), intent(in) :: this
+  type(var), intent(in) :: rhs
+  logical :: ret
+  ret = this%t==rhs%t
+  if ( .not. ret ) return
+  
+#include 'var_var_assoc.inc'
+
+end function associatd_v0
+
 #include 'var_funcs.inc'
 
 end module variable

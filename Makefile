@@ -23,17 +23,18 @@ test: lib
 .PHONY: prep
 prep:
 	./var.sh
-	fpp -P var.F90 | sed -e "s/NEWLINE/\n/g" > tmp.F90 
-	fpp -P tmp.F90 var.f90
+	fpp -P var.F90 | sed -e "s/NEWLINE/\n/g;/^$$/d" > tmp.F90 
+	fpp -P tmp.F90 | sed -e "s/NEWLINE/\n/g;/^$$/d" > var.f90
 	./dictionary.sh
-	fpp -P dictionary.F90 | sed -e "s/NEWLINE/\n/g" > tmp.F90 
-	fpp -P tmp.F90 dictionary.f90
+	fpp -P dictionary.F90 | sed -e "s/NEWLINE/\n/g;/^$$/d" > tmp.F90 
+	fpp -P tmp.F90 | sed -e "s/NEWLINE/\n/g;/^$$/d" > dictionary.f90
 
 .PHONY: clean
 clean:
 	-rm -f $(OBJS) $(LIB) *.o *.mod tmp.F90 var.f90 dictionary.f90
 	-rm -f dict_funcs.inc dict_interface.inc
 	-rm -f var_nullify.inc var_delete.inc var_content.inc var_funcs.inc var_interface.inc
+	-rm -f var_var_set.inc var_var_alloc.inc var_var_assoc.inc
 
 # Dependencies
 dictionary.f90: | prep
