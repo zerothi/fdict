@@ -30,19 +30,13 @@ module dictionary
   public :: operator(.KEY.)
   ! Retrieve the value of a dict: .VAL. type(dict)
   public :: operator(.VAL.)
-  ! Compares two dict's
   public :: operator(.EQ.) ! Overloaded
-  ! Compares two dict's and returns the negativ of .eq.
   public :: operator(.NE.) ! Overloaded
-  ! Checks whether a character(*) or dict resides in a list of dicts
-  public :: operator(.IN.)
-  ! Checks whether a character(*) or dict does not reside in a list of dicts
-  public :: operator(.NIN.)
   ! The unary operator of retrieving the next element
   public :: operator(.NEXT.)
   ! The unary operator of retrieving the next element
   public :: operator(.FIRST.)
-  ! The unary operator of checkning for emptyness
+  ! The unary operator of checking for emptiness
   public :: operator(.EMPTY.)
   ! The unary operator of returning the hash value
   public :: operator(.HASH.), hash
@@ -82,8 +76,9 @@ module dictionary
      integer :: len = 0
   end type dict
   
-  ! If we ever need to extend it to deal with comparisons
   ! HASH-comparisons are MUCH faster...
+  ! hence we store all values in an incremental fashion in terms
+  ! of the HASH-value
   integer, parameter :: HASH_SIZE = 9857 ! a prime !
   integer, parameter :: HASH_MULT = 31
   
@@ -119,27 +114,27 @@ module dictionary
      module procedure hash
   end interface operator( .HASH. )
 
-  ! Checks for two dicts to be equal (in both key and value)
+  ! Checks for two dicts have all the same keys
   interface operator( .EQ. )
      module procedure d_eq_d
   end interface operator( .EQ. )
 
-  ! Checks for two dicts to be not equal (in both key and value)
+  ! Checks for two dicts don't share any common keys
   interface operator( .NE. )
      module procedure d_ne_d
   end interface operator( .NE. )
 
-  ! Steps one time in the dictionary
+  ! Steps one time in the dictionary (unary)
   interface operator( .NEXT. )
      module procedure d_next
   end interface operator( .NEXT. )
 
-  ! Retrieve the first of a dictionary
+  ! Retrieve the first of a dictionary (unary)
   interface operator( .FIRST. )
      module procedure d_first
   end interface operator( .FIRST. )
 
-  ! Check whether the dictionary is empty...
+  ! Check whether the dictionary is empty (unary)
   interface operator( .EMPTY. )
      module procedure d_empty
   end interface operator( .EMPTY. )
@@ -230,11 +225,22 @@ contains
   function d_eq_d(d1,d2) result(bool)
     type(dict), intent(in) :: d1,d2
     logical :: bool
-    bool = (.hash. d1 == .hash. d2)
-    if ( bool ) then
-       bool = ( trim(.KEY. d1) .eq. trim(.KEY. d2) )! .and. &
-       !( trim(.VAL. d1) .eq. trim(.VAL. d2) )
-    end if
+    type(dict) :: tmp1, tmp2
+    bool = len(d1) == len(d2)
+    if ( .not. bool ) return
+    bool = .hash. d1 == .hash. d2
+    if ( .not. bool ) return
+    ! if all the keys are going to be the same
+    ! the we know that the hash-tags are going to
+    ! be the same... :)
+    tmp1 = .first. d1
+    tmp2 = .first. d2
+    do while ( .not. (.empty. tmp1) )
+       bool = .hash. tmp1 == .hash. tmp2
+       if ( .not. bool ) return
+       tmp1 = .next. tmp1
+       tmp2 = .next. tmp2
+    end do
   end function d_eq_d
 
   ! Compares two dict types against each other
@@ -242,7 +248,20 @@ contains
   function d_ne_d(d1,d2) result(bool)
     type(dict), intent(in) :: d1,d2
     logical :: bool
-    bool = .not. (d1 .eq. d2)
+    type(dict) :: tmp1, tmp2
+    tmp1 = .first. d1
+    do while ( .not. (.empty. tmp1) )
+       tmp2 = .first. d2
+       do while ( .not. (.empty. tmp2) )
+          bool = .hash. tmp1 == .hash. tmp2
+          if ( bool ) then
+             bool = .false.
+             return
+          end if
+          tmp2 = .next. tmp2
+       end do
+       tmp1 = .next. tmp1
+    end do
   end function d_ne_d
 
   ! Concatenate two dictionaries to one dictionary...
