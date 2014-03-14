@@ -24,11 +24,11 @@ test: lib
 SED_DEL = 's/NEWLINE/\n/g;/^$$/d;/^\!.*&/d'
 prep:
 	./var.sh
-	fpp -P var.F90 | sed -e $(SED_DEL) > tmp.F90 
-	fpp -P tmp.F90 | sed -e $(SED_DEL) > var.f90
+	fpp -P var.F90 | sed -e $(SED_DEL) > tmp.F90 2> /dev/null
+	fpp -P tmp.F90 | sed -e $(SED_DEL) > var.f90 2> /dev/null
 	./dictionary.sh
-	fpp -P dictionary.F90 | sed -e $(SED_DEL) > tmp.F90 
-	fpp -P tmp.F90 | sed -e $(SED_DEL) > dictionary.f90
+	fpp -P dictionary.F90 | sed -e $(SED_DEL) > tmp.F90 2> /dev/null
+	fpp -P tmp.F90 | sed -e $(SED_DEL) > dictionary.f90 2> /dev/null
 
 .PHONY: clean
 clean:

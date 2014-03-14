@@ -44,7 +44,7 @@ module dictionary
   ! Return the length of the dictionary...
   public :: LEN
   public :: dict_copy, dict_print
-  
+  public :: delete
 
   ! Internal variables for determining the maximum size of the dictionaries.
   ! We could consider changing this to a variable size string
@@ -142,6 +142,10 @@ module dictionary
   interface operator( .EMPTY. )
      module procedure d_empty
   end interface operator( .EMPTY. )
+
+  interface delete
+     module procedure delete_
+  end interface delete
 
   ! Create a dictionary type from 
 #include 'dict_interface.inc'
@@ -413,6 +417,60 @@ contains
     str = val
     call assign(this%first%value,str)
   end function dict_kv_a0
+
+  subroutine delete_(this)
+    type(dict), intent(inout) :: this
+    type(d_entry), pointer :: de
+
+    de => this%first
+
+    ! first we delete all the variables
+    ! in the dictionary
+    ! This will also delete no matter if
+    ! the user points parts of the dictionary to
+    ! other parts of memory.
+    do while ( associated(de) )
+       call delete(de%value)
+       de%key = ' '
+       de%hash = 0
+       de => de%next
+    end do
+
+    ! clean up the references
+    de => this%first
+    do while ( associated(de%next) ) 
+
+       ! delete the last element of the dictionary
+       do while ( associated(de%next) ) 
+          if ( associated(de%next%next) ) then
+             de => de%next
+          else
+             call del_d_next(de)
+          end if
+       end do
+
+       call del_d_next(de)
+
+       de => this%first
+
+    end do
+    
+    if ( associated(this%first) ) then
+       deallocate(this%first)
+       nullify(this%first)
+    end if
+
+  contains
+
+    subroutine del_d_next(d)
+      type(d_entry), intent(inout) :: d
+      if ( associated(d%next) ) then
+         deallocate(d%next)
+         nullify(d%next)
+      end if
+    end subroutine del_d_next
+    
+  end subroutine delete_
 
 #include 'dict_funcs.inc'
 
