@@ -209,10 +209,10 @@ INTERFACE REPLACE
 ENDINTERFACE 
 
 !----- Remove procedure interface --------------------------------------------! 
-INTERFACE REMOVE 
-  MODULE PROCEDURE remove_s, & ! characters from string, between start
-                   remove_c    ! characters from char  , and finish
-ENDINTERFACE 
+!INTERFACE REMOVE 
+!  MODULE PROCEDURE remove_s, & ! characters from string, between start
+!                   remove_c    ! characters from char  , and finish
+!ENDINTERFACE 
   
 !----- Extract procedure interface -------------------------------------------!
 INTERFACE EXTRACT 
@@ -268,10 +268,12 @@ ENDINTERFACE
   
 !----- specification of publically accessible entities -----------------------! 
 PUBLIC :: VAR_STR,VARSTR,CHAR,LEN,GET,PUT,PUT_LINE,INSERT,REPLACE,   &
-          SPLIT,REMOVE,REPEAT,EXTRACT,INDEX,SCAN,VERIFY,LLT,LLE,LGE,LGT,     &
+          SPLIT,REPEAT,EXTRACT,INDEX,SCAN,VERIFY,LLT,LLE,LGE,LGT,     &
           ASSIGNMENT(=),OPERATOR(//),OPERATOR(==),OPERATOR(/=),OPERATOR(<),  &
           OPERATOR(<=),OPERATOR(>=),OPERATOR(>),LEN_TRIM,TRIM,IACHAR,ICHAR,  &
           ADJUSTL,ADJUSTR
+
+!PUBLIC :: REMOVE
   
 CONTAINS 
   

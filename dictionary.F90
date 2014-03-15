@@ -19,32 +19,9 @@ module dictionary
   integer, parameter :: sp = selected_real_kind(p=6)
   integer, parameter :: dp = selected_real_kind(p=15)
 
+  ! the type
   public :: dict
-  ! Create a dict type: 'key' .KV. 'val', 'key' .KVP. 'pointer'
-  public :: operator(.KV.), operator(.KVP.)
-  ! Retrieve the value of a list of dicts by searching for a key: type(dict)(:) .LU. 'a' (returns .VAL. from 'a'.KV.'val')
-  ! 'Look-Up'
-  public :: operator( .LU. ), operator( .LOOKUP. )
-  ! Concatenates lists of dicts or just two dicts: type(dict)(:) //('a'.KV.'val')
-  public :: operator( // )
-  ! Retrieve the key of a dict: .KEY. type(dict)
-  public :: operator(.KEY.)
-  ! Retrieve the value of a dict: .VAL. type(dict)
-  public :: operator(.VAL.)
-  public :: operator(.EQ.) ! Overloaded
-  public :: operator(.NE.) ! Overloaded
-  ! The unary operator of retrieving the next element
-  public :: operator(.NEXT.)
-  ! The unary operator of retrieving the next element
-  public :: operator(.FIRST.)
-  ! The unary operator of checking for emptiness
-  public :: operator(.EMPTY.)
-  ! The unary operator of returning the hash value
-  public :: operator(.HASH.), hash
-  ! Return the length of the dictionary...
-  public :: LEN
-  public :: dict_copy, dict_print
-  public :: delete
+  public :: dict_print
 
   ! Internal variables for determining the maximum size of the dictionaries.
   ! We could consider changing this to a variable size string
@@ -55,6 +32,108 @@ module dictionary
   ! A parameter returned if not found.
   character(len=DICT_KEY_LENGTH), parameter :: DICT_NOT_FOUND = 'ERROR: key not found'
   public :: DICT_NOT_FOUND
+  
+  type :: dict
+     ! We will keep the dictionary private so that any coding
+     ! has to use .KEY. and .VAL. etc.
+     private
+     type(d_entry), pointer :: first => null()
+     integer :: len = 0
+  end type dict
+  
+  ! HASH-comparisons are MUCH faster...
+  ! hence we store all values in an incremental fashion in terms
+  ! of the HASH-value
+  integer, parameter :: HASH_SIZE = 62171 ! a prime !
+  integer, parameter :: HASH_MULT = 31
+  
+  interface len
+     module procedure len_
+  end interface len
+  public :: LEN
+
+  ! Concatenate dicts or list of dicts to list of dicts
+  interface operator( // )
+     module procedure d_cat_d
+  end interface operator( // )
+  public :: operator( // )
+
+  ! Retrieve the key from a dictionary (unary)
+  interface operator( .KEY. )
+     module procedure key
+  end interface operator( .KEY. )
+  public :: operator(.KEY.)
+  
+  ! Retrieve the value from a dictionary (unary)
+  interface operator( .VAL. )
+     module procedure value
+  end interface operator( .VAL. )
+  public :: operator(.VAL.)
+
+  ! Retrieve the hash value from a dictionary entry (unary)
+  interface operator( .HASH. )
+     module procedure hash
+  end interface operator( .HASH. )
+  public :: operator(.HASH.)
+
+  ! Checks for two dicts have all the same keys
+  interface operator( .EQ. )
+     module procedure d_eq_d
+  end interface operator( .EQ. )
+  public :: operator(.EQ.) ! Overloaded
+
+  ! Checks for two dicts don't share any common keys
+  interface operator( .NE. )
+     module procedure d_ne_d
+  end interface operator( .NE. )
+  public :: operator(.NE.) ! Overloaded
+
+  ! Steps one time in the dictionary (unary)
+  interface operator( .NEXT. )
+     module procedure d_next
+  end interface operator( .NEXT. )
+  public :: operator(.NEXT.)
+
+  ! Retrieve the first of a dictionary (unary)
+  interface operator( .FIRST. )
+     module procedure d_first
+  end interface operator( .FIRST. )
+  public :: operator(.FIRST.)
+
+  ! Check whether the dictionary is empty (unary)
+  interface operator( .EMPTY. )
+     module procedure d_empty
+  end interface operator( .EMPTY. )
+  public :: operator(.EMPTY.)
+
+  interface delete
+     module procedure delete_
+  end interface delete
+  public :: delete
+
+  interface remove
+     module procedure remove_
+  end interface remove
+  public :: remove
+
+  interface dict_assign
+     module procedure dict_key2val
+  end interface dict_assign
+  public :: dict_assign
+
+  interface dict_associate
+     module procedure dict_key_p_val
+  end interface dict_associate
+  public :: dict_associate
+
+
+  ! Create a dictionary type from 
+#include 'dict_interface.inc'
+
+  ! Create a dict type: 'key' .KV. 'val'
+  public :: operator(.KV.)
+  ! Create a dict type: 'key' .KVP. 'pointer'
+  public :: operator(.KVP.)
 
   ! We need to create a linked list to create arbitrarily long dictionaries...
   ! The dictionary entry is not visible outside.
@@ -68,87 +147,6 @@ module dictionary
      integer :: hash = 0
      type(d_entry), pointer :: next => null()
   end type d_entry
-  
-  type :: dict
-     ! We will keep the dictionary private so that any coding
-     ! has to use .KEY. and .VAL. etc.
-     private
-     type(d_entry), pointer :: first => null()
-     integer :: len = 0
-  end type dict
-  
-  ! HASH-comparisons are MUCH faster...
-  ! hence we store all values in an incremental fashion in terms
-  ! of the HASH-value
-  integer, parameter :: HASH_SIZE = 32237 ! a prime !
-  integer, parameter :: HASH_MULT = 31
-  
-  ! Retrieve the value from a dictionary list by specifying the key...
-  interface operator( .LU. )
-     module procedure d_value_from_key
-  end interface operator( .LU. )
-  interface operator( .LOOKUP. )
-     module procedure d_value_from_key
-  end interface operator( .LOOKUP. )
-
-  interface len
-     module procedure len_
-  end interface len
-
-  ! Concatenate dicts or list of dicts to list of dicts
-  interface operator( // )
-     module procedure d_cat_d
-     !module procedure ds_cat_d
-     !module procedure d_cat_ds
-  end interface operator( // )
-
-  
-  ! Retrieve the key from a dictionary (unary)
-  interface operator( .KEY. )
-     module procedure key
-  end interface operator( .KEY. )
-  
-  ! Retrieve the value from a dictionary (unary)
-  interface operator( .VAL. )
-     module procedure value
-  end interface operator( .VAL. )
-
-  ! Retrieve the hash value from a dictionary (unary)
-  interface operator( .HASH. )
-     module procedure hash
-  end interface operator( .HASH. )
-
-  ! Checks for two dicts have all the same keys
-  interface operator( .EQ. )
-     module procedure d_eq_d
-  end interface operator( .EQ. )
-
-  ! Checks for two dicts don't share any common keys
-  interface operator( .NE. )
-     module procedure d_ne_d
-  end interface operator( .NE. )
-
-  ! Steps one time in the dictionary (unary)
-  interface operator( .NEXT. )
-     module procedure d_next
-  end interface operator( .NEXT. )
-
-  ! Retrieve the first of a dictionary (unary)
-  interface operator( .FIRST. )
-     module procedure d_first
-  end interface operator( .FIRST. )
-
-  ! Check whether the dictionary is empty (unary)
-  interface operator( .EMPTY. )
-     module procedure d_empty
-  end interface operator( .EMPTY. )
-
-  interface delete
-     module procedure delete_
-  end interface delete
-
-  ! Create a dictionary type from 
-#include 'dict_interface.inc'
 
 contains
 
@@ -205,16 +203,13 @@ contains
     hash = d%first%hash
   end function hash
 
-  ! Retrieves the value for a key in a list of dictionaries
-  ! Will use .EQ. to tesh for their equivalence.
-  function d_value_from_key(d,key) result(val)
-    type(dict), intent(in) :: d
+  subroutine dict_key2val(val,d,key)
+    type(var), intent(inout) :: val
+    type(dict), intent(inout) :: d
     character(len=*), intent(in) :: key
-    type(var) :: val
     type(dict) :: ld
     integer :: hash
-    ! empty the value
-    call delete(val)
+    
     hash = hash_val(key)
     ld = .first. d
     search: do while ( .not. (.empty. ld) )
@@ -224,13 +219,39 @@ contains
           ! Do nothing... step
        else if ( hash == .hash. ld ) then
           if ( key .eq. .KEY. ld ) then
-             val = .VAL. ld
+             call assign(val,ld%first%value)
              return
           end if
        end if
        ld = .next. ld
     end do search
-  end function d_value_from_key
+
+  end subroutine dict_key2val
+
+  subroutine dict_key_p_val(val,d,key)
+    type(var), intent(inout) :: val
+    type(dict), intent(inout) :: d
+    character(len=*), intent(in) :: key
+    type(dict) :: ld
+    integer :: hash
+    
+    hash = hash_val(key)
+    ld = .first. d
+    search: do while ( .not. (.empty. ld) )
+       if (      hash  < .hash. ld ) then
+          exit search
+       else if ( hash  > .hash. ld ) then
+          ! Do nothing... step
+       else if ( hash == .hash. ld ) then
+          if ( key .eq. .KEY. ld ) then
+             call associate(val,ld%first%value)
+             return
+          end if
+       end if
+       ld = .next. ld
+    end do search
+
+  end subroutine dict_key_p_val
 
   ! Compares two dict types against each other
   ! Will do comparison, first by hash, and if that matches then
@@ -257,7 +278,7 @@ contains
   end function d_eq_d
 
   ! Compares two dict types against each other
-  ! The negative of .EQ.
+  ! not necessarily the negative of .eq.
   function d_ne_d(d1,d2) result(bool)
     type(dict), intent(in) :: d1,d2
     logical :: bool
@@ -285,10 +306,10 @@ contains
     type(d_entry), pointer :: ladd,lnext
     if ( .empty. d1 ) then
        if ( .empty. d2 ) return
-       call dict_copy(d2,d)
+       call copy_assign(d2,d)
        return
     end if
-    call dict_copy(d1,d)
+    call copy_assign(d1,d)
     if ( .empty. d2 ) return
     ladd => d2%first
     do 
@@ -299,25 +320,6 @@ contains
        ladd => lnext
     end do
   end function d_cat_d
-
-!  function d_cat_ds(d,ds) result(this)
-!    type(dict), intent(in) :: d,ds(:)
-!    type(dict) :: this
-!    integer :: i
-!    call dict_copy(d,this)
-!    do i = 1 , size(ds)
-!       this = this//ds(i)
-!    end do
-!  end function d_cat_ds
-!  function ds_cat_d(ds,d) result(this)
-!    type(dict), intent(in) :: ds(:),d
-!    type(dict) :: this
-!    integer :: i
-!    call dict_copy(d,this)
-!    do i = 1 , size(ds)
-!       this = ds(i)//this
-!    end do
-!  end function ds_cat_d
 
   subroutine d_insert(d,entry)
     type(dict),    intent(inout) :: d
@@ -388,39 +390,78 @@ contains
   function d_first(d)
     type(dict), intent(in) :: d
     type(dict) :: d_first
-    call dict_copy(d,d_first)
+    call copy_assign(d,d_first)
   end function d_first
   
-  subroutine dict_copy(din,dcopy)
+  subroutine copy_assign(din,dcopy)
     type(dict), intent(in)  :: din
     type(dict), intent(out) :: dcopy
     dcopy%first => din%first
     dcopy%len = din%len
-  end subroutine dict_copy
+  end subroutine copy_assign
 
   subroutine dict_print(d)
     type(dict), intent(in)  :: d
     type(dict)  :: ld
     ld = .first. d
     do while ( .not. .empty. ld ) 
-       write(*,*) trim(.key. ld),.hash.ld
+       write(*,*) trim(.key. ld),.hash. ld
        ld = .next. ld
     end do
   end subroutine dict_print
 
-  function dict_kv_a0(key,val) result(this)
-    character(len=*), intent(in) :: key
-    character(len=*), intent(in) :: val
-    type(dict) :: this
-    type(var_str) :: str
-    this = new_d_key(key)
-    str = val
-    call assign(this%first%value,str)
-  end function dict_kv_a0
 
-  subroutine delete_(this)
+  recursive subroutine delete_(this,key)
     type(dict), intent(inout) :: this
-    type(d_entry), pointer :: de
+    character(len=*), intent(in), optional :: key
+    type(d_entry), pointer :: de, pr
+    integer :: i 
+
+    ! if no keys are present, simply return
+    if ( .not. associated(this%first) ) then
+       this%len = 0
+       return
+    end if
+
+    if ( len(this) == 0 ) then
+       stop 'Something went wrong'
+    end if
+
+    if ( present(key) ) then
+       
+       ! we only need to delete the one key
+
+       pr => this%first
+       if ( pr%key == key ) then
+          this%first => pr%next
+          this%len = this%len - 1 
+          call delete(pr%value)
+          nullify(pr%next)
+          deallocate(pr)
+
+          return
+
+       end if
+
+       ! more complicated case
+       de => pr%next
+       do while ( associated(de) )
+          if ( de%key == key ) then
+             pr%next => de%next
+             call delete(de%value)
+             nullify(de%next)
+             deallocate(de)
+             this%len = this%len - 1 
+             exit
+          end if
+          pr => de
+          de => de%next
+       end do
+
+       return
+
+    end if
+       
 
     de => this%first
 
@@ -429,10 +470,11 @@ contains
     ! This will also delete no matter if
     ! the user points parts of the dictionary to
     ! other parts of memory.
-    do while ( associated(de) )
+    do
        call delete(de%value)
        de%key = ' '
        de%hash = 0
+       if ( .not. associated(de%next) ) exit
        de => de%next
     end do
 
@@ -446,10 +488,12 @@ contains
              de => de%next
           else
              call del_d_next(de)
+             this%len = this%len - 1
           end if
        end do
 
        call del_d_next(de)
+       this%len = this%len - 1
 
        de => this%first
 
@@ -458,6 +502,11 @@ contains
     if ( associated(this%first) ) then
        deallocate(this%first)
        nullify(this%first)
+       this%len = this%len - 1
+    end if
+
+    if ( this%len /= 0 ) then
+       stop 'something went wrong'
     end if
 
   contains
@@ -471,6 +520,49 @@ contains
     end subroutine del_d_next
     
   end subroutine delete_
+
+  subroutine remove_(this,key)
+    type(dict), intent(inout) :: this
+    character(len=*), intent(in) :: key
+    type(d_entry), pointer :: de, pr
+
+    ! if no keys are present, simply return
+    if ( .not. associated(this%first) ) then
+       this%len = 0
+       return
+    end if
+
+    pr => this%first
+    if ( pr%key == key ) then
+       this%first => pr%next
+       deallocate(pr)
+       this%len = this%len - 1
+       return
+    end if
+
+    de => pr%next
+    do while ( associated(de) )
+       if ( de%key == key ) then
+          pr%next => de%next
+          deallocate(de)
+          this%len = this%len - 1
+          exit
+       end if
+       pr => de
+       de => de%next
+    end do
+    
+  end subroutine remove_
+
+  function dict_kv_a0(key,val) result(this)
+    character(len=*), intent(in) :: key
+    character(len=*), intent(in) :: val
+    type(dict) :: this
+    type(var_str) :: str
+    this = new_d_key(key)
+    str = val
+    call assign(this%first%value,str)
+  end function dict_kv_a0
 
 #include 'dict_funcs.inc'
 

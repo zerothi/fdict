@@ -7,6 +7,7 @@ default: test
 
 TEST_EXE = tests testd test_mem
 TEST_EXE += test_dict test_dict_long test_dict_mem
+TEST_EXE += test_dict_remove
 
 
 test: $(TEST_EXE)
@@ -15,28 +16,32 @@ LIB  = ../libvardict.a
 FFLAGS += -I../
 
 tests: tests.o $(LIB)
-	$(FC) -o $@ $^ $(FFLAGS) $(LIB)
+	$(FC) -o $@ $(FFLAGS) $^
 	./$@
 
 testd: testd.o $(LIB)
-	$(FC) -o $@ $^ $(FFLAGS) $(LIB)
+	$(FC) -o $@ $(FFLAGS) $^
 	./$@
 
 test_mem: test_mem.o $(LIB)
-	$(FC) -o $@ $^ $(FFLAGS) $(LIB)
+	$(FC) -o $@ $(FFLAGS) $^
 	./$@
 
 
 test_dict: test_dict.o $(LIB)
-	$(FC) -o $@ $^ $(FFLAGS) $(LIB)
+	$(FC) -o $@ $(FFLAGS) $^
 	./$@
 
 test_dict_long: test_dict_long.o $(LIB)
-	$(FC) -o $@ $^ $(FFLAGS) $(LIB)
+	$(FC) -o $@ $(FFLAGS) $^
 	./$@
 
 test_dict_mem: test_dict_mem.o $(LIB)
-	$(FC) -o $@ $^ $(FFLAGS) $(LIB)
+	$(FC) -o $@ $(FFLAGS) $^
+	./$@
+
+test_dict_remove: test_dict_remove.o $(LIB)
+	$(FC) -o $@ $(FFLAGS) $^
 	./$@
 
 .PHONY: clean

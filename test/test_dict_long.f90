@@ -25,4 +25,6 @@ program test_dict
 
   print '(2(a,i0))','Added ',N**3,' keys and looped through them...',len(dic)
 
+  call delete(dic)
+
 end program test_dict
