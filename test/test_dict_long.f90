@@ -15,16 +15,15 @@ program test_dict
      do j = 1 , N
         do i = 1 , N
            key = achar(64+i)//achar(64+j)//achar(64+k)
-           dic = dic//(key.kv.1)
+           call add(dic,(key.kv.1))
         end do
      end do
   end do
 
-  ! print all the values
-  call dict_print(dic)
-
   print '(2(a,i0))','Added ',N**3,' keys and looped through them...',len(dic)
 
   call delete(dic)
+
+  print '(2(a,i0))','Deleted ',N**3,' keys...',len(dic)
 
 end program test_dict

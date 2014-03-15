@@ -18,8 +18,13 @@ program test_dict
   d = 4.
 
   ! fill dictionary
-  dic = ('a'.kv.a)//('b'.kv.b)//('c'.kv.c)//('d'.kvp.d)// &
+  dic = &
+       ('a'.kv.a)//('b'.kv.b)//('c'.kv.c)//('d'.kvp.d)// &
        ('string'.kv."Hello world")
+
+  call add(dic, &
+       ('aa'.kv.a)//('bb'.kv.b)//('cc'.kv.c)//('dd'.kvp.d)// &
+       ('stringa'.kv."Hello world"))
 
   ! print all the values
   call dict_print(dic)

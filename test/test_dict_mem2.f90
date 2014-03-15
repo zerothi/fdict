@@ -1,6 +1,7 @@
 program tests
 
   use iso_var_str
+  use variable
   use dictionary
 
   implicit none
@@ -9,32 +10,22 @@ program tests
 
   integer :: i, N, step
 
-  N = 500
+  N = 1000
   step = 25
 
-  write(*,*)'Running with deallocation'
-  ! 
+  write(*,*)'Remove and delete var'
   ! we should here allocate around 1Gb
   do i = 1 , N
-     call mem(.true.)
+     call mem_rem(.true.)
      if ( mod(i,step) == 0 ) then
         call show_mem
      end if
   end do
 
-  write(*,*)'Running without deallocation'
+  write(*,*)'Remove and NO deallocation'
   ! we should here allocate around 1Gb
   do i = 1 , N
-     call mem(.false.)
-     if ( mod(i,step) == 0 ) then
-        call show_mem
-     end if
-  end do
-
-  write(*,*)'Running with remove'
-  ! we should here allocate around 1Gb
-  do i = 1 , N
-     call mem2(.false.)
+     call mem_rem(.false.)
      if ( mod(i,step) == 0 ) then
         call show_mem
      end if
@@ -42,25 +33,17 @@ program tests
 
 contains
 
-  subroutine mem(dealloc)
+  subroutine mem_rem(dealloc)
     logical, intent(in) :: dealloc
-    real(dp) :: va(400,400) ! roughly 1.22 MB
     type(dict) :: d
-    va = 0.
-    d = 'hello'.kv.va
-    if ( dealloc ) call delete(d,'hello')
-    d = 'hello'.kv.va
-    if ( dealloc ) call delete(d)
-  end subroutine mem
-
-  subroutine mem2(dealloc)
-    logical, intent(in) :: dealloc
     real(dp) :: va(400,400) ! roughly 1.22 MB
-    type(dict) :: d
+    type(var) :: v
     va = 0.
-    d = 'hello'.kv.va
+    call add(d,'hello'.kv.va)
+    call getp(v,d,'hello')
     call remove(d,'hello')
-  end subroutine mem2
+    if ( dealloc ) call delete(v)
+  end subroutine mem_rem
 
   subroutine show_mem()
     call system("free | grep Mem | awk '{print $1,$2/1024,$3/1024,$4/1024}'")

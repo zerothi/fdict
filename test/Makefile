@@ -6,7 +6,8 @@ include ../arch.make
 default: test
 
 TEST_EXE = tests testd test_mem
-TEST_EXE += test_dict test_dict_long test_dict_mem
+TEST_EXE += test_dict test_dict_long
+TEST_EXE += test_dict_mem1 test_dict_mem2
 TEST_EXE += test_dict_remove
 
 
@@ -36,7 +37,10 @@ test_dict_long: test_dict_long.o $(LIB)
 	$(FC) -o $@ $(FFLAGS) $^
 	./$@
 
-test_dict_mem: test_dict_mem.o $(LIB)
+test_dict_mem1: test_dict_mem1.o $(LIB)
+	$(FC) -o $@ $(FFLAGS) $^
+	./$@
+test_dict_mem2: test_dict_mem2.o $(LIB)
 	$(FC) -o $@ $(FFLAGS) $^
 	./$@
 

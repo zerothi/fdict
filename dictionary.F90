@@ -116,15 +116,20 @@ module dictionary
   end interface remove
   public :: remove
 
-  interface dict_assign
-     module procedure dict_key2val
-  end interface dict_assign
-  public :: dict_assign
+  interface add
+     module procedure sub_d_cat_d
+  end interface add
+  public :: add
 
-  interface dict_associate
+  interface get
+     module procedure dict_key2val
+  end interface get
+  public :: get
+
+  interface getp
      module procedure dict_key_p_val
-  end interface dict_associate
-  public :: dict_associate
+  end interface getp
+  public :: getp
 
 
   ! Create a dictionary type from 
@@ -183,7 +188,7 @@ contains
 
   ! Retrieves the key value in a dictionary type (or a list)
   ! We expect that the key will only be called on single element dictionaries...
-  function key(d)
+  pure function key(d)
     type(dict), intent(in) :: d
     character(len=DICT_KEY_LENGTH) :: key
     key = d%first%key
@@ -197,7 +202,7 @@ contains
   end function value
 
   ! Returns the hash value of the dictionary first item...
-  function hash(d)
+  pure function hash(d)
     type(dict), intent(in) :: d
     integer :: hash
     hash = d%first%hash
@@ -321,11 +326,38 @@ contains
     end do
   end function d_cat_d
 
+  ! Concatenate two dictionaries to one dictionary...
+  ! it does not work with elemental as the 
+  subroutine sub_d_cat_d(d,d2)
+    type(dict), intent(inout) :: d
+    type(dict), intent(in) :: d2
+    type(d_entry), pointer :: ladd,lnext
+    if ( .empty. d2 ) return
+    ladd => d2%first
+    do 
+       ! step ...
+       lnext => ladd%next
+       call d_insert(d,ladd)
+       if ( .not. associated(lnext) ) return
+       ladd => lnext
+    end do
+  end subroutine sub_d_cat_d
+
   subroutine d_insert(d,entry)
     type(dict),    intent(inout) :: d
     type(d_entry), intent(inout), pointer :: entry
     type(d_entry), pointer :: search, prev
+
+    ! if the dictionary is empty
+    ! simply put it first
+    if ( .not. associated(d%first) ) then
+       d%first => entry
+       d%len = 1
+       return
+    end if
+
     nullify(prev)
+
     ! Initialize search...
     search => d%first
     ! The easy case...
@@ -363,8 +395,10 @@ contains
     prev%next => entry
     ! Increment length of the dictionary...
     d%len = d%len+1
+
     ! As we could insert from a dictionary we have to reset, to not do endless loops...
     nullify(entry%next)
+
   end subroutine d_insert
 
   ! Retrieve the length of the dictionary...
@@ -381,7 +415,7 @@ contains
     d_next%len = len(d)-1
   end function d_next
 
-  function d_empty(d)
+  pure function d_empty(d)
     type(dict), intent(in) :: d
     logical :: d_empty
     d_empty = .not. associated(d%first)
@@ -411,11 +445,10 @@ contains
   end subroutine dict_print
 
 
-  recursive subroutine delete_(this,key)
+  subroutine delete_(this,key)
     type(dict), intent(inout) :: this
     character(len=*), intent(in), optional :: key
     type(d_entry), pointer :: de, pr
-    integer :: i 
 
     ! if no keys are present, simply return
     if ( .not. associated(this%first) ) then
@@ -438,6 +471,7 @@ contains
           call delete(pr%value)
           nullify(pr%next)
           deallocate(pr)
+          nullify(pr)
 
           return
 
@@ -463,62 +497,27 @@ contains
     end if
        
 
-    de => this%first
-
-    ! first we delete all the variables
-    ! in the dictionary
-    ! This will also delete no matter if
-    ! the user points parts of the dictionary to
-    ! other parts of memory.
-    do
-       call delete(de%value)
-       de%key = ' '
-       de%hash = 0
-       if ( .not. associated(de%next) ) exit
-       de => de%next
-    end do
-
-    ! clean up the references
-    de => this%first
-    do while ( associated(de%next) ) 
-
-       ! delete the last element of the dictionary
-       do while ( associated(de%next) ) 
-          if ( associated(de%next%next) ) then
-             de => de%next
-          else
-             call del_d_next(de)
-             this%len = this%len - 1
-          end if
-       end do
-
-       call del_d_next(de)
-       this%len = this%len - 1
-
-       de => this%first
-
-    end do
-    
-    if ( associated(this%first) ) then
-       deallocate(this%first)
-       nullify(this%first)
-       this%len = this%len - 1
-    end if
-
-    if ( this%len /= 0 ) then
-       stop 'something went wrong'
-    end if
+    ! delete the entire entry-tree
+    call del_d_entry_tree(this%first)
+    call delete(this%first%value)
+    deallocate(this%first)
+    nullify(this%first)    
+    this%len = 0
 
   contains
 
-    subroutine del_d_next(d)
-      type(d_entry), intent(inout) :: d
-      if ( associated(d%next) ) then
-         deallocate(d%next)
-         nullify(d%next)
+    recursive subroutine del_d_entry_tree(d)
+      type(d_entry), pointer :: d
+      if ( associated(d) ) then
+         if ( associated(d%next) ) then
+            call del_d_entry_tree(d%next)
+            call delete(d%next%value)
+            deallocate(d%next)
+            nullify(d%next)
+         end if
       end if
-    end subroutine del_d_next
-    
+    end subroutine del_d_entry_tree
+
   end subroutine delete_
 
   subroutine remove_(this,key)

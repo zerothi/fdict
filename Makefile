@@ -36,6 +36,7 @@ clean:
 	-rm -f dict_funcs.inc dict_interface.inc
 	-rm -f var_nullify.inc var_delete.inc var_content.inc var_funcs.inc var_interface.inc
 	-rm -f var_var_set.inc var_var_alloc.inc var_var_assoc.inc
+	(cd test ; $(MAKE) clean)
 
 # Dependencies
 dictionary.f90: | prep
