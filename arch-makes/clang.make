@@ -5,6 +5,9 @@ FFLAGS=-O3 -m64 -fPIC -funroll-loops -freroll-loops
 
 #FFLAGS += -Wunused
 
+PP = fpp -P
+# Or clang -E
+
 AR=ar
 ARFLAGS = cru
 RANLIB=ranlib

@@ -10,11 +10,11 @@ TEST_EXE += test_dict test_dict_long
 TEST_EXE += test_dict_mem1 test_dict_mem2
 TEST_EXE += test_dict_remove
 
+LIB  = ../libvardict.a
+FFLAGS += -I../
 
 test: $(TEST_EXE)
 
-LIB  = ../libvardict.a
-FFLAGS += -I../
 
 tests: tests.o $(LIB)
 	$(FC) -o $@ $(FFLAGS) $^

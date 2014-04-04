@@ -12,6 +12,8 @@ FFLAGS= -O0 -g -check bounds -traceback -warn unused -fp-model strict
 # Add openmp to the process
 #FFLAGS += -openmp
 
+PP = fpp -P
+
 AR=xiar
 ARFLAGS = cru
 RANLIB=ranlib

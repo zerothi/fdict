@@ -16,6 +16,8 @@ FFLAGS=-O2 -m64 -fPIC
 # This is for debugging purposes
 #FFLAGS = -g -O0 -Warray-bounds -Wunused
 
+PP = gcc -E -P -C 
+
 AR=ar
 ARFLAGS = cru
 RANLIB=ranlib

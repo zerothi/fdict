@@ -70,12 +70,13 @@ done
 
 
 {
-_psnl "#include 'settings.inc'"
+_psnl '#include "settings.inc"'
 for v in ${vars[@]} ; do
     for d in `seq 0 ${N[$v]}` ; do
 	_psnl "if ( this%t == '$v$d' ) then"
 	_psnl "#define DIM $d"
 	_psnl "ALLOC($v$d,rhs%$v$d)"
+	_psnl "#undef DIM"
 	[ $d -lt ${N[$v]} ] && _ps "else"
     done
     _psnl "endif"
@@ -108,7 +109,7 @@ done
 
 
 {
-_psnl "#include 'settings.inc'"
+_psnl '#include "settings.inc"'
 _psnl "#undef VAR_PREC"
 for v in ${vars[@]} ; do
     _psnl "#define VAR_TYPE ${name[$v]}"
@@ -120,7 +121,7 @@ for v in ${vars[@]} ; do
 	fi
 	_psnl "#define VAR $v$d"
 	_psnl "#define DIM $d"
-	_psnl "#include 'var_funcs_inc.inc'"
+	_psnl '#include "var_funcs_inc.inc"'
 	_psnl "#undef VAR"
 	_psnl "#undef DIM"
 	_psnl "#undef DIMS"

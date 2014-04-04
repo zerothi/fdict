@@ -133,7 +133,7 @@ module dictionary
 
 
   ! Create a dictionary type from 
-#include 'dict_interface.inc'
+#include "dict_interface.inc"
 
   ! Create a dict type: 'key' .KV. 'val'
   public :: operator(.KV.)
@@ -563,6 +563,6 @@ contains
     call assign(this%first%value,str)
   end function dict_kv_a0
 
-#include 'dict_funcs.inc'
+#include "dict_funcs.inc"
 
 end module dictionary

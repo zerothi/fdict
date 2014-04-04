@@ -25,7 +25,7 @@ _psnl "end interface"
 
 
 {
-_psnl "#include 'settings.inc'"
+_psnl '#include "settings.inc"'
 _psnl "#undef VAR_PREC"
 for v in ${vars[@]} ; do
     _psnl "#define VAR_TYPE ${name[$v]}"
@@ -37,7 +37,7 @@ for v in ${vars[@]} ; do
 	fi
 	_psnl "#define VAR $v$d"
 	_psnl "#define DIM $d"
-	_psnl "#include 'dict_funcs_inc.inc'"
+	_psnl '#include "dict_funcs_inc.inc"'
 	_psnl "#undef VAR"
 	_psnl "#undef DIM"
 	_psnl "#undef DIMS"

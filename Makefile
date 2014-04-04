@@ -21,18 +21,20 @@ test: lib
 	(cd test ; $(MAKE))
 
 .PHONY: prep
-SED_DEL = 's/NEWLINE/\n/g;/^$$/d;/^\!.*&/d'
+SED_DEL = 's/NEWLINE/\n/g;/^$$/d;/^\!.*&/d;\
+s/[[:space:]]*\#\#[[:space:]]*\([^[:space:]]*\)/\1/g;\
+s/[[:space:]]*\#\([^i][^[:space:]]*\)/"\1"/g'
 prep:
 	./var.sh
-	fpp -P var.F90 | sed -e $(SED_DEL) > tmp.F90 2> /dev/null
-	fpp -P tmp.F90 | sed -e $(SED_DEL) > var.f90 2> /dev/null
+	$(PP) var.F90 | sed -e $(SED_DEL) > tmp.F90 2> /dev/null
+	$(PP) tmp.F90 | sed -e $(SED_DEL) > var.f90 2> /dev/null
 	./dictionary.sh
-	fpp -P dictionary.F90 | sed -e $(SED_DEL) > tmp.F90 2> /dev/null
-	fpp -P tmp.F90 | sed -e $(SED_DEL) > dictionary.f90 2> /dev/null
+	$(PP) dictionary.F90 | sed -e $(SED_DEL) > tmp.F90 2> /dev/null
+	$(PP) tmp.F90 | sed -e $(SED_DEL) > dictionary.f90 2> /dev/null
 
 .PHONY: clean
 clean:
-	-rm -f $(OBJS) $(LIB) *.o *.mod tmp.F90 var.f90 dictionary.f90
+	-rm -f $(OBJS) $(LIB) *.s *.o *.mod tmp.F90 var.f90 dictionary.f90
 	-rm -f dict_funcs.inc dict_interface.inc
 	-rm -f var_nullify.inc var_delete.inc var_content.inc var_funcs.inc var_interface.inc
 	-rm -f var_var_set.inc var_var_alloc.inc var_var_assoc.inc

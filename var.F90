@@ -16,7 +16,7 @@ module variable
   
   type :: var
      character(len=2) :: t = '  '
-#include 'var_content.inc'
+#include "var_content.inc"
   end type var
   public :: var
 
@@ -34,7 +34,7 @@ module variable
   end interface nullify
   public :: nullify
 
-#include 'var_interface.inc'
+#include "var_interface.inc"
 
 contains
 
@@ -46,13 +46,13 @@ contains
     
   subroutine delete_(this)
     type(var), intent(inout) :: this
-#include 'var_delete.inc'
+#include "var_delete.inc"
     call nullify(this)
   end subroutine delete_
 
   subroutine nullify_(this)
     type(var), intent(inout) :: this
-#include 'var_nullify.inc'
+#include "var_nullify.inc"
     this%t = '  '
   end subroutine nullify_
 
@@ -69,7 +69,7 @@ subroutine assign_v0(this,rhs,dealloc)
      call nullify(this)
      this%t = rhs%t
 
-#include 'var_var_alloc.inc'
+#include "var_var_alloc.inc"
 
   else
      ldealloc = this%t /= rhs%t
@@ -77,13 +77,14 @@ subroutine assign_v0(this,rhs,dealloc)
         call delete(this)
         this%t = rhs%t
 
-#include 'var_var_alloc.inc'
+#include "var_var_alloc.inc"
 
      end if
   end if
 
 #define ASS_ACC =
-#include 'var_var_set.inc'
+#include "var_var_set.inc"
+#undef ASS_ACC
 
 end subroutine assign_v0
 
@@ -108,7 +109,8 @@ subroutine associate_v0(this,rhs,dealloc)
   end if
 
 #define ASS_ACC =>
-#include 'var_var_set.inc'
+#include "var_var_set.inc"
+#undef ASS_ACC
 
 end subroutine associate_v0
 
@@ -119,11 +121,11 @@ pure function associatd_v0(this,rhs) result(ret)
   ret = this%t==rhs%t
   if ( .not. ret ) return
   
-#include 'var_var_assoc.inc'
+#include "var_var_assoc.inc"
 
 end function associatd_v0
 
-#include 'var_funcs.inc'
+#include "var_funcs.inc"
 
 end module variable
 
