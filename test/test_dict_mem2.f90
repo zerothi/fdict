@@ -40,7 +40,7 @@ contains
     type(var) :: v
     va = 0.
     call add(d,'hello'.kv.va)
-    call getp(v,d,'hello')
+    call associate(v,d,'hello')
     call remove(d,'hello')
     if ( dealloc ) call delete(v)
   end subroutine mem_rem

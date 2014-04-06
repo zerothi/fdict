@@ -82,7 +82,7 @@ module dictionary
   end interface operator( .EQ. )
   public :: operator(.EQ.) ! Overloaded
 
-  ! Checks for two dicts don't share any common keys
+  ! Checks for two dicts do not share any common keys
   interface operator( .NE. )
      module procedure d_ne_d
   end interface operator( .NE. )
@@ -121,15 +121,15 @@ module dictionary
   end interface add
   public :: add
 
-  interface get
+  interface assign
      module procedure dict_key2val
-  end interface get
-  public :: get
+  end interface assign
+  public :: assign
 
-  interface getp
+  interface associate
      module procedure dict_key_p_val
-  end interface getp
-  public :: getp
+  end interface associate
+  public :: associate
 
 
   ! Create a dictionary type from 
@@ -208,10 +208,11 @@ contains
     hash = d%first%hash
   end function hash
 
-  subroutine dict_key2val(val,d,key)
+  subroutine dict_key2val(val,d,key,dealloc)
     type(var), intent(inout) :: val
     type(dict), intent(inout) :: d
     character(len=*), intent(in) :: key
+    logical, intent(in), optional :: dealloc
     type(dict) :: ld
     integer :: hash
     
@@ -224,7 +225,7 @@ contains
           ! Do nothing... step
        else if ( hash == .hash. ld ) then
           if ( key .eq. .KEY. ld ) then
-             call assign(val,ld%first%value)
+             call assign(val,ld%first%value,dealloc=dealloc)
              return
           end if
        end if
@@ -233,10 +234,11 @@ contains
 
   end subroutine dict_key2val
 
-  subroutine dict_key_p_val(val,d,key)
+  subroutine dict_key_p_val(val,d,key,dealloc)
     type(var), intent(inout) :: val
     type(dict), intent(inout) :: d
     character(len=*), intent(in) :: key
+    logical, intent(in), optional :: dealloc
     type(dict) :: ld
     integer :: hash
     
@@ -249,7 +251,7 @@ contains
           ! Do nothing... step
        else if ( hash == .hash. ld ) then
           if ( key .eq. .KEY. ld ) then
-             call associate(val,ld%first%value)
+             call associate(val,ld%first%value,dealloc=dealloc)
              return
           end if
        end if
@@ -260,7 +262,7 @@ contains
 
   ! Compares two dict types against each other
   ! Will do comparison, first by hash, and if that matches then
-  ! for the key and value of the dict's
+  ! for the key and value of the dictionaries
   function d_eq_d(d1,d2) result(bool)
     type(dict), intent(in) :: d1,d2
     logical :: bool
@@ -394,7 +396,7 @@ contains
     end do search_loop
     prev%next => entry
     ! Increment length of the dictionary...
-    d%len = d%len+1
+    d%len = d%len + 1
 
     ! As we could insert from a dictionary we have to reset, to not do endless loops...
     nullify(entry%next)
@@ -456,9 +458,11 @@ contains
        return
     end if
 
+#ifdef DICT_DEBUG
     if ( len(this) == 0 ) then
        stop 'Something went wrong'
     end if
+#endif
 
     if ( present(key) ) then
        
@@ -520,7 +524,7 @@ contains
 
   end subroutine delete_
 
-  subroutine remove_(this,key)
+  elemental subroutine remove_(this,key)
     type(dict), intent(inout) :: this
     character(len=*), intent(in) :: key
     type(d_entry), pointer :: de, pr

@@ -25,19 +25,31 @@ program test_dict
   call dict_print(dic)
 
   ! assign to v the value in dic[a]
-  call dict_assign(v,dic,'a')
+  call assign(v,dic,'a')
 
   ! delete a
   call delete(dic,'a')
-  print *,v%s0
+  print *,'After delete, ensure assign:',v%s0,a
 
-  ! assign to v the value in dic[a]
+  ! associate to v the value in dic[a]
   call delete(v)
-  call dict_associate(v,dic,'d')
+  call associate(v,dic,'d')
 
   call remove(dic,'d')
+  ! As the memory reference is the same,
+  ! we will see the same result here. 
+  ! However, the value in the key HAS been
+  ! deleted.
   print *,v%s0,d
-  print *,len(dic)
+  ! In certain cases, deallocation and immediate
+  ! allocation allows to test whether the same 
+  ! memory element is refenced in v
+  deallocate(d) ; nullify(d)
+  allocate(d)
+  d = 2
+  print *,v%s0,d
+
+  print *,'Length:',len(dic),3
   
   ! print all the values
   call dict_print(dic)
