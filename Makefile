@@ -23,11 +23,12 @@ test: lib
 .PHONY: prep
 SED_DEL = 's/NEWLINE/\n/g;/^$$/d;/^\!.*&/d;\
 s/[[:space:]]*\#\#[[:space:]]*\([^[:space:]]*\)/\1/g;\
-s/[[:space:]]*\#\([^i][^[:space:]]*\)/"\1"/g'
+s/[[:space:]]*\#\([^i][^[:space:]]*\)/"\1"/g;\
+s/"endif"/\n\#endif/g'
 prep:
 	./var.sh
-	$(PP) var.F90 | sed -e $(SED_DEL) > tmp.F90 2> /dev/null
-	$(PP) tmp.F90 | sed -e $(SED_DEL) > var.f90 2> /dev/null
+	$(PP) var.F90 | sed -e $(SED_DEL) > tmp.F90 #2> /dev/null
+	$(PP) tmp.F90 | sed -e $(SED_DEL) > var.f90 #2> /dev/null
 	./dictionary.sh
 	$(PP) dictionary.F90 | sed -e $(SED_DEL) > tmp.F90 2> /dev/null
 	$(PP) tmp.F90 | sed -e $(SED_DEL) > dictionary.f90 2> /dev/null

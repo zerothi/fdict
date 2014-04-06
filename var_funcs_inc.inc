@@ -1,3 +1,4 @@
+#include "settings.inc"
 subroutine ROUTINE(assign_set,VAR)(this,rhs,dealloc)
   type(var), intent(inout) :: this
   VAR_TYPE, intent(in)DIMS :: rhs
@@ -7,7 +8,7 @@ subroutine ROUTINE(assign_set,VAR)(this,rhs,dealloc)
   ldealloc = .true.
   if(present(dealloc))ldealloc = dealloc
   if (.not. ldealloc) then
-     ! if we don't deallocate, nullify
+     ! if we do not deallocate, nullify
      call nullify(this)
      this%t = STR(VAR)
 ALLOC(VAR,rhs)
@@ -33,7 +34,7 @@ subroutine ROUTINE(assign_get,VAR)(lhs,this,success)
   type(var), intent(in) :: this
   logical, intent(out), optional :: success
   logical :: lsuccess
-  lsuccess = this%t==STR(VAR)
+  lsuccess = this%t == STR(VAR)
 #if DIM > 0
   if (lsuccess) then
 CHECK_SIZE(lsuccess,VAR,lhs,DIM)
@@ -50,7 +51,7 @@ subroutine ROUTINE(associate_get,VAR)(lhs,this,dealloc,success)
   logical, intent(in), optional :: dealloc
   logical, intent(out), optional :: success
   logical :: ldealloc, lsuccess
-  lsuccess = this%t==STR(VAR)
+  lsuccess = this%t == STR(VAR)
   if (present(success)) success = lsuccess
   ldealloc = .false.
   if(present(dealloc))ldealloc = dealloc
@@ -82,7 +83,7 @@ pure function ROUTINE(associatd_l,VAR)(lhs,this) result(ret)
   VAR_TYPE, pointer DIMS :: lhs
   type(var), intent(in) :: this
   logical :: ret
-  ret = this%t==STR(VAR)
+  ret = this%t == STR(VAR)
   if (ret) then	
      ret = associated(lhs,THIS(VAR))
   endif
@@ -91,7 +92,7 @@ pure function ROUTINE(associatd_r,VAR)(this,rhs) result(ret)
   type(var), intent(in) :: this
   VAR_TYPE, pointer DIMS :: rhs
   logical :: ret
-  ret = this%t==STR(VAR)
+  ret = this%t == STR(VAR)
   if (ret) then	
      ret = associated(THIS(VAR),rhs)
   endif
@@ -103,7 +104,7 @@ function ROUTINE(eq_l,VAR)(this,rhs) result(ret)
   type(var), intent(in) :: this
   VAR_TYPE, intent(in)DIMS :: rhs
   logical :: ret
-  ret = this%t==STR(VAR)
+  ret = this%t == STR(VAR)
   if (.not. ret) return
   ret = all(THIS(VAR) == rhs)
 end function ROUTINE(eq_l,VAR)
@@ -133,7 +134,7 @@ function ROUTINE(gt_l,VAR)(this,rhs) result(ret)
   type(var), intent(in) :: this
   VAR_TYPE, intent(in)DIMS :: rhs
   logical :: ret
-  ret = this%t==STR(VAR)
+  ret = this%t == STR(VAR)
   if (.not. ret) return
   ret = all(THIS(VAR) > rhs)
 end function ROUTINE(gt_l,VAR)
@@ -141,7 +142,7 @@ function ROUTINE(gt_r,VAR)(lhs,this) result(ret)
   VAR_TYPE, intent(in)DIMS :: lhs
   type(var), intent(in) :: this
   logical :: ret
-  ret = this%t==STR(VAR)
+  ret = this%t == STR(VAR)
   if (.not. ret) return
   ret = all(lhs > THIS(VAR))
 end function ROUTINE(gt_r,VAR)

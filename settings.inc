@@ -12,41 +12,48 @@
 #define THIS(x) _cc3_1(this,%,x)
 
 
-#define ALLOC(v,ref) \
-#if DIM == 0 NEWLINE\
-    allocate(THIS(v)) NEWLINE\
-#elif DIM == 1 NEWLINE\
-    allocate(THIS(v)(size(ref))) NEWLINE\
-#elif DIM == 2 NEWLINE\
-    allocate(THIS(v)(size(ref,1),size(ref,2))) NEWLINE\
-#elif DIM == 3 NEWLINE\
-    allocate(THIS(v)(size(ref,1),size(ref,2),size(ref,3))) NEWLINE\
-#elif DIM == 4 NEWLINE\
-    allocate(THIS(v)(size(ref,1),size(ref,2),size(ref,3),size(ref,4))) NEWLINE\
-#elif DIM == 5 NEWLINE\
-    allocate(THIS(v)(size(ref,1),size(ref,2),size(ref,3),size(ref,4),size(ref,5))) NEWLINE\
-#elif DIM == 6 NEWLINE\
-    allocate(THIS(v)(size(ref,1),size(ref,2),size(ref,3),size(ref,4),size(ref,5),size(ref,6))) NEWLINE\
+#undef ALLOC
+
+#if DIM == 0 
+#  define ALLOC(v,ref) allocate(THIS(v))
+#elif DIM == 1 
+#  define ALLOC(v,ref) allocate(THIS(v)(size(ref)))
+#elif DIM == 2 
+#  define ALLOC(v,ref) allocate(THIS(v)(size(ref,1),size(ref,2)))
+#elif DIM == 3
+#  define ALLOC(v,ref) allocate(THIS(v)(size(ref,1),size(ref,2),size(ref,3)))
+#elif DIM == 4
+#  define ALLOC(v,ref) allocate(THIS(v)(size(ref,1),size(ref,2),size(ref,3),size(ref,4)))
+#elif DIM == 5
+#  define ALLOC(v,ref) allocate(THIS(v)(size(ref,1),size(ref,2),size(ref,3),size(ref,4),size(ref,5)))
+#elif DIM == 6
+#  define ALLOC(v,ref) allocate(THIS(v)(size(ref,1),size(ref,2),size(ref,3),size(ref,4),size(ref,5),size(ref,6)))
 #endif
 
-#define CHECK_SIZE_S(v,var,ref,dim) v = size(THIS(var),dim) == size(ref,dim)
-#define CHECK_SIZE_A(v,var,ref,dim) v = v .and. size(THIS(var),dim) == size(ref,dim)
-#define CHECK_SIZE(v,var,ref,dim) \
-#if dim >= 1 NEWLINE\
-    CHECK_SIZE_S(v,var,ref,1) NEWLINE\
-#endif NEWLINE\
-#if dim >= 2 NEWLINE\
-    CHECK_SIZE_A(v,var,ref,2) NEWLINE\
-#endif NEWLINE\
-#if dim >= 3 NEWLINE\
-    CHECK_SIZE_A(v,var,ref,3) NEWLINE\
-#endif NEWLINE\
-#if dim >= 4 NEWLINE\
-    CHECK_SIZE_A(v,var,ref,4) NEWLINE\
-#endif NEWLINE\
-#if dim >= 5 NEWLINE\
-    CHECK_SIZE_A(v,var,ref,5) NEWLINE\
-#endif NEWLINE\
-#if dim >= 6 NEWLINE\
-    CHECK_SIZE_A(v,var,ref,6) NEWLINE\
+
+#define CHECK_SIZE_S(v,var,ref) v = size(THIS(var),1) == size(ref,1)
+#define CHECK_SIZE_A(v,var,ref,dim) .and. size(THIS(var),dim) == size(ref,dim)
+
+#if DIM == 1
+#  define CHECK_SIZE(v,vv,r,d) CHECK_SIZE_S(v,vv,r)
+#elif DIM == 2
+#  define CHECK_SIZE(v,vv,r,d) CHECK_SIZE_S(v,vv,r) & NEWLINE\
+    CHECK_SIZE_A(v,vv,r,2)
+#elif DIM == 3
+#  define CHECK_SIZE(v,vv,r,d) CHECK_SIZE_S(v,vv,r) & NEWLINE\
+    CHECK_SIZE_A(v,vv,r,2) CHECK_SIZE_A(v,vv,r,3)
+#elif DIM == 4
+#  define CHECK_SIZE(v,vv,r,d) CHECK_SIZE_S(v,vv,r) & NEWLINE\
+    CHECK_SIZE_A(v,vv,r,2) CHECK_SIZE_A(v,vv,r,3) & NEWLINE\
+    CHECK_SIZE_A(v,vv,r,4)
+#elif DIM == 5
+#  define CHECK_SIZE(v,vv,r,d) CHECK_SIZE_S(v,vv,r) & NEWLINE\
+    CHECK_SIZE_A(v,vv,r,2) CHECK_SIZE_A(v,vv,r,3) & NEWLINE\
+    CHECK_SIZE_A(v,vv,r,4) CHECK_SIZE_A(v,vv,r,5)
+#elif DIM == 6
+#  define CHECK_SIZE(v,vv,r,d) CHECK_SIZE_S(v,vv,r) & NEWLINE\
+    CHECK_SIZE_A(v,vv,r,2) CHECK_SIZE_A(v,vv,r,3) & NEWLINE\
+    CHECK_SIZE_A(v,vv,r,4) CHECK_SIZE_A(v,vv,r,5) & NEWLINE\
+    CHECK_SIZE_A(v,vv,r,6)
 #endif
+

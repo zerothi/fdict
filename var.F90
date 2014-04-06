@@ -65,7 +65,7 @@ subroutine assign_v0(this,rhs,dealloc)
   ldealloc = .true.
   if(present(dealloc))ldealloc = dealloc
   if (.not. ldealloc) then
-     ! if we don't deallocate, nullify
+     ! if we do not deallocate, nullify
      call nullify(this)
      this%t = rhs%t
 
@@ -97,7 +97,7 @@ subroutine associate_v0(this,rhs,dealloc)
   ldealloc = .true.
   if(present(dealloc))ldealloc = dealloc
   if (.not. ldealloc) then
-     ! if we don't deallocate, nullify
+     ! if we do not deallocate, nullify
      call nullify(this)
      this%t = rhs%t
   else
