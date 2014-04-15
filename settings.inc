@@ -31,6 +31,8 @@
 #endif
 
 
+#undef CHECK_SIZE
+
 #define CHECK_SIZE_S(v,var,ref) v = size(THIS(var),1) == size(ref,1)
 #define CHECK_SIZE_A(v,var,ref,dim) .and. size(THIS(var),dim) == size(ref,dim)
 
