@@ -240,7 +240,7 @@ contains
 
   end subroutine dict_key2val
 
-  pure function has(d,key)
+  function has(d,key)
     type(dict), intent(in) :: d
     character(len=*), intent(in) :: key
     type(dict) :: ld
