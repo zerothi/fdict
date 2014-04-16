@@ -63,6 +63,12 @@ module dictionary
      module procedure key
   end interface operator( .KEY. )
   public :: operator(.KEY.)
+
+  ! check whether key exists in dictionary
+  interface operator( .HAS. )
+     module procedure has
+  end interface operator( .HAS. )
+  public :: operator(.HAS.)
   
   ! Retrieve the value from a dictionary (unary)
   interface operator( .VAL. )
@@ -233,6 +239,32 @@ contains
     end do search
 
   end subroutine dict_key2val
+
+  pure function has(d,key)
+    type(dict), intent(in) :: d
+    character(len=*), intent(in) :: key
+    type(dict) :: ld
+    integer :: hash
+    logical :: has
+    
+    hash = hash_val(key)
+    ld = .first. d
+    search: do while ( .not. (.empty. ld) )
+       if (      hash  < .hash. ld ) then
+          exit search
+       else if ( hash  > .hash. ld ) then
+          ! Do nothing... step
+       else if ( hash == .hash. ld ) then
+          if ( key .eq. .KEY. ld ) then
+             has = .true.
+             return
+          end if
+       end if
+       ld = .next. ld
+    end do search
+    has = .false.
+
+  end function has
 
   subroutine dict_key_p_val(val,d,key,dealloc)
     type(var), intent(inout) :: val
@@ -421,7 +453,7 @@ contains
     type(dict), intent(in) :: d
     type(dict) :: d_next
     d_next%first => d%first%next
-    d_next%len = len(d)-1
+    d_next%len = d%len - 1
   end function d_next
 
   pure function d_empty(d)
