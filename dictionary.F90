@@ -237,11 +237,18 @@ contains
   subroutine dict_key_p_val(val,d,key,dealloc)
     type(var), intent(inout) :: val
     type(dict), intent(inout) :: d
-    character(len=*), intent(in) :: key
+    character(len=*), intent(in), optional :: key
     logical, intent(in), optional :: dealloc
     type(dict) :: ld
     integer :: hash
-    
+
+    if ( .not. present(key) ) then
+       if ( .not. (.empty. d) ) then
+          call associate(val,d%first%value,dealloc=dealloc)
+       end if
+       return
+    end if
+
     hash = hash_val(key)
     ld = .first. d
     search: do while ( .not. (.empty. ld) )
