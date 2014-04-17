@@ -16,7 +16,7 @@ function _help {
     echo "Calling $0 consists of supplying arguments to control"
     echo "number of dimensions for each variable."
     echo "Option should be one of:"
-    for v in -s -d -c -z -b -i -l -A -R -C -I ; do
+    for v in -s -d -c -z -b -h -i -l -A -R -C -I ; do
 	echo -n "$v <num> "
     done
     echo ""
@@ -37,7 +37,7 @@ while [ $# -gt 0 ]; do
 	    ;;
     esac
     case $opt in 
-	-s|-d|-c|-z|-b|-i|-l)
+	-s|-d|-c|-z|-b|-h|-i|-l)
 	    n=${opt:1}
 	    quick_setup $1 $n
 	    shift ;;
@@ -53,7 +53,7 @@ while [ $# -gt 0 ]; do
 	-I)
 	    quick_setup $1 i l
 	    shift ;;
-	-h|-help)
+	-help)
 	    _help ; exit ;;
 	*)
 	    ;;

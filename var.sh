@@ -4,7 +4,7 @@ source settings.sh
 [ -e current_settings.sh ] && source current_settings.sh
 
 # The different settings used in this
-vars=(VS s d c z b i l)
+vars=(V s d c z b h i l)
 
 # Print out to the mod file
 {

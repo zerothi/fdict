@@ -4,13 +4,14 @@
 # Variables
 declare -A N
 N[VAR]=0 # variable
-N[VS]=0 # variable-string
+N[V]=0 # variable-string
 N[a]=0 # character
 N[s]=3 # single
 N[d]=3 # double
 N[c]=3 # single complex
 N[z]=3 # double complex
 N[b]=3 # logical
+N[h]=3 # short
 N[i]=3 # integer
 N[l]=3 # long integer
 
@@ -18,13 +19,14 @@ N[l]=3 # long integer
 # DONT change these
 declare -A name
 name[VAR]="type(var)"
-name[VS]="type(var_str)"
+name[V]="type(var_str)"
 name[a]="character(len=*)"
 name[s]="real(sp)"
 name[d]="real(dp)"
 name[c]="complex(sp)"
 name[z]="complex(dp)"
 name[b]="logical"
+name[h]="integer(ih)"
 name[i]="integer(is)"
 name[l]="integer(il)"
 
