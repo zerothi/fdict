@@ -1,12 +1,11 @@
 program test1
 
+  use tst_utils
   use iso_var_str
   use variable
 
   implicit none
   
-  integer, parameter :: dp = selected_real_kind(p=10)
-
   type(var) :: va , vb
   real(dp) :: a, b(2), c(2,2)
   real(dp), pointer :: pa =>null(), pb(:)=>null(), pc(:,:)=>null()

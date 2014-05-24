@@ -1,12 +1,9 @@
 program tests
 
-  use iso_var_str
-  use variable
+  use tst_utils
 
   implicit none
   
-  integer, parameter :: dp = selected_real_kind(p=15)
-
   type(var) :: va , vb
   real(dp) :: a, b(2), c(2,2)
   real(dp), pointer :: pa =>null(), pb(:)=>null(), pc(:,:)=>null()

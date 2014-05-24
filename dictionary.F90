@@ -66,10 +66,10 @@ module dictionary
   public :: operator(.KEY.)
 
   ! check whether key exists in dictionary
-  interface operator( .HAS. )
-     module procedure has
-  end interface operator( .HAS. )
-  public :: operator(.HAS.)
+  interface operator( .IN. )
+     module procedure in
+  end interface operator( .IN. )
+  public :: operator(.IN.)
   
   ! Retrieve the value from a dictionary (unary)
   interface operator( .VAL. )
@@ -241,12 +241,12 @@ contains
 
   end subroutine dict_key2val
 
-  function has(d,key)
-    type(dict), intent(in) :: d
+  function in(key,d)
     character(len=*), intent(in) :: key
+    type(dict), intent(in) :: d
     type(dict) :: ld
     integer :: hash
-    logical :: has
+    logical :: in
     
     hash = hash_val(key)
     ld = .first. d
@@ -257,15 +257,15 @@ contains
           ! Do nothing... step
        else if ( hash == .hash. ld ) then
           if ( key .eq. .KEY. ld ) then
-             has = .true.
+             in = .true.
              return
           end if
        end if
        ld = .next. ld
     end do search
-    has = .false.
+    in = .false.
 
-  end function has
+  end function in
 
   subroutine dict_key_p_val(val,d,key,dealloc)
     type(var), intent(inout) :: val
@@ -411,7 +411,7 @@ contains
     else if ( search%hash == entry%hash ) then
        ! If the key already exists we will simply overwrite
        if ( search%key == entry%key ) then
-          search%value = entry%value
+          call assign(search%value,entry%value)
           return
        end if
     end if
@@ -429,7 +429,7 @@ contains
        else if ( search%hash == entry%hash ) then
           ! If the key already exists we will simply overwrite
           if ( search%key == entry%key ) then
-             search%value = entry%value
+             call assign(search%value,entry%value)
              return
           end if
        end if
@@ -481,7 +481,7 @@ contains
     type(dict)  :: ld
     ld = .first. d
     do while ( .not. .empty. ld ) 
-       write(*,*) trim(.key. ld),.hash. ld
+       write(*,'(t2,a,tr1,a,i0,a)') trim(.key. ld),' (',.hash. ld,')'
        ld = .next. ld
     end do
   end subroutine dict_print

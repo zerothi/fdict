@@ -1,13 +1,9 @@
 program tests
 
-  use iso_var_str
-  use variable
-  use dictionary
+  use tst_utils
 
   implicit none
   
-  integer, parameter :: dp = selected_real_kind(p=15)
-
   integer :: i, N, step
 
   N = 1000
@@ -43,9 +39,5 @@ contains
     d = 'hello'.kv.va
     if ( dealloc ) call delete(d)
   end subroutine mem
-
-  subroutine show_mem()
-    call system("free | grep Mem | awk '{print $1,$2/1024,$3/1024,$4/1024}'")
-  end subroutine show_mem
 
 end program tests

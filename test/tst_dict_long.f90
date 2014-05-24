@@ -1,7 +1,6 @@
-program test_dict
+program tst_dict
 
-  use variable
-  use dictionary
+  use tst_utils
 
   implicit none
 
@@ -26,4 +25,4 @@ program test_dict
 
   print '(2(a,i0))','Deleted ',N**3,' keys...',len(dic)
 
-end program test_dict
+end program tst_dict

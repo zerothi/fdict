@@ -1,7 +1,8 @@
-program test_dict
+program tst_dict
 
   use variable
   use dictionary
+  use tst_utils
 
   implicit none
 
@@ -35,4 +36,4 @@ program test_dict
      tmp = .next. tmp
   end do
 
-end program test_dict
+end program tst_dict

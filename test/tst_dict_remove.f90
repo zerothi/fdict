@@ -1,7 +1,6 @@
 program test_dict
 
-  use variable
-  use dictionary
+  use tst_utils
 
   implicit none
 
