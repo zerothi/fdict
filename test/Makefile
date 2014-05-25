@@ -16,6 +16,7 @@ $(LIB_TST): $(TST_UTILS)
 TST_EXE  = tst_simple tst_sp tst_dp tst_mem
 TST_EXE += tst_dict tst_dict_long
 TST_EXE += tst_dict_mem1 tst_dict_mem2
+TST_EXE += tst_dict_mem3
 TST_EXE += tst_dict_overwrite
 TST_EXE += tst_dict_remove
 
@@ -56,6 +57,10 @@ tst_dict_mem1: tst_dict_mem1.o $(LIB)
 	./$@
 
 tst_dict_mem2: tst_dict_mem2.o $(LIB)
+	$(FC) -o $@ $(FFLAGS) $^
+	./$@
+
+tst_dict_mem3: tst_dict_mem3.o $(LIB)
 	$(FC) -o $@ $(FFLAGS) $^
 	./$@
 

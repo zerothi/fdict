@@ -1,0 +1,39 @@
+
+
+* Change log
+
+Every section in this part lists the change of the versions
+
+* Dictionary
+
+The dictionary will make use of the var format for retaining any type of
+data. This will allow for greater structure etc.
+
+** Direct creation of dictionaries not allowed <2014-05-25 Sun>
+For calling routines:
+  call routine('hello'.kv.'h')
+we have a memory leak. This is obvious due to the pointer
+nature of the data associated. 
+A test has been added to demonstrate this effect:
+  tst_dict_mem3
+
+** Renamed .HAS. to .IN. <2014-05-25 Sun>
+A more appropriate name has been chosen for checking 
+existence of keys in dictionaries. Much like python we
+rely on the <key> .IN. <dict> to check for the existence.
+
+** Same value keys are (assign)ed <2014-05-25 Sun>
+In case a dictionary key with the same name
+is added to an existing dictionary we delete the old one
+by doing an "assign".
+This is the expected behaviour in any language.
+
+** Rely on libvar.a rather than chars <2013-11-11 Mon>
+The dictionary values are now the type(var) which eases
+the interfacing between different segments of the code.
+We allow to fully utilise the "assign" and "associate"
+function calls in the assignment of the dictionary by following the 
+operators:
+   .KV. (assign)
+   .KPV. (associate)
+
