@@ -9,7 +9,7 @@
 
 #define ROUTINE(base,var) _cc3_1(base,_,var)
 #define STR(x) _str1(x)
-#define THIS(x) _cc3_1(this,%,x)
+#define THIS(x) _cc2_1(this%,x)
 
 
 #undef ALLOC
