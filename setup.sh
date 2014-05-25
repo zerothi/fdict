@@ -7,22 +7,38 @@ function quick_setup {
     local n=$1 ; shift
     while [ $# -gt 0 ]; do
 	echo "Updating number of dimensions for: ${name[$1]} to $n"
+	echo "# Updating number of dimensions for: ${name[$1]} to $n" >> current_settings.sh
 	echo "N[$1]=$n" >> current_settings.sh
 	shift
     done
 }
 	 	
 function _help {
-    echo "Calling $0 consists of supplying arguments to control"
-    echo "number of dimensions for each variable."
-    echo "Option should be one of:"
-    for v in -s -d -c -z -b -h -i -l -A -R -C -I ; do
-	echo -n "$v <num> "
+    echo "Helper routine for compilation setup"
+    echo " Call by:"
+    echo "   $0 <options>"
+    echo ""
+    echo " Several options are allowed to control how many dimensions that will"
+    echo " be accesible in type(var) and type(dict)."
+    echo ""
+    echo " The following options control how the dimensions are allocated:"
+    for v in -s -d -c -z -b -h -i -l ; do
+	echo "   $v <num> : allows 0-<num> dimensions of ${name[${v:1}]}"
     done
+    echo "   -A <num> : short for all the above options simultaneously"
+    echo "   -R <num> : short for -s <num> -d <num>"
+    echo "   -C <num> : short for -c <num> -z <num>"
+    echo "   -I <num> : short for -h <num> -i <num> -l <num>"
+    echo " The above options can be combined with the last option taking precedence."
+    echo ""
+    echo "Example"
+    echo " Allowing all variables to have 2 dimenions but the"
+    echo " double precision reals to have 3 can be done with:"
+    echo "  $0 -A 2 -d 3"
     echo ""
 }
 
-[ $# -eq 0 ] && _help
+[ $# -eq 0 ] && _help && exit
 
 while [ $# -gt 0 ]; do
     opt=$1 ; shift
@@ -37,12 +53,21 @@ while [ $# -gt 0 ]; do
 	    ;;
     esac
     case $opt in 
-	-s|-d|-c|-z|-b|-h|-i|-l)
+        -h)
+	    if [ $# -eq 0 ]; then
+		# This will capture if only -h is supplied
+		_help 
+		exit
+	    fi
+	    n=${opt:1}
+	    quick_setup $1 $n
+	    shift ;;
+	-s|-d|-c|-z|-b|-i|-l)
 	    n=${opt:1}
 	    quick_setup $1 $n
 	    shift ;;
 	-A)
-	    quick_setup $1 s d c z b i l
+	    quick_setup $1 s d c z b h i l
 	    shift ;;
 	-R)
 	    quick_setup $1 s d
@@ -51,7 +76,7 @@ while [ $# -gt 0 ]; do
 	    quick_setup $1 c z
 	    shift ;;
 	-I)
-	    quick_setup $1 i l
+	    quick_setup $1 h i l
 	    shift ;;
 	-help)
 	    _help ; exit ;;
