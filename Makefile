@@ -1,5 +1,7 @@
 .SUFFIXES: .f90 .o .a
-include ./arch.make
+include arch.make
+
+VPATH?=$(shell pwd)
 
 .PHONY: default
 default: lib
@@ -26,12 +28,12 @@ s/[[:space:]]*\#\#[[:space:]]*\([^[:space:]]*\)/\1/g;\
 s/[[:space:]]*\#\([^i][^[:space:]]*\)/"\1"/g;\
 s/"endif"/\n\#endif/g'
 prep:
-	./var.sh
-	$(PP) variable.F90 | sed -e $(SED_DEL) > tmp.F90 #2> /dev/null
-	$(PP) tmp.F90 | sed -e $(SED_DEL) > variable.f90 #2> /dev/null
-	./dictionary.sh
-	$(PP) dictionary.F90 | sed -e $(SED_DEL) > tmp.F90 2> /dev/null
-	$(PP) tmp.F90 | sed -e $(SED_DEL) > dictionary.f90 2> /dev/null
+	$(VPATH)/var.sh
+	$(PP) -I$(VPATH) variable.F90 | sed -e $(SED_DEL) > tmp.F90 #2> /dev/null
+	$(PP) -I$(VPATH) tmp.F90 | sed -e $(SED_DEL) > variable.f90 #2> /dev/null
+	$(VPATH)/dictionary.sh
+	$(PP) -I$(VPATH) dictionary.F90 | sed -e $(SED_DEL) > tmp.F90 2> /dev/null
+	$(PP) -I$(VPATH) tmp.F90 | sed -e $(SED_DEL) > dictionary.f90 2> /dev/null
 
 .PHONY: clean
 clean:
