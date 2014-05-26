@@ -29,11 +29,11 @@ s/[[:space:]]*\#\([^i][^[:space:]]*\)/"\1"/g;\
 s/"endif"/\n\#endif/g'
 prep:
 	$(VPATH)/var.sh
-	$(PP) -I$(VPATH) $(VPATH)/variable.F90 | sed -e $(SED_DEL) > tmp.F90 #2> /dev/null
-	$(PP) -I$(VPATH) tmp.F90 | sed -e $(SED_DEL) > variable.f90 #2> /dev/null
+	$(PP) -I$(VPATH) -I. $(VPATH)/variable.F90 | sed -e $(SED_DEL) > tmp.F90 #2> /dev/null
+	$(PP) -I$(VPATH) -I. tmp.F90 | sed -e $(SED_DEL) > variable.f90 #2> /dev/null
 	$(VPATH)/dictionary.sh
-	$(PP) -I$(VPATH) $(VPATH)/dictionary.F90 | sed -e $(SED_DEL) > tmp.F90 2> /dev/null
-	$(PP) -I$(VPATH) tmp.F90 | sed -e $(SED_DEL) > dictionary.f90 2> /dev/null
+	$(PP) -I$(VPATH) -I. $(VPATH)/dictionary.F90 | sed -e $(SED_DEL) > tmp.F90 2> /dev/null
+	$(PP) -I$(VPATH) -I. tmp.F90 | sed -e $(SED_DEL) > dictionary.f90 2> /dev/null
 
 .PHONY: clean
 clean:
