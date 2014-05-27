@@ -28,7 +28,7 @@ module dictionary
   ! We could consider changing this to a variable size string
   ! However, that will increase the dependencies and will most likely not yield
   ! a better interface.
-  integer, parameter :: DICT_KEY_LENGTH   = 50
+  integer, parameter :: DICT_KEY_LENGTH = 50
   
   ! A parameter returned if not found.
   character(len=DICT_KEY_LENGTH), parameter :: DICT_NOT_FOUND = 'ERROR: key not found'
@@ -229,7 +229,9 @@ contains
        if (      hash  < .hash. ld ) then
           exit search
        else if ( hash  > .hash. ld ) then
-          ! Do nothing... step
+          ! the key does not exist, so return immediately
+          call delete(val)
+          return
        else if ( hash == .hash. ld ) then
           if ( key .eq. .KEY. ld ) then
              call assign(val,ld%first%value,dealloc=dealloc)
@@ -254,7 +256,9 @@ contains
        if (      hash  < .hash. ld ) then
           exit search
        else if ( hash  > .hash. ld ) then
-          ! Do nothing... step
+          ! The key does not exist... so quit fast
+          in = .false.
+          return
        else if ( hash == .hash. ld ) then
           if ( key .eq. .KEY. ld ) then
              in = .true.
@@ -288,7 +292,8 @@ contains
        if (      hash  < .hash. ld ) then
           exit search
        else if ( hash  > .hash. ld ) then
-          ! Do nothing... step
+          ! the value does not exist, return quickly
+          return
        else if ( hash == .hash. ld ) then
           if ( key .eq. .KEY. ld ) then
              call associate(val,ld%first%value,dealloc=dealloc)
