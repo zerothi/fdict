@@ -12,6 +12,7 @@ for sub in assign associate associatd ; do
 args="get set"
 [ "$sub" == "associatd" ] && args="l r"
 _psnl "interface $sub"
+[ "$sub" == "assign" ] && modproc $sub char 0 $args
 for v in ${vars[@]} ; do
     for d in `seq 0 ${N[$v]}` ; do
 	modproc $sub $v $d $args
@@ -71,7 +72,6 @@ done
 
 
 {
-#_psnl '#include "settings.inc"'
 for v in ${vars[@]} ; do
     for d in `seq 0 ${N[$v]}` ; do
 	_psnl "if ( this%t == '$v$d' ) then"
@@ -111,7 +111,6 @@ done
 
 
 {
-#_psnl '#include "settings.inc"'
 _psnl "#undef VAR_PREC"
 for v in ${vars[@]} ; do
     _psnl "#define VAR_TYPE ${name[$v]}"

@@ -14,6 +14,7 @@ $(LIB_TST): $(TST_UTILS)
 	$(RANLIB) $(LIB_TST)
 
 TST_EXE  = tst_simple tst_sp tst_dp tst_mem
+TST_EXE += tst_char
 TST_EXE += tst_dict tst_dict_long
 TST_EXE += tst_dict_mem1 tst_dict_mem2
 TST_EXE += tst_dict_mem3
@@ -29,6 +30,10 @@ $(TST_EXE): $(LIB_TST)
 test: $(TST_EXE)
 
 tst_simple: tst_simple.o $(LIB)
+	$(FC) -o $@ $(FFLAGS) $^
+	./$@
+
+tst_char: tst_char.o $(LIB)
 	$(FC) -o $@ $(FFLAGS) $^
 	./$@
 
