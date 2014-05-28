@@ -9,6 +9,14 @@ Every section in this part lists the change of the versions
 The dictionary will make use of the var format for retaining any type of
 data. This will allow for greater structure etc.
 
+** Added the variable data type <2014-05-28 Wed>
+The data type type(var) has been added to the dictionary.
+
+** Renamed character data type <2014-05-28 Wed>
+The character data type was added using a non-conforming name,
+I have renamed the function calls for both the variable and the
+dictionary code.
+
 ** Direct creation of dictionaries not allowed <2014-05-25 Sun>
 For calling routines:
   call routine('hello'.kv.'h')

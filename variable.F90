@@ -57,7 +57,7 @@ contains
     this%t = '  '
   end subroutine nullify_
 
-  subroutine assign_v0(this,rhs,dealloc)
+  subroutine assign_var(this,rhs,dealloc)
     type(var), intent(inout) :: this
     type(var), intent(in) :: rhs
     logical, intent(in), optional :: dealloc
@@ -87,9 +87,9 @@ contains
 #include "var_var_set.inc"
 #undef ASS_ACC
     
-  end subroutine assign_v0
+  end subroutine assign_var
 
-  subroutine associate_v0(this,rhs,dealloc)
+  subroutine associate_var(this,rhs,dealloc)
     type(var), intent(inout) :: this
     type(var), intent(in) :: rhs
     logical, intent(in), optional :: dealloc
@@ -113,9 +113,9 @@ contains
 #include "var_var_set.inc"
 #undef ASS_ACC
 
-  end subroutine associate_v0
+  end subroutine associate_var
 
-  pure function associatd_v0(this,rhs) result(ret)
+  pure function associatd_var(this,rhs) result(ret)
     type(var), intent(in) :: this
     type(var), intent(in) :: rhs
     logical :: ret
@@ -124,7 +124,7 @@ contains
     
 #include "var_var_assoc.inc"
     
-  end function associatd_v0
+  end function associatd_var
 
   subroutine assign_set_char0(this,rhs,dealloc)
     type(var), intent(inout) :: this

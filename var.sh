@@ -12,13 +12,15 @@ for sub in assign associate associatd ; do
 args="get set"
 [ "$sub" == "associatd" ] && args="l r"
 _psnl "interface $sub"
+# Add the character(len=*)
 [ "$sub" == "assign" ] && modproc $sub char 0 $args
+# Add the variable
+[ "$sub" != "associatd" ] && modproc $sub var ""
 for v in ${vars[@]} ; do
     for d in `seq 0 ${N[$v]}` ; do
 	modproc $sub $v $d $args
     done
 done
-modproc $sub v 0
 _psnl "end interface $sub"
 _psnl "public :: $sub"
 done

@@ -8,13 +8,19 @@ vars=(s d c z b h i l)
 
 {
 _psnl "interface operator(.KV.)"
-for v in a ${vars[@]} ; do
+# Add character
+modproc dict_kv char 0
+# Add variable
+modproc dict_kv var ""
+for v in ${vars[@]} ; do
     for d in `seq 0 ${N[$v]}` ; do
 	modproc dict_kv $v $d
     done
 done
 _psnl "end interface"
 _psnl "interface operator(.KVP.)"
+# Add variable
+modproc dict_kvp var ""
 for v in ${vars[@]} ; do
     for d in `seq 0 ${N[$v]}` ; do
 	modproc dict_kvp $v $d

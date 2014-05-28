@@ -602,7 +602,7 @@ contains
     
   end subroutine remove_
 
-  function dict_kv_a0(key,val) result(this)
+  function dict_kv_char0(key,val) result(this)
     character(len=*), intent(in) :: key
     character(len=*), intent(in) :: val
     type(dict) :: this
@@ -610,7 +610,22 @@ contains
     this = new_d_key(key)
     str = val
     call assign(this%first%value,str)
-  end function dict_kv_a0
+  end function dict_kv_char0
+
+  function dict_kv_var(key,val) result(this)
+    character(len=*), intent(in) :: key
+    type(var), intent(in) :: val
+    type(dict) :: this
+    this = new_d_key(key)
+    call assign(this%first%value,val)
+  end function dict_kv_var
+  function dict_kvp_var(key,val) result(this)
+    character(len=*), intent(in) :: key
+    type(var), intent(in) :: val
+    type(dict) :: this
+    this = new_d_key(key)
+    call associate(this%first%value,val)
+  end function dict_kvp_var
 
 #include "dict_funcs.inc"
 
