@@ -221,18 +221,24 @@ contains
     character(len=*), intent(in) :: key
     logical, intent(in), optional :: dealloc
     type(dict) :: ld
-    integer :: hash
+    integer :: hash, lhash
     
     hash = hash_val(key)
     ld = .first. d
     search: do while ( .not. (.empty. ld) )
-       if (      hash  < .hash. ld ) then
+       lhash = .hash. ld
+       if (      hash > lhash ) then
+          ! skip to next search
+       else if ( hash < lhash ) then
+          ! the key does not exist, delete if requested, else clean it
+          if ( present(dealloc) ) then
+             if ( dealloc ) call delete(val)
+          else
+             call delete(val)
+          end if
+          call nullify(val)
           exit search
-       else if ( hash  > .hash. ld ) then
-          ! the key does not exist, so return immediately
-          call delete(val)
-          return
-       else if ( hash == .hash. ld ) then
+       else if ( hash == lhash ) then
           if ( key .eq. .KEY. ld ) then
              call assign(val,ld%first%value,dealloc=dealloc)
              return
@@ -247,19 +253,18 @@ contains
     character(len=*), intent(in) :: key
     type(dict), intent(in) :: d
     type(dict) :: ld
-    integer :: hash
+    integer :: hash, lhash
     logical :: in
     
     hash = hash_val(key)
     ld = .first. d
     search: do while ( .not. (.empty. ld) )
-       if (      hash  < .hash. ld ) then
+       lhash = .hash. ld
+       if (      hash > lhash ) then
+          ! skip to next search
+       else if ( hash < lhash ) then
           exit search
-       else if ( hash  > .hash. ld ) then
-          ! The key does not exist... so quit fast
-          in = .false.
-          return
-       else if ( hash == .hash. ld ) then
+       else if ( hash == lhash ) then
           if ( key .eq. .KEY. ld ) then
              in = .true.
              return
@@ -277,7 +282,7 @@ contains
     character(len=*), intent(in), optional :: key
     logical, intent(in), optional :: dealloc
     type(dict) :: ld
-    integer :: hash
+    integer :: hash, lhash
 
     if ( .not. present(key) ) then
        if ( .not. (.empty. d) ) then
@@ -289,12 +294,16 @@ contains
     hash = hash_val(key)
     ld = .first. d
     search: do while ( .not. (.empty. ld) )
-       if (      hash  < .hash. ld ) then
+       lhash = .hash. ld
+       if (      hash > lhash ) then
+          ! skip to next search
+       else if ( hash < lhash ) then
+          if ( present(dealloc) ) then
+             if ( dealloc ) call delete(val)
+          end if
+          call nullify(val)
           exit search
-       else if ( hash  > .hash. ld ) then
-          ! the value does not exist, return quickly
-          return
-       else if ( hash == .hash. ld ) then
+       else if ( hash == lhash ) then
           if ( key .eq. .KEY. ld ) then
              call associate(val,ld%first%value,dealloc=dealloc)
              return
@@ -486,7 +495,7 @@ contains
     type(dict)  :: ld
     ld = .first. d
     do while ( .not. .empty. ld ) 
-       write(*,'(t2,a,tr1,a,i0,a)') trim(.key. ld),' (',.hash. ld,')'
+       write(*,'(t2,a,tr1,a,i0,a)') trim(.key. ld),'(',.hash. ld,')'
        ld = .next. ld
     end do
   end subroutine dict_print

@@ -6,10 +6,9 @@ program test
 
   implicit none
   
-  type(var) :: va , vb
-  type(var_str) :: sa , sb
-  character(len=20) :: ca, cb
-  logical :: success
+  type(var) :: va
+  type(var_str) :: sa
+  character(len=20) :: ca
   
   call assign(va,'hello')
   call assign(sa,va)

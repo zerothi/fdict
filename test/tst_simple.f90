@@ -6,9 +6,9 @@ program test1
 
   implicit none
   
-  type(var) :: va , vb
+  type(var) :: va
   real(dp) :: a, b(2), c(2,2)
-  real(dp), pointer :: pa =>null(), pb(:)=>null(), pc(:,:)=>null()
+  real(dp), pointer :: pa =>null()
   type(var_str) :: sa, sb
   character(len=20) :: ca, cb
   logical :: success

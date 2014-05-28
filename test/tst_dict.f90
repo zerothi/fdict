@@ -7,7 +7,7 @@ program tst_dict
   implicit none
 
   real :: a, b(2),c(2,2)
-  real, pointer :: d => null(),e=>null()
+  real, pointer :: d => null()
   type(var) :: v
   type(dict) :: dic, tmp
 
