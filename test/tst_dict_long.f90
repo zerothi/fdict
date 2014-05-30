@@ -14,7 +14,7 @@ program tst_dict
      do j = 1 , N
         do i = 1 , N
            key = achar(64+i)//achar(64+j)//achar(64+k)
-           call add(dic,(key.kv.1))
+           call extend(dic,(key.kv.1))
         end do
      end do
   end do

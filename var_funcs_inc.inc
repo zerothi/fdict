@@ -4,7 +4,7 @@ subroutine ROUTINE(assign_set,VAR)(this,rhs,dealloc)
   VAR_TYPE, intent(in)DIMS :: rhs
   logical, intent(in), optional :: dealloc
   logical :: ldealloc
-  ! collect deallocation option (default as =)
+  ! ASSIGNMENT in fortran is per default destructive
   ldealloc = .true.
   if(present(dealloc))ldealloc = dealloc
   if (.not. ldealloc) then
@@ -53,6 +53,7 @@ subroutine ROUTINE(associate_get,VAR)(lhs,this,dealloc,success)
   logical :: ldealloc, lsuccess
   lsuccess = this%t == STR(VAR)
   if (present(success)) success = lsuccess
+  ! ASSOCIATION in fortran is per default non-destructive
   ldealloc = .false.
   if(present(dealloc))ldealloc = dealloc
   ! there is one problem, say if lhs is not nullified...
@@ -68,6 +69,7 @@ subroutine ROUTINE(associate_set,VAR)(this,rhs,dealloc)
   VAR_TYPE, intent(in)DIMS, target :: rhs
   logical, intent(in), optional :: dealloc
   logical :: ldealloc
+  ! ASSOCIATION in fortran is per default non-destructive
   ldealloc = .false.
   if(present(dealloc))ldealloc = dealloc
   if (ldealloc) then

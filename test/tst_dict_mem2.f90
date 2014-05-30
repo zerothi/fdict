@@ -35,7 +35,7 @@ contains
     real(dp) :: va(400,400) ! roughly 1.22 MB
     type(var) :: v
     va = 0.
-    call add(d,'hello'.kv.va)
+    call extend(d,'hello'.kv.va)
     call associate(v,d,'hello')
     call remove(d,'hello')
     if ( dealloc ) call delete(v)

@@ -23,7 +23,7 @@ program test_dict
   end do
 
   ! print all the values
-  call dict_print(dic)
+  call print(dic)
 
   call delete(dic)
 

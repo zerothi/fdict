@@ -35,9 +35,19 @@ module variable
   end interface nullify
   public :: nullify
 
+  interface print
+     module procedure print_
+  end interface print
+  public :: print
+
 #include "var_interface.inc"
 
 contains
+
+  subroutine print_(this)
+    type(var), intent(in) :: this
+    write(*,'(t2,a)') this%t
+  end subroutine print_
 
   function which_(this) result(t)
     type(var), intent(in) :: this
@@ -63,6 +73,7 @@ contains
     logical, intent(in), optional :: dealloc
     logical :: ldealloc
     ! collect deallocation option (default as =)
+    ! ASSIGNMENT in fortran is per default destructive
     ldealloc = .true.
     if(present(dealloc))ldealloc = dealloc
     if (.not. ldealloc) then
@@ -89,21 +100,24 @@ contains
     
   end subroutine assign_var
 
-  subroutine associate_var(this,rhs,dealloc)
+  subroutine associate_var(this,rhs,dealloc,success)
     type(var), intent(inout) :: this
     type(var), intent(in) :: rhs
     logical, intent(in), optional :: dealloc
+    logical, intent(out), optional :: success
     logical :: ldealloc
     ! collect deallocation option (default as =)
-    ldealloc = .true.
-    if(present(dealloc))ldealloc = dealloc
+    ! ASSOCIATION in fortran is per default non-destructive
+    ldealloc = .false.
+    if ( present(success) ) success  = .true.
+    if ( present(dealloc) ) ldealloc = dealloc
     if (.not. ldealloc) then
        ! if we do not deallocate, nullify
        call nullify(this)
        this%t = rhs%t
     else
        ldealloc = this%t /= rhs%t
-       if (ldealloc) then
+       if ( ldealloc ) then
           call delete(this)
           this%t = rhs%t
        end if

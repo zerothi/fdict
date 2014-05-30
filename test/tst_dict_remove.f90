@@ -21,7 +21,7 @@ program test_dict
        ('string'.kv."Hello world")
 
   ! print all the values
-  call dict_print(dic)
+  call print(dic)
 
   ! assign to v the value in dic[a]
   call assign(v,dic,'a')
@@ -51,6 +51,6 @@ program test_dict
   print *,'Length:',len(dic),3
   
   ! print all the values
-  call dict_print(dic)
+  call print(dic)
 
 end program test_dict

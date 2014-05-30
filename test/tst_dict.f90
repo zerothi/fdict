@@ -23,12 +23,12 @@ program tst_dict
        ('a'.kv.a)//('b'.kv.b)//('c'.kv.c)//('d'.kvp.d)// &
        ('string'.kv."Hello world")
 
-  call add(dic, &
+  call extend(dic, &
        ('aa'.kv.a)//('bb'.kv.b)//('cc'.kv.c)//('dd'.kvp.d)// &
        ('stringa'.kv."Hello world"))
 
   ! print all the values
-  call dict_print(dic)
+  call print(dic)
 
   tmp = .first. dic
   do while ( .not. .empty. tmp )

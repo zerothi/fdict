@@ -22,7 +22,6 @@ module dictionary
 
   ! the type
   public :: dict
-  public :: dict_print
 
   ! Internal variables for determining the maximum size of the dictionaries.
   ! We could consider changing this to a variable size string
@@ -52,6 +51,11 @@ module dictionary
      module procedure len_
   end interface len
   public :: LEN
+
+  interface print
+     module procedure print_
+  end interface print
+  public :: print
 
   ! Concatenate dicts or list of dicts to list of dicts
   interface operator( // )
@@ -123,10 +127,10 @@ module dictionary
   end interface remove
   public :: remove
 
-  interface add
+  interface extend
      module procedure sub_d_cat_d
-  end interface add
-  public :: add
+  end interface extend
+  public :: extend
 
   interface assign
      module procedure dict_key2val
@@ -137,6 +141,11 @@ module dictionary
      module procedure dict_key_p_val
   end interface associate
   public :: associate
+
+  interface which
+     module procedure dict_key_which
+  end interface which
+  public :: which
 
 
   ! Create a dictionary type from 
@@ -218,11 +227,20 @@ contains
   subroutine dict_key2val(val,d,key,dealloc)
     type(var), intent(inout) :: val
     type(dict), intent(inout) :: d
-    character(len=*), intent(in) :: key
+    character(len=*), intent(in), optional :: key
     logical, intent(in), optional :: dealloc
     type(dict) :: ld
     integer :: hash, lhash
-    
+
+    if ( .not. present(key) ) then
+       if ( .not. (.empty. d) ) then
+          call assign(val,d%first%value,dealloc=dealloc)
+       else
+          call val_delete_request(val,dealloc=dealloc)
+       end if
+       return
+    end if
+
     hash = hash_val(key)
     ld = .first. d
     search: do while ( .not. (.empty. ld) )
@@ -231,12 +249,7 @@ contains
           ! skip to next search
        else if ( hash < lhash ) then
           ! the key does not exist, delete if requested, else clean it
-          if ( present(dealloc) ) then
-             if ( dealloc ) call delete(val)
-          else
-             call delete(val)
-          end if
-          call nullify(val)
+          call val_delete_request(val,dealloc=dealloc)
           exit search
        else if ( hash == lhash ) then
           if ( key .eq. .KEY. ld ) then
@@ -287,6 +300,8 @@ contains
     if ( .not. present(key) ) then
        if ( .not. (.empty. d) ) then
           call associate(val,d%first%value,dealloc=dealloc)
+       else
+          call val_delete_request(val,dealloc=dealloc)
        end if
        return
     end if
@@ -298,10 +313,7 @@ contains
        if (      hash > lhash ) then
           ! skip to next search
        else if ( hash < lhash ) then
-          if ( present(dealloc) ) then
-             if ( dealloc ) call delete(val)
-          end if
-          call nullify(val)
+          call val_delete_request(val,dealloc=dealloc)
           exit search
        else if ( hash == lhash ) then
           if ( key .eq. .KEY. ld ) then
@@ -490,15 +502,16 @@ contains
     dcopy%len = din%len
   end subroutine copy_assign
 
-  subroutine dict_print(d)
+  subroutine print_(d)
     type(dict), intent(in)  :: d
     type(dict)  :: ld
     ld = .first. d
     do while ( .not. .empty. ld ) 
-       write(*,'(t2,a,tr1,a,i0,a)') trim(.key. ld),'(',.hash. ld,')'
+       write(*,'(t2,a,tr1,a,i0,a)') trim(.key. ld), &
+            '['//ld%first%value%t//'] (',.hash. ld,')'
        ld = .next. ld
     end do
-  end subroutine dict_print
+  end subroutine print_
 
 
   subroutine delete_(this,key)
@@ -636,6 +649,47 @@ contains
     call associate(this%first%value,val)
   end function dict_kvp_var
 
+  function dict_key_which(this,key) result(t)
+    type(dict), intent(in) :: this
+    character(len=*), optional, intent(in) :: key
+    character(len=2) :: t
+    type(dict) :: ld
+    integer :: hash, lhash
+    
+    if ( present(key) ) then
+       hash = hash_val(key)
+       ld = .first. this
+       search: do while ( .not. (.empty. ld) )
+          lhash = .hash. ld
+          if (      hash > lhash ) then
+            ! skip to next search
+          else if ( hash < lhash ) then
+             t = '  '
+             exit search
+          else if ( hash == lhash ) then
+             if ( key .eq. .KEY. ld ) then
+                t = which(ld%first%value)
+                return
+             end if
+          end if
+          ld = .next. ld
+       end do search
+    else
+       t = which(this%first%value)
+    end if
+  end function dict_key_which
+
 #include "dict_funcs.inc"
 
+
+  ! helper routines for often used stuff
+  subroutine val_delete_request(val,dealloc)
+    type(var), intent(inout) :: val
+    logical, intent(in), optional :: dealloc
+    if ( present(dealloc) ) then
+       if ( dealloc ) call delete(val)
+    end if
+    call nullify(val)
+  end subroutine val_delete_request
+  
 end module dictionary

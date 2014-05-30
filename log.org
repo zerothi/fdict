@@ -9,6 +9,45 @@ Every section in this part lists the change of the versions
 The dictionary will make use of the var format for retaining any type of
 data. This will allow for greater structure etc.
 
+** Added information to printout statement <2014-05-30 Fri>
+Printing the dictionary now also shows the datatype along with
+the hash. The format:
+  <key> [<data-type>] (<hash-value>)
+is utilised
+
+** Created a generic routine for deletes <2014-05-30 Fri>
+In the dictionary several places of the code utilises a formation
+of checking deletion/nullification of the out/in-going variable.
+Now a generic subroutine can handle this.
+
+** Can now assign a dictionary without specifying a key <2014-05-30 Fri>
+I had forgotten to enable direct assignment "call assign(val,dic)"
+this has been fixed.
+
+** Added a which(this,key) for the dictionary <2014-05-30 Fri>
+It enables a direct look on the data type to assert without 
+having to fetch to a type(var)
+
+** Renamed add => extend <2014-05-30 Fri>
+This follows better the dictionary terminology.
+I think extend is better than append as the latter implies
+an "end"-appendage.
+
+** Renamed dict_print => print <2014-05-30 Fri>
+We might as well use a common print function.
+It has been overloaded to enable other codes to also
+utilise the print routine name.
+
+** Bugfix for associating <2014-05-30 Fri>
+The default associating a type(var) with type(var)
+is to not deallocate.
+This was a bug and has been fixed. It now behaves correctly.
+
+** Added print function to variable <2014-05-30 Fri>
+Only prints out the data type for now,
+consider adding a field to hold the size of the variable.
+That would also allow calling size on type(var)
+
 ** Added the variable data type <2014-05-28 Wed>
 The data type type(var) has been added to the dictionary.
 
