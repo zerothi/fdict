@@ -4,10 +4,13 @@
 
 Every section in this part lists the change of the versions
 
-* Dictionary
-
 The dictionary will make use of the var format for retaining any type of
 data. This will allow for greater structure etc.
+
+** Changed required BASH version to 3 for compilation <2014-06-10 Tue>
+The required BASH version was version 4+.
+However, as many Macs are still relying on very old BASH 3 it has
+been decided to change the compilation compatibility to BASH 3.
 
 ** Added information to printout statement <2014-05-30 Fri>
 Printing the dictionary now also shows the datatype along with

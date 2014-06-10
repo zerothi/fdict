@@ -1,14 +1,18 @@
 #!/bin/bash
 
-source settings.sh
+# Ensure that we get the default var_N by
+# first deleting any previous settings
 rm -f current_settings.sh
+source settings.sh
 
 function quick_setup {
     local n=$1 ; shift
     while [ $# -gt 0 ]; do
-	echo "Updating number of dimensions for: ${name[$1]} to $n"
-	echo "# Updating number of dimensions for: ${name[$1]} to $n" >> current_settings.sh
-	echo "N[$1]=$n" >> current_settings.sh
+	if [ $(var_N $1) -ne $n ]; then
+	    echo "Updating number of dimensions for: $(var_name $1) to $n"
+	    echo "# Updating number of dimensions for: $(var_name $1) to $n" >> current_settings.sh
+	fi
+	echo "$1) _ps $n ;;" >> current_settings.sh
 	shift
     done
 }
@@ -39,6 +43,12 @@ function _help {
 }
 
 [ $# -eq 0 ] && _help && exit
+
+{
+echo "function var_N {"
+echo "local var=\"\$1\""
+echo "case \$var in"
+} > current_settings.sh
 
 while [ $# -gt 0 ]; do
     opt=$1 ; shift
@@ -84,4 +94,13 @@ while [ $# -gt 0 ]; do
 	    ;;
     esac
 done
+
+# In a 
+for v in VAR V a s d c z b h i l ; do
+    quick_setup $(var_N $v) $v
+done
+{
+echo "esac"
+echo "}"
+} >> current_settings.sh
 
