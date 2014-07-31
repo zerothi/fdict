@@ -6,6 +6,7 @@ module tst_utils
 
   implicit none
   
+  integer, parameter :: is = selected_int_kind(9)
   integer, parameter :: sp = selected_real_kind(p=6)
   integer, parameter :: dp = selected_real_kind(p=15)
 

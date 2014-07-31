@@ -4,29 +4,31 @@ subroutine ROUTINE(assign_set,VAR)(this,rhs,dealloc)
   VAR_TYPE, intent(in)DIMS :: rhs
   logical, intent(in), optional :: dealloc
   logical :: ldealloc
+  type :: pt
+    VAR_TYPE, pointer DIMS :: p
+  end type
+  type(pt) :: p
   ! ASSIGNMENT in fortran is per default destructive
   ldealloc = .true.
   if(present(dealloc))ldealloc = dealloc
   if (.not. ldealloc) then
      ! if we do not deallocate, nullify
      call nullify(this)
-     this%t = STR(VAR)
-ALLOC(VAR,rhs)
-     THIS(VAR) = rhs
+     this%t = STR(VAR) ! set type
+     ALLOC(p%p,rhs) ! allocate space
+     p%p = rhs ! copy data over
+     allocate(this%enc(size(transfer(p, this%enc)))) ! allocate encoding
+     this%enc = transfer(p, this%enc) ! transfer pointer type to the encoding
      return
   end if
-  ldealloc = this%t /= STR(VAR)
-#if DIM > 0 
-  if (.not.ldealloc) then
-CHECK_SIZE(ldealloc,VAR,rhs,DIM)
-  end if
-#endif
-  if (ldealloc) then
-     call delete(this)
-     this%t = STR(VAR)
-ALLOC(VAR,rhs)
-  end if
-  THIS(VAR) = rhs
+  ! With pointer transfer we need to deallocate
+  ! else bounds might change...
+  call delete(this)
+  this%t = STR(VAR)
+  ALLOC(p%p,rhs) ! allocate space
+  p%p = rhs ! copy data over
+  allocate(this%enc(size(transfer(p, this%enc)))) ! allocate encoding
+  this%enc = transfer(p, this%enc) ! transfer pointer type to the encoding
 end subroutine ROUTINE(assign_set,VAR)
 
 subroutine ROUTINE(assign_get,VAR)(lhs,this,success)
@@ -34,15 +36,23 @@ subroutine ROUTINE(assign_get,VAR)(lhs,this,success)
   type(var), intent(in) :: this
   logical, intent(out), optional :: success
   logical :: lsuccess
+  type :: pt
+    VAR_TYPE, pointer DIMS :: p
+  end type
+  type(pt) :: p
   lsuccess = this%t == STR(VAR)
 #if DIM > 0
   if (lsuccess) then
-CHECK_SIZE(lsuccess,VAR,lhs,DIM)
+    p = transfer(this%enc,p) ! retrieve pointer encoding
+CHECK_SIZE(lsuccess,p%p,lhs,DIM)
   end if
 #endif
   if (present(success)) success = lsuccess
   if (.not. lsuccess) return
-  lhs = THIS(VAR)
+#if DIM == 0
+  p = transfer(this%enc,p) ! retrieve pointer encoding
+#endif
+  lhs = p%p
 end subroutine ROUTINE(assign_get,VAR)
 
 subroutine ROUTINE(associate_get,VAR)(lhs,this,dealloc,success)
@@ -51,6 +61,10 @@ subroutine ROUTINE(associate_get,VAR)(lhs,this,dealloc,success)
   logical, intent(in), optional :: dealloc
   logical, intent(out), optional :: success
   logical :: ldealloc, lsuccess
+  type :: pt
+    VAR_TYPE, pointer DIMS :: p
+  end type
+  type(pt) :: p
   lsuccess = this%t == STR(VAR)
   if (present(success)) success = lsuccess
   ! ASSOCIATION in fortran is per default non-destructive
@@ -62,13 +76,18 @@ subroutine ROUTINE(associate_get,VAR)(lhs,this,dealloc,success)
      nullify(lhs)
   end if
   if (.not. lsuccess ) return
-  lhs => THIS(VAR)
+  p = transfer(this%enc,p) ! retrieve pointer encoding
+  lhs => p%p
 end subroutine ROUTINE(associate_get,VAR)
 subroutine ROUTINE(associate_set,VAR)(this,rhs,dealloc)
   type(var), intent(inout) :: this
   VAR_TYPE, intent(in)DIMS, target :: rhs
   logical, intent(in), optional :: dealloc
   logical :: ldealloc
+  type :: pt
+    VAR_TYPE, pointer DIMS :: p
+  end type
+  type(pt) :: p
   ! ASSOCIATION in fortran is per default non-destructive
   ldealloc = .false.
   if(present(dealloc))ldealloc = dealloc
@@ -78,25 +97,37 @@ subroutine ROUTINE(associate_set,VAR)(this,rhs,dealloc)
      call nullify(this)
   end if
   this%t = STR(VAR)
-  THIS(VAR) => rhs
+  p%p => rhs
+  allocate(this%enc(size(transfer(p, this%enc)))) ! allocate encoding
+  this%enc = transfer(p, this%enc) ! transfer pointer type to the encoding
 end subroutine ROUTINE(associate_set,VAR)
 
 pure function ROUTINE(associatd_l,VAR)(lhs,this) result(ret)
   VAR_TYPE, pointer DIMS :: lhs
   type(var), intent(in) :: this
   logical :: ret
+  type :: pt
+    VAR_TYPE, pointer DIMS :: p
+  end type
+  type(pt) :: p
   ret = this%t == STR(VAR)
   if (ret) then	
-     ret = associated(lhs,THIS(VAR))
+     p = transfer(this%enc,p)
+     ret = associated(lhs,p%p)
   endif
 end function ROUTINE(associatd_l,VAR)
 pure function ROUTINE(associatd_r,VAR)(this,rhs) result(ret)
   type(var), intent(in) :: this
   VAR_TYPE, pointer DIMS :: rhs
   logical :: ret
+  type :: pt
+    VAR_TYPE, pointer DIMS :: p
+  end type
+  type(pt) :: p
   ret = this%t == STR(VAR)
   if (ret) then	
-     ret = associated(THIS(VAR),rhs)
+     p = transfer(this%enc,p)
+     ret = associated(p%p,rhs)
   endif
 end function ROUTINE(associatd_r,VAR)
 

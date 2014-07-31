@@ -94,3 +94,33 @@ function dim_to_size {
 	    ;;
     esac
 }
+
+function ptr_declarations {
+    local v
+    local count=1
+    if [ $1 == "-count" ]; then
+	shift
+	count=$1
+	shift
+    fi
+    while [ $# -gt 0 ]; do
+	v=$1 ; shift
+	for d in `seq 0 $(var_N $v)` ; do
+	    _psnl "type :: pt$v$d"
+	    _psnl " $(var_name $v), pointer :: p$(dim_to_size $d)"
+	    _psnl "end type pt$v$d"
+	    _ps "type(pt$v$d) :: "
+	    if [ $count -eq 1 ]; then
+		_psnl "p$v${d}"
+	    else
+		for i in `seq 1 $count` ; do
+		    _ps "p$v${d}_$i"
+		    if [ $i -lt $count ]; then
+			_ps ", "
+		    fi
+		done
+		_psnl ""
+	    fi
+	done
+    done
+}

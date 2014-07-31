@@ -11,30 +11,29 @@
 #define STR(x) _str1(x)
 #define THIS(x) _cc2_1(this%,x)
 
-
 #undef ALLOC
 
 #if DIM == 0 
-#  define ALLOC(v,ref) allocate(THIS(v))
+#  define ALLOC(v,ref) allocate(v)
 #elif DIM == 1 
-#  define ALLOC(v,ref) allocate(THIS(v)(size(ref)))
+#  define ALLOC(v,ref) allocate(v(size(ref)))
 #elif DIM == 2 
-#  define ALLOC(v,ref) allocate(THIS(v)(size(ref,1),size(ref,2)))
+#  define ALLOC(v,ref) allocate(v(size(ref,1),size(ref,2)))
 #elif DIM == 3
-#  define ALLOC(v,ref) allocate(THIS(v)(size(ref,1),size(ref,2),size(ref,3)))
+#  define ALLOC(v,ref) allocate(v(size(ref,1),size(ref,2),size(ref,3)))
 #elif DIM == 4
-#  define ALLOC(v,ref) allocate(THIS(v)(size(ref,1),size(ref,2),size(ref,3),size(ref,4)))
+#  define ALLOC(v,ref) allocate(v(size(ref,1),size(ref,2),size(ref,3),size(ref,4)))
 #elif DIM == 5
-#  define ALLOC(v,ref) allocate(THIS(v)(size(ref,1),size(ref,2),size(ref,3),size(ref,4),size(ref,5)))
+#  define ALLOC(v,ref) allocate(v(size(ref,1),size(ref,2),size(ref,3),size(ref,4),size(ref,5)))
 #elif DIM == 6
-#  define ALLOC(v,ref) allocate(THIS(v)(size(ref,1),size(ref,2),size(ref,3),size(ref,4),size(ref,5),size(ref,6)))
+#  define ALLOC(v,ref) allocate(v(size(ref,1),size(ref,2),size(ref,3),size(ref,4),size(ref,5),size(ref,6)))
 #endif
 
 
 #undef CHECK_SIZE
 
-#define CHECK_SIZE_S(v,var,ref) v = size(THIS(var),1) == size(ref,1)
-#define CHECK_SIZE_A(v,var,ref,dim) .and. size(THIS(var),dim) == size(ref,dim)
+#define CHECK_SIZE_S(v,var,ref) v = size(var,1) == size(ref,1)
+#define CHECK_SIZE_A(v,var,ref,dim) .and. size(var,dim) == size(ref,dim)
 
 #if DIM == 1
 #  define CHECK_SIZE(v,vv,r,d) CHECK_SIZE_S(v,vv,r)

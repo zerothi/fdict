@@ -6,6 +6,9 @@ source settings.sh
 # The different settings used in this
 vars=(V s d c z b h i l)
 
+ptr_declarations ${vars[@]} > var_declarations.inc
+ptr_declarations -count 2 ${vars[@]} > var_declarations2.inc
+
 # Print out to the mod file
 {
 for sub in assign associate associatd ; do
@@ -43,34 +46,13 @@ fi
 {
 for v in ${vars[@]} ; do
     for d in `seq 0 $(var_N $v)` ; do
-	_psnl "nullify(this%$v$d)"
-    done
-done
-} > var_nullify.inc
-
-
-{
-for v in ${vars[@]} ; do
-    for d in `seq 0 $(var_N $v)` ; do
-	_psnl "if (associated(this%$v$d)) deallocate(this%$v$d)"
+	_psnl "if (this%t == '$v$d') then"
+	_psnl "  p$v$d = transfer(this%enc,p$v$d)"
+	_psnl "  deallocate(p$v$d%p)"
+	_psnl "end if"
     done
 done
 } > var_delete.inc
-
-
-{
-for v in ${vars[@]} ; do
-    _ps "$(var_name $v), pointer :: "
-    for d in `seq 0 $(var_N $v)` ; do
-	_ps "$v$d$(dim_to_size $d)=>null()"
-	if [ $d -lt $(var_N $v) ]; then
-	    _ps ", "
-	else
-	    _psnl ""
-	fi
-    done
-done
-} > var_content.inc
 
 
 {
@@ -79,7 +61,8 @@ for v in ${vars[@]} ; do
 	_psnl "if ( this%t == '$v$d' ) then"
 	_psnl "#define DIM $d"
 	_psnl '#include "settings.inc"'
-	_psnl "ALLOC($v$d,rhs%$v$d)"
+	_psnl "p$v${d}_2 = transfer(rhs%enc,p$v${d}_2)"
+	_psnl "ALLOC(p$v${d}_1%p,p$v${d}_2%p)"
 	_psnl "#undef DIM"
 	[ $d -lt $(var_N $v) ] && _ps "else"
     done
@@ -92,7 +75,9 @@ done
 for v in ${vars[@]} ; do
     for d in `seq 0 $(var_N $v)` ; do
 	_psnl "if ( this%t == '$v$d' ) then"
-	_psnl "this%$v$d ASS_ACC rhs%$v$d"
+	_psnl "p$v${d}_1%p ASS_ACC p$v${d}_2%p"
+	_psnl "allocate(this%enc(size(transfer(p$v${d}_1, this%enc))))"
+	_psnl "this%enc = transfer(p$v${d}_1, this%enc)"
 	[ $d -lt $(var_N $v) ] && _ps "else"
     done
     _psnl "endif"
@@ -104,7 +89,9 @@ done
 for v in ${vars[@]} ; do
     for d in `seq 0 $(var_N $v)` ; do
 	_psnl "if ( this%t == '$v$d' ) then"
-	_psnl "ret = associated(this%$v$d,rhs%$v$d)"
+	_psnl "p$v${d}_1 = transfer(this%enc,p$v${d}_1)"
+	_psnl "p$v${d}_2 = transfer(rhs%enc,p$v${d}_2)"
+	_psnl "ret = associated(p$v${d}_1%p,p$v${d}_2%p)"
 	[ $d -lt $(var_N $v) ] && _ps "else"
     done
     _psnl "endif"

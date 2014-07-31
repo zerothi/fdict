@@ -17,7 +17,8 @@ module variable
   
   type :: var
      character(len=2) :: t = '  '
-#include "var_content.inc"
+     ! The encoding placement of all data
+     character(len=1), dimension(:), allocatable :: enc
   end type var
   public :: var
 
@@ -57,14 +58,15 @@ contains
     
   subroutine delete_(this)
     type(var), intent(inout) :: this
+#include "var_declarations.inc"
 #include "var_delete.inc"
     call nullify(this)
   end subroutine delete_
 
   subroutine nullify_(this)
     type(var), intent(inout) :: this
-#include "var_nullify.inc"
     this%t = '  '
+    if ( allocated(this%enc) ) deallocate(this%enc)
   end subroutine nullify_
 
   subroutine assign_var(this,rhs,dealloc)
@@ -72,6 +74,7 @@ contains
     type(var), intent(in) :: rhs
     logical, intent(in), optional :: dealloc
     logical :: ldealloc
+#include "var_declarations2.inc"
     ! collect deallocation option (default as =)
     ! ASSIGNMENT in fortran is per default destructive
     ldealloc = .true.
@@ -79,25 +82,18 @@ contains
     if (.not. ldealloc) then
        ! if we do not deallocate, nullify
        call nullify(this)
-       this%t = rhs%t
-
-#include "var_var_alloc.inc"
-
     else
-       ldealloc = this%t /= rhs%t
-       if (ldealloc) then
-          call delete(this)
-          this%t = rhs%t
-          
-#include "var_var_alloc.inc"
-          
-       end if
+       call delete(this)
     end if
-    
+    this%t = rhs%t
+    ! First allocate the LHS
+#include "var_var_alloc.inc"
+
+    ! copy over RHS and Save encoding
 #define ASS_ACC =
 #include "var_var_set.inc"
 #undef ASS_ACC
-    
+
   end subroutine assign_var
 
   subroutine associate_var(this,rhs,dealloc,success)
@@ -114,18 +110,13 @@ contains
     if (.not. ldealloc) then
        ! if we do not deallocate, nullify
        call nullify(this)
-       this%t = rhs%t
     else
-       ldealloc = this%t /= rhs%t
-       if ( ldealloc ) then
-          call delete(this)
-          this%t = rhs%t
-       end if
+       call delete(this)
     end if
     
-#define ASS_ACC =>
-#include "var_var_set.inc"
-#undef ASS_ACC
+    this%t = rhs%t
+    allocate(this%enc(size(rhs%enc,1)))
+    this%enc = rhs%enc
 
   end subroutine associate_var
 
@@ -133,6 +124,7 @@ contains
     type(var), intent(in) :: this
     type(var), intent(in) :: rhs
     logical :: ret
+#include "var_declarations2.inc"
     ret = this%t==rhs%t
     if ( .not. ret ) return
     

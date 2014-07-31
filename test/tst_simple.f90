@@ -12,13 +12,32 @@ program test1
   type(var_str) :: sa, sb
   character(len=20) :: ca, cb
   logical :: success
+
+  type :: ptd0
+     real(dp), pointer :: p
+  end type ptd0
+  type(ptd0) :: pd0
+  type :: ptd1
+     real(dp), pointer :: p(:)
+  end type ptd1
+  type(ptd1) :: pd1
+  type :: ptd2
+     real(dp), pointer :: p(:,:)
+  end type ptd2
+  type(ptd2) :: pd2
+  type :: pti0
+     integer(is), pointer :: p
+  end type pti0
+  type(pti0) :: pi0
+
   
   a = 1.0_dp
   b = 2._dp
   c = 3._dp
   
   call assign(va,a)
-  print '(a2,tr1,f4.2)',va%t,va%d0
+  pd0 = transfer(va%enc,pd0)
+  print '(a2,tr1,f4.2)',va%t,pd0%p
   call associate(pa,va,success=success)
   if ( success ) then
      print *,'Success: ',pa
@@ -26,13 +45,16 @@ program test1
 
   call assign(va,b)
   call assign(b,va)
-  print '(a2,2(tr1,f4.2))',va%t,va%d1
+  pd1 = transfer(va%enc,pd1)
+  print '(a2,2(tr1,f4.2))',va%t,pd1%p
 
   call assign(va,c)
-  print '(a2,4(tr1,f4.2))',va%t,va%d2
+  pd2 = transfer(va%enc,pd2)
+  print '(a2,4(tr1,f4.2))',va%t,pd2%p
 
   call assign(va,1)
-  print '(a2,tr1,i0)',va%t,va%i0
+  pi0 = transfer(va%enc,pi0)
+  print '(a2,tr1,i0)',va%t,pi0%p
 
   ca = 'hello world'
   sa = ca
