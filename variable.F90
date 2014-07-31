@@ -114,8 +114,9 @@ contains
        call delete(this)
     end if
     
+    ! Association is done by copying the encoding
     this%t = rhs%t
-    allocate(this%enc(size(rhs%enc,1)))
+    allocate(this%enc(size(rhs%enc)))
     this%enc = rhs%enc
 
   end subroutine associate_var

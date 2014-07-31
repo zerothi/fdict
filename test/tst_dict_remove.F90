@@ -9,6 +9,8 @@ program test_dict
   type(var) :: v
   type(dict) :: dic
 
+#include "../var_declarations.inc"
+
   a = 1.
   b = 2.
   c = 3.
@@ -28,7 +30,8 @@ program test_dict
 
   ! delete a
   call delete(dic,'a')
-  print *,'After delete, ensure assign:',v%s0,a
+  ps0 = transfer(v%enc,ps0)
+  print *,'After delete, ensure assign:',ps0%p,a
 
   ! associate to v the value in dic[a]
   call delete(v)
@@ -39,14 +42,16 @@ program test_dict
   ! we will see the same result here. 
   ! However, the value in the key HAS been
   ! deleted.
-  print *,v%s0,d
+  ps0 = transfer(v%enc,ps0)
+  print *,ps0%p,d
   ! In certain cases, deallocation and immediate
   ! allocation allows to test whether the same 
   ! memory element is refenced in v
   deallocate(d) ; nullify(d)
   allocate(d)
   d = 2
-  print *,v%s0,d
+  ps0 = transfer(v%enc,ps0)
+  print *,ps0%p,d
 
   print *,'Length:',len(dic),3
   

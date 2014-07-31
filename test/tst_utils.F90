@@ -5,8 +5,10 @@ module tst_utils
   use dictionary
 
   implicit none
-  
+
+  integer, parameter :: ih = selected_int_kind(4)
   integer, parameter :: is = selected_int_kind(9)
+  integer, parameter :: il = selected_int_kind(18)
   integer, parameter :: sp = selected_real_kind(p=6)
   integer, parameter :: dp = selected_real_kind(p=15)
 

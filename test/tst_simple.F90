@@ -13,23 +13,7 @@ program test1
   character(len=20) :: ca, cb
   logical :: success
 
-  type :: ptd0
-     real(dp), pointer :: p
-  end type ptd0
-  type(ptd0) :: pd0
-  type :: ptd1
-     real(dp), pointer :: p(:)
-  end type ptd1
-  type(ptd1) :: pd1
-  type :: ptd2
-     real(dp), pointer :: p(:,:)
-  end type ptd2
-  type(ptd2) :: pd2
-  type :: pti0
-     integer(is), pointer :: p
-  end type pti0
-  type(pti0) :: pi0
-
+#include "../var_declarations.inc"
   
   a = 1.0_dp
   b = 2._dp

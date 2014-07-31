@@ -1,4 +1,4 @@
-.SUFFIXES: .f90 .o .a
+.SUFFIXES: .F90 .f90 .o .a
 
 include ../arch.make
 

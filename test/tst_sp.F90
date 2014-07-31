@@ -8,6 +8,8 @@ program tests
   real(sp) :: a, b(2), c(2,2)
   real(sp), pointer :: pa =>null(), pb(:)=>null(), pc(:,:)=>null()
   logical :: success
+
+#include "../var_declarations.inc"
   
   a      = 1.0_sp
   b(:)   = 2._sp
@@ -15,7 +17,8 @@ program tests
 
   ! do 'va = a'
   call assign(va,a)
-  print '(a2,tr1,f4.2)',va%t,va%s0
+  ps0 = transfer(va%enc,ps0)
+  print '(a2,tr1,f4.2)',va%t,ps0%p
   ! associate pa with va 'pa => va'
   call associate(pa,va,success=success)
   if ( success ) then
@@ -30,12 +33,15 @@ program tests
 
   call assign(va,b)
   call assign(b,va)
-  print '(a2,2(tr1,f4.2))',va%t,va%s1
+  ps1 = transfer(va%enc,ps1)
+  print '(a2,2(tr1,f4.2))',va%t,ps1%p
 
   call assign(va,c)
-  print '(a2,4(tr1,f4.2))',va%t,va%s2
+  ps2 = transfer(va%enc,ps2)
+  print '(a2,4(tr1,f4.2))',va%t,ps2%p
 
   call assign(va,1)
-  print '(a2,tr1,i0)',va%t,va%i0
+  pi0 = transfer(va%enc,pi0)
+  print '(a2,tr1,i0)',va%t,pi0%p
 
 end program tests
