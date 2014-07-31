@@ -7,6 +7,25 @@ Every section in this part lists the change of the versions
 The dictionary will make use of the var format for retaining any type of
 data. This will allow for greater structure etc.
 
+** Converted data container to a single byte array <2014-07-31 Thu>
+By using a trick of transferring types with pointers we only pass
+the direct information in the type (i.e. variable placement in
+memory etc).
+With this method we can hold any type of variable as the type
+is saved via an encoding realised as:
+
+ type :: ptr
+   real, pointer :: p(:)
+ end type ptr
+ type(ptr) :: p
+ character(len=1), allocatable :: enc(:)
+ real :: a(2)
+ 
+ allocate(enc(size(transfer(a,p)))
+ enc = transfer(a,p)
+
+which tells the encoding the placement of the data.
+
 ** Changed required BASH version to 3 for compilation <2014-06-10 Tue>
 The required BASH version was version 4+.
 However, as many Macs are still relying on very old BASH 3 it has
