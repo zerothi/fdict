@@ -27,7 +27,7 @@ module dictionary
   ! We could consider changing this to a variable size string
   ! However, that will increase the dependencies and will most likely not yield
   ! a better interface.
-  integer, parameter :: DICT_KEY_LENGTH = 50
+  integer, parameter, public :: DICT_KEY_LENGTH = 50
   
   ! A parameter returned if not found.
   character(len=DICT_KEY_LENGTH), parameter :: DICT_NOT_FOUND = 'ERROR: key not found'
