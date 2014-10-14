@@ -1,6 +1,11 @@
 .SUFFIXES: .f90 .o .a
 include arch.make
 
+# Setup the default things, in case they haven't been set.
+AR      ?= ar
+ARFLAGS ?= cru
+RANLIB  ?= ranlib
+
 VPATH?=$(shell pwd)
 
 .PHONY: default
