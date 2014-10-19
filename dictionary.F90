@@ -74,12 +74,22 @@ module dictionary
      module procedure in
   end interface operator( .IN. )
   public :: operator(.IN.)
+
+  ! check whether key not exists in dictionary
+  interface operator( .NIN. )
+     module procedure nin
+  end interface operator( .NIN. )
+  public :: operator(.NIN.)
   
   ! Retrieve the value from a dictionary (unary)
   interface operator( .VAL. )
      module procedure value
   end interface operator( .VAL. )
   public :: operator(.VAL.)
+  interface operator( .VALP. )
+     module procedure value_p
+  end interface operator( .VALP. )
+  public :: operator(.VALP.)
 
   ! Retrieve the hash value from a dictionary entry (unary)
   interface operator( .HASH. )
@@ -216,6 +226,11 @@ contains
     type(var) :: value
     call assign(value,d%first%value)
   end function value
+  function value_p(d) 
+    type(dict), intent(in) :: d
+    type(var) :: value_p
+    call associate(value_p,d%first%value)
+  end function value_p
 
   ! Returns the hash value of the dictionary first item...
   pure function hash(d)
@@ -288,6 +303,13 @@ contains
     in = .false.
 
   end function in
+
+  function nin(key,d)
+    character(len=*), intent(in) :: key
+    type(dict), intent(in) :: d
+    logical :: nin
+    nin = .not. in(key,d)
+  end function nin
 
   subroutine dict_key_p_val(val,d,key,dealloc)
     type(var), intent(inout) :: val
@@ -514,10 +536,17 @@ contains
   end subroutine print_
 
 
-  subroutine delete_(this,key)
+  subroutine delete_(this,key,dealloc)
     type(dict), intent(inout) :: this
     character(len=*), intent(in), optional :: key
+    logical, intent(in), optional :: dealloc
     type(d_entry), pointer :: de, pr
+    logical :: ldealloc
+    integer :: kh, lhash
+
+    ! We default to de-allocation of everything
+    ldealloc = .true.
+    if ( present(dealloc) ) ldealloc = dealloc
 
     ! if no keys are present, simply return
     if ( .not. associated(this%first) ) then
@@ -535,29 +564,39 @@ contains
        
        ! we only need to delete the one key
 
-       pr => this%first
-       if ( pr%key == key ) then
-          this%first => pr%next
-          this%len = this%len - 1 
-          call delete(pr%value)
-          nullify(pr%next)
-          deallocate(pr)
-          nullify(pr)
+       kh = hash_val(key)
 
-          return
+       pr => this%first
+       if ( kh == hash_val(pr%key) ) then
+          if ( key == pr%key ) then
+             this%first => pr%next
+             this%len = this%len - 1 
+             call delete(pr%value,dealloc=ldealloc)
+             nullify(pr%next)
+             deallocate(pr)
+             nullify(pr)
+             
+             return
+          end if
 
        end if
 
        ! more complicated case
        de => pr%next
        do while ( associated(de) )
-          if ( de%key == key ) then
-             pr%next => de%next
-             call delete(de%value)
-             nullify(de%next)
-             deallocate(de)
-             this%len = this%len - 1 
-             exit
+          ! We know it is sorted with hash-tags.
+          ! So if we are beyond the hash, we just quit.
+          lhash = hash_val(de%key)
+          if ( kh < lhash ) exit ! it does not exist
+          if ( lhash == kh ) then
+             if ( de%key == key ) then
+                pr%next => de%next
+                call delete(de%value,dealloc=ldealloc)
+                nullify(de%next)
+                deallocate(de)
+                this%len = this%len - 1 
+                exit
+             end if
           end if
           pr => de
           de => de%next
@@ -567,22 +606,22 @@ contains
 
     end if
        
-
     ! delete the entire entry-tree
-    call del_d_entry_tree(this%first)
-    call delete(this%first%value)
+    call del_d_entry_tree(this%first,dealloc=ldealloc)
+    call delete(this%first%value,dealloc=ldealloc)
     deallocate(this%first)
     nullify(this%first)    
     this%len = 0
 
   contains
 
-    recursive subroutine del_d_entry_tree(d)
+    recursive subroutine del_d_entry_tree(d,dealloc)
       type(d_entry), pointer :: d
+      logical, intent(in) :: dealloc
       if ( associated(d) ) then
          if ( associated(d%next) ) then
-            call del_d_entry_tree(d%next)
-            call delete(d%next%value)
+            call del_d_entry_tree(d%next,dealloc)
+            call delete(d%next%value,dealloc=dealloc)
             deallocate(d%next)
             nullify(d%next)
          end if

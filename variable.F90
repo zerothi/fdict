@@ -56,10 +56,16 @@ contains
     t = this%t
   end function which_
     
-  subroutine delete_(this)
+  subroutine delete_(this,dealloc)
     type(var), intent(inout) :: this
+    logical, intent(in), optional :: dealloc
+    logical :: ldealloc
 #include "var_declarations.inc"
+    ldealloc = .true.
+    if ( present(dealloc) ) ldealloc = dealloc
+    if ( ldealloc ) then
 #include "var_delete.inc"
+    end if
     call nullify(this)
   end subroutine delete_
 

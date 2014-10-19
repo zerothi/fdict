@@ -7,6 +7,17 @@ Every section in this part lists the change of the versions
 The dictionary will make use of the var format for retaining any type of
 data. This will allow for greater structure etc.
 
+** Added dealloc specifier for delete <2014-10-19 Sun>
+When deleting a dictionary, or key in dictionary one
+can now only delete the reference. 
+This is handy if the <key>.kvp.<val> has been used.
+Also improved specific key deletion by adding a 
+hash-check.
+
+** Added .NIN. and .VALP. routines <2014-10-19 Sun>
+Added a function to check for keys not in a dictionary.
+Added a value retriever which transfers the pointer, and not
+the value.
 ** Converted data container to a single byte array <2014-07-31 Thu>
 By using a trick of transferring types with pointers we only pass
 the direct information in the type (i.e. variable placement in
