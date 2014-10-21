@@ -137,6 +137,11 @@ module dictionary
   end interface remove
   public :: remove
 
+  interface nullify
+     module procedure nullify_
+  end interface nullify
+  public :: nullify
+
   interface extend
      module procedure sub_d_cat_d
   end interface extend
@@ -144,11 +149,13 @@ module dictionary
 
   interface assign
      module procedure dict_key2val
+     !module procedure dict_key2dict
   end interface assign
   public :: assign
 
   interface associate
      module procedure dict_key_p_val
+     module procedure dict_key_p_dict
   end interface associate
   public :: associate
 
@@ -644,6 +651,8 @@ contains
     pr => this%first
     if ( pr%key == key ) then
        this%first => pr%next
+       ! Ensures that the encoding gets removed
+       call nullify(pr%value)
        deallocate(pr)
        this%len = this%len - 1
        return
@@ -653,6 +662,8 @@ contains
     do while ( associated(de) )
        if ( de%key == key ) then
           pr%next => de%next
+          ! Ensures that the encoding gets removed
+          call nullify(de%value)
           deallocate(de)
           this%len = this%len - 1
           exit
@@ -662,6 +673,25 @@ contains
     end do
     
   end subroutine remove_
+
+  elemental subroutine nullify_(this,key)
+    type(dict), intent(inout) :: this
+    character(len=*), intent(in), optional :: key
+    type(d_entry), pointer :: de, pr
+    character(len=DICT_KEY_LENGTH) :: lkey
+
+    if ( present(key) ) then
+       call remove(this,key=key)
+    else
+       
+       do while ( len(this) > 0 )
+          lkey = this%first%key
+          call remove(this,lkey)
+       end do
+
+    end if
+
+  end subroutine nullify_
 
   function dict_kv_char0(key,val) result(this)
     character(len=*), intent(in) :: key
@@ -720,7 +750,6 @@ contains
 
 #include "dict_funcs.inc"
 
-
   ! helper routines for often used stuff
   subroutine val_delete_request(val,dealloc)
     type(var), intent(inout) :: val
@@ -730,5 +759,66 @@ contains
     end if
     call nullify(val)
   end subroutine val_delete_request
-  
+
+  ! Create a routine for making the dictionary point to the data
+  ! key.
+  function dict_kvp_dict(key,dic) result(this)
+    character(len=*), intent(in) :: key
+    type(dict), intent(in), target :: dic
+    type(dict) :: this
+
+    type :: pdict
+       type(dict), pointer :: d
+    end type pdict
+    type(pdict) :: pd
+    type(var) :: v
+    character(len=1) :: c(1)
+    
+    pd%d => dic
+    call associate_type(v,transfer(pd,c))
+    this = (key.kvp.v)
+
+  end function dict_kvp_dict
+
+  ! In case the value of the dictionary is a dictionary we can request that 
+  ! dictionary directly
+  subroutine dict_key2dict(dic,d,key,dealloc)
+    type(dict), intent(inout) :: dic
+    type(dict), intent(inout) :: d
+    character(len=*), intent(in), optional :: key
+    logical, intent(in), optional :: dealloc
+
+    ! Retrieving a dictionary will NEVER
+    ! be copying the entire dictionary.
+    call dict_key_p_dict(dic,d,key=key,dealloc=dealloc)
+
+  end subroutine dict_key2dict
+
+  subroutine dict_key_p_dict(dic,d,key,dealloc)
+    type(dict), intent(inout) :: dic
+    type(dict), intent(inout) :: d
+    character(len=*), intent(in), optional :: key
+    logical, intent(in), optional :: dealloc
+
+    type :: pdict
+       type(dict), pointer :: d
+    end type pdict
+    type(pdict) :: pd
+    type(var) :: v
+    character(len=1), allocatable :: c(:)
+    integer :: i
+
+    ! Retrieve the dictionary key
+    call associate(v,d,key=key)
+    
+    i = size_enc(v)
+    allocate(c(i))
+    call enc(v,c)
+    pd = transfer(c,pd)
+    deallocate(c)
+    dic = pd%d
+    call nullify(v)
+
+  end subroutine dict_key_p_dict
+
 end module dictionary

@@ -2,6 +2,11 @@
 
 include ../arch.make
 
+# Setup the default things, in case they haven't been set.
+AR      ?= ar
+ARFLAGS ?= cru
+RANLIB  ?= ranlib
+
 TST_UTILS = tst_utils.o
 LIB_TST = libtst.a
 
@@ -15,11 +20,14 @@ $(LIB_TST): $(TST_UTILS)
 
 TST_EXE  = tst_simple tst_sp tst_dp tst_mem
 TST_EXE += tst_char
+TST_EXE += tst_type
 TST_EXE += tst_dict tst_dict_long
 TST_EXE += tst_dict_mem1 tst_dict_mem2
 TST_EXE += tst_dict_mem3
 TST_EXE += tst_dict_overwrite
 TST_EXE += tst_dict_remove
+TST_EXE += tst_dict_dict
+
 
 LIB  = ../libvardict.a $(LIB_TST)
 FFLAGS += -I../
@@ -49,6 +57,10 @@ tst_mem: tst_mem.o $(LIB)
 	$(FC) -o $@ $(FFLAGS) $^
 	./$@
 
+tst_type: tst_type.o $(LIB)
+	$(FC) -o $@ $(FFLAGS) $^
+	./$@
+
 tst_dict: tst_dict.o $(LIB)
 	$(FC) -o $@ $(FFLAGS) $^
 	./$@
@@ -74,6 +86,10 @@ tst_dict_overwrite: tst_dict_overwrite.o $(LIB)
 	./$@
 
 tst_dict_remove: tst_dict_remove.o $(LIB)
+	$(FC) -o $@ $(FFLAGS) $^
+	./$@
+
+tst_dict_dict: tst_dict_dict.o $(LIB)
 	$(FC) -o $@ $(FFLAGS) $^
 	./$@
 

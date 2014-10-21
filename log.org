@@ -7,6 +7,37 @@ Every section in this part lists the change of the versions
 The dictionary will make use of the var format for retaining any type of
 data. This will allow for greater structure etc.
 
+** Added call nullify to dictionaries <2014-10-21 Tue>
+This is mainly convenient if you know you only have
+a dictionary of dictionaries.
+** Added dictionaries to carry dictionaries <2014-10-21 Tue>
+This is not so easy, yet is accomblishable.
+We suspect this is quite a nice feature.
+The problem with user-types in dictionaries is that deleting
+a variable with a custom type is not well defined.
+Hence, a deletion of a dictionary will NOT delete custom types
+for obvious reasons.
+It will not even delete dictionaries as it does not 
+know the value of a custom type to be a dictionary.
+A small test example has been added.
+
+** Added custom types to be contained in variables <2014-10-20 Mon>
+The ability to allow users to extend the capabilities of the variable
+type has been added.
+Any programmer can now extend the variable to contain any kind of
+data type.
+
+However, the fact that any information regarding the contained data
+type is hidden for the variable type means that there are certain
+limitations.
+
+1. The user cannot assign user-types. It makes no sense as the 
+   data cannot be copied, we can only copy the pointer.
+2. Retrieval of data of a variable has to be done by the programmer
+   (add variable retrieval in the code that defines the data type, 
+    and thats it)
+3. 
+
 ** Added dealloc specifier for delete <2014-10-19 Sun>
 When deleting a dictionary, or key in dictionary one
 can now only delete the reference. 

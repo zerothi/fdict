@@ -52,6 +52,11 @@ for v in ${vars[@]} ; do
 	_psnl "end if"
     done
 done
+# We define the type 'ut' as a "user-type"
+_psnl "if (this%t == 'ut') then"
+_psnl "print '(a)','var: Cannot deallocate UT, proceed:'"
+_psnl "print '(a)','     1) retrieve type, 2) deallocate, 3) call nullify(var)'"
+_psnl "end if"
 } > var_delete.inc
 
 
@@ -75,13 +80,18 @@ done
 for v in ${vars[@]} ; do
     for d in `seq 0 $(var_N $v)` ; do
 	_psnl "if ( this%t == '$v$d' ) then"
-	_psnl "p$v${d}_1%p ASS_ACC p$v${d}_2%p"
+	_psnl "p$v${d}_1%p = p$v${d}_2%p"
 	_psnl "allocate(this%enc(size(transfer(p$v${d}_1, this%enc))))"
 	_psnl "this%enc = transfer(p$v${d}_1, this%enc)"
 	[ $d -lt $(var_N $v) ] && _ps "else"
     done
     _psnl "endif"
 done
+# In case the variable is a user-type, then we
+# copy the encoding, probably this is a bit wearing, but
+_psnl "if ( this%t == 'ut' ) then"
+_psnl "print '(a)','var: Cannot assign a UT, USE call associate(..)'"
+_psnl "end if"
 } > var_var_set.inc
 
 
@@ -96,6 +106,10 @@ for v in ${vars[@]} ; do
     done
     _psnl "endif"
 done
+# We check that the encoding is the same address
+_psnl "if ( this%t == 'ut' ) then"
+_psnl "ret = all(this%enc == rhs%enc)"
+_psnl "end if"
 } > var_var_assoc.inc
 
 

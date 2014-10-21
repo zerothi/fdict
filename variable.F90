@@ -1,6 +1,5 @@
 ! Generic purpose variable as in any scripting language
 ! It has the power to transform into any variable at any time
-! This means
 module variable
 
   use iso_var_str
@@ -41,6 +40,21 @@ module variable
   end interface print
   public :: print
 
+  ! Specific routines for passing types to variables
+  interface associate_type
+     module procedure associate_type_
+  end interface associate_type
+  public :: associate_type
+  interface enc
+     module procedure enc_
+  end interface enc
+  public :: enc
+  interface size_enc
+     module procedure size_enc_
+  end interface size_enc
+  public :: size_enc
+
+
 #include "var_interface.inc"
 
 contains
@@ -50,7 +64,7 @@ contains
     write(*,'(t2,a)') this%t
   end subroutine print_
 
-  function which_(this) result(t)
+  elemental function which_(this) result(t)
     type(var), intent(in) :: this
     character(len=2) :: t
     t = this%t
@@ -69,11 +83,82 @@ contains
     call nullify(this)
   end subroutine delete_
 
-  subroutine nullify_(this)
+  elemental subroutine nullify_(this)
     type(var), intent(inout) :: this
     this%t = '  '
     if ( allocated(this%enc) ) deallocate(this%enc)
   end subroutine nullify_
+
+
+  ! Returns the bare encoding of this variable
+  ! This can ease the process of assigning
+  ! user-types to a variable.
+  ! An encoding might be 2, or 10000000 bytes big.
+  ! Therefore we use a subroutine to determine
+  ! the size of the returning encoding characters.
+  ! If the size of the returning enc is not 
+  ! big enough it will be reset to ' '
+  subroutine enc_(this,enc)
+    type(var), intent(in) :: this
+    character(len=1), intent(out) :: enc(:)
+    integer :: i
+    if ( this%t == '  ' ) then
+       enc = ' '
+    else
+       ! We do have an encoding
+       i = size(this%enc)
+       if ( i > size(enc) ) then
+          enc = ' '
+       else
+          enc(1:i) = this%enc
+       end if
+    end if
+  end subroutine enc_
+
+  function size_enc_(this) result(len)
+    type(var), intent(in) :: this
+    integer :: len
+    if ( this%t == '  ' ) then
+       len = 0
+    else
+       len = size(this%enc)
+    end if
+    
+  end function size_enc_
+
+  ! We allow the user to pass an encoding field.
+  ! As this is the same as passing a char
+  ! we MUST use a specific routine for this.
+  ! One _could_, in principle, add an optional
+  ! logical flag for the assign_var_char0, however
+  ! one cannot assign a type by passing a reference
+  ! and hence we ONLY allow associate_type
+  ! This also means that any de-allocation of variables
+  ! containing an external type will only de-reference it.
+  ! A bit counter-intuitive, yet the variable type needs
+  ! all information about the type to successfully de-allocate it.
+  ! It is ALSO very important that the user
+  ! passed the full-encoding WITHOUT padding of ' '.
+  ! We cannot know for sure whether the encoding actually terminates
+  ! in a bit corresponding to char(' ')!
+  subroutine associate_type_(this,enc,dealloc)
+    type(var), intent(inout) :: this
+    character(len=1), intent(in) :: enc(:)
+    logical, intent(in), optional :: dealloc
+    logical :: ldealloc
+    ldealloc = .false.
+    if(present(dealloc))ldealloc = dealloc
+    if (.not. ldealloc) then
+       ! if we do not deallocate, nullify
+       call nullify(this)
+    else
+       call delete(this)
+    end if
+    this%t = 'ut'
+    allocate(this%enc(size(enc)))
+    this%enc = enc
+
+  end subroutine associate_type_
 
   subroutine assign_var(this,rhs,dealloc)
     type(var), intent(inout) :: this
@@ -96,9 +181,7 @@ contains
 #include "var_var_alloc.inc"
 
     ! copy over RHS and Save encoding
-#define ASS_ACC =
 #include "var_var_set.inc"
-#undef ASS_ACC
 
   end subroutine assign_var
 
@@ -158,7 +241,7 @@ contains
     if ( present(success) ) success = lsuccess
     if ( lsuccess ) lhs = str
   end subroutine assign_get_char0
-  
+
 #include "var_funcs.inc"
   
 end module variable

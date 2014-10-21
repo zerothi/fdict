@@ -10,6 +10,7 @@ vars=(s d c z b h i l)
 _psnl "interface operator(.KV.)"
 # Add character
 modproc dict_kv char 0
+# Dictionaries are not allowed to be passed by value
 # Add variable
 modproc dict_kv var ""
 for v in ${vars[@]} ; do
@@ -21,6 +22,8 @@ _psnl "end interface"
 _psnl "interface operator(.KVP.)"
 # Add variable
 modproc dict_kvp var ""
+# Add dictionary
+modproc dict_kvp dict ""
 for v in ${vars[@]} ; do
     for d in `seq 0 $(var_N $v)` ; do
 	modproc dict_kvp $v $d
