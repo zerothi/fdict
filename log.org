@@ -7,6 +7,17 @@ Every section in this part lists the change of the versions
 The dictionary will make use of the var format for retaining any type of
 data. This will allow for greater structure etc.
 
+** Bugfix for dict in dict <2014-10-23 Thu>
+Containing a dictionary in a dictionary is now done using
+the first address of the first d_entry. This means that
+one can create dictionaries in sub-routines and still be
+able to reference them outside.
+
+** Bugfix for dictionaries <2014-10-23 Thu>
+Nullification is now performed on only the first
+element, this is consistent with the regular pointer
+handling as nullification only does so on the "host".
+
 ** Added call nullify to dictionaries <2014-10-21 Tue>
 This is mainly convenient if you know you only have
 a dictionary of dictionaries.

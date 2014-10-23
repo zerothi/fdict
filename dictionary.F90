@@ -165,7 +165,7 @@ module dictionary
   public :: which
 
 
-  ! Create a dictionary type from 
+  ! Create a dictionary type from
 #include "dict_interface.inc"
 
   ! Create a dict type: 'key' .KV. 'val'
@@ -674,22 +674,13 @@ contains
     
   end subroutine remove_
 
-  elemental subroutine nullify_(this,key)
+  elemental subroutine nullify_(this)
     type(dict), intent(inout) :: this
-    character(len=*), intent(in), optional :: key
-    type(d_entry), pointer :: de, pr
-    character(len=DICT_KEY_LENGTH) :: lkey
 
-    if ( present(key) ) then
-       call remove(this,key=key)
-    else
-       
-       do while ( len(this) > 0 )
-          lkey = this%first%key
-          call remove(this,lkey)
-       end do
-
-    end if
+    ! This will simply nullify the dictionary, thereby
+    ! remove all references to all objects.
+    nullify(this%first)
+    this%len = 0
 
   end subroutine nullify_
 
@@ -767,14 +758,14 @@ contains
     type(dict), intent(in), target :: dic
     type(dict) :: this
 
-    type :: pdict
-       type(dict), pointer :: d
-    end type pdict
-    type(pdict) :: pd
+    type :: pd_entry
+       type(d_entry), pointer :: d
+    end type pd_entry
+    type(pd_entry) :: pd
     type(var) :: v
     character(len=1) :: c(1)
     
-    pd%d => dic
+    pd%d => dic%first
     call associate_type(v,transfer(pd,c))
     this = (key.kvp.v)
 
@@ -800,13 +791,42 @@ contains
     character(len=*), intent(in), optional :: key
     logical, intent(in), optional :: dealloc
 
-    type :: pdict
-       type(dict), pointer :: d
-    end type pdict
-    type(pdict) :: pd
+    ! Instead of saving the data-type dict
+    ! we save the first pointer.
+    ! This will allow greater flexibility as the
+    ! parent container can then be re-used with out
+    ! worries. 
+    ! I.e.
+    !  if one uses :
+    !    type :: pdict
+    !      type(dict), pointer :: d
+    !    end type
+    !  then the address of the "parenting" dictionary is saved,
+    !  And hence, doing:
+    !  dic1 = ('a'.kv.1)
+    !  dic2 = ('dic1'.kvp.dic1)
+    !  call nullify(dic1)
+    !  dic1 = ('b'.kv.1)
+    !  will make dic1 in dic2 contain ('b'.kv.1)
+    ! Specifically because the address of the dic1 does not change.
+    ! However, the d_entry pointer is irrespective of parent locality.
+    type :: pd_entry
+       type(d_entry), pointer :: d
+    end type pd_entry
+    type(pd_entry) :: pd
+    type(dict) :: ld
     type(var) :: v
     character(len=1), allocatable :: c(:)
     integer :: i
+    logical :: ldealloc
+
+    ldealloc = .false.
+    if ( present(dealloc) ) ldealloc = dealloc
+    if ( ldealloc ) then
+       call delete(dic)
+    else
+       call nullify(dic)
+    end if
 
     ! Retrieve the dictionary key
     call associate(v,d,key=key)
@@ -816,8 +836,21 @@ contains
     call enc(v,c)
     pd = transfer(c,pd)
     deallocate(c)
-    dic = pd%d
+    dic%first => pd%d
     call nullify(v)
+
+    ! we need to re-count the number of entries in
+    ! the d_entry tree.
+    ! Sadly, this is because we contain the d_entry
+    ! type, and NOT the dict type :(
+    ! However, it makes the programming style more
+    ! intuitive (dependent on how you look at it)
+    ld = .first. dic
+    dic%len = 0
+    do while ( .not. (.empty. ld) )
+       dic%len = dic%len + 1
+       ld = .next. ld
+    end do
 
   end subroutine dict_key_p_dict
 
