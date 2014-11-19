@@ -1,5 +1,8 @@
 .SUFFIXES: .f90 .o .a
-include arch.make
+
+ARCH_MAKE_DEFAULT=arch.make
+ARCH_MAKE?=$(ARCH_MAKE_DEFAULT)
+include $(ARCH_MAKE)
 
 # Setup the default things, in case they haven't been set.
 AR      ?= ar
@@ -12,7 +15,7 @@ VPATH?=$(shell pwd)
 default: lib
 
 # The different libraries
-OBJS  = variable.o iso_var_str.o dictionary.o
+OBJS = variable.o iso_var_str.o dictionary.o
 
 LIB  = libvardict.a
 

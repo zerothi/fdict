@@ -1,6 +1,8 @@
 .SUFFIXES: .F90 .f90 .o .a
 
-include ../arch.make
+ARCH_MAKE_DEFAULT=../arch.make
+ARCH_MAKE?=$(ARCH_MAKE_DEFAULT)
+include $(ARCH_MAKE)
 
 # Setup the default things, in case they haven't been set.
 AR      ?= ar
