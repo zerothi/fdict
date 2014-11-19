@@ -1,7 +1,12 @@
 #!/bin/bash
 
-source settings.sh
-[ -e current_settings.sh ] && source current_settings.sh
+_vpath=.
+if [ ! -z "$VPATH" ]; then
+    _vpath=$VPATH
+fi
+
+source $_vpath/settings.sh
+[ -e $_vpath/current_settings.sh ] && source $_vpath/current_settings.sh
 
 # The different settings used in this
 vars=(V s d c z b h i l)

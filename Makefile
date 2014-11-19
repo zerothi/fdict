@@ -8,8 +8,9 @@ include $(ARCH_MAKE)
 AR      ?= ar
 ARFLAGS ?= cru
 RANLIB  ?= ranlib
+PP      ?= cpp -E -P -C
 
-VPATH?=$(shell pwd)
+VPATH   ?= $(shell pwd)
 
 .PHONY: default
 default: lib
@@ -30,18 +31,20 @@ $(LIB): $(OBJS)
 test: lib
 	(cd test ; $(MAKE))
 
-.PHONY: prep
+.PHONY: prep-var prep-dict
 SED_DEL = 's/NEWLINE/\n/g;/^$$/d;/^\!.*&/d;\
 s/[[:space:]]*\#\#[[:space:]]*\([^[:space:]]*\)/\1/g;\
 s/[[:space:]]*\#\([^i][^[:space:]]*\)/"\1"/g;\
 s/"endif"/\n\#endif/g'
-prep:
+prep-var:
 	$(VPATH)/var.sh
-	$(PP) -I$(VPATH) -I. $(VPATH)/variable.F90 | sed -e $(SED_DEL) > tmp.F90 #2> /dev/null
-	$(PP) -I$(VPATH) -I. tmp.F90 | sed -e $(SED_DEL) > variable.f90 #2> /dev/null
+	$(PP) -I. -I$(VPATH) $(VPATH)/variable.F90 | sed -e $(SED_DEL) > tmp.F90 #2> /dev/null
+	$(PP) -I. -I$(VPATH) tmp.F90 | sed -e $(SED_DEL) > variable.f90 #2> /dev/null
+
+prep-dict:
 	$(VPATH)/dictionary.sh
-	$(PP) -I$(VPATH) -I. $(VPATH)/dictionary.F90 | sed -e $(SED_DEL) > tmp.F90 2> /dev/null
-	$(PP) -I$(VPATH) -I. tmp.F90 | sed -e $(SED_DEL) > dictionary.f90 2> /dev/null
+	$(PP) -I. -I$(VPATH) $(VPATH)/dictionary.F90 | sed -e $(SED_DEL) > tmp.F90 2> /dev/null
+	$(PP) -I. -I$(VPATH) tmp.F90 | sed -e $(SED_DEL) > dictionary.f90 2> /dev/null
 
 .PHONY: clean
 clean:
@@ -52,7 +55,7 @@ clean:
 	(cd test ; $(MAKE) clean)
 
 # Dependencies
-dictionary.f90: | prep
-dictionary.o: variable.o | prep
-variable.f90: | prep
-variable.o: iso_var_str.o | prep
+dictionary.f90: | prep-dict
+dictionary.o: variable.o | prep-dict
+variable.f90: | prep-var
+variable.o: iso_var_str.o | prep-var

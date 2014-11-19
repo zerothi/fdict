@@ -8,6 +8,7 @@ include $(ARCH_MAKE)
 AR      ?= ar
 ARFLAGS ?= cru
 RANLIB  ?= ranlib
+PP      ?= cpp -E -P -C
 
 TST_UTILS = tst_utils.o
 LIB_TST = libtst.a
