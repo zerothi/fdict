@@ -21,6 +21,7 @@ program tst_type
   type(tType), target :: a
   type(tType), pointer :: b
   type(tpType) :: container
+  character(len=1) :: local_enc_type(1)
   character(len=1), allocatable :: tmp_enc(:)
   integer :: lenc
 
@@ -34,7 +35,7 @@ program tst_type
 
   ! Try and save the type in the variable
   container%t => a
-  call associate_type(va,transfer(container,tmp_enc))
+  call associate_type(va,transfer(container,local_enc_type))
 
   ! We should now have variable a contained in the variable
   call print(va)
