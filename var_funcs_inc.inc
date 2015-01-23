@@ -11,24 +11,19 @@ subroutine ROUTINE(assign_set,VAR)(this,rhs,dealloc)
   ! ASSIGNMENT in fortran is per default destructive
   ldealloc = .true.
   if(present(dealloc))ldealloc = dealloc
-  if (.not. ldealloc) then
-     ! if we do not deallocate, nullify
+  if (ldealloc) then
+     call delete(this)
+  else
      call nullify(this)
-     this%t = STR(VAR) ! set type
-     ALLOC(p%p,rhs) ! allocate space
-     p%p = rhs ! copy data over
-     allocate(this%enc(size(transfer(p, this%enc)))) ! allocate encoding
-     this%enc = transfer(p, this%enc) ! transfer pointer type to the encoding
-     return
   end if
   ! With pointer transfer we need to deallocate
   ! else bounds might change...
-  call delete(this)
   this%t = STR(VAR)
+  nullify(p%p)
   ALLOC(p%p,rhs) ! allocate space
   p%p = rhs ! copy data over
-  allocate(this%enc(size(transfer(p, this%enc)))) ! allocate encoding
-  this%enc = transfer(p, this%enc) ! transfer pointer type to the encoding
+  allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
+  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine ROUTINE(assign_set,VAR)
 
 subroutine ROUTINE(assign_get,VAR)(lhs,this,success)
@@ -40,6 +35,7 @@ subroutine ROUTINE(assign_get,VAR)(lhs,this,success)
     VAR_TYPE, pointer DIMS :: p
   end type
   type(pt) :: p
+  nullify(p%p)
   lsuccess = this%t == STR(VAR)
 #if DIM > 0
   if (lsuccess) then
@@ -76,6 +72,7 @@ subroutine ROUTINE(associate_get,VAR)(lhs,this,dealloc,success)
      nullify(lhs)
   end if
   if (.not. lsuccess ) return
+  nullify(p%p)
   p = transfer(this%enc,p) ! retrieve pointer encoding
   lhs => p%p
 end subroutine ROUTINE(associate_get,VAR)
@@ -98,8 +95,8 @@ subroutine ROUTINE(associate_set,VAR)(this,rhs,dealloc)
   end if
   this%t = STR(VAR)
   p%p => rhs
-  allocate(this%enc(size(transfer(p, this%enc)))) ! allocate encoding
-  this%enc = transfer(p, this%enc) ! transfer pointer type to the encoding
+  allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
+  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine ROUTINE(associate_set,VAR)
 
 pure function ROUTINE(associatd_l,VAR)(lhs,this) result(ret)
@@ -112,6 +109,7 @@ pure function ROUTINE(associatd_l,VAR)(lhs,this) result(ret)
   type(pt) :: p
   ret = this%t == STR(VAR)
   if (ret) then	
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -126,6 +124,7 @@ pure function ROUTINE(associatd_r,VAR)(this,rhs) result(ret)
   type(pt) :: p
   ret = this%t == STR(VAR)
   if (ret) then	
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif

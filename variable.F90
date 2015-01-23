@@ -13,6 +13,10 @@ module variable
   integer, parameter :: il = selected_int_kind(18)
   integer, parameter :: sp = selected_real_kind(p=6)
   integer, parameter :: dp = selected_real_kind(p=15)
+
+  ! To create a constant transfer data-type of the 
+  ! pointer methods
+  character(len=1) :: local_enc_type(1)
   
   type :: var
      character(len=2) :: t = '  '
