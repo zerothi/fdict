@@ -78,7 +78,11 @@ subroutine ROUTINE(associate_get,VAR)(lhs,this,dealloc,success)
 end subroutine ROUTINE(associate_get,VAR)
 subroutine ROUTINE(associate_set,VAR)(this,rhs,dealloc)
   type(var), intent(inout) :: this
-  VAR_TYPE, intent(in)DIMS, target :: rhs
+#ifdef COMMENTS
+  ! Setting the intent(inout) ensures that no constants
+  ! will be able to be passed.
+#endif
+  VAR_TYPE, intent(inout)DIMS, target :: rhs
   logical, intent(in), optional :: dealloc
   logical :: ldealloc
   type :: pt

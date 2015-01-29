@@ -7,6 +7,11 @@ Every section in this part lists the change of the versions
 The dictionary will make use of the var format for retaining any type of
 data. This will allow for greater structure etc.
 
+** Bugfix for constants as pointers <2015-01-29 Thu>
+Creating a variable with a pointer to a constant
+has now been totally removed from the library.
+It should never occur on the user side so we have
+removed the possibility all together.
 ** Bugfix for dict in dict <2014-10-23 Thu>
 Containing a dictionary in a dictionary is now done using
 the first address of the first d_entry. This means that

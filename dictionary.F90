@@ -149,6 +149,10 @@ module dictionary
 
   interface assign
      module procedure dict_key2val
+     ! dict_key2dict is not allowed as
+     ! the user might assume that all variables
+     ! are copied. They are not, hence the user
+     ! (for now) *MUST* do their own copying.
      !module procedure dict_key2dict
   end interface assign
   public :: assign
@@ -356,8 +360,7 @@ contains
   end subroutine dict_key_p_val
 
   ! Compares two dict types against each other
-  ! Will do comparison, first by hash, and if that matches then
-  ! for the key and value of the dictionaries
+  ! Will do comparison by hash.
   function d_eq_d(d1,d2) result(bool)
     type(dict), intent(in) :: d1,d2
     logical :: bool
