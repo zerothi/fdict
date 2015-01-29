@@ -35,6 +35,30 @@ for v in ${vars[@]} ; do
     done
 done
 _psnl "end interface"
+
+_psnl "interface assign"
+_psnl "module procedure dict_key2val"
+# ! dict_key2dict is not allowed as
+# ! the user might assume that all variables
+# ! are copied. They are not, hence the user
+# ! (for now) *MUST* do their own copying.
+# !module procedure dict_key2dict
+for v in ${vars[@]} ; do
+    for d in `seq 0 $(var_N $v)` ; do
+	modproc dict_get_val $v $d
+    done
+done
+_psnl "end interface"
+
+_psnl "interface associate"
+_psnl "module procedure dict_key_p_val"
+_psnl "module procedure dict_key_p_dict"
+for v in ${vars[@]} ; do
+    for d in `seq 0 $(var_N $v)` ; do
+	modproc dict_get_p $v $d
+    done
+done
+_psnl "end interface"
 } > dict_interface.inc
 
 

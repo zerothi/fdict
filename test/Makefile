@@ -26,11 +26,10 @@ TST_EXE += tst_char
 TST_EXE += tst_type
 TST_EXE += tst_dict tst_dict_long
 TST_EXE += tst_dict_mem1 tst_dict_mem2
-TST_EXE += tst_dict_mem3
+TST_EXE += tst_dict_mem3 tst_dict_mem4
 TST_EXE += tst_dict_overwrite
 TST_EXE += tst_dict_remove
 TST_EXE += tst_dict_dict
-
 
 LIB  = ../libvardict.a $(LIB_TST)
 FFLAGS += -I../
@@ -81,6 +80,10 @@ tst_dict_mem2: tst_dict_mem2.o $(LIB)
 	./$@
 
 tst_dict_mem3: tst_dict_mem3.o $(LIB)
+	$(FC) -o $@ $(FFLAGS) $^
+	./$@
+
+tst_dict_mem4: tst_dict_mem4.o $(LIB)
 	$(FC) -o $@ $(FFLAGS) $^
 	./$@
 

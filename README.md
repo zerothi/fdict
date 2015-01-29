@@ -50,7 +50,8 @@ Using the `type(var)` it becomes easy to create dictionaries in fortran.
 Using this module we implement a dictionary which can contain *any* data
 format using a `key:val` based formalism. The underlying data structure is a
 linked list sorted according to hash-values of the keys. Hence searching 
-for specific elements in the dictionary is *extremely* fast.
+for specific elements in the dictionary is *extremely* fast. Concatenating 
+dictionaries is also very fast.
 
 Creating a dictionary is almost as easy as the Python equivalent:
 ```

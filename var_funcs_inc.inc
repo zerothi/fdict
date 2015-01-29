@@ -81,8 +81,12 @@ subroutine ROUTINE(associate_set,VAR)(this,rhs,dealloc)
 #ifdef COMMENTS
   ! Setting the intent(inout) ensures that no constants
   ! will be able to be passed.
+  ! However, the dictionary type does not allow
+  ! this due to OPERATORS, hence we keep it as this
+  ! and proclaim that any user creating a pointer
+  ! to a constant is insane...
 #endif
-  VAR_TYPE, intent(inout)DIMS, target :: rhs
+  VAR_TYPE, intent(in)DIMS, target :: rhs
   logical, intent(in), optional :: dealloc
   logical :: ldealloc
   type :: pt

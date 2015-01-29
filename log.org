@@ -7,6 +7,46 @@ Every section in this part lists the change of the versions
 The dictionary will make use of the var format for retaining any type of
 data. This will allow for greater structure etc.
 
+** Speed-ed up concatenating large dictionaries substantially <2015-01-29 Thu>
+By moving the dictionary along with the insertion point we can
+greatly speed up the insertion of a large dictionary into another.
+The reason is that we always keep the hash values in ascending order,
+meaning that the search for insertion points will always increase
+in the linked list.
+Now the starting search point will move with the reached hash value
+to decrease insertion time.
+For RHS dictionaries of size 1 there is no benefit.
+** Added hash_same <2015-01-29 Thu>
+Enables the user to test different hash values by counting
+the maximally same hash key values encountered in the linked-list.
+** Added pop routine <2015-01-29 Thu>
+Instead of doing:
+  call associate(v,dict,key)
+  call remove(dict,key)
+the user can do:
+  call pop(v,dict,key)
+which moves the location from the dictionary
+to the variable by an associate call.
+The reference in the dictionary will be nullified.
+
+An optional dealloc keyword can be used to control the
+v deallocation if it already had an entry.
+
+** Added LLEN function <2015-01-29 Thu>
+Instead of relying on the counter %len to be correct
+the user can assert that the dictionary is consistent by
+using the LinkedListLen function (llen), they should ALWAYS
+be equivalent.
+** Improved HASH calculations to maximise spread <2015-01-29 Thu>
+The spread of the HASH values was not so good.
+By changing the algorithm slightly we went from 2000 similar
+keys out of 37000 to 400.
+This makes searches much faster.
+** Added direct retrieval from dictionaries <2015-01-29 Thu>
+call associate(real(dp),dict,key)
+and the assign equivalent is now possible.
+However, this will fail miserably if the data type is not
+consistent. This will be the users responsibility.
 ** Bugfix for constants as pointers <2015-01-29 Thu>
 Creating a variable with a pointer to a constant
 has now been totally removed from the library.

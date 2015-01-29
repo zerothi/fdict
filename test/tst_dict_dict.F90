@@ -10,7 +10,7 @@ program tests
   type(var) :: av
 
   ! Create dictionary
-  va = 0.1_dp
+  va = 1._dp
 
   ! Copying values
   dic_va = ('va'.kv. va)
@@ -24,8 +24,11 @@ program tests
   call associate(av,dic2,'va')
   ! retrive values
   call assign(vb,av)
-  print *,vb(1,1)
-  
+  call assert(vb == va,'Retrieval of values not correct')
+  vb = 0._dp
+  call assign(vb,dic2,'va')
+  call assert(vb == va,'Retrieval of values not correct')
+
   call remove(dic1,'dict')
   print *,'dic1',len(dic1)
   ! If we delete dic2, we delete dic_va, so we should not delete it

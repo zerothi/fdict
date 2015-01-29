@@ -44,13 +44,18 @@ module dictionary
   ! HASH-comparisons are MUCH faster...
   ! hence we store all values in an incremental fashion in terms
   ! of the HASH-value
-  integer, parameter :: HASH_SIZE = 62171 ! a prime !
-  integer, parameter :: HASH_MULT = 31
+  integer, parameter :: HASH_SIZE = 149087 ! a prime !
+  integer, parameter :: HASH_MULT = 67
   
   interface len
      module procedure len_
   end interface len
   public :: LEN
+
+  interface llen
+     module procedure llen_
+  end interface llen
+  public :: LLEN
 
   interface print
      module procedure print_
@@ -127,6 +132,11 @@ module dictionary
   end interface operator( .EMPTY. )
   public :: operator(.EMPTY.)
 
+  interface hash_same
+     module procedure hash_same_
+  end interface hash_same
+  public :: hash_same
+
   interface delete
      module procedure delete_
   end interface delete
@@ -136,6 +146,11 @@ module dictionary
      module procedure remove_
   end interface remove
   public :: remove
+
+  interface pop
+     module procedure pop_
+  end interface pop
+  public :: pop
 
   interface nullify
      module procedure nullify_
@@ -147,27 +162,12 @@ module dictionary
   end interface extend
   public :: extend
 
-  interface assign
-     module procedure dict_key2val
-     ! dict_key2dict is not allowed as
-     ! the user might assume that all variables
-     ! are copied. They are not, hence the user
-     ! (for now) *MUST* do their own copying.
-     !module procedure dict_key2dict
-  end interface assign
-  public :: assign
-
-  interface associate
-     module procedure dict_key_p_val
-     module procedure dict_key_p_dict
-  end interface associate
-  public :: associate
-
   interface which
      module procedure dict_key_which
   end interface which
   public :: which
 
+  public :: assign, associate
 
   ! Create a dictionary type from
 #include "dict_interface.inc"
@@ -197,12 +197,12 @@ contains
     integer :: val
     integer :: i, fac
     val = 0
-    fac = mod(iachar(key(1:1)),4)
+    fac = mod(iachar(key(1:1)),HASH_MULT)
     do i = 1 , min(DICT_KEY_LENGTH,len_trim(key))
        val = val + iachar(key(i:i)) + fac * iachar(key(i:i))
        fac = fac + 1
-       if ( fac > 3 ) then
-          fac = -2
+       if ( fac > HASH_MULT ) then
+          fac = -HASH_MULT + 1
        end if
     end do
     ! A hash has to be distinguished from the "empty"
@@ -249,6 +249,36 @@ contains
     integer :: hash
     hash = d%first%hash
   end function hash
+
+  function hash_same_(this) result(same)
+    type(dict), intent(inout) :: this
+    integer :: same
+    type(d_entry), pointer :: ld
+    integer :: max_now, chash
+    same = 0
+    if ( .empty. this ) return
+
+    ! Initialize
+    max_now = 0
+    ld => this%first
+    chash = ld%hash
+    do while ( associated(ld) )
+       if ( chash == ld%hash ) then
+          max_now = max_now + 1
+       else
+          chash = ld%hash
+          if ( max_now > same ) then
+             same = max_now
+             max_now = 1
+          end if
+       end if
+          
+       ld => ld%next
+    end do
+    if ( max_now > same ) same = max_now
+
+  end function hash_same_
+    
 
   subroutine dict_key2val(val,d,key,dealloc)
     type(var), intent(inout) :: val
@@ -408,22 +438,13 @@ contains
   function d_cat_d(d1,d2) result(d)
     type(dict), intent(in) :: d1,d2
     type(dict) :: d
-    type(d_entry), pointer :: ladd,lnext
     if ( .empty. d1 ) then
        if ( .empty. d2 ) return
        call copy_assign(d2,d)
        return
     end if
     call copy_assign(d1,d)
-    if ( .empty. d2 ) return
-    ladd => d2%first
-    do 
-       ! step ...
-       lnext => ladd%next
-       call d_insert(d,ladd)
-       if ( .not. associated(lnext) ) return
-       ladd => lnext
-    end do
+    call sub_d_cat_d(d,d2)
   end function d_cat_d
 
   ! Concatenate two dictionaries to one dictionary...
@@ -431,16 +452,49 @@ contains
   subroutine sub_d_cat_d(d,d2)
     type(dict), intent(inout) :: d
     type(dict), intent(in) :: d2
-    type(d_entry), pointer :: ladd,lnext
+    type(d_entry), pointer :: ladd, lnext
+    type(dict) :: fd
+    integer :: kh
+    if ( .empty. d ) then
+       if ( .empty. d2 ) return
+       call copy_assign(d2,d)
+       return
+    end if
     if ( .empty. d2 ) return
     ladd => d2%first
+    fd%len = 0
+    fd%first => d%first
     do 
        ! step ...
-       lnext => ladd%next
-       call d_insert(d,ladd)
-       if ( .not. associated(lnext) ) return
+       lnext => ladd%next ! we need to get the next
+       kh = fd%first%hash
+       ! before it gets deassociated
+       call d_insert(fd,ladd)
+       ! Now if the hash has changed it means
+       ! that the algorithm has put the new
+       ! key in front of the first one.
+       ! As this can ONLY occur once
+       ! we know that it must be before
+       ! the d%first as well.
+       ! We hence update d%first and
+       ! do not update the fd%first as it points correctly.
+       if ( kh /= fd%first%hash ) then
+          d%first => fd%first
+       else
+          ! The hash table has not been updated.
+          ! Thus the key has been added afterwards
+          ! and we can safely step in the
+          ! linked list wîth our fake dictionary.
+          ! In case the hash values are equivalent
+          ! then the key will be put in sequence
+          ! of arrival, and thus a deterministic pattern
+          ! is achieved.
+          fd%first => ladd
+       end if
+       if ( .not. associated(lnext) ) exit
        ladd => lnext
     end do
+    d%len = d%len + fd%len
   end subroutine sub_d_cat_d
 
   subroutine d_insert(d,entry)
@@ -508,6 +562,18 @@ contains
     len_ = d%len
   end function len_
 
+  function llen_(this)
+    type(dict), intent(inout) :: this
+    type(d_entry), pointer :: d
+    integer :: llen_
+    llen_ = 0
+    d => this%first
+    do while ( associated(d) ) 
+       llen_ = llen_ + 1
+       d => d%next
+    end do
+  end function llen_
+
   function d_next(d)
     type(dict), intent(in) :: d
     type(dict) :: d_next
@@ -552,7 +618,7 @@ contains
     logical, intent(in), optional :: dealloc
     type(d_entry), pointer :: de, pr
     logical :: ldealloc
-    integer :: kh, lhash
+    integer :: kh
 
     ! We default to de-allocation of everything
     ldealloc = .true.
@@ -577,7 +643,7 @@ contains
        kh = hash_val(key)
 
        pr => this%first
-       if ( kh == hash_val(pr%key) ) then
+       if ( kh == pr%hash ) then
           if ( key == pr%key ) then
              this%first => pr%next
              this%len = this%len - 1 
@@ -596,9 +662,8 @@ contains
        do while ( associated(de) )
           ! We know it is sorted with hash-tags.
           ! So if we are beyond the hash, we just quit.
-          lhash = hash_val(de%key)
-          if ( kh < lhash ) exit ! it does not exist
-          if ( lhash == kh ) then
+          if ( kh < de%hash ) exit ! it does not exist
+          if ( de%hash == kh ) then
              if ( de%key == key ) then
                 pr%next => de%next
                 call delete(de%value,dealloc=ldealloc)
@@ -640,10 +705,68 @@ contains
 
   end subroutine delete_
 
+  subroutine pop_(val,this,key,dealloc)
+    type(var), intent(inout) :: val
+    type(dict), intent(inout) :: this
+    character(len=*), intent(in) :: key
+    logical, intent(in), optional :: dealloc
+    type(d_entry), pointer :: de, pr
+
+    ! Here the default is to de-allocate
+    ! even though we use the association feature
+    ! Hence, we need a variable here
+    logical :: ldealloc
+    integer :: kh
+
+    ldealloc = .true.
+    if ( present(dealloc) ) ldealloc = dealloc
+
+    ! if no keys are present, simply return
+    if ( .not. associated(this%first) ) then
+       this%len = 0
+       call val_delete_request(val,dealloc=ldealloc)
+       return
+    end if
+
+    pr => this%first
+    if ( pr%key == key ) then
+       this%first => pr%next
+       call associate(val,pr%value,dealloc=ldealloc)
+       ! Ensures that the encoding gets removed
+       call nullify(pr%value)
+       deallocate(pr)
+       this%len = this%len - 1
+       return
+    end if
+
+    kh = hash_val(key)
+
+    de => pr%next
+    do while ( associated(de) )
+       ! Check if even exists
+       if ( kh < de%hash ) exit
+       if ( kh == de%hash ) then
+          if ( de%key == key ) then
+             pr%next => de%next
+             call associate(val,de%value,dealloc=ldealloc)
+             ! Ensures that the encoding gets removed
+             call nullify(de%value)
+             deallocate(de)
+             this%len = this%len - 1
+             exit
+          end if
+       end if
+       pr => de
+       de => de%next
+    end do
+
+  end subroutine pop_
+
   elemental subroutine remove_(this,key)
     type(dict), intent(inout) :: this
     character(len=*), intent(in) :: key
     type(d_entry), pointer :: de, pr
+    integer :: kh
 
     ! if no keys are present, simply return
     if ( .not. associated(this%first) ) then
@@ -661,15 +784,21 @@ contains
        return
     end if
 
+    kh = hash_val(key)
+
     de => pr%next
     do while ( associated(de) )
-       if ( de%key == key ) then
-          pr%next => de%next
-          ! Ensures that the encoding gets removed
-          call nullify(de%value)
-          deallocate(de)
-          this%len = this%len - 1
-          exit
+       ! Check if even exists
+       if ( kh < de%hash ) exit
+       if ( kh == de%hash ) then
+          if ( de%key == key ) then
+             pr%next => de%next
+             ! Ensures that the encoding gets removed
+             call nullify(de%value)
+             deallocate(de)
+             this%len = this%len - 1
+             exit
+          end if
        end if
        pr => de
        de => de%next

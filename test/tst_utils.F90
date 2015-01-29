@@ -23,31 +23,52 @@ module tst_utils
 contains
 
   subroutine show_mem()
-    call system("free | grep Mem | awk '{print $1,$2/1024,$3/1024,$4/1024}'")
+    call system("free | grep Mem | awk '{printf ""%s  %8.2f  %8.2f  %8.2f\n"", $1,$2/1024,$3/1024,$4/1024}'")
   end subroutine show_mem
 
-  subroutine assert_0d(log,msg)
+  subroutine assert_0d(log,msg,good)
     logical, intent(in) :: log
     character(len=*) :: msg
+    character(len=*), optional :: good
     if ( .not. log ) then
        write(*,*) msg
        stop
+    else
+       if ( present(good) ) then
+          write(*,*)'SUCCESS '//trim(good)
+       else
+          write(*,*)'SUCCESS'
+       end if
     end if
   end subroutine assert_0d
-  subroutine assert_1d(log,msg)
+  subroutine assert_1d(log,msg,good)
     logical, intent(in) :: log(:)
     character(len=*) :: msg
+    character(len=*), optional :: good
     if ( .not. all(log) ) then
        write(*,*) msg
        stop
+    else
+       if ( present(good) ) then
+          write(*,*)'SUCCESS '//trim(good)
+       else
+          write(*,*)'SUCCESS'
+       end if
     end if
   end subroutine assert_1d
-  subroutine assert_2d(log,msg)
+  subroutine assert_2d(log,msg,good)
     logical, intent(in) :: log(:,:)
     character(len=*) :: msg
+    character(len=*), optional :: good
     if ( .not. all(log) ) then
        write(*,*) msg
        stop
+    else
+       if ( present(good) ) then
+          write(*,*)'SUCCESS '//trim(good)
+       else
+          write(*,*)'SUCCESS'
+       end if
     end if
   end subroutine assert_2d
 
