@@ -29,7 +29,7 @@ $(LIB): $(OBJS)
 
 .PHONY: test
 test: lib
-	(cd test ; $(MAKE))
+	$(MAKE) -C test
 
 .PHONY: prep-var prep-dict
 SED_DEL = 's/NEWLINE/\n/g;/^$$/d;/^\!.*&/d;\
@@ -53,7 +53,7 @@ clean:
 	-rm -f var_nullify.inc var_delete.inc var_content.inc var_funcs.inc var_interface.inc
 	-rm -f var_var_set.inc var_var_alloc.inc var_var_assoc.inc
 	-rm -f var_declarations.inc var_declarations2.inc
-	(cd test ; $(MAKE) clean)
+	$(MAKE) -C test clean
 
 # Dependencies
 dictionary.f90: | prep-dict
