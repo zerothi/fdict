@@ -21,15 +21,17 @@ $(LIB_TST): $(TST_UTILS)
 	$(AR) $(ARFLAGS) $(LIB_TST) $(TST_UTILS)
 	$(RANLIB) $(LIB_TST)
 
-TST_EXE  = tst_simple tst_sp tst_dp tst_mem
-TST_EXE += tst_char
-TST_EXE += tst_type
-TST_EXE += tst_dict tst_dict_long
-TST_EXE += tst_dict_mem1 tst_dict_mem2
-TST_EXE += tst_dict_mem3 tst_dict_mem4
-TST_EXE += tst_dict_overwrite
-TST_EXE += tst_dict_remove
-TST_EXE += tst_dict_dict
+TST_EXE_  = tst_simple tst_sp tst_dp tst_mem
+TST_EXE_ += tst_char
+TST_EXE_ += tst_type
+TST_EXE_ += tst_dict tst_dict_long
+TST_EXE_ += tst_dict_mem1 tst_dict_mem2
+TST_EXE_ += tst_dict_mem3 tst_dict_mem4
+TST_EXE_ += tst_dict_overwrite
+TST_EXE_ += tst_dict_remove
+TST_EXE_ += tst_dict_dict
+
+TST_EXE ?= $(TST_EXE_)
 
 LIB  = ../libvardict.a $(LIB_TST)
 FFLAGS += -I../
