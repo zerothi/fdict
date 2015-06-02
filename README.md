@@ -1,7 +1,11 @@
-fvar
+fdict
 ====
 
-Supplying a variable module which does not restrict the type used.
+Supplying a variable and dictionary module which does not restrict the type used.
+
+
+Type free variable
+==================
 
 Using this module one gains access to a generic type variable which
 can contain *any* data format.
@@ -42,7 +46,7 @@ where it is. As with any other pointer arithmetic it is up to the programmer
 to ensure no memory leaks.
 
 
-dictionary
+Dictionary
 ==========
 
 Using the `type(var)` it becomes easy to create dictionaries in fortran.

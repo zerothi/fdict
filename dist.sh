@@ -1,5 +1,6 @@
-
 #!/bin/bash
+
+_name=fdict
 
 # bash-script to create tar file for distribution
 
@@ -9,11 +10,11 @@ describe=`git describe HEAD`
 describe=${describe%-*}
 
 # Save file name
-file=fvar-$describe.tar.gz
+file=$_name-$describe.tar.gz
 
 rm -f $file
 # Create the archive (with prefix)
-git archive --prefix fvar-$describe/ \
+git archive --prefix $_name-$describe/ \
     --format tar.gz \
     -o $file HEAD
 
