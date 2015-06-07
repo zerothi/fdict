@@ -1,3 +1,6 @@
+#ifdef COMMENTS
+! @LICENSE@, see README.md
+#endif
 #define _cc2_1(x,y) _cc2_2(x,y)
 #define _cc2_2(x,y) x ## y
 #define _cc3_1(x,y,z) _cc3_2(x,y,z)

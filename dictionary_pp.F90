@@ -1,3 +1,5 @@
+! @LICENSE@, see README.md
+
 ! A simple dictionary module for a key-value based system...
 ! 
 ! This module has entirely been created by:

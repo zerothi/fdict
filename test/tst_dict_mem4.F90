@@ -6,7 +6,7 @@ program tests
   
   integer :: i, N, step
 
-  N = 1000
+  N = 500
   step = 25
 
   write(*,*)'Pop and delete var'

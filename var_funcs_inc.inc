@@ -1,3 +1,6 @@
+#ifdef COMMENTS
+! @LICENSE@, see README.md
+#endif
 #include "settings.inc"
 subroutine ROUTINE(assign_set,VAR)(this,rhs,dealloc)
   type(var), intent(inout) :: this

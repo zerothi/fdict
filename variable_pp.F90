@@ -1,3 +1,5 @@
+! @LICENSE@, see README.md
+
 ! Generic purpose variable as in any scripting language
 ! It has the power to transform into any variable at any time
 module variable

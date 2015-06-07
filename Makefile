@@ -34,6 +34,8 @@ $(LIB): $(OBJS)
 	$(RANLIB) $(LIB)
 
 .PHONY: test
+.PHONY: check
+check: test
 test: lib
 	$(MAKE) -C test
 

@@ -10,7 +10,7 @@ program test_dict
   ! fill dictionary
   dic = ('string'.kv."Hello world")
 
-  N = 1000
+  N = 500
   step = 25
 
   write(*,*) 'Overwriting same key'
