@@ -1,5 +1,9 @@
 language: fortran
 
+os:
+   - linux
+   - macosx
+
 notifications:
    email:
       recipients:
@@ -9,7 +13,10 @@ notifications:
 
 before_install:
    - ln -s .arch.make arch.make
-   - sudo apt-get install -qq gfortran
+   linux:
+      - sudo apt-get install -qq gfortran
+   macosx:
+      - brew install gfortran
 
 install:
    - make
