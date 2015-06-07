@@ -1,12 +1,9 @@
 ! @LICENSE@, see README.md
 
-! A simple dictionary module for a key-value based system...
-! 
-! This module has entirely been created by:
-! Nick Papior Andersen, copyright 2012.
-! nickpapior@gmail.com
-!
-! Only to be used for not-for-profit development/applications.
+!> A dictionary module for the usage of complex data structures
+!! in fortran.
+!! 
+!> \author Nick Papior Andersen, Copyright 2015
 module dictionary
 
   use iso_var_str
@@ -29,12 +26,17 @@ module dictionary
   ! We could consider changing this to a variable size string
   ! However, that will increase the dependencies and will most likely not yield
   ! a better interface.
+  !> Maximum character length of the keys in the dictionary, no 
+  !! index/key can be longer than this.
   integer, parameter, public :: DICT_KEY_LENGTH = 50
   
   ! A parameter returned if not found.
   character(len=DICT_KEY_LENGTH), parameter :: DICT_NOT_FOUND = 'ERROR: key not found'
   public :: DICT_NOT_FOUND
-  
+
+  !> The dictionary container it-self
+  !!
+  !! All contained variables are private.
   type :: dict
      ! We will keep the dictionary private so that any coding
      ! has to use .KEY. and .VAL. etc.
@@ -48,51 +50,61 @@ module dictionary
   ! of the HASH-value
   integer, parameter :: HASH_SIZE = 149087 ! a prime !
   integer, parameter :: HASH_MULT = 67
-  
+
+  !> Return the length of a dictionary, by internal counting algorithms
   interface len
      module procedure len_
   end interface len
   public :: LEN
 
+  !> Actually count number of elements in the dictionary by forcing the traversing
   interface llen
      module procedure llen_
   end interface llen
   public :: LLEN
 
+  !> Print out all keys and which data-type it contains as well as the hash-number
   interface print
      module procedure print_
   end interface print
   public :: print
 
   ! Concatenate dicts or list of dicts to list of dicts
+  !> Concatenate, or extend, dictionaries, this can
+  !! be done on it-self `dic = dic // ('key'.kv.1)
   interface operator( // )
      module procedure d_cat_d
   end interface operator( // )
   public :: operator( // )
 
   ! Retrieve the key from a dictionary (unary)
+  !> Returns the key of the current _top_ entry,
   interface operator( .KEY. )
      module procedure key
   end interface operator( .KEY. )
   public :: operator(.KEY.)
 
   ! check whether key exists in dictionary
+  !> Returns .true. if the key exists in the dictionary, else returns false.
   interface operator( .IN. )
      module procedure in
   end interface operator( .IN. )
   public :: operator(.IN.)
 
   ! check whether key not exists in dictionary
+  !> Returns .not. ('key. .in. dict)
   interface operator( .NIN. )
      module procedure nin
   end interface operator( .NIN. )
   public :: operator(.NIN.)
   
   ! Retrieve the value from a dictionary (unary)
+  !> Returns the value from a dictionary by copy
   interface operator( .VAL. )
      module procedure value
   end interface operator( .VAL. )
   public :: operator(.VAL.)
+  !> Returns the value from a dictionary by pointer
   interface operator( .VALP. )
      module procedure value_p
   end interface operator( .VALP. )
@@ -105,30 +117,35 @@ module dictionary
   public :: operator(.HASH.)
 
   ! Checks for two dicts have all the same keys
+  !> Checks whether all keys are the same in two dictionaries.
   interface operator( .EQ. )
      module procedure d_eq_d
   end interface operator( .EQ. )
   public :: operator(.EQ.) ! Overloaded
 
   ! Checks for two dicts do not share any common keys
+  !> Checks whether not all keys are the same in two dictionaries.
   interface operator( .NE. )
      module procedure d_ne_d
   end interface operator( .NE. )
   public :: operator(.NE.) ! Overloaded
 
   ! Steps one time in the dictionary (unary)
+  !> Looping construct.
   interface operator( .NEXT. )
      module procedure d_next
   end interface operator( .NEXT. )
   public :: operator(.NEXT.)
 
   ! Retrieve the first of a dictionary (unary)
+  !> Returns the first entry
   interface operator( .FIRST. )
      module procedure d_first
   end interface operator( .FIRST. )
   public :: operator(.FIRST.)
 
   ! Check whether the dictionary is empty (unary)
+  !> Checks if it is an empty dictionary, i.e. no keys exist
   interface operator( .EMPTY. )
      module procedure d_empty
   end interface operator( .EMPTY. )
