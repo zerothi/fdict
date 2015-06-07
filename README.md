@@ -1,5 +1,7 @@
 # fdict #
 
+[![Build Status](https://travis-ci.org/zerothi/fdict.svg?branch=master)](https://travis-ci.org/zerothi/fdict)
+
 A variable and dictionary in pure fortran for retaining any data-type
 and a fast hash-table dictionary.
 
