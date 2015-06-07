@@ -15,6 +15,12 @@ VPATH   ?= $(shell pwd)
 .PHONY: default
 default: lib
 
+# By compiling with 
+#  make PIPE_SILENT=
+# all the preprocessing will be shown on stdout.
+# This is handy for debugging.
+PIPE_SILENT ?= 2> /dev/null
+
 # The different libraries
 OBJS = variable.o iso_var_str.o dictionary.o
 
@@ -32,19 +38,19 @@ test: lib
 	$(MAKE) -C test
 
 .PHONY: prep-var prep-dict
-SED_DEL = 's/NEWLINE/\n/g;/^$$/d;/^\!.*&/d;\
-s/[[:space:]]*\#\#[[:space:]]*\([^[:space:]]*\)/\1/g;\
-s/[[:space:]]*\#\([^i][^[:space:]]*\)/"\1"/g;\
-s/"endif"/\n\#endif/g'
 prep-var:
 	$(VPATH)/var.sh
-	$(PP) -I. -I$(VPATH) $(VPATH)/variable.F90 | sed -e $(SED_DEL) > tmp.F90 #2> /dev/null
-	$(PP) -I. -I$(VPATH) tmp.F90 | sed -e $(SED_DEL) > variable.f90 #2> /dev/null
+	$(PP) -I. -I$(VPATH) $(VPATH)/variable_pp.F90 \
+		| sed -f filter.sed > tmp.F90 $(PIPE_SILENT)
+	$(PP) -I. -I$(VPATH) tmp.F90 \
+		| sed -f filter.sed > variable.f90 $(PIPE_SILENT)
 
 prep-dict:
 	$(VPATH)/dictionary.sh
-	$(PP) -I. -I$(VPATH) $(VPATH)/dictionary.F90 | sed -e $(SED_DEL) > tmp.F90 2> /dev/null
-	$(PP) -I. -I$(VPATH) tmp.F90 | sed -e $(SED_DEL) > dictionary.f90 2> /dev/null
+	$(PP) -I. -I$(VPATH) $(VPATH)/dictionary_pp.F90 \
+		| sed -f filter.sed > tmp.F90 $(PIPE_SILENT)
+	$(PP) -I. -I$(VPATH) tmp.F90 \
+		| sed -f filter.sed > dictionary.f90 $(PIPE_SILENT)
 
 .PHONY: clean
 clean:

@@ -40,7 +40,10 @@ subroutine ROUTINE(assign_get,VAR)(lhs,this,success)
 #if DIM > 0
   if (lsuccess) then
     p = transfer(this%enc,p) ! retrieve pointer encoding
-CHECK_SIZE(lsuccess,p%p,lhs,DIM)
+    lsuccess = all(shape(p%p)==shape(lhs))   !&
+     !     .and. all((lbound(p%p) == lbound(lhs))) &
+     !     .and. all((ubound(p%p) == ubound(lhs))) 
+
   end if
 #endif
   if (present(success)) success = lsuccess

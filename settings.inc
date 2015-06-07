@@ -28,33 +28,3 @@
 #elif DIM == 6
 #  define ALLOC(v,ref) allocate(v(size(ref,1),size(ref,2),size(ref,3),size(ref,4),size(ref,5),size(ref,6)))
 #endif
-
-
-#undef CHECK_SIZE
-
-#define CHECK_SIZE_S(v,var,ref) v = size(var,1) == size(ref,1)
-#define CHECK_SIZE_A(v,var,ref,dim) .and. size(var,dim) == size(ref,dim)
-
-#if DIM == 1
-#  define CHECK_SIZE(v,vv,r,d) CHECK_SIZE_S(v,vv,r)
-#elif DIM == 2
-#  define CHECK_SIZE(v,vv,r,d) CHECK_SIZE_S(v,vv,r) & NEWLINE\
-    CHECK_SIZE_A(v,vv,r,2)
-#elif DIM == 3
-#  define CHECK_SIZE(v,vv,r,d) CHECK_SIZE_S(v,vv,r) & NEWLINE\
-    CHECK_SIZE_A(v,vv,r,2) CHECK_SIZE_A(v,vv,r,3)
-#elif DIM == 4
-#  define CHECK_SIZE(v,vv,r,d) CHECK_SIZE_S(v,vv,r) & NEWLINE\
-    CHECK_SIZE_A(v,vv,r,2) CHECK_SIZE_A(v,vv,r,3) & NEWLINE\
-    CHECK_SIZE_A(v,vv,r,4)
-#elif DIM == 5
-#  define CHECK_SIZE(v,vv,r,d) CHECK_SIZE_S(v,vv,r) & NEWLINE\
-    CHECK_SIZE_A(v,vv,r,2) CHECK_SIZE_A(v,vv,r,3) & NEWLINE\
-    CHECK_SIZE_A(v,vv,r,4) CHECK_SIZE_A(v,vv,r,5)
-#elif DIM == 6
-#  define CHECK_SIZE(v,vv,r,d) CHECK_SIZE_S(v,vv,r) & NEWLINE\
-    CHECK_SIZE_A(v,vv,r,2) CHECK_SIZE_A(v,vv,r,3) & NEWLINE\
-    CHECK_SIZE_A(v,vv,r,4) CHECK_SIZE_A(v,vv,r,5) & NEWLINE\
-    CHECK_SIZE_A(v,vv,r,6)
-#endif
-
