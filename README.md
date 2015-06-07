@@ -42,6 +42,26 @@ To link fdict to your program the following can be used in a `Makefile`
     FDICT_LIBS  = -L$(FDICT_PATH) -lvardict
     FDICT_INC   = -I$(FDICT_PATH)
 
+#### Controlling interface parameters ####
+
+__Typically not needed__: allows for customization of different interfaces.
+
+By default the number of dimensions allowed by the library is 3, i.e.
+there is no interface created for `real a(:,:,:,:)`, etc. However,
+to accomodate arbitrary dimensions you can call a _setup_ script
+which initializes a different number of dimensions, which can
+be controlled individually.
+
+Run `./setup.sh` to get options regarding the setup.
+
+For instance, if you require interfaces for `real` and `real(kind(0.d0))`
+up to 4 dimensions and all others up to 3 dimensions you can do this
+
+    # -A == all data-types, s = single, d = double
+    ./setup.sh -A 3 -s 4 -d 4
+    # -R is a shorthand for both -s and -d
+    ./setup.sh -A 3 -R 4
+
 
 ### variable ###
 
@@ -49,41 +69,39 @@ Using this module one gains access to a generic type variable which
 can contain _any_ data format.
 
 Basically it is used like this:
-```
-use variable
-integer :: a(3)
-type(var) :: v
-a = 2
-call assign(v,a)
-a = 3
-call assign(a,v)
-```
+
+    use variable
+	integer :: a(3)
+	type(var) :: v
+	a = 2
+	call assign(v,a)
+	a = 3
+	call assign(a,v)
 
 Also the variable contains an abbreviation for assigning pointers to 
 not copy data, but retain data locality:
-```
-integer, target :: a(3)
-type(var) :: v
-a = 2
-call associate(v,a)
-a = 3
-! Now v contains a = 3
-```
+
+	integer, target :: a(3)
+	type(var) :: v
+	a = 2
+	call associate(v,a)
+	a = 3
+	! Now v contains a = 3
 
 To delete a variable one simply does:
-```
-use variable
-type(var) :: v
-call delete(v)
-```
+
+	use variable
+	type(var) :: v
+	call delete(v)
+
 However, when the variable is using pointers, instead the user can do
-```
-use variable
-type(var) :: v
-call delete(v,dealloc=.false.)
-! or
-call nullify(v)
-```
+
+	use variable
+	type(var) :: v
+	call delete(v,dealloc=.false.)
+	! or
+	call nullify(v)
+
 which merely destroys the variable object and thus retains the data
 where it is. As with any other pointer arithmetic it is up to the programmer
 to ensure no memory leaks.
@@ -100,23 +118,23 @@ for specific elements in the dictionary is _extremely_ fast. Concatenating
 dictionaries is also very fast.
 
 Creating a dictionary is almost as easy as the Python equivalent:
-```
-use dictionary
-type(dict) :: dic
-dic = ('KEY'.kv.1)
-```
+
+	use dictionary
+	type(dict) :: dic
+	dic = ('KEY'.kv.1)
+
 To extend a dictionary one uses the concatenating format:
-```
-dic = dic // ('Hello'.kv.'world') // ('No'.kv.'world')
-```
+
+	dic = dic // ('Hello'.kv.'world') // ('No'.kv.'world')
+
 Again as is used by the `type(var)` one can with benefit use `.kvp.` to create
 the dictionary value by pointers instead of copying the content.  
 Hence doing:
-```
-real :: r(4)
-dic = dic // ('reals'.kvp.r)
-r = 4
-```
+
+	real :: r(4)
+	dic = dic // ('reals'.kvp.r)
+	r = 4
+
 will change the value in the dictionary.
 
 Note that the dictionary can also contain _any_ data type.
@@ -125,13 +143,13 @@ However, if it needs to do custom data-types the programmer needs to
 extend the code by supplying a few custom routines.
 
 Intrinsically the dictionary can contain dictionaries by this:
-```
-use dictionary
-type(dict) :: d1, d2
-d1 = ('hello'.kv.'world')
-d2 = ('hello'.kv.'world')
-d1 = d1 // ('dict'.kvp.d2)
-```
+
+	use dictionary
+	type(dict) :: d1, d2
+	d1 = ('hello'.kv.'world')
+	d2 = ('hello'.kv.'world')
+	d1 = d1 // ('dict'.kvp.d2)
+
 But it will be up to the user to _know_ the key for data types other than
 integers, reals, complex numbers and characters.
 
@@ -153,12 +171,13 @@ If you have a fix please consider adding a [pull request][pr].
 
 ## License ##
 
-The fdict license is [lgpl], see the LICENSE file.
+The fdict license is [LGPL][lgpl], see the LICENSE file.
 
 ## Thanks ##
 
-A big thanks goes to Alberto Garcia for contributing ideas and given
-me bug-reports.
+A big thanks goes to Alberto Garcia for contributing ideas and giving
+me bug reports. Without him the interface would have been much more
+complex!
 
 <!---
 Links to external and internal sites.

@@ -24,10 +24,12 @@ function _help {
     echo ""
     echo " Several options are allowed to control how many dimensions that will"
     echo " be accesible in type(var) and type(dict)."
+    echo " currently you cannot ask for more than 7 dimensions without"
+    echo " changing this file and settings.inc"
     echo ""
     echo " The following options control how the dimensions are allocated:"
     for v in -s -d -c -z -b -h -i -l ; do
-	echo "   $v <num> : allows 0-<num> dimensions of ${name[${v:1}]}"
+	echo "   $v <num> : allows 0-<num> dimensions of $(var_name ${v:1})"
     done
     echo "   -A <num> : short for all the above options simultaneously"
     echo "   -R <num> : short for -s <num> -d <num>"
@@ -36,7 +38,7 @@ function _help {
     echo " The above options can be combined with the last option taking precedence."
     echo ""
     echo "Example"
-    echo " Allowing all variables to have 2 dimenions but the"
+    echo " Allowing all variables to have 2 dimensions but the"
     echo " double precision reals to have 3 can be done with:"
     echo "  $0 -A 2 -d 3"
     echo ""

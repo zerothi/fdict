@@ -30,4 +30,6 @@
 #  define ALLOC(v,ref) allocate(v(size(ref,1),size(ref,2),size(ref,3),size(ref,4),size(ref,5)))
 #elif DIM == 6
 #  define ALLOC(v,ref) allocate(v(size(ref,1),size(ref,2),size(ref,3),size(ref,4),size(ref,5),size(ref,6)))
+#elif DIM == 7
+#  define ALLOC(v,ref) allocate(v(size(ref,1),size(ref,2),size(ref,3),size(ref,4),size(ref,5),size(ref,6),size(ref,7)))
 #endif
