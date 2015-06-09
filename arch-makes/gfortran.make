@@ -16,12 +16,6 @@ FFLAGS=-O2 -m64 -fPIC
 # This is for debugging purposes
 #FFLAGS = -g -O0 -Warray-bounds -Wunused
 
-PP = cpp -E -P -C 
-
-AR=ar
-ARFLAGS = cru
-RANLIB=ranlib
-
 .F90.o:
 	$(FC) -c $(INC) $(FFLAGS) $(FPPFLAGS) $< 
 .f90.o:
