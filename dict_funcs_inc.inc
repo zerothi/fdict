@@ -1,5 +1,5 @@
 #ifdef COMMENTS
-! @LICENSE@, see README.md
+! For LICENSE, see README.md
 #endif
 function ROUTINE(dict_kv,VAR)(key,val) result(this)
 character(len=*), intent(in) :: key
