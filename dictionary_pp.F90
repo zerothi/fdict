@@ -92,7 +92,7 @@ module dictionary
   public :: operator(.IN.)
 
   ! check whether key not exists in dictionary
-  !> Returns .not. ('key. .in. dict)
+  !> Returns .not. ('key' .in. dict)
   interface operator( .NIN. )
      module procedure nin
   end interface operator( .NIN. )

@@ -8,7 +8,13 @@ include $(ARCH_MAKE)
 AR      ?= ar
 ARFLAGS ?= cru
 RANLIB  ?= ranlib
-PP      ?= cpp -E -P -C
+
+# Sadly the preprocessor for fortran is a bit of a pain.
+# -C is needed to disregard C-comments (the operator // is a comment!?!)
+# -nostdinc is needed to not include standard includes (which are C comments)
+# -E only preprocess, do not try and compile
+# -P do not add line markers
+PP ?= cpp -E -P -C -nostdinc
 
 VPATH   ?= $(shell pwd)
 
