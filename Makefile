@@ -49,16 +49,16 @@ test: lib
 prep-var:
 	$(VPATH)/var.sh
 	$(PP) -I. -I$(VPATH) $(VPATH)/variable_pp.F90 \
-		| sed -f filter.sed > tmp.F90 $(PIPE_SILENT)
+		| sed -f $(VPATH)/filter.sed > tmp.F90 $(PIPE_SILENT)
 	$(PP) -I. -I$(VPATH) tmp.F90 \
-		| sed -f filter.sed > variable.f90 $(PIPE_SILENT)
+		| sed -f $(VPATH)/filter.sed > variable.f90 $(PIPE_SILENT)
 
 prep-dict:
 	$(VPATH)/dictionary.sh
 	$(PP) -I. -I$(VPATH) $(VPATH)/dictionary_pp.F90 \
-		| sed -f filter.sed > tmp.F90 $(PIPE_SILENT)
+		| sed -f $(VPATH)/filter.sed > tmp.F90 $(PIPE_SILENT)
 	$(PP) -I. -I$(VPATH) tmp.F90 \
-		| sed -f filter.sed > dictionary.f90 $(PIPE_SILENT)
+		| sed -f $(VPATH)/filter.sed > dictionary.f90 $(PIPE_SILENT)
 
 .PHONY: clean
 clean:
