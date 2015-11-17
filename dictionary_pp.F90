@@ -45,12 +45,6 @@ module dictionary
      integer :: len = 0
   end type dict
   
-  ! HASH-comparisons are MUCH faster...
-  ! hence we store all values in an incremental fashion in terms
-  ! of the HASH-value
-  integer, parameter :: HASH_SIZE = 149087 ! a prime !
-  integer, parameter :: HASH_MULT = 67
-
   !> Return the length of a dictionary, by internal counting algorithms
   interface len
      module procedure len_
@@ -151,10 +145,10 @@ module dictionary
   end interface operator( .EMPTY. )
   public :: operator(.EMPTY.)
 
-  interface hash_same
-     module procedure hash_same_
-  end interface hash_same
-  public :: hash_same
+  interface hash_coll
+     module procedure hash_coll_
+  end interface hash_coll
+  public :: hash_coll
 
   interface delete
      module procedure delete_
@@ -214,7 +208,27 @@ contains
   pure function hash_val(key) result(val)
     character(len=*), intent(in) :: key
     integer :: val
-    integer :: i, fac
+    integer :: i
+#ifndef HASH_ALGO
+#define HASH_ALGO 0
+#endif
+#if HASH_ALGO == 0
+    ! This is 32-bit integers, hence a 32-bit hash
+    integer, parameter :: FNV_OFF = 28491 ! see crt_hash_basis.f90
+    integer, parameter :: FNV_PRIME = 16777619
+    integer, parameter :: MAX_32 = huge(1)
+
+    ! Initialize by the FNV_OFF hash for 32 bit
+    val = FNV_OFF
+    do i = 1 , min(DICT_KEY_LENGTH,len_trim(key))
+       val = ieor(val,iachar(key(i:i)))
+       val = mod(val * FNV_PRIME, MAX_32)
+    end do
+#elif HASH_ALGO == -1
+    ! My own hash table, has a lot of collisions
+    integer, parameter :: HASH_SIZE = 149087 ! a prime !
+    integer, parameter :: HASH_MULT = 67
+    integer :: fac
     val = 0
     fac = mod(iachar(key(1:1)),HASH_MULT)
     do i = 1 , min(DICT_KEY_LENGTH,len_trim(key))
@@ -226,6 +240,9 @@ contains
     end do
     ! A hash has to be distinguished from the "empty"
     val = 1 + mod(val*HASH_MULT,HASH_SIZE)
+#else
+#error "HASH_ALGO has erroneous value, only -1, 0 are currently implemented"
+#endif
   end function hash_val
 
   pure function new_d_key(key) result(d)
@@ -269,34 +286,51 @@ contains
     hash = d%first%hash
   end function hash
 
-  function hash_same_(this) result(same)
+  ! Returns number of collisions in the hash-table
+  ! The optional keyword 'max' can be used to
+  ! extract the maximum number of collisions for
+  ! one hash-value (i.e. not total collisions).
+  function hash_coll_(this,max) result(col)
     type(dict), intent(inout) :: this
-    integer :: same
+    logical, intent(in), optional :: max
+    integer :: col
+    integer :: chash, max_now, same
     type(d_entry), pointer :: ld
-    integer :: max_now, chash
-    same = 0
+
+    col = 0
     if ( .empty. this ) return
 
     ! Initialize
+    same = 0
     max_now = 0
-    ld => this%first
     chash = ld%hash
+    ld => this%first
     do while ( associated(ld) )
        if ( chash == ld%hash ) then
+          ! total collisions
+          col = col + 1
+          ! count total current collisions
           max_now = max_now + 1
        else
           chash = ld%hash
           if ( max_now > same ) then
              same = max_now
-             max_now = 1
           end if
+          max_now = 0
        end if
           
        ld => ld%next
     end do
-    if ( max_now > same ) same = max_now
 
-  end function hash_same_
+    ! If the user requests maximum collisions
+    ! for any given hash value
+    if ( present(max) ) then
+       if ( max ) col = same
+    end if
+
+    ! return col
+
+  end function hash_coll_
     
 
   subroutine dict_key2val(val,d,key,dealloc)

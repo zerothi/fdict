@@ -29,7 +29,9 @@ program tst_dict
   ! Concatenating two long dicts
   d1 = d1 // d2
   print '(3(a,i0))','Concatenated two ',tot,' keys... ',len(d1),' vs. real LL ',llen(d1)
-  print '(2(a,i0),a)','Of ',len(d1),' keys ',hash_same(d1),' are the maximum same hash values'
+  print '(2(a,i0),a)','Of ',len(d1),' keys ',hash_coll(d1),' collide hash values'
+
+  print '(2(a,i0),a)','Of ',len(d1),' keys ',hash_coll(d1,max=.true.),' are the maximum same hash values'
 
   call delete(d1)
   ! Now we cannot delete d2

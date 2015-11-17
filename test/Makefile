@@ -29,6 +29,7 @@ TST_EXE_ += tst_dict_mem1 tst_dict_mem2
 TST_EXE_ += tst_dict_mem3 tst_dict_mem4
 TST_EXE_ += tst_dict_overwrite
 TST_EXE_ += tst_dict_remove
+TST_EXE_ += tst_dict_hash
 TST_EXE_ += tst_dict_dict tst_dict_speed
 
 TST_EXE ?= $(TST_EXE_)
@@ -74,6 +75,10 @@ tst_dict_speed: tst_dict_speed.o $(LIB)
 	./$@
 
 tst_dict_long: tst_dict_long.o $(LIB)
+	$(FC) -o $@ $(FFLAGS) $^
+	./$@
+
+tst_dict_hash: tst_dict_hash.o $(LIB)
 	$(FC) -o $@ $(FFLAGS) $^
 	./$@
 

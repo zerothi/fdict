@@ -15,6 +15,10 @@ RANLIB  ?= ranlib
 # -E only preprocess, do not try and compile
 # -P do not add line markers
 PP ?= cpp -E -P -C -nostdinc
+# Grab additional CPP/FPPFLAGS
+PP += $(CPPFLAGS)
+PP += $(FPPFLAGS)
+
 
 VPATH   ?= $(shell pwd)
 
