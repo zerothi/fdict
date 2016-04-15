@@ -303,8 +303,8 @@ contains
     ! Initialize
     same = 0
     max_now = 0
-    chash = ld%hash
     ld => this%first
+    chash = ld%hash
     do while ( associated(ld) )
        if ( chash == ld%hash ) then
           ! total collisions
