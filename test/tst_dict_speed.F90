@@ -43,10 +43,12 @@ program tst_dict
   key = 'ybeuh'
   call cpu_time(tic)
   itot = 0
-  do i = 1 , ITT * N
-     if ( key .nin. d ) then
-        itot = itot + 1
-     end if
+  do j = 1 , N
+     do i = 1 , ITT
+        if ( key .nin. d ) then
+           itot = itot + 1
+        end if
+     end do
   end do
   call cpu_time(toc)
 

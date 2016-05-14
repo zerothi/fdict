@@ -9,7 +9,7 @@ program test_dict
   type(var) :: v
   type(dict) :: dic
 
-#include "../var_declarations.inc"
+#include "var_declarations.inc"
 
   a = 1.
   b = 2.

@@ -6,6 +6,16 @@ Every section in this part lists the change of the versions
 
 The dictionary will make use of the var format for retaining any type of
 data. This will allow for greater structure 
+** Changed build system <2016-05-14 Sat>
+Now the build system has been changed.
+I still need to document the build system, but essentially one
+may build fdict using:
+  make SHARED|STATIC=1
+to control whether shared/static libraries are build.
+(Both may be opted individually)
+Using the new build system an installation script also exists
+  make PREFIX=... install
+
 
 ** Added test of speed <2015-10-17 Sat>
 To check the speed we create a test with 100 items and search through them

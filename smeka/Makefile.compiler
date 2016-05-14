@@ -1,0 +1,142 @@
+_SMEKA_compiler = 1
+
+# This smeka file creates the compiler settings.
+#
+# 1. Based on the $(VENDOR) flag the basic
+#    settings of the compiler is created.
+#    Currently the vendor(s) may be found in
+#    the vendor/ directory.
+# 2. These flags control the settings:
+#     VENDOR = gnu|intel|...
+#       select vendor compiler options
+#     OPT = debug|-1|none|0|weak|1|medium|2|hard|3
+#       select aggressiveness of the compiler
+#       flags.
+
+# We do not allow .f/.F sources
+# If a user requires other sources, they need
+# to add themselves.
+# smeka supports these files:
+_SMEKA_SUFFIXES := $(_SMEKA_SUFFIXES) .f90 .F90 .c .cc .cpp
+
+# Default compiler options
+# I am a bit split whether we should make a "default"
+# file for each vendor and pass variables to
+# a common variable space, then subsequently grabbing
+# those needed.
+
+# Default vendor setting
+VENDOR ?= gnu
+
+C_VENDOR ?= $(VENDOR)
+CXX_VENDOR ?= $(VENDOR)
+F_VENDOR ?= $(VENDOR)
+
+# Automatically decide on a single OPT flag
+# Instead of having "override" everywhere
+# we rely on a temporary variable
+OPT ?= none
+
+# First perform wrap-arounds
+ifeq ($(OPT), -1)
+  override OPT = debug
+endif
+ifeq ($(OPT), 0)
+  override OPT = none
+endif
+ifeq ($(OPT), 1)
+  override OPT = weak
+endif
+ifeq ($(OPT), 2)
+  override OPT = medium
+endif
+ifeq ($(OPT), 3)
+  override OPT = hard
+endif
+
+# All opt-flags that we process to filter out
+_FILTER_OPT_FLAGS = -Ofast -Os -O0 -O1 -O2 -O3 -O4 -O5 -fast
+
+ifneq ($(OPT),none)
+
+  # Filter out all the optimizations as they will be
+  # re-inserted below
+  CFLAGS := $(filter-out $(_FILTER_OPT_FLAGS),$(CFLAGS))
+  CXXFLAGS := $(filter-out $(_FILTER_OPT_FLAGS),$(CXXFLAGS))
+  FFLAGS := $(filter-out $(_FILTER_OPT_FLAGS),$(FFLAGS))
+
+  # Populate them
+  include $(TOP_DIR)/$(SMEKA_DIR)/vendor/$(C_VENDOR).make
+  CFLAGS += $(V_CFLAGS_$(OPT))
+
+  include $(TOP_DIR)/$(SMEKA_DIR)/vendor/$(CXX_VENDOR).make
+  CXXFLAGS += $(V_CXXFLAGS_$(OPT))
+
+  include $(TOP_DIR)/$(SMEKA_DIR)/vendor/$(F_VENDOR).make
+  FFLAGS += $(V_FFLAGS_$(OPT))
+
+else
+
+  # We simply default to include the vendor make file for fortran
+  # to retrieve the FC_MODDIR variable
+  include $(TOP_DIR)/$(SMEKA_DIR)/vendor/$(VENDOR).make
+
+endif
+
+# If requested add the PIC code flag
+ifeq ($(PIC),1)
+CFLAGS += $(V_PIC)
+CXXFLAGS += $(V_PIC)
+FFLAGS += $(V_PIC)
+endif
+
+
+# Generic compiler options
+CC := $(V_CC)
+CXX := $(V_CXX)
+FC := $(V_FC)
+MPICC := $(V_MPICC)
+MPICXX := $(V_MPICXX)
+MPIFC := $(V_MPIFC)
+FC_MODDIR := $(V_FC_MODDIR)
+
+.PHONY: smeka-show-compiler
+.NOTPARALLEL: smeka-show-compiler
+smeka-show-compiler:
+	@echo ""
+	@echo "Used compilation options (VENDOR=$(VENDOR)):"
+	@echo "  CC       = $(CC)"
+	@echo "  CFLAGS   = $(CFLAGS)"
+	@echo "  CXX      = $(CXX)"
+	@echo "  CXXFLAGS = $(CXXFLAGS)"
+	@echo "  FC       = $(FC)"
+	@echo "  FFLAGS   = $(FFLAGS)"
+	@echo "  FPPFLAGS = $(FPPFLAGS)"
+	@echo ""
+	@echo "Used MPI compilation options:"
+	@echo "  MPICC    = $(MPICC)"
+	@echo "  CFLAGS   = $(CFLAGS)"
+	@echo "  MPICXX   = $(MPICXX)"
+	@echo "  CXXFLAGS = $(CXXFLAGS)"
+	@echo "  MPIFC    = $(MPIFC)"
+	@echo "  FFLAGS   = $(FFLAGS)"
+	@echo ""
+show: smeka-show-compiler
+
+# Define the default compilation options:
+%.o: %.F90
+	$(CPP) $(CPPFLAGS) $(FPPFLAGS) $(INCLUDES) $< > $(<:.F90=_cpp.f90)
+	$(FC) -c -o $@ $(FFLAGS) $(INCLUDES) $(<:.F90=_cpp.f90)
+%.o: %.f90
+	$(FC) -c -o $@ $(FFLAGS) $(INCLUDES) $<
+%.o: %.c
+	$(CC) -c -o $@ $(CFLAGS) $(INCLUDES) $(CPPFLAGS) $<
+%.o: %.cc
+	$(CXX) -c -o $@ $(CXXFLAGS) $(INCLUDES) $(CPPFLAGS) $<
+%.o: %.cpp
+	$(CXX) -c -o $@ $(CXXFLAGS) $(INCLUDES) $(CPPFLAGS) $<
+
+
+# Local Variables:
+#  mode: makefile-gmake
+# End:

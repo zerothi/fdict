@@ -1,0 +1,22 @@
+_SMEKA_default = 1
+
+# Sadly we MUST force set the
+# default values... :(
+# This seems mostly related to CPP
+# which gets redefined when CC is set...
+
+CFLAGS = 
+CXXFLAGS = 
+FFLAGS = 
+
+CPP = cpp 
+CPPFLAGS = -E -P -C -nostdinc 
+
+AR = ar
+ARFLAGS = -ru
+RANLIB = ranlib
+RANLIBFLAGS = 
+
+# Local Variables:
+#  mode: makefile-gmake
+# End:

@@ -1,80 +1,38 @@
-.SUFFIXES: .f90 .o .a
 
-ARCH_MAKE_DEFAULT=arch.make
-ARCH_MAKE?=$(ARCH_MAKE_DEFAULT)
-include $(ARCH_MAKE)
+# Define VPATH
+VPATH ?= $(shell pwd)
 
-# Setup the default things, in case they haven't been set.
-AR      ?= ar
-ARFLAGS ?= cru
-RANLIB  ?= ranlib
-
-# Sadly the preprocessor for fortran is a bit of a pain.
-# -C is needed to disregard C-comments (the operator // is a comment!?!)
-# -nostdinc is needed to not include standard includes (which are C comments)
-# -E only preprocess, do not try and compile
-# -P do not add line markers
-PP ?= cpp -E -P -C -nostdinc
-# Grab additional CPP/FPPFLAGS
-PP += $(CPPFLAGS)
-PP += $(FPPFLAGS)
-
-
-VPATH   ?= $(shell pwd)
-
-.PHONY: default
+# Define default target:
 default: lib
 
-# By compiling with 
-#  make PIPE_SILENT=
-# all the preprocessing will be shown on stdout.
-# This is handy for debugging.
-PIPE_SILENT ?= 2> /dev/null
+# SMEKASETTINGS (DO NOT DELETE)
+# DO NOT CHANGE CONTENT IN THIS BLOCK
+# IT MAY BE OVERWRITTEN WHEN REINSTALLING SMEKA
+#
+# This Makefile was created by smeka:
+#  github.com/zerothi/smeka
 
-# The different libraries
-OBJS = variable.o iso_var_str.o dictionary.o
+# Top-directory of Makefile/source tree
+# If need set, do so ABOVE this block!
+TOP_DIR ?= .
 
-LIB  = libvardict.a
+# Directory of smeka default Makefiles
+SMEKA_DIR = smeka
 
-.PHONY: lib
-lib: $(LIB)
+# Include the smeka settings!
+include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.smeka
 
-$(LIB): $(OBJS)
-	$(AR) $(ARFLAGS) $(LIB) $(OBJS)
-	$(RANLIB) $(LIB)
+# SMEKAENDSETTINGS (DO NOT DELETE)
 
-.PHONY: test
-.PHONY: check
-check: test
-test: lib
-	$(MAKE) -C test
+# Include the makefile in the src directory
+include src/Makefile.inc
 
-.PHONY: prep-var prep-dict
-prep-var:
-	$(VPATH)/var.sh
-	$(PP) -I. -I$(VPATH) $(VPATH)/variable_pp.F90 \
-		| sed -f $(VPATH)/filter.sed > tmp.F90 $(PIPE_SILENT)
-	$(PP) -I. -I$(VPATH) tmp.F90 \
-		| sed -f $(VPATH)/filter.sed > variable.f90 $(PIPE_SILENT)
+# Libraries depend on the objects
+$(LIBRARIES): $(OBJECTS)
 
-prep-dict:
-	$(VPATH)/dictionary.sh
-	$(PP) -I. -I$(VPATH) $(VPATH)/dictionary_pp.F90 \
-		| sed -f $(VPATH)/filter.sed > tmp.F90 $(PIPE_SILENT)
-	$(PP) -I. -I$(VPATH) tmp.F90 \
-		| sed -f $(VPATH)/filter.sed > dictionary.f90 $(PIPE_SILENT)
+# Create target
+lib: $(LIBRARIES)
 
-.PHONY: clean
-clean:
-	-rm -f $(OBJS) $(LIB) *.s *.o *.mod tmp.F90 variable.f90 dictionary.f90
-	-rm -f dict_funcs.inc dict_interface.inc
-	-rm -f var_nullify.inc var_delete.inc var_content.inc var_funcs.inc var_interface.inc
-	-rm -f var_var_set.inc var_var_alloc.inc var_var_assoc.inc
-	-rm -f var_declarations.inc var_declarations2.inc
-	$(MAKE) -C test clean
+# Include the makefile in the test directory
+include test/Makefile.inc
 
-# Dependencies
-dictionary.f90: | prep-dict
-dictionary.o: variable.o | prep-dict
-variable.f90: | prep-var
-variable.o: iso_var_str.o | prep-var

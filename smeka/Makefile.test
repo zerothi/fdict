@@ -1,0 +1,25 @@
+_SMEKA_test = 1
+
+# Include dir:
+#    ./src/test
+include $(TOP_DIR)/src/test/Makefile.inc
+
+ifeq ($(MPI),1)
+# Include dir:
+#    ./src/mpi/test
+include $(TOP_DIR)/src/mpi/test/Makefile.inc
+
+endif
+
+
+
+.PHONY: test tests
+test: static
+$(TESTS_OBJS): static
+test: $(TESTS)
+tests: test
+
+
+# Local Variables:
+#  mode: makefile-gmake
+# End:

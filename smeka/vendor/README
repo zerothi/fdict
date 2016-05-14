@@ -1,0 +1,7 @@
+To create a new vendor compiler option you must
+copy one of the other vendor setups and
+rename it to your vendor name. Then edit the options
+in as you like.
+
+Make sure that you define all variables as those found
+in gnu.make (which we will always keep up to date).

@@ -9,7 +9,7 @@ program tests
   real(sp), pointer :: pa =>null(), pb(:)=>null(), pc(:,:)=>null()
   logical :: success
 
-#include "../var_declarations.inc"
+#include "var_declarations.inc"
   
   a      = 1.0_sp
   b(:)   = 2._sp

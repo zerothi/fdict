@@ -1,0 +1,12 @@
+_SMEKA_dist = 1
+
+# This distribution forces the creation of the
+# pre-processed sources.
+# This makes the sources available for the
+# distribution tarball.
+.PHONY: dist
+dist: $(CPP_SOURCES)
+
+# Local Variables:
+#  mode: makefile-gmake
+# End:

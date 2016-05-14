@@ -1,0 +1,50 @@
+_SMEKA_install = 1
+
+# Basic implementation of installing the different
+# libraries etc.
+
+
+.PHONY: install
+.NOTPARALLEL: install
+install: smeka-install-lib smeka-install
+
+
+.PHONY: smeka-install-lib
+.NOTPARALLEL: smeka-install-lib
+smeka-install-lib: smeka-install-init-dir
+	install -pm $(_OCT_rwxrxrx) -t $(LIB_DIR) $(LIBRARIES)
+
+
+.PHONY: smeka-install-init-dir
+.NOTPARALLEL: smeka-install-init-dir
+smeka-install-init-dir:
+	-mkdir -p $(INC_DIR)
+	-mkdir -p $(LIB_DIR)
+	-mkdir -p $(BIN_DIR)
+
+
+# Issuing uninstall will forcefully remove the installation directory
+.PHONY: smeka-uninstall-install
+.NOTPARALLEL: smeka-uninstall-install
+smeka-uninstall-install:
+	@echo ""
+	@echo "The directory tree:"
+	@echo "  $(PREFIX)"
+	@echo "will be deleted!"
+	@echo "You may abort the operation within 2 secs by pressing:"
+	@echo ""
+	@echo "  Ctrl+C or ^C"
+	@echo ""
+	@sleep 2
+	@rm -rf $(PREFIX)
+uninstall: smeka-uninstall-install
+
+
+# Simple way to ALWAYS do user defined stuff at the end
+.PHONY: smeka-install
+.NOTPARALLEL: smeka-install
+smeka-install:
+
+# Local Variables:
+#  mode: makefile-gmake
+# End:

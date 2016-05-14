@@ -13,7 +13,7 @@ program test1
   character(len=20) :: ca, cb
   logical :: success
 
-#include "../var_declarations.inc"
+#include "var_declarations.inc"
   
   a = 1.0_dp
   b = 2._dp

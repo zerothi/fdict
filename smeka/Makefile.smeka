@@ -1,0 +1,79 @@
+_SMEKA_smeka = 1
+
+# Reset the suffixes
+.SUFFIXES:
+
+# OS settings
+include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.os
+
+# Default variables
+include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.default
+
+
+# Common variables, needs pre-loading before the user
+# includes
+include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.common
+
+
+# Include project specific options
+# These will be pre-initialized before any user
+# settings.
+include $(TOP_DIR)/Makefile.project
+
+
+# This setup file will ALSO include the
+# user defined setups.
+# Hence from this point on any global variables
+# should be ?= assigned.
+include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.setup
+
+# Create the directories
+include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.directory
+
+
+# Add compiler specific options
+include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.compiler
+
+# Add preprocessor definitions
+include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.pp
+
+# Add library specific options
+include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.library
+
+# Add the installation makefile
+include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.install
+
+# Add the documentation makefile
+include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.doc
+
+# Add the distribution creation tool
+include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.dist
+
+# Add the clean make file
+include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.clean
+
+
+# There are two possibilities for post configuration
+# of the project.
+# Either in the smeka directory, or the top directory.
+# Both may be used.
+
+# Post definitions for smeka (project defined)
+-include $(TOP_DIR)/Makefile.post
+
+
+# Information settings
+# call:
+#   make smeka
+# for details
+include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.info
+
+# Create the suffixes that Smeka provides
+.SUFFIXES: $(_SMEKA_SUFFIXES)
+
+
+
+
+# Local Variables:
+#  mode: makefile-gmake
+# End:

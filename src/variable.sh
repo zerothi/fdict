@@ -1,11 +1,15 @@
 #!/bin/bash
 
-_vpath=.
+_vpath=..
 if [ ! -z "$VPATH" ]; then
     _vpath=$VPATH
 fi
 
 source $_vpath/settings.sh
+if [ $? -ne 0 ]; then
+    echo "ERROR Could not find: $_vpath/settings.sh"
+    exit 1
+fi
 [ -e $_vpath/current_settings.sh ] && source $_vpath/current_settings.sh
 
 # The different settings used in this

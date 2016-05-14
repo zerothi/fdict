@@ -1,0 +1,94 @@
+_SMEKA_setup = 1
+
+# This smeka file has two purposes:
+#
+# 1. Include the "setup.make" file
+#    in case it exists.
+#    This is the preferred way a user should
+#    include custom settings.
+#
+# 2. Include the $(SETUP) file.
+#    The user may specify SETUP=<> on the `make`
+#    line to (in addition to 1.) include the
+#    corresponding setup file.
+#    This setup file may also be a shortname for
+#    any of the files in the:
+#       smeka/setup/*.make
+#    folder.
+
+
+#
+# Detect whether the user requests
+# a special setup.make file from the default
+# repository.
+# If the file is found it will be included.
+# If the file is NOT found an error will be issued
+# immediately and the Make script will exit.
+
+# Check whether the local "setup.make" file
+# exists, if so, include it
+ifneq ("$(wildcard setup.make)","")
+
+include setup.make
+.PHONY: smeka-settings-setup.make
+smeka-settings-setup.make:
+	@echo "Using make settings in:"
+	@echo "  setup.make"
+settings: smeka-settings-setup.make
+
+endif
+
+
+ifdef SETUP
+ # Only process custom setup.make files
+ # via the SETUP flag.
+
+ifneq ("$(wildcard $(SETUP))","")
+ # do nothing, direct inclusion
+else ifneq ("$(wildcard setup/$(SETUP))","")
+ override SETUP = setup/$(SETUP)
+else ifneq ("$(wildcard $(SETUP).make)","")
+ override SETUP = $(SETUP).make
+else ifneq ("$(wildcard setup/$(SETUP).make)","")
+ override SETUP = setup/$(SETUP).make
+else
+ # This is a small information utility
+ $(info Could not find: ./$(SETUP))
+ $(info Could not find: ./setup/$(SETUP))
+ $(info Could not find: ./$(SETUP).make)
+ $(info Could not find: ./setup/$(SETUP).make)
+
+ # Print out the error messages for the user
+ _TMP = $(subst .make,,$(subst ./setup/,$(_NL)  ,$(wildcard ./setup/*.make)))
+ $(info Available arguments are: $(_TMP))
+ $(error Custom setup (SETUP=<>) file could not be located)
+endif
+
+# Include custom setup file
+include $(SETUP)
+
+
+# Add print-out to target
+.PHONY: smeka-settings-custom
+smeka-settings-custom: 
+	@echo ""
+	@echo "Using custom settings:"
+	@echo "  $(SETUP)"
+	@echo ""
+settings: smeka-settings-custom
+
+endif # only check if SETUP is defined
+
+
+# Target for displaying available SETUP=<>
+.PHONY: smeka-setup-list
+smeka-setup-list:
+	@echo ""
+	$(info Available SETUP arguments are:$(_NL)$(subst .make,,$(subst ./$(SMEKA_DIR)/setup/,$(_NL)  ,$(wildcard ./$(SMEKA_DIR)/setup/*.make))))
+	@echo ""
+setup-list: smeka-setup-list
+
+
+# Local Variables:
+#  mode: makefile-gmake
+# End:
