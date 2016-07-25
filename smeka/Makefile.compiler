@@ -95,6 +95,9 @@ endif
 CC := $(V_CC)
 CXX := $(V_CXX)
 FC := $(V_FC)
+ifdef V_CPP
+CPP := $(V_CPP)
+endif
 MPICC := $(V_MPICC)
 MPICXX := $(V_MPICXX)
 MPIFC := $(V_MPIFC)
@@ -109,6 +112,7 @@ smeka-show-compiler:
 	@echo "  CFLAGS   = $(CFLAGS)"
 	@echo "  CXX      = $(CXX)"
 	@echo "  CXXFLAGS = $(CXXFLAGS)"
+	@echo "  CPP      = $(CPP)"
 	@echo "  FC       = $(FC)"
 	@echo "  FFLAGS   = $(FFLAGS)"
 	@echo "  FPPFLAGS = $(FPPFLAGS)"

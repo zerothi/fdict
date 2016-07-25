@@ -9,8 +9,14 @@ CFLAGS =
 CXXFLAGS = 
 FFLAGS = 
 
+# C-preprocessor is a nightmare
+# However, these options seem to work very nicely
+#  cpp -E -x c
+#  cpp -E -P -C -nostdinc
+#  clang -E -x c
+#  clang -E -P(-EP<=3.5) -x c
 CPP = cpp 
-CPPFLAGS = -E -P -C -nostdinc 
+CPPFLAGS = -E -P -x c
 
 AR = ar
 ARFLAGS = -ru

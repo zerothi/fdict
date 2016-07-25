@@ -1,7 +1,9 @@
 # Replace the marker NEWLINE by a '\n' character.
 # This will work in Linux and OSX. *Keep it in two lines!*
+#
 s/NEWLINE/\
 /g
+#
 # Basically the following commands translates
 # pre-processors within another preprocessor
 # which isn't allowed.
@@ -24,4 +26,7 @@ s/[[:space:]]*\#\([^i][^[:space:]]*\)/"\1"/g
 #s/"endif"/\n\#endif/g
 s/"endif"/\
 \#endif/g
-
+#
+# In fortran one may use the // operator
+# But C-preprocessors are hungry and gobbles them...
+s:/ /://:g

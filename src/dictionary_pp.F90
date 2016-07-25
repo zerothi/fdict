@@ -65,11 +65,11 @@ module dictionary
 
   ! Concatenate dicts or list of dicts to list of dicts
   !> Concatenate, or extend, dictionaries, this can
-  !! be done on it-self `dic = dic // ('key'.kv.1)
-  interface operator( // )
+  !! be done on it-self `dic = dic / / ('key'.kv.1)
+  interface operator( / / )
      module procedure d_cat_d
-  end interface operator( // )
-  public :: operator( // )
+  end interface operator( / / )
+  public :: operator( / / )
 
   ! Retrieve the key from a dictionary (unary)
   !> Returns the key of the current _top_ entry,
@@ -659,7 +659,7 @@ contains
     ld = .first. d
     do while ( .not. .empty. ld ) 
        write(*,'(t2,a,tr1,a,i0,a)') trim(.key. ld), &
-            '['//ld%first%value%t//'] (',.hash. ld,')'
+            '['/ /ld%first%value%t/ /'] (',.hash. ld,')'
        ld = .next. ld
     end do
   end subroutine print_
