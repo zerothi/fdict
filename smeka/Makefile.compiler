@@ -92,16 +92,16 @@ endif
 
 
 # Generic compiler options
-CC := $(V_CC)
-CXX := $(V_CXX)
-FC := $(V_FC)
+CC ?= $(V_CC)
+CXX ?= $(V_CXX)
+FC ?= $(V_FC)
 ifdef V_CPP
-CPP := $(V_CPP)
+CPP ?= $(V_CPP)
 endif
-MPICC := $(V_MPICC)
-MPICXX := $(V_MPICXX)
-MPIFC := $(V_MPIFC)
-FC_MODDIR := $(V_FC_MODDIR)
+MPICC ?= $(V_MPICC)
+MPICXX ?= $(V_MPICXX)
+MPIFC ?= $(V_MPIFC)
+FC_MODDIR ?= $(V_FC_MODDIR)
 
 .PHONY: smeka-show-compiler
 .NOTPARALLEL: smeka-show-compiler

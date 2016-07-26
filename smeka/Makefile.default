@@ -1,5 +1,32 @@
 _SMEKA_default = 1
 
+# We simply default to include the vendor make file for fortran
+# to retrieve the FC_MODDIR variable
+
+# Default vendor setting
+VENDOR ?= gnu
+
+include $(TOP_DIR)/$(SMEKA_DIR)/vendor/$(VENDOR).make
+
+# Generic compiler options
+CC = $(V_CC)
+CXX = $(V_CXX)
+FC = $(V_FC)
+ifdef V_CPP
+CPP = $(V_CPP)
+endif
+MPICC = $(V_MPICC)
+MPICXX = $(V_MPICXX)
+MPIFC = $(V_MPIFC)
+FC_MODDIR = $(V_FC_MODDIR)
+
+ifndef SETUP
+ifneq ("$(wildcard setup.make)","")
+SETUP = setup.make
+endif
+endif
+
+
 # Sadly we MUST force set the
 # default values... :(
 # This seems mostly related to CPP

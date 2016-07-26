@@ -4,7 +4,7 @@ _SMEKA_project = 1
 # project
 
 # Step this version upon new versions
-PROJECT_VERSION = 0.4
+PROJECT_VERSION = 0.4.1
 
 # These are constant default
 PROJECT_NAME = fdict
@@ -52,6 +52,12 @@ install_settings:
 clean:
 	-rm -f libvardict.so
 	-rm -f libvardict.a
+
+
+.PHONY:
+settings.bash: FORCE
+# We always require the settings.bash file to exist
+	$(pushd $(VPATH) ; ./setup.sh --default ; popd)
 
 
 # Local Variables:

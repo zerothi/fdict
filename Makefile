@@ -33,11 +33,6 @@ $(LIBRARIES): $(OBJECTS)
 # Create target
 lib: settings.bash $(LIBRARIES)
 
-.PHONY:
-settings.bash: FORCE
-# We always require the settings.bash file to exist
-	$(pushd $(VPATH) ; ./setup.sh --default ; popd)
-
 # Include the makefile in the test directory
 include test/Makefile.inc
 
