@@ -16,11 +16,3 @@ FFLAGS=-O2 -m64 -fPIC
 # This is for debugging purposes
 #FFLAGS = -g -O0 -Warray-bounds -Wunused
 
-# MacOSx
-# PP = fpp -E -P -C -nostdinc
-
-.F90.o:
-	$(FC) -c $(INC) $(FFLAGS) $(FPPFLAGS) $< 
-.f90.o:
-	$(FC) -c $(INC) $(FFLAGS) $<
-

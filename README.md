@@ -21,19 +21,18 @@ that can contain _any_ data-type allowed by the variable module.
 Installing fdict requires a download of the library 
 hosted at [github](https://github.com/) at [fdict@git].
 
-Extract and create an `arch.make` file for compilation, a minimal
-`arch.make` file can look like this
+Extract and create an `setup.make` file for compilation, a minimal
+`setup.make` file can look like this
 
 	FC=gfortran
 	FFLAGS = -g
 
-	.F90.o:
-	    $(FC) -c $(INC) $(FFLAGS) $<
+Type `make` and a library called `libvardict.a` is created.  
+Subsequently the installation may be performed by:
 
-	.f90.o:
-	    $(FC) -c $(INC) $(FFLAGS) $<
+    make PREFIX=/papth/to/fdict install
 
-Type `make` and a library called `libvardict.a` is created.
+which installs the required files (modules and libraries) to the folder.
 
 To use the dictionary you need to add include statements for the
 modules as well as linking to the program.
