@@ -45,6 +45,9 @@ define _NL
 
 endef
 
+# Typically used target to force any other target to always run
+FORCE:
+
 # Local Variables:
 #  mode: makefile-gmake
 # End:

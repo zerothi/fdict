@@ -38,9 +38,14 @@ PIPE_SILENT ?= 2> /dev/null
 
 # Create custom installation of modules
 .NOTPARALLEL: install_mod
-install_final: install_mod
+smeka-install: install_mod
 install_mod:
 	install -pm $(_OCT_rwrr) -t $(FMOD_DIR) $(F_MODS)
+
+.NOTPARALLEL: install_settings
+smeka-install: install_settings
+install_settings:
+	install -pm $(_OCT_rwrr) -t $(BIN_DIR) settings.bash
 
 
 # Force the deletion of both libraries

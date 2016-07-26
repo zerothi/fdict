@@ -5,12 +5,12 @@ if [ ! -z "$VPATH" ]; then
     _vpath=$VPATH
 fi
 
-source $_vpath/settings.sh
+source $_vpath/default_settings.bash
 if [ $? -ne 0 ]; then
-    echo "ERROR Could not find: $_vpath/settings.sh"
+    echo "ERROR Could not find: $_vpath/default_settings.bash"
     exit 1
 fi
-[ -e $_vpath/current_settings.sh ] && source $_vpath/current_settings.sh
+[ -e $_vpath/settings.bash ] && source $_vpath/settings.bash
 
 # The different settings used in this
 vars=(s d c z b h i l)
