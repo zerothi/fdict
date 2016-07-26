@@ -6,6 +6,7 @@ V_VENDOR = gnu
 V_CC = gcc
 V_CXX = g++
 V_FC = gfortran
+V_CPP = cpp -E -P -x c
 
 V_MPICC = mpicc
 V_MPICXX = mpic++
