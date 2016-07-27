@@ -1,5 +1,19 @@
 _SMEKA_directory = 1
 
+# Determine whether the compilation
+# is being processed in a sub-directory
+# or in the main directory (. or ./)
+ifneq (,$(filter ./ .,$(TOP_DIR)))
+ # The build process is in a sub-folder
+ # and is relying on the VPATH variable
+ BUILD_MAIN_DIR = 0
+else
+ # The build process is performed in the top
+ # directory which does not necessarily
+ # depend on VPATH
+ BUILD_MAIN_DIR = 1
+endif
+
 
 # Default directories
 PREFIX ?= $(HOME)/$(PROJECT_NAME)
