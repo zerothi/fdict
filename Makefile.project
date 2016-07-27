@@ -54,10 +54,9 @@ clean:
 	-rm -f libvardict.a
 
 
-.PHONY:
 settings.bash: FORCE
 # We always require the settings.bash file to exist
-	$(pushd $(TOP_DIR) ; ./setup.sh --default ; popd)
+	VPATH="$(TOP_DIR)" $(TOP_DIR)/setup.sh --default
 
 
 # Local Variables:

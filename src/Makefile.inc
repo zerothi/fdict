@@ -22,6 +22,7 @@ dictionary.f90: dictionary.sh settings.inc dict_funcs_inc.inc dictionary_pp.F90
 	$(CPP) $(CPPFLAGS) $(FPPFLAGS) $(INCLUDES) -I$(src_DIR) $(src_DIR)/dictionary_pp.F90 \
 		| sed -f $(src_DIR)/filter.sed > dictionary.f90 $(PIPE_SILENT)
 
+
 .PHONY: clean-src
 clean-src:
 	-rm -f *.o *.mod
@@ -29,6 +30,7 @@ clean-src:
 	-rm -f $(call addpresuf,$(src_DIR)/dict_,.inc, funcs interface)
 	-rm -f $(call addpresuf,$(src_DIR)/var_,.inc, nullify delete content funcs interface declarations declarations2)
 	-rm -f $(call addpresuf,$(src_DIR)/var_var_,.inc, set alloc assoc)
+
 clean: clean-src
 
 

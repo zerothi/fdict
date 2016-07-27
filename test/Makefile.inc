@@ -17,7 +17,9 @@ TEST_EXE_ += tst_dict_hash
 
 TEST_EXE ?= $(TEST_EXE_)
 
+# Create the objects
 TEST_OBJECTS = $(addsuffix .o, $(TEST_EXE))
+
 
 ifeq ($(STATIC),1)
   TEST_LIB    = libvardict.a
@@ -29,6 +31,7 @@ else
   endif
 endif
 
+
 # Create correct dependency schemes without adding too
 # many flags in the direct compilation targets.
 # Ensure the common utility is compiled before any test
@@ -39,8 +42,6 @@ $(TEST_EXE): $(TEST_COMMON) $(TEST_LIB)
 # for modules
 $(TEST_EXE): INCLUDES += -I$(src_DIR)
 
-
-# Add source includes
 
 .PHONY: test
 .NOTPARALLEL: test

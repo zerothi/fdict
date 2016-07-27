@@ -1,9 +1,12 @@
 #!/bin/bash
 
+_vpath=.
+[ -n "$VPATH" ] && _vpath=$VPATH
+
 # Ensure that we get the default var_N by
 # first deleting any previous settings
 _set_file=settings.bash
-source default_settings.bash
+source $_vpath/default_settings.bash
 [ -e $_set_file ] && source $_set_file
 
 
