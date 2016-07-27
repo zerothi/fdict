@@ -13,7 +13,7 @@ program tests
   line = ' '
   i0 = 1
   iu = 102
-  open(iu, file='test/list_words_en.dat',action='read')
+  open(iu, file='list_words_en.dat',action='read')
   do
      read(iu,*,iostat=iostat) line
      ! For errors, exit the loop

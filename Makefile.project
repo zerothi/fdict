@@ -45,7 +45,7 @@ install_mod:
 .NOTPARALLEL: install_settings
 smeka-install: install_settings
 install_settings:
-	install -pm $(_OCT_rwrr) -t $(BIN_DIR) settings.bash
+	install -pm $(_OCT_rwrr) -t $(BIN_DIR) $(TOP_DIR)/settings.bash
 
 
 # Force the deletion of both libraries
@@ -57,7 +57,7 @@ clean:
 .PHONY:
 settings.bash: FORCE
 # We always require the settings.bash file to exist
-	$(pushd $(VPATH) ; ./setup.sh --default ; popd)
+	$(pushd $(TOP_DIR) ; ./setup.sh --default ; popd)
 
 
 # Local Variables:

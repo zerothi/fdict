@@ -25,7 +25,7 @@ include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.smeka
 # SMEKAENDSETTINGS (DO NOT DELETE)
 
 # Include the makefile in the src directory
-include src/Makefile.inc
+include $(TOP_DIR)/src/Makefile.inc
 
 # Libraries depend on the objects
 $(LIBRARIES): $(OBJECTS)
@@ -34,5 +34,5 @@ $(LIBRARIES): $(OBJECTS)
 lib: settings.bash $(LIBRARIES)
 
 # Include the makefile in the test directory
-include test/Makefile.inc
+include $(TOP_DIR)/test/Makefile.inc
 
