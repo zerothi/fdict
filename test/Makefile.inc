@@ -3,7 +3,6 @@ VPATH := $(VPATH):$(test_DIR)
 
 # Define common codes used for the tests
 TEST_COMMON = tst_utils.o
-TEST_COMMON := $(addprefix $(test_DIR)/, $(TEST_COMMON))
 
 TEST_EXE_  = tst_simple tst_sp tst_dp tst_mem
 TEST_EXE_ += tst_char
@@ -18,6 +17,8 @@ TEST_EXE_ += tst_dict_hash
 
 TEST_EXE ?= $(TEST_EXE_)
 
+TEST_OBJECTS = $(addsuffix .o, $(TEST_EXE))
+
 ifeq ($(STATIC),1)
   TEST_LIB    = libvardict.a
 else
@@ -31,7 +32,7 @@ endif
 # Create correct dependency schemes without adding too
 # many flags in the direct compilation targets.
 # Ensure the common utility is compiled before any test
-$(call addpresuf ,$(test_DIR)/,.o,$(TEST_EXE)): $(TEST_COMMON)
+$(TEST_OBJECTS): $(TEST_COMMON)
 # Ensure the executables depend on the utility and the library
 $(TEST_EXE): $(TEST_COMMON) $(TEST_LIB)
 # Ensure the src/ directory is included in the search path
@@ -115,6 +116,7 @@ tst_dict_remove: tst_dict_remove.o
 tst_dict_dict: tst_dict_dict.o
 	$(FC) -o $@ $(FFLAGS) $(INCLUDES) $^
 	./$@
+
 
 .PHONY: clean-test
 clean-test:
