@@ -35,7 +35,7 @@ show: smeka-show-lib
 	$(AR) $(ARFLAGS) $@ $^
 	$(RANLIB) $(RANLIBFLAGS) $@
 %.so:
-	$(CC) -shared -o $@ $(CFLAGS) $^ $(LIBS) $(LDFLAGS) $^
+	$(CC) -shared -o $@ $(CFLAGS) $^ $(LIBS) $(LDFLAGS)
 
 
 # Local Variables:
