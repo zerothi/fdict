@@ -5,8 +5,10 @@ echo "OS-name: $TRAVIS_OS_NAME"
 
 function fdict_osx {
     brew update
+    cpp --help 
+    man cpp
     {
-      echo CPP = cpp -E -EP -xc
+      echo CPP = cpp -E -xc
     } > setup.make
 }
 

@@ -1,11 +1,7 @@
 language: Fortran
 
 git:
-   depth: 3
-
-os:
-   - linux
-   - osx
+   depth: 1
 
 matrix:
    include:
