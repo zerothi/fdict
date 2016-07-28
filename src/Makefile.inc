@@ -41,7 +41,7 @@ F_MODS  += $(patsubst %.f90, %.mod, $(src_SOURCES))
 OBJECTS += $(src_OBJECTS)
 
 # Ensure that the objects are built with the correct module path
-$(src_OBJECTS): INCLUDES += -I$(src_DIR)
+$(src_CPP_SOURCES): INCLUDES += -I$(src_DIR)
 
 
 # Local Variables:

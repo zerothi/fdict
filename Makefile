@@ -33,6 +33,9 @@ $(LIBRARIES): $(OBJECTS)
 # Create target
 lib: settings.bash $(LIBRARIES)
 
+# Create target
+source: $(SOURCES)
+
 # Include the makefile in the test directory
 include $(TOP_DIR)/test/Makefile.inc
 
