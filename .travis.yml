@@ -1,5 +1,9 @@
 language: fortran
 
+os:
+   - linux
+   - osx
+
 notifications:
    email:
       recipients:
@@ -8,11 +12,10 @@ notifications:
       on_success: change
 
 before_install:
-   - ln -s .arch.make arch.make
-   - sudo apt-get install -qq gfortran
+   - .travis/before_install.sh
 
 install:
-   - make
+   - .travis/install.sh
 
 script:
-   - make test
+   - .travis/script.sh
