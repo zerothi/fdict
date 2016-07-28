@@ -13,7 +13,7 @@ notifications:
       on_success: change
 
 before_install:
-   - sudo .travis/before_install.sh
+   - .travis/before_install.sh
 
 install:
    - .travis/install.sh
