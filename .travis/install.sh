@@ -8,4 +8,9 @@ gfortran --version
 # Show help from Makefile
 make show
 # Actually build fdict
-make
+if [ -z "$FDICT_OPT" ]; then
+   OPT=0
+else
+   OPT="$FDICT_OPT"
+fi
+make OPT=$OPT

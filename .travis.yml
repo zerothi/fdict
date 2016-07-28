@@ -3,18 +3,14 @@ language: fortran
 git:
    depth: 1
 
-env:
-  - FDICT_OPT=0
-  - FDICT_OPT=3
-
 matrix:
    include:
-     - os: linux
-       sudo: required
-     - os: osx
-   exclude:
-     - os: osx
-       env: FDICT_OPT=3
+   - os: linux
+     sudo: required
+   - os: linux
+     sudo: required
+     env: FDICT_OPT=3
+   - os: osx
 
 notifications:
    email:
