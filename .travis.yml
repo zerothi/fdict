@@ -1,5 +1,7 @@
 language: Fortran
 
+sudo: required
+
 os:
    - linux
    - osx
@@ -12,7 +14,7 @@ notifications:
       on_success: change
 
 before_install:
-   - .travis/before_install.sh
+   - sudo .travis/before_install.sh
 
 install:
    - .travis/install.sh
