@@ -2,7 +2,6 @@ language: Fortran
 
 os:
    - linux
-     sudo: required
    - osx
 
 notifications:
