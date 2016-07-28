@@ -40,7 +40,7 @@ V_CFLAGS_medium = $(V_FLAGS_medium)
 V_CXXFLAGS_medium = $(V_FLAGS_medium)
 V_FFLAGS_medium = $(V_FLAGS_medium)
 
-V_FLAGS_hard = -O3 -funroll-loops -ftree-vectorize -fprefetch-loop-arrays -fgraphite -fipa-icf -fipa-pure-const -fschedule-fusion -fselective-scheduling
+V_FLAGS_hard = -O3 -funroll-loops -ftree-vectorize -fprefetch-loop-arrays -fgraphite -fselective-scheduling
 V_CFLAGS_hard = $(V_FLAGS_hard)
 V_CXXFLAGS_hard = $(V_FLAGS_hard)
 V_FFLAGS_hard = $(V_FLAGS_hard)
