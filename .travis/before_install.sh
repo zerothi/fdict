@@ -1,8 +1,11 @@
 #!/bin/bash
 
 # Do pre-install commands
-if [ "x$TRAVIS_OS_NAME" == "xosx" ]; then
+case "$TRAVIS_OS_NAME" in
+   osx)
     brew update
-else
+    ;;
+   *)
     sudo apt-get install -qq gfortran
-fi
+    ;;
+esac
