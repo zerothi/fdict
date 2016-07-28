@@ -1,4 +1,4 @@
-language: fortran
+language: Fortran
 
 os:
    - linux
