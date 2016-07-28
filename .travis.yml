@@ -1,8 +1,17 @@
 language: Fortran
 
+git:
+   depth: 3
+
 os:
    - linux
    - osx
+
+matrix:
+   include:
+     - os: linux
+       sudo: required
+     - os: osx
 
 notifications:
    email:
