@@ -15,10 +15,10 @@ TEST_EXE_ += tst_dict_remove
 TEST_EXE_ += tst_dict_dict tst_dict_speed
 TEST_EXE_ += tst_dict_hash
 
-TEST_EXE ?= $(TEST_EXE_)
+TEST ?= $(TEST_EXE_)
 
 # Create the objects
-TEST_OBJECTS = $(addsuffix .o, $(TEST_EXE))
+TEST_OBJECTS = $(addsuffix .o, $(TEST))
 
 
 ifeq ($(STATIC),1)
@@ -37,15 +37,15 @@ endif
 # Ensure the common utility is compiled before any test
 $(TEST_OBJECTS): $(TEST_COMMON)
 # Ensure the executables depend on the utility and the library
-$(TEST_EXE): $(TEST_COMMON) $(TEST_LIB)
-# Ensure the src/ directory is included in the search path
-# for modules
-$(TEST_EXE): INCLUDES += -I$(src_DIR)
+$(TEST): $(TEST_COMMON) $(TEST_LIB)
+# There are *.inc files in the src directory that is
+# needed
+$(TEST): INCLUDES += -I$(src_DIR)
 
 
 .PHONY: test
 .NOTPARALLEL: test
-test: $(TEST_LIB) $(TEST_EXE)
+test: $(TEST_LIB) $(TEST)
 
 
 tst_simple: tst_simple.o
@@ -121,8 +121,7 @@ tst_dict_dict: tst_dict_dict.o
 
 .PHONY: clean-test
 clean-test:
-	-rm -f $(TEST_EXE) $(LIB_TEST) $(TEST_COMMON) *.o *.mod
-	-rm -f $(addprefix $(test_DIR)/,$(TEST_EXE) $(LIB_TEST) $(TEST_COMMON) *.o *.mod)
+	-rm -f $(TEST) $(LIB_TEST) $(TEST_COMMON) *.o *.mod
 
 clean: clean-test
 

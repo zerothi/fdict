@@ -14,8 +14,10 @@ program test
   call assign(sa,va)
   ca = sa
   print '(a2,tr1,a)',va%t,ca
+  if ( 'hello' /= ca ) stop 9
 
   call assign(ca,va)
   print '(a2,tr1,a)',va%t,ca
+  if ( 'hello' /= ca ) stop 9
 
 end program test

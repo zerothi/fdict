@@ -23,25 +23,34 @@ program tests
   call associate(pa,va,success=success)
   if ( success ) then
      print *,'Success: ',pa
+  else
+     stop 9
   end if
   if ( associatd(pa,va) ) then
      print *,'Associated: ',pa
+  else
+     stop 9
   end if
   if ( .not. associatd(pb,va) ) then
      print *,'Correctly non-associated'
+  else
+     stop 9
   end if
 
   call assign(va,b)
   call assign(b,va)
   ps1 = transfer(va%enc,ps1)
   print '(a2,2(tr1,f4.2))',va%t,ps1%p
+  if ( any(b /= ps1%p) ) stop 9
 
   call assign(va,c)
   ps2 = transfer(va%enc,ps2)
   print '(a2,4(tr1,f4.2))',va%t,ps2%p
+  if ( any(c /= ps2%p) ) stop 9
 
   call assign(va,1)
   pi0 = transfer(va%enc,pi0)
   print '(a2,tr1,i0)',va%t,pi0%p
+  if ( 1 /= pi0%p ) stop 9
 
 end program tests

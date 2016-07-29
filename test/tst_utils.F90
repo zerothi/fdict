@@ -47,7 +47,7 @@ contains
     character(len=*), optional :: good
     if ( .not. all(log) ) then
        write(*,*) msg
-       stop
+       stop 9
     else
        if ( present(good) ) then
           write(*,*)'SUCCESS '//trim(good)
@@ -62,7 +62,7 @@ contains
     character(len=*), optional :: good
     if ( .not. all(log) ) then
        write(*,*) msg
-       stop
+       stop 9
     else
        if ( present(good) ) then
           write(*,*)'SUCCESS '//trim(good)
