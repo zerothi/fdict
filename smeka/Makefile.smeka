@@ -47,7 +47,7 @@ include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.directory
 include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.compiler
 
 # Add preprocessor definitions
-include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.cpp
+include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.pp
 
 # Add library specific options
 include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.library

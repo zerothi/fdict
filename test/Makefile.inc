@@ -22,10 +22,10 @@ TEST_OBJECTS = $(addsuffix .o, $(TEST_EXE))
 
 
 ifeq ($(STATIC),1)
-  TEST_LIB    = libvardict.a
+  TEST_LIB    = libfdict.a
 else
   ifeq ($(SHARED),1)
-    TEST_LIB  = libvardict.so
+    TEST_LIB  = libfdict.so
   else
     $(error No library is build, the tests cannot be performed.)
   endif

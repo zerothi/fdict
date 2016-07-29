@@ -27,7 +27,7 @@ Extract and create an `setup.make` file for compilation, a minimal
 	FC=gfortran
 	FFLAGS = -g
 
-Type `make` and a library called `libvardict.a` is created.  
+Type `make` and a library called `libfdict.a` is created.  
 Subsequently the installation may be performed by:
 
     make PREFIX=/papth/to/fdict install
@@ -40,7 +40,7 @@ modules as well as linking to the program.
 To link fdict to your program the following can be used in a `Makefile`
 
     FDICT_PATH  = /path/to/fdict/parent
-    FDICT_LIBS  = -L$(FDICT_PATH) -lvardict
+    FDICT_LIBS  = -L$(FDICT_PATH) -lfdict
     FDICT_INC   = -I$(FDICT_PATH)
 
 #### Controlling interface parameters ####

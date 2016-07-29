@@ -13,7 +13,7 @@ PROJECT_NAME = fdict
 STATIC ?= 1
 # If the library was built previously,
 # we default to building the shared library.
-ifneq ("$(wildcard libvardict.so)","")
+ifneq ("$(wildcard libfdict.so)","")
  SHARED ?= 1
 else
  SHARED ?= 0
@@ -21,10 +21,10 @@ endif
 
 # Create the list of libraries
 ifeq ($(STATIC),1)
-  LIBRARIES += libvardict.a
+  LIBRARIES += libfdict.a
 endif
 ifeq ($(SHARED),1)
-  LIBRARIES += libvardict.so
+  LIBRARIES += libfdict.so
   # Forcefully denote that objects should have
   # position independent code
   # THIS IS A SMEKA SETTING
@@ -50,8 +50,8 @@ install_settings:
 
 # Force the deletion of both libraries
 clean:
-	-rm -f libvardict.so
-	-rm -f libvardict.a
+	-rm -f libfdict.so
+	-rm -f libfdict.a
 
 
 settings.bash: FORCE

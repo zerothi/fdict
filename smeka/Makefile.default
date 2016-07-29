@@ -41,9 +41,12 @@ FFLAGS =
 #  cpp -E -x c
 #  cpp -E -P -C -nostdinc
 #  clang -E -x c
-#  clang -E -P(-EP<=3.5) -x c
-CPP = cpp -E -P -x c
-CPPFLAGS = 
+#  clang -E -P -x c
+#  clang -E -P -xc (for clang <= 3.5)
+CPP = $(CC) -E -P -x c
+CPPFLAGS =
+# It may be suspicios that we use the C-preprocessor
+FPP = $(FC) -E -P -x c
 FPPFLAGS =
 
 # Default to not pre-process Fortran files
@@ -52,7 +55,25 @@ SMEKA_CPP_F = 0
 AR = ar
 ARFLAGS = -ru
 RANLIB = ranlib
-RANLIBFLAGS = 
+RANLIBFLAGS =
+
+
+# Specific options for different OS
+ifeq ($(uname_S),Linux)
+endif
+ifeq ($(uname_S),Darwin)
+endif
+ifeq ($(uname_S),SunOS)
+endif
+ifeq ($(uname_S),FreeBSD)
+endif
+ifeq ($(uname_S),OpenBSD)
+endif
+ifeq ($(uname_S),NetBSD)
+endif
+ifeq ($(uname_S),Cygwin)
+endif
+
 
 # Local Variables:
 #  mode: makefile-gmake
