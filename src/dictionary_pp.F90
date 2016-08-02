@@ -28,7 +28,7 @@ module dictionary
   ! a better interface.
   !> Maximum character length of the keys in the dictionary, no 
   !! index/key can be longer than this.
-  integer, parameter, public :: DICT_KEY_LENGTH = 50
+  integer, parameter, public :: DICT_KEY_LENGTH = 48
   
   ! A parameter returned if not found.
   character(len=DICT_KEY_LENGTH), parameter :: DICT_NOT_FOUND = 'ERROR: key not found'
@@ -43,24 +43,24 @@ module dictionary
      private
      type(d_entry), pointer :: first => null()
      integer :: len = 0
-  end type dict
+  end type
   
   !> Return the length of a dictionary, by internal counting algorithms
   interface len
      module procedure len_
-  end interface len
+  end interface
   public :: LEN
 
   !> Actually count number of elements in the dictionary by forcing the traversing
   interface llen
      module procedure llen_
-  end interface llen
+  end interface
   public :: LLEN
 
   !> Print out all keys and which data-type it contains as well as the hash-number
   interface print
      module procedure print_
-  end interface print
+  end interface
   public :: print
 
   ! Concatenate dicts or list of dicts to list of dicts
@@ -68,116 +68,121 @@ module dictionary
   !! be done on it-self `dic = dic / / ('key'.kv.1)
   interface operator( / / )
      module procedure d_cat_d
-  end interface operator( / / )
+  end interface
   public :: operator( / / )
 
   ! Retrieve the key from a dictionary (unary)
   !> Returns the key of the current _top_ entry,
   interface operator( .KEY. )
      module procedure key
-  end interface operator( .KEY. )
+  end interface
   public :: operator(.KEY.)
 
   ! check whether key exists in dictionary
   !> Returns .true. if the key exists in the dictionary, else returns false.
   interface operator( .IN. )
      module procedure in
-  end interface operator( .IN. )
+  end interface
   public :: operator(.IN.)
 
   ! check whether key not exists in dictionary
   !> Returns .not. ('key' .in. dict)
   interface operator( .NIN. )
      module procedure nin
-  end interface operator( .NIN. )
+  end interface
   public :: operator(.NIN.)
   
   ! Retrieve the value from a dictionary (unary)
   !> Returns the value from a dictionary by copy
   interface operator( .VAL. )
      module procedure value
-  end interface operator( .VAL. )
+  end interface
   public :: operator(.VAL.)
   !> Returns the value from a dictionary by pointer
   interface operator( .VALP. )
      module procedure value_p
-  end interface operator( .VALP. )
+  end interface
   public :: operator(.VALP.)
 
   ! Retrieve the hash value from a dictionary entry (unary)
   interface operator( .HASH. )
      module procedure hash
-  end interface operator( .HASH. )
+  end interface
   public :: operator(.HASH.)
 
   ! Checks for two dicts have all the same keys
   !> Checks whether all keys are the same in two dictionaries.
   interface operator( .EQ. )
      module procedure d_eq_d
-  end interface operator( .EQ. )
+  end interface
   public :: operator(.EQ.) ! Overloaded
 
   ! Checks for two dicts do not share any common keys
   !> Checks whether not all keys are the same in two dictionaries.
   interface operator( .NE. )
      module procedure d_ne_d
-  end interface operator( .NE. )
+  end interface
   public :: operator(.NE.) ! Overloaded
 
   ! Steps one time in the dictionary (unary)
   !> Looping construct.
   interface operator( .NEXT. )
      module procedure d_next
-  end interface operator( .NEXT. )
+  end interface
   public :: operator(.NEXT.)
 
   ! Retrieve the first of a dictionary (unary)
   !> Returns the first entry
   interface operator( .FIRST. )
      module procedure d_first
-  end interface operator( .FIRST. )
+  end interface
   public :: operator(.FIRST.)
 
   ! Check whether the dictionary is empty (unary)
   !> Checks if it is an empty dictionary, i.e. no keys exist
   interface operator( .EMPTY. )
      module procedure d_empty
-  end interface operator( .EMPTY. )
+  end interface
   public :: operator(.EMPTY.)
 
   interface hash_coll
      module procedure hash_coll_
-  end interface hash_coll
+  end interface
   public :: hash_coll
 
   interface delete
      module procedure delete_
-  end interface delete
+  end interface
   public :: delete
 
   interface remove
      module procedure remove_
-  end interface remove
+  end interface
   public :: remove
 
   interface pop
      module procedure pop_
-  end interface pop
+  end interface
   public :: pop
+
+  interface copy
+     module procedure copy_
+  end interface 
+  public :: copy
 
   interface nullify
      module procedure nullify_
-  end interface nullify
+  end interface
   public :: nullify
 
   interface extend
      module procedure sub_d_cat_d
-  end interface extend
+  end interface
   public :: extend
 
   interface which
      module procedure dict_key_which
-  end interface which
+  end interface
   public :: which
 
   public :: assign, associate
@@ -608,6 +613,36 @@ contains
 
   end subroutine d_insert
 
+
+  !> Generate the copy routine
+  subroutine copy_(from, to)
+    type(dict), intent(in) :: from
+    type(dict), intent(inout) :: to
+
+    type(d_entry), pointer :: d
+    type(var) :: v
+
+    ! Delete the dictionary
+    call delete(to)
+
+    d => from%first
+    do while ( associated(d) )
+       
+       ! Associate data...
+       call associate(v, d%value)
+       ! Copy data, hence .kv.
+       to = to // (trim(d%key).kv.v)
+       
+       d => d%next
+    end do
+
+    ! Clean up pointers...
+    call nullify(v)
+    nullify(d)
+    
+  end subroutine copy_
+
+  
   ! Retrieve the length of the dictionary...
   pure function len_(d)
     type(dict), intent(in) :: d

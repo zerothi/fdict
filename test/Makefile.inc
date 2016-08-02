@@ -10,6 +10,7 @@ TEST_EXE_ += tst_type
 TEST_EXE_ += tst_dict tst_dict_long
 TEST_EXE_ += tst_dict_mem1 tst_dict_mem2
 TEST_EXE_ += tst_dict_mem3 tst_dict_mem4
+TEST_EXE_ += tst_dict_mem5
 TEST_EXE_ += tst_dict_overwrite
 TEST_EXE_ += tst_dict_remove
 TEST_EXE_ += tst_dict_dict tst_dict_speed
@@ -103,6 +104,10 @@ tst_dict_mem3: tst_dict_mem3.o
 	./$@
 
 tst_dict_mem4: tst_dict_mem4.o
+	$(FC) -o $@ $(FFLAGS) $(INCLUDES) $^
+	./$@
+
+tst_dict_mem5: tst_dict_mem5.o
 	$(FC) -o $@ $(FFLAGS) $(INCLUDES) $^
 	./$@
 

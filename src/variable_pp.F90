@@ -21,7 +21,7 @@ module variable
   character(len=1) :: local_enc_type(1)
   
   type :: var
-     character(len=2) :: t = '  '
+     character(len=4) :: t = '  '
      ! The encoding placement of all data
      character(len=1), dimension(:), allocatable :: enc
   end type var
@@ -72,7 +72,7 @@ contains
 
   elemental function which_(this) result(t)
     type(var), intent(in) :: this
-    character(len=2) :: t
+    character(len=4) :: t
     t = this%t
   end function which_
     
