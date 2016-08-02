@@ -21,7 +21,7 @@ module variable
   character(len=1) :: local_enc_type(1)
   
   type :: var
-     character(len=4) :: t = '  '
+     character(len=4) :: t = '    '
      ! The encoding placement of all data
      character(len=1), dimension(:), allocatable :: enc
   end type var
@@ -160,7 +160,7 @@ contains
     else
        call delete(this)
     end if
-    this%t = 'ut'
+    this%t = 'USER'
     allocate(this%enc(size(enc)))
     this%enc = enc
 
