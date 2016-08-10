@@ -35,6 +35,12 @@ call assign(val,v)
 call nullify(v)
 end subroutine ROUTINE(dict_get_val,VAR)
 
+subroutine ROUTINE(dict_get_val_first,VAR)(val,this)
+VAR_TYPE, intent(out)DIMS :: val
+type(dict), intent(inout) :: this
+call assign(val,this%first%value)
+end subroutine ROUTINE(dict_get_val_first,VAR)
+
 subroutine ROUTINE(dict_get_p,VAR)(val,this,key)
 VAR_TYPE, pointer DIMS :: val
 type(dict), intent(inout) :: this
@@ -44,3 +50,9 @@ call associate(v,this,key=key)
 call associate(val,v)
 call nullify(v)
 end subroutine ROUTINE(dict_get_p,VAR)
+
+subroutine ROUTINE(dict_get_p_first,VAR)(val,this)
+VAR_TYPE, pointer DIMS :: val
+type(dict), intent(inout) :: this
+call associate(val,this%first%value)
+end subroutine ROUTINE(dict_get_p_first,VAR)

@@ -50,6 +50,7 @@ _psnl "module procedure dict_key2val"
 for v in ${vars[@]} ; do
     for d in `seq 0 $(var_N $v)` ; do
 	modproc dict_get_val $v $d
+	modproc dict_get_val_first $v $d
     done
 done
 _psnl "end interface"
@@ -60,6 +61,7 @@ _psnl "module procedure dict_key_p_dict"
 for v in ${vars[@]} ; do
     for d in `seq 0 $(var_N $v)` ; do
 	modproc dict_get_p $v $d
+	modproc dict_get_p_first $v $d
     done
 done
 _psnl "end interface"
