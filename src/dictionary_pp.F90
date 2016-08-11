@@ -215,7 +215,7 @@ contains
     integer :: val
     integer :: i
 #ifndef HASH_ALGO
-#define HASH_ALGO 0
+# define HASH_ALGO 0
 #endif
 #if HASH_ALGO == 0
     ! This is 32-bit integers, hence a 32-bit hash
@@ -683,18 +683,18 @@ contains
   
   subroutine copy_assign(din,dcopy)
     type(dict), intent(in)  :: din
-    type(dict), intent(out) :: dcopy
+    type(dict), intent(inout) :: dcopy
     dcopy%first => din%first
     dcopy%len = din%len
   end subroutine copy_assign
 
   subroutine print_(d)
     type(dict), intent(in)  :: d
-    type(dict)  :: ld
+    type(dict) :: ld
     ld = .first. d
     do while ( .not. .empty. ld ) 
        write(*,'(t2,a,tr1,a,i0,a)') trim(.key. ld), &
-            '['/ /ld%first%value%t/ /'] (',.hash. ld,')'
+            '['/ /trim(ld%first%value%t)/ /'] (',.hash. ld,')'
        ld = .next. ld
     end do
   end subroutine print_
@@ -975,7 +975,7 @@ contains
   ! key.
   function dict_kvp_dict(key,dic) result(this)
     character(len=*), intent(in) :: key
-    type(dict), intent(in), target :: dic
+    type(dict), intent(in) :: dic
     type(dict) :: this
 
     type :: pd_entry
@@ -1050,6 +1050,10 @@ contains
 
     ! Retrieve the dictionary key
     call associate(v,d,key=key)
+    if ( v%t .eq. '    ' ) then
+       call nullify(v)
+       return
+    end if
     
     i = size_enc(v)
     allocate(c(i))
