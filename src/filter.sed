@@ -4,6 +4,9 @@
 s/NEWLINE/\
 /g
 #
+# This is for removing empty lines
+/^[[:space:]]*$/d
+#
 # Basically the following commands translates
 # pre-processors within another preprocessor
 # which isn't allowed.

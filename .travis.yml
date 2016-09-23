@@ -27,3 +27,6 @@ install:
 
 script:
    - .travis/script.sh
+
+after_success:
+   - bash <(curl -s https://codecov.io/bash)

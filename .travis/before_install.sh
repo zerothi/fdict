@@ -23,3 +23,7 @@ case "$TRAVIS_OS_NAME" in
     ;;
 esac
 
+# Common flags for code-coverage
+{
+    echo FFLAGS = -fprofile-arcs -ftest-coverage
+} >> setup.make
