@@ -53,10 +53,10 @@ else ifneq ("$(wildcard setup/$(SETUP).make)","")
  override SETUP = setup/$(SETUP).make
 else
  # This is a small information utility
- $(info Could not find: ./$(SETUP))
- $(info Could not find: ./setup/$(SETUP))
- $(info Could not find: ./$(SETUP).make)
- $(info Could not find: ./setup/$(SETUP).make)
+ $(info Could not find: $(SETUP))
+ $(info Could not find: setup/$(SETUP))
+ $(info Could not find: $(SETUP).make)
+ $(info Could not find: setup/$(SETUP).make)
 
  # Print out the error messages for the user
  _TMP = $(subst .make,,$(subst ./setup/,$(_NL)  ,$(wildcard ./setup/*.make)))
@@ -66,6 +66,15 @@ endif
 
 # Include custom setup file
 include $(SETUP)
+
+# Figure out if the SETUP file is a relative
+# path of full path.
+ifeq ("$(wildcard ./$(SETUP))","$(SETUP)")
+SETUP_RELATIVE = 1
+else
+SETUP_RELATIVE = 0
+endif
+
 
 
 # Add print-out to target

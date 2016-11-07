@@ -9,7 +9,9 @@ _SMEKA_SUFFIXES := $(_SMEKA_SUFFIXES) .so .a
 AR ?= ar
 ARFLAGS ?= -ru
 RANLIB ?= ranlib
-RANLIBFLAGS ?= 
+RANLIBFLAGS ?=
+LINK ?= $(CC)
+LINK_FLAGS ?= -shared
 
 
 .PHONY: smeka-show-lib
@@ -22,10 +24,12 @@ smeka-show-lib:
 	@echo "  RANLIB  = $(RANLIB)"
 	@echo "  RANLIBFLAGS = $(RANLIBFLAGS)"
 	@echo "Linker (shared)"
-	@echo "  $(CC) -shared $(CFLAGS) $(LIBS) $(LDFLAGS)"
-	@echo ""
+	@echo "  LINK    = $(LINK)"
+	@echo "  LINK_FLAGS = $(LINK_FLAGS)"
 	@echo "  LIBS    = $(LIBS)"
 	@echo "  LDFLAGS = $(LDFLAGS)"
+	@echo ""
+	@echo "  $(LINK) $(LINK_FLAGS) $(LIBS) $(LDFLAGS)"
 
 show: smeka-show-lib
 
@@ -35,7 +39,7 @@ show: smeka-show-lib
 	$(AR) $(ARFLAGS) $@ $^
 	$(RANLIB) $(RANLIBFLAGS) $@
 %.so:
-	$(CC) -shared -o $@ $(CFLAGS) $^ $(LIBS) $(LDFLAGS)
+	$(LINK) $(LINK_FLAGS) -o $@ $^ $(LIBS) $(LDFLAGS)
 
 
 # Local Variables:
