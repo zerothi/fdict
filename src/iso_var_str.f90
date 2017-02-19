@@ -335,7 +335,11 @@ ELEMENTAL SUBROUTINE s_ass_s(var,expr)
   type(VAR_STR),INTENT(INOUT) :: var 
   type(VAR_STR),INTENT(IN)  :: expr 
   !  assign a string value to a string variable overriding default assignement 
-  !  reallocates string variable to size of string value and copies characters 
+  !  reallocates string variable to size of string value and copies characters
+  if(LEN(expr) == 0)THEN
+    var = ""
+    RETURN
+  ENDIF
   IF(ASSOCIATED(var%chars,expr%chars))THEN
     CONTINUE ! identity assignment do nothing
   ELSEIF(ASSOCIATED(var%chars))THEN
@@ -354,7 +358,7 @@ ELEMENTAL SUBROUTINE c_ass_s(var,expr)
   ! assign a string value to a character variable 
   ! if the string is longer than the character truncate the string on the right 
   ! if the string is shorter the character is blank padded on the right 
-  INTEGER                         :: lc,ls 
+  INTEGER                         :: lc,ls
   lc = LEN(var); ls = MIN(LEN(expr),lc) 
   DO i = 1,ls 
    var(i:i) = expr%chars(i) 
@@ -364,8 +368,8 @@ ELEMENTAL SUBROUTINE c_ass_s(var,expr)
   ENDDO 
  ENDSUBROUTINE c_ass_s 
   
-ELEMENTAL SUBROUTINE s_ass_c(var,expr)
-  type(VAR_STR),INTENT(OUT) :: var 
+ ELEMENTAL SUBROUTINE s_ass_c(var,expr)
+  type(VAR_STR),INTENT(INOUT) :: var 
   CHARACTER(LEN=*),INTENT(IN)      :: expr 
   !  assign a character value to a string variable 
   !  disassociates the string variable from its current value, allocates new 
@@ -373,7 +377,8 @@ ELEMENTAL SUBROUTINE s_ass_c(var,expr)
   !  into this space.
   INTEGER                          :: lc 
   lc = LEN(expr) 
-  IF(ASSOCIATED(var%chars))DEALLOCATE(var%chars)  
+  IF(ASSOCIATED(var%chars))DEALLOCATE(var%chars)
+  IF(lc == 0)RETURN
   ALLOCATE(var%chars(1:lc)) 
   DO i = 1,lc 
     var%chars(i) = expr(i:i) 

@@ -912,6 +912,7 @@ contains
     this = new_d_key(key)
     str = val
     call assign(this%first%value,str)
+    str = "" ! deallocation
   end function dict_kv_char0
 
   function dict_kv_var(key,val) result(this)

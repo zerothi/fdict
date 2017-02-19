@@ -235,6 +235,7 @@ contains
     type(var_str) :: str
     str = rhs
     call assign(this,str,dealloc=dealloc)
+    str = "" ! deallocation
   end subroutine assign_set_char0
 
   subroutine assign_get_char0(lhs,this,success)
@@ -246,6 +247,7 @@ contains
     call assign(str,this,success=lsuccess)
     if ( present(success) ) success = lsuccess
     if ( lsuccess ) lhs = str
+    str = "" ! deallocation
   end subroutine assign_get_char0
 
 #include "var_funcs.inc"

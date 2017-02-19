@@ -8,7 +8,7 @@ subroutine ROUTINE(assign_set,VAR)(this,rhs,dealloc)
   logical, intent(in), optional :: dealloc
   logical :: ldealloc
   type :: pt
-    VAR_TYPE, pointer DIMS :: p
+    VAR_TYPE, pointer DIMS :: p => null()
   end type
   type(pt) :: p
   ! ASSIGNMENT in fortran is per default destructive
@@ -35,7 +35,7 @@ subroutine ROUTINE(assign_get,VAR)(lhs,this,success)
   logical, intent(out), optional :: success
   logical :: lsuccess
   type :: pt
-    VAR_TYPE, pointer DIMS :: p
+    VAR_TYPE, pointer DIMS :: p => null()
   end type
   type(pt) :: p
   nullify(p%p)
@@ -64,7 +64,7 @@ subroutine ROUTINE(associate_get,VAR)(lhs,this,dealloc,success)
   logical, intent(out), optional :: success
   logical :: ldealloc, lsuccess
   type :: pt
-    VAR_TYPE, pointer DIMS :: p
+    VAR_TYPE, pointer DIMS :: p => null()
   end type
   type(pt) :: p
   lsuccess = this%t == STR(VAR)
@@ -96,7 +96,7 @@ subroutine ROUTINE(associate_set,VAR)(this,rhs,dealloc)
   logical, intent(in), optional :: dealloc
   logical :: ldealloc
   type :: pt
-    VAR_TYPE, pointer DIMS :: p
+    VAR_TYPE, pointer DIMS :: p => null()
   end type
   type(pt) :: p
   ! ASSOCIATION in fortran is per default non-destructive
@@ -118,7 +118,7 @@ pure function ROUTINE(associatd_l,VAR)(lhs,this) result(ret)
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    VAR_TYPE, pointer DIMS :: p
+    VAR_TYPE, pointer DIMS :: p => null()
   end type
   type(pt) :: p
   ret = this%t == STR(VAR)
@@ -133,7 +133,7 @@ pure function ROUTINE(associatd_r,VAR)(this,rhs) result(ret)
   VAR_TYPE, pointer DIMS :: rhs
   logical :: ret
   type :: pt
-    VAR_TYPE, pointer DIMS :: p
+    VAR_TYPE, pointer DIMS :: p => null()
   end type
   type(pt) :: p
   ret = this%t == STR(VAR)
