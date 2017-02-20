@@ -980,7 +980,7 @@ contains
     type(dict) :: this
 
     type :: pd_entry
-       type(d_entry), pointer :: d
+       type(d_entry), pointer :: d => null()
     end type pd_entry
     type(pd_entry) :: pd
     type(var) :: v
@@ -989,6 +989,7 @@ contains
     pd%d => dic%first
     call associate_type(v,transfer(pd,c))
     this = (key.kvp.v)
+    call nullify(v)
 
   end function dict_kvp_dict
 
@@ -1032,7 +1033,7 @@ contains
     ! Specifically because the address of the dic1 does not change.
     ! However, the d_entry pointer is irrespective of parent locality.
     type :: pd_entry
-       type(d_entry), pointer :: d
+       type(d_entry), pointer :: d => null()
     end type pd_entry
     type(pd_entry) :: pd
     type(dict) :: ld

@@ -109,7 +109,7 @@ function ptr_declarations {
 	v=$1 ; shift
 	for d in `seq 0 $(var_N $v)` ; do
 	    _psnl "type :: pt$v$d"
-	    _psnl " $(var_name $v), pointer :: p$(dim_to_size $d)"
+	    _psnl " $(var_name $v), pointer :: p$(dim_to_size $d) => null()"
 	    _psnl "end type pt$v$d"
 	    _ps "type(pt$v$d) :: "
 	    if [ $count -eq 1 ]; then

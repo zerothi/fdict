@@ -22,11 +22,12 @@ subroutine ROUTINE(assign_set,VAR)(this,rhs,dealloc)
   ! With pointer transfer we need to deallocate
   ! else bounds might change...
   this%t = STR(VAR)
-  nullify(p%p)
   ALLOC(p%p,rhs) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
   this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  ! We already have shipped it
+  nullify(p%p)
 end subroutine ROUTINE(assign_set,VAR)
 
 subroutine ROUTINE(assign_get,VAR)(lhs,this,success)
@@ -38,7 +39,6 @@ subroutine ROUTINE(assign_get,VAR)(lhs,this,success)
     VAR_TYPE, pointer DIMS :: p => null()
   end type
   type(pt) :: p
-  nullify(p%p)
   lsuccess = this%t == STR(VAR)
 #if DIM > 0
   if (lsuccess) then
@@ -78,7 +78,6 @@ subroutine ROUTINE(associate_get,VAR)(lhs,this,dealloc,success)
      nullify(lhs)
   end if
   if (.not. lsuccess ) return
-  nullify(p%p)
   p = transfer(this%enc,p) ! retrieve pointer encoding
   lhs => p%p
 end subroutine ROUTINE(associate_get,VAR)
@@ -123,7 +122,6 @@ pure function ROUTINE(associatd_l,VAR)(lhs,this) result(ret)
   type(pt) :: p
   ret = this%t == STR(VAR)
   if (ret) then	
-     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -138,7 +136,6 @@ pure function ROUTINE(associatd_r,VAR)(this,rhs) result(ret)
   type(pt) :: p
   ret = this%t == STR(VAR)
   if (ret) then	
-     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif

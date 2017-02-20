@@ -58,6 +58,9 @@ for v in ${vars[@]} ; do
 	_psnl "if (this%t == '$v$d') then"
 	_psnl "  p$v$d = transfer(this%enc,p$v$d)"
 	_psnl "  deallocate(p$v$d%p)"
+	if [[ $v == "V" ]]; then
+	    _psnl "  p$v$d%p = ''"
+	fi
 	_psnl "end if"
     done
 done
