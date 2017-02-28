@@ -5,6 +5,7 @@ echo "CPP version"
 cpp --version
 echo "gfortran version"
 gfortran --version
+cd obj
 # Show help from Makefile
 make show
 # Actually build fdict
