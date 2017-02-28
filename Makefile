@@ -33,9 +33,51 @@ $(LIBRARIES): $(OBJECTS)
 # Create target
 lib: settings.bash $(LIBRARIES)
 
-# Create target
-source: $(SOURCES)
 
 # Include the makefile in the test directory
 include $(TOP_DIR)/test/Makefile.inc
+
+
+##
+# This handy target copies from the SOURCES_DIR all sources
+# to the current directory
+# But ONLY if the current directory is not the top of the project
+.PHONY: copy
+ifeq ($(TOP_DIR),.)
+copy:
+	@echo ""
+	@echo "make copy does not work when executed from the top ncdf directory"
+	@echo "Please create an object directory with an appropriate Makefile"
+	@echo ""
+else
+copy:
+	cp $(SOURCES_DIR)/src/*.f90 .
+endif
+
+# Create source target for creating _only_ the sources.
+.PHONY: source
+source: source-src
+
+# Dependent on the option we can fake a VPATH to contain
+# any pre-created sources, if they exist we can simply use those
+SOURCES_DIR = $(TOP_DIR)/sources
+
+# Create target
+source: source-src
+
+##
+# Distribution targets for creating the distribution of flook
+# Create distribution for releases
+.PHONY: dist-fdict
+dist-fdict:
+	git archive --format=tar --prefix fdict-$(PROJECT_VERSION)/ HEAD > fdict-$(PROJECT_VERSION).tar
+# Force the creation of the 3 pre-defined source directories
+	$(MAKE) source
+# Clean up
+	rm *.inc
+	tar --transform 's,^,fdict-$(PROJECT_VERSION)/,' -rf fdict-$(PROJECT_VERSION).tar sources*
+	-@rm -f fdict-$(PROJECT_VERSION).tar.gz
+	gzip fdict-$(PROJECT_VERSION).tar
+
+dist: dist-fdict
 
