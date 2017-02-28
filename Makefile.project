@@ -4,16 +4,24 @@ _SMEKA_project = 1
 # project
 
 # Step this version upon new versions
-PROJECT_VERSION = 0.4.1
+PROJECT_MAJOR = 0
+PROJECT_MINOR = 4
+PROJECT_MICRO = 1
+PROJECT_VERSION = $(PROJECT_MAJOR).$(PROJECT_MINOR).$(PROJECT_MICRO)
 
 # These are constant default
 PROJECT_NAME = fdict
+
+# Create the list of libraries
+FDICT_LIB ?= fdict$(LIB_SUFFIX)
+FDICT_LIB_STATIC ?= lib$(FDICT_LIB).a
+FDICT_LIB_SHARED ?= lib$(FDICT_LIB).so
 
 # Define custom options for fdict
 STATIC ?= 1
 # If the library was built previously,
 # we default to building the shared library.
-ifneq ("$(wildcard libfdict.so)","")
+ifneq ("$(wildcard $(FDICT_LIB_SHARED))","")
  SHARED ?= 1
 else
  SHARED ?= 0
@@ -21,10 +29,10 @@ endif
 
 # Create the list of libraries
 ifeq ($(STATIC),1)
-  LIBRARIES += libfdict.a
+  LIBRARIES += $(FDICT_LIB_STATIC)
 endif
 ifeq ($(SHARED),1)
-  LIBRARIES += libfdict.so
+  LIBRARIES += $(FDICT_LIB_SHARED)
   # Forcefully denote that objects should have
   # position independent code
   # THIS IS A SMEKA SETTING
@@ -32,30 +40,24 @@ ifeq ($(SHARED),1)
 endif
 
 
-# Silence the error messages when piping
-PIPE_SILENT ?= 2> /dev/null
-
-
 # Create custom installation of modules
-.NOTPARALLEL: install_mod
-smeka-install: install_mod
-install_mod:
+.NOTPARALLEL: install-mod
+smeka-install: install-mod
+install-mod:
 	install -pm $(_OCT_rwrr) -t $(FMOD_DIR) $(F_MODS)
 
-.NOTPARALLEL: install_settings
-smeka-install: install_settings
-install_settings:
-	install -pm $(_OCT_rwrr) -t $(BIN_DIR) $(TOP_DIR)/settings.bash
+.NOTPARALLEL: install-settings
+smeka-install: install-settings
+install-settings:
+	install -pm $(_OCT_rwrr) -t $(BIN_DIR) settings.bash
 
 
 # Force the deletion of both libraries
 clean:
-	-rm -f libfdict.so
-	-rm -f libfdict.a
+	-rm -f $(FDICT_LIB_STATIC) $(FDICT_LIB_SHARED) settings.bash
 
 
-settings.bash: FORCE
-# We always require the settings.bash file to exist
+settings.bash:
 	VPATH="$(TOP_DIR)" $(TOP_DIR)/setup.sh --default
 
 
