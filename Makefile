@@ -74,7 +74,7 @@ dist-fdict:
 # Force the creation of the 3 pre-defined source directories
 	$(MAKE) source
 # Clean up
-	rm *.inc
+	-rm -f *.inc
 	tar --transform 's,^,fdict-$(PROJECT_VERSION)/,' -rf fdict-$(PROJECT_VERSION).tar sources*
 	-@rm -f fdict-$(PROJECT_VERSION).tar.gz
 	gzip fdict-$(PROJECT_VERSION).tar
