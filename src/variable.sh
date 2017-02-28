@@ -57,10 +57,10 @@ for v in ${vars[@]} ; do
     for d in `seq 0 $(var_N $v)` ; do
 	_psnl "if (this%t == '$v$d') then"
 	_psnl "  p$v$d = transfer(this%enc,p$v$d)"
-	_psnl "  deallocate(p$v$d%p)"
 	if [[ $v == "V" ]]; then
 	    _psnl "  p$v$d%p = ''"
 	fi
+	_psnl "  deallocate(p$v$d%p)"
 	_psnl "end if"
     done
 done

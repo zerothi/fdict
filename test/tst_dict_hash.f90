@@ -4,7 +4,7 @@ program tests
 
   implicit none
 
-  integer :: iu, i, iostat
+  integer :: iu, iostat
   character(len=200) :: line
   integer, target :: i0
   type(dict) :: d

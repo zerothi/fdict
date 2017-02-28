@@ -1,7 +1,6 @@
 _SMEKA_project = 1
 
-# Contains specific default information for this
-# project
+# Contains specific default information for this project
 
 # Step this version upon new versions
 PROJECT_MAJOR = 0
