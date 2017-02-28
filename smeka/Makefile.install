@@ -12,7 +12,9 @@ install: smeka-install-lib smeka-install
 .PHONY: smeka-install-lib
 .NOTPARALLEL: smeka-install-lib
 smeka-install-lib: smeka-install-init-dir
+ifneq ($(LIBRARIES),)
 	install -pm $(_OCT_rwxrxrx) -t $(LIB_DIR) $(LIBRARIES)
+endif
 
 
 .PHONY: smeka-install-init-dir

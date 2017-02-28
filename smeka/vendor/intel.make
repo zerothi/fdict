@@ -7,6 +7,7 @@ V_CC = icc
 V_CXX = icpc
 V_FC = ifort
 V_CPP = cpp -E -P -x c
+V_FPP = ifort -E -P -xc
 
 V_MPICC = mpicc
 V_MPICXX = mpic++

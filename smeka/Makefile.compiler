@@ -98,6 +98,9 @@ FC ?= $(V_FC)
 ifdef V_CPP
 CPP ?= $(V_CPP)
 endif
+ifdef V_FPP
+FPP ?= $(V_FPP)
+endif
 MPICC ?= $(V_MPICC)
 MPICXX ?= $(V_MPICXX)
 MPIFC ?= $(V_MPIFC)
@@ -128,10 +131,10 @@ show: smeka-show-compiler
 # Define the default compilation options:
 ifeq ($(SMEKA_CPP_F),0)
 %.o: %.F90
-	$(FC) -c -o $@ $(FFLAGS) $(CPPFLAGS) $(FPPFLAGS) $(INCLUDES) $<
+	$(FC) -c -o $@ $(FFLAGS) $(INCLUDES) $(FPPFLAGS) $<
 else
 %.o: %.F90
-	$(CPP) $(CPPFLAGS) $(FPPFLAGS) $(INCLUDES) $< > $(<:.F90=_cpp.f90)
+	$(FPP) $(INCLUDES) $(FPPFLAGS) $< > $(<:.F90=_cpp.f90)
 	$(FC) -c -o $@ $(FFLAGS) $(INCLUDES) $(<:.F90=_cpp.f90)
 endif
 %.o: %.f90

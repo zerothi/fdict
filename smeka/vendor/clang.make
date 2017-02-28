@@ -8,6 +8,7 @@ V_CXX = clang
 # What to do here?
 V_FC = gfortran
 V_CPP = clang -E -P -x c
+V_FPP = gfortran -E -P -x c
 
 
 V_MPICC = mpicc

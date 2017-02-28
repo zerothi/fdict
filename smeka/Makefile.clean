@@ -16,7 +16,7 @@ clean: smeka-clean-src
 
 .PHONY: smeka-clean-mod
 smeka-clean-mod:
-	rm -f $(FMOD_DIR)/*.mod $(FMOD_DIR)/*.MOD
+	rm -f $(F_MODS)
 clean: smeka-clean-mod
 
 .PHONY: smeka-clean-obj
