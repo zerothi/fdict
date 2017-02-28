@@ -44,6 +44,7 @@ To link fdict to your program the following can be used in a `Makefile`
     FDICT_LIBS  = -L$(FDICT_PATH) -lfdict
     FDICT_INC   = -I$(FDICT_PATH)
 
+
 #### Controlling interface parameters ####
 
 __Typically not needed__: allows for customization of different interfaces.
