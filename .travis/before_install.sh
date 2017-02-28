@@ -24,7 +24,14 @@ case "$TRAVIS_OS_NAME" in
     ;;
 esac
 
+mkdir obj
+cd obj
 # Common flags for code-coverage
 {
     echo FFLAGS = -fprofile-arcs -ftest-coverage
 } >> setup.make
+
+{
+    echo "TOP_DIR=.."
+    echo "include ../Makefile"
+} > Makefile
