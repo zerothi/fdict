@@ -6,7 +6,6 @@
 !> \author Nick Papior Andersen, Copyright 2015
 module dictionary
 
-  use iso_var_str
   use variable
 
   implicit none
@@ -40,7 +39,6 @@ module dictionary
   type :: dict
      ! We will keep the dictionary private so that any coding
      ! has to use .KEY. and .VAL. etc.
-     private
      type(d_entry), pointer :: first => null()
      integer :: len = 0
   end type
@@ -198,7 +196,6 @@ module dictionary
   ! We need to create a linked list to create arbitrarily long dictionaries...
   ! The dictionary entry is not visible outside.
   type :: d_entry
-     private
      character(len=DICT_KEY_LENGTH) :: key = ' '
      ! in order to extend the dictionary to contain a dictionary
      ! we simply need to add the dictionary type to the variable
@@ -336,45 +333,6 @@ contains
     ! return col
 
   end function hash_coll_
-    
-
-  subroutine dict_key2val(val,d,key,dealloc)
-    type(var), intent(inout) :: val
-    type(dict), intent(inout) :: d
-    character(len=*), intent(in), optional :: key
-    logical, intent(in), optional :: dealloc
-    type(dict) :: ld
-    integer :: hash, lhash
-
-    if ( .not. present(key) ) then
-       if ( .not. (.empty. d) ) then
-          call assign(val,d%first%value,dealloc=dealloc)
-       else
-          call val_delete_request(val,dealloc=dealloc)
-       end if
-       return
-    end if
-
-    hash = hash_val(key)
-    ld = .first. d
-    search: do while ( .not. (.empty. ld) )
-       lhash = .hash. ld
-       if (      hash > lhash ) then
-          ! skip to next search
-       else if ( hash < lhash ) then
-          ! the key does not exist, delete if requested, else clean it
-          call val_delete_request(val,dealloc=dealloc)
-          exit search
-       else if ( hash == lhash ) then
-          if ( key .eq. .KEY. ld ) then
-             call assign(val,ld%first%value,dealloc=dealloc)
-             return
-          end if
-       end if
-       ld = .next. ld
-    end do search
-
-  end subroutine dict_key2val
 
   function in(key,d)
     character(len=*), intent(in) :: key
@@ -410,7 +368,44 @@ contains
     nin = .not. in(key,d)
   end function nin
 
-  subroutine dict_key_p_val(val,d,key,dealloc)
+  subroutine dict_get_val(val,d,key,dealloc)
+    type(var), intent(inout) :: val
+    type(dict), intent(inout) :: d
+    character(len=*), intent(in), optional :: key
+    logical, intent(in), optional :: dealloc
+    type(dict) :: ld
+    integer :: hash, lhash
+
+    if ( .not. present(key) ) then
+       if ( .not. (.empty. d) ) then
+          call assign(val,d%first%value,dealloc=dealloc)
+       else
+          call val_delete_request(val,dealloc=dealloc)
+       end if
+       return
+    end if
+
+    hash = hash_val(key)
+    ld = .first. d
+    search: do while ( .not. (.empty. ld) )
+       lhash = .hash. ld
+       if (      hash > lhash ) then
+          ! skip to next search
+       else if ( hash < lhash ) then
+          ! the key does not exist, delete if requested, else clean it
+          call val_delete_request(val,dealloc=dealloc)
+          exit search
+       else if ( hash == lhash ) then
+          if ( key .eq. .KEY. ld ) then
+             call assign(val,ld%first%value,dealloc=dealloc)
+             return
+          end if
+       end if
+       ld = .next. ld
+    end do search
+
+  end subroutine dict_get_val
+  subroutine dict_get_p_val(val,d,key,dealloc)
     type(var), intent(inout) :: val
     type(dict), intent(inout) :: d
     character(len=*), intent(in), optional :: key
@@ -434,6 +429,7 @@ contains
        if (      hash > lhash ) then
           ! skip to next search
        else if ( hash < lhash ) then
+          ! the key does not exist, delete if requested, else clean it
           call val_delete_request(val,dealloc=dealloc)
           exit search
        else if ( hash == lhash ) then
@@ -445,7 +441,44 @@ contains
        ld = .next. ld
     end do search
 
-  end subroutine dict_key_p_val
+  end subroutine dict_get_p_val
+  
+  subroutine dict_get_val_a_(val,d,key,dealloc)
+    character(len=*), intent(out) :: val
+    type(dict), intent(inout) :: d
+    character(len=*), intent(in), optional :: key
+    logical, intent(in), optional :: dealloc
+    type(var) :: v
+    type(dict) :: ld
+    integer :: hash, lhash
+
+    val = ' '
+    if ( .not. present(key) ) then
+       if ( .not. (.empty. d) ) then
+          call associate(v,d%first%value)
+       end if
+       return
+    end if
+
+    hash = hash_val(key)
+    ld = .first. d
+    search: do while ( .not. (.empty. ld) )
+       lhash = .hash. ld
+       if (      hash > lhash ) then
+          ! skip to next search
+       else if ( hash < lhash ) then
+          exit search
+       else if ( hash == lhash ) then
+          if ( key .eq. .KEY. ld ) then
+             call assign(val, ld%first%value)
+             return
+          end if
+       end if
+       ld = .next. ld
+    end do search
+
+  end subroutine dict_get_val_a_
+
 
   ! Compares two dict types against each other
   ! Will do comparison by hash.
@@ -904,16 +937,13 @@ contains
 
   end subroutine nullify_
 
-  function dict_kv_char0(key,val) result(this)
+  function dict_kv_a0_0(key,val) result(this)
     character(len=*), intent(in) :: key
     character(len=*), intent(in) :: val
     type(dict) :: this
-    type(var_str) :: str
     this = new_d_key(key)
-    str = val
-    call assign(this%first%value,str)
-    str = "" ! deallocation
-  end function dict_kv_char0
+    call assign(this%first%value,val)
+  end function dict_kv_a0_0
 
   function dict_kv_var(key,val) result(this)
     character(len=*), intent(in) :: key
@@ -1003,11 +1033,11 @@ contains
 
     ! Retrieving a dictionary will NEVER
     ! be copying the entire dictionary.
-    call dict_key_p_dict(dic,d,key=key,dealloc=dealloc)
+    call dict_get_p_dict(dic,d,key=key,dealloc=dealloc)
 
   end subroutine dict_key2dict
 
-  subroutine dict_key_p_dict(dic,d,key,dealloc)
+  subroutine dict_get_p_dict(dic,d,key,dealloc)
     type(dict), intent(inout) :: dic
     type(dict), intent(inout) :: d
     character(len=*), intent(in), optional :: key
@@ -1078,6 +1108,6 @@ contains
        ld = .next. ld
     end do
 
-  end subroutine dict_key_p_dict
+  end subroutine dict_get_p_dict
 
 end module dictionary

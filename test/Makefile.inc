@@ -7,6 +7,7 @@ TEST_COMMON = tst_utils.o
 TEST_EXE_  = tst_simple tst_sp tst_dp tst_mem
 TEST_EXE_ += tst_char
 TEST_EXE_ += tst_type
+TEST_EXE_ += tst_dict_a_ tst_dict_a1
 TEST_EXE_ += tst_dict tst_dict_long
 TEST_EXE_ += tst_dict_mem1 tst_dict_mem2
 TEST_EXE_ += tst_dict_mem3 tst_dict_mem4
@@ -41,7 +42,7 @@ $(TEST_OBJECTS): $(TEST_COMMON)
 $(TEST): $(TEST_COMMON) $(TEST_LIB)
 # There are *.inc files in the src directory that is
 # needed
-$(TEST): INCLUDES += -I$(src_DIR)
+$(TEST): INCLUDES += -I$(src_DIR) -I.
 
 
 .PHONY: test
@@ -74,6 +75,13 @@ tst_type: tst_type.o
 	./$@
 
 tst_dict: tst_dict.o
+	$(FC) -o $@ $(FFLAGS) $(INCLUDES) $^
+	./$@
+
+tst_dict_a_: tst_dict_a_.o
+	$(FC) -o $@ $(FFLAGS) $(INCLUDES) $^
+	./$@
+tst_dict_a1: tst_dict_a1.o
 	$(FC) -o $@ $(FFLAGS) $(INCLUDES) $^
 	./$@
 

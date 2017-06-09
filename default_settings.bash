@@ -6,15 +6,13 @@ function var_N {
     local var=$1 ; shift
     case $var in
 	VAR) _ps 0 ;;
-	V) _ps 0 ;;
-	a) _ps 0 ;;
+	a) _ps 1 ;;
 	*) _ps 3 ;;
     esac
 }
 	
 #declare -A N
 #N[VAR]=0 # variable
-#N[V]=0 # variable-string
 #N[a]=0 # character
 #N[s]=3 # single
 #N[d]=3 # double
@@ -31,8 +29,7 @@ function var_name {
     local var=$1 ; shift
     case $var in
 	VAR) _ps "type(var)" ;;
-	V) _ps "type(var_str)" ;;
-	a) _ps "character(len=*)" ;;
+	a) _ps "character(len=1)" ;;
 	s) _ps "real(sp)" ;;
 	d) _ps "real(dp)" ;;
 	c) _ps "complex(sp)" ;;
@@ -45,7 +42,6 @@ function var_name {
 }
 #declare -A name
 #name[VAR]="type(var)"
-#name[V]="type(var_str)"
 #name[a]="character(len=*)"
 #name[s]="real(sp)"
 #name[d]="real(dp)"
@@ -99,6 +95,7 @@ function dim_to_size {
 
 function ptr_declarations {
     local v
+    local md
     local count=1
     if [ $1 == "-count" ]; then
 	shift
@@ -107,7 +104,9 @@ function ptr_declarations {
     fi
     while [ $# -gt 0 ]; do
 	v=$1 ; shift
-	for d in `seq 0 $(var_N $v)` ; do
+	md=0
+	[ $v == 'a' ] && md=1
+	for d in `seq $md $(var_N $v)` ; do
 	    _psnl "type :: pt$v$d"
 	    _psnl " $(var_name $v), pointer :: p$(dim_to_size $d) => null()"
 	    _psnl "end type pt$v$d"

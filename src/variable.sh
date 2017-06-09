@@ -13,10 +13,28 @@ fi
 [ -e $_vpath/settings.bash ] && source $_vpath/settings.bash
 
 # The different settings used in this
-vars=(V s d c z b h i l)
+vars=(a s d c z b h i l)
 
 ptr_declarations ${vars[@]} > var_declarations.inc
+{
+    _psnl "type :: pta_"
+    _psnl " type(pta__), pointer :: p(:) => null()"
+    _psnl "end type pta_"
+    _psnl "type :: pta__"
+    _psnl " character(len=1), pointer :: p => null()"
+    _psnl "end type pta__"
+    _psnl "type(pta_) :: pa_"
+} >> var_declarations.inc
 ptr_declarations -count 2 ${vars[@]} > var_declarations2.inc
+{
+    _psnl "type :: pta_"
+    _psnl " type(pta__), pointer :: p(:) => null()"
+    _psnl "end type pta_"
+    _psnl "type :: pta__"
+    _psnl " character(len=1), pointer :: p => null()"
+    _psnl "end type pta__"
+    _psnl "type(pta_) :: pa__1, pa__2"
+} >> var_declarations2.inc
 
 # Print out to the mod file
 {
@@ -25,27 +43,40 @@ args="get set"
 [ "$sub" == "associatd" ] && args="l r"
 _psnl "interface $sub"
 # Add the character(len=*)
-[ "$sub" == "assign" ] && modproc $sub char 0 $args
-# Add the variable
-[ "$sub" != "associatd" ] && modproc $sub var ""
+case "$sub" in
+    assign)
+	# Add the character(len=*)
+	modproc $sub a "0_0" get set
+	# Add the variable
+	modproc $sub var ""
+	;;
+    associate)
+	# Add the variable
+	modproc $sub var ""
+	;;
+esac
 for v in ${vars[@]} ; do
-    for d in `seq 0 $(var_N $v)` ; do
+    md=0
+    [ $v == 'a' ] && md=1
+    for d in `seq $md $(var_N $v)` ; do
 	modproc $sub $v $d $args
     done
 done
-_psnl "end interface $sub"
+_psnl "end interface"
 _psnl "public :: $sub"
 done
 if [ 1 -eq 0 ]; then
 for sub in eq ne lt gt ge le ; do
 _psnl "interface operator(.$sub.)"
 for v in ${vars[@]} ; do
-    for d in `seq 0 $(var_N $v)` ; do
+    md=0
+    [ $v == 'a' ] && md=1
+    for d in `seq $md $(var_N $v)` ; do
 	modproc $sub $v $d l r
     done
 done
 modproc $sub v 0
-_psnl "end interface operator(.$sub.)"
+_psnl "end interface"
 _psnl "public :: operator(.$sub.)"
 done
 fi
@@ -54,7 +85,9 @@ fi
 
 {
 for v in ${vars[@]} ; do
-    for d in `seq 0 $(var_N $v)` ; do
+    md=0
+    [ $v == 'a' ] && md=1
+    for d in `seq $md $(var_N $v)` ; do
 	_psnl "if (this%t == '$v$d') then"
 	_psnl "  p$v$d = transfer(this%enc,p$v$d)"
 	if [[ $v == "V" ]]; then
@@ -64,17 +97,14 @@ for v in ${vars[@]} ; do
 	_psnl "end if"
     done
 done
-# We define the type 'USER' as a "user-type"
-_psnl "if (this%t == 'USER') then"
-_psnl "print '(a)','var: Cannot deallocate UT, proceed:'"
-_psnl "print '(a)','     1) retrieve type, 2) deallocate, 3) call nullify(var)'"
-_psnl "end if"
 } > var_delete.inc
 
 
 {
 for v in ${vars[@]} ; do
-    for d in `seq 0 $(var_N $v)` ; do
+    md=0
+    [ $v == 'a' ] && md=1
+    for d in `seq $md $(var_N $v)` ; do
 	_psnl "if ( this%t == '$v$d' ) then"
 	_psnl "#define DIM $d"
 	_psnl '#include "settings.inc"'
@@ -90,7 +120,9 @@ done
 
 {
 for v in ${vars[@]} ; do
-    for d in `seq 0 $(var_N $v)` ; do
+    md=0
+    [ $v == 'a' ] && md=1
+    for d in `seq $md $(var_N $v)` ; do
 	_psnl "if ( this%t == '$v$d' ) then"
 	_psnl "p$v${d}_1%p = p$v${d}_2%p"
 	_psnl "allocate(this%enc(size(transfer(p$v${d}_1, local_enc_type))))"
@@ -102,14 +134,16 @@ done
 # In case the variable is a user-type, then we
 # copy the encoding, probably this is a bit wearing, but
 _psnl "if ( this%t == 'USER' ) then"
-_psnl "print '(a)','var: Cannot assign a UT, USE call associate(..)'"
+_psnl "write(*,'(a)') 'var: Cannot assign a UT, USE call associate(..)'"
 _psnl "end if"
 } > var_var_set.inc
 
 
 {
 for v in ${vars[@]} ; do
-    for d in `seq 0 $(var_N $v)` ; do
+    md=0
+    [ $v == 'a' ] && md=1
+    for d in `seq $md $(var_N $v)` ; do
 	_psnl "if ( this%t == '$v$d' ) then"
 	_psnl "p$v${d}_1 = transfer(this%enc,p$v${d}_1)"
 	_psnl "p$v${d}_2 = transfer(rhs%enc,p$v${d}_2)"
@@ -129,7 +163,9 @@ _psnl "end if"
 _psnl "#undef VAR_PREC"
 for v in ${vars[@]} ; do
     _psnl "#define VAR_TYPE $(var_name $v)"
-    for d in `seq 0 $(var_N $v)` ; do
+    md=0
+    [ $v == 'a' ] && md=1
+    for d in `seq $md $(var_N $v)` ; do
 	if [ $d -eq 0 ]; then
 	    _psnl "#define DIMS"
 	else
