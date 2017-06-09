@@ -368,118 +368,6 @@ contains
     nin = .not. in(key,d)
   end function nin
 
-  subroutine dict_get_val(val,d,key,dealloc)
-    type(var), intent(inout) :: val
-    type(dict), intent(inout) :: d
-    character(len=*), intent(in), optional :: key
-    logical, intent(in), optional :: dealloc
-    type(dict) :: ld
-    integer :: hash, lhash
-
-    if ( .not. present(key) ) then
-       if ( .not. (.empty. d) ) then
-          call assign(val,d%first%value,dealloc=dealloc)
-       else
-          call val_delete_request(val,dealloc=dealloc)
-       end if
-       return
-    end if
-
-    hash = hash_val(key)
-    ld = .first. d
-    search: do while ( .not. (.empty. ld) )
-       lhash = .hash. ld
-       if (      hash > lhash ) then
-          ! skip to next search
-       else if ( hash < lhash ) then
-          ! the key does not exist, delete if requested, else clean it
-          call val_delete_request(val,dealloc=dealloc)
-          exit search
-       else if ( hash == lhash ) then
-          if ( key .eq. .KEY. ld ) then
-             call assign(val,ld%first%value,dealloc=dealloc)
-             return
-          end if
-       end if
-       ld = .next. ld
-    end do search
-
-  end subroutine dict_get_val
-  subroutine dict_get_p_val(val,d,key,dealloc)
-    type(var), intent(inout) :: val
-    type(dict), intent(inout) :: d
-    character(len=*), intent(in), optional :: key
-    logical, intent(in), optional :: dealloc
-    type(dict) :: ld
-    integer :: hash, lhash
-
-    if ( .not. present(key) ) then
-       if ( .not. (.empty. d) ) then
-          call associate(val,d%first%value,dealloc=dealloc)
-       else
-          call val_delete_request(val,dealloc=dealloc)
-       end if
-       return
-    end if
-
-    hash = hash_val(key)
-    ld = .first. d
-    search: do while ( .not. (.empty. ld) )
-       lhash = .hash. ld
-       if (      hash > lhash ) then
-          ! skip to next search
-       else if ( hash < lhash ) then
-          ! the key does not exist, delete if requested, else clean it
-          call val_delete_request(val,dealloc=dealloc)
-          exit search
-       else if ( hash == lhash ) then
-          if ( key .eq. .KEY. ld ) then
-             call associate(val,ld%first%value,dealloc=dealloc)
-             return
-          end if
-       end if
-       ld = .next. ld
-    end do search
-
-  end subroutine dict_get_p_val
-  
-  subroutine dict_get_val_a_(val,d,key,dealloc)
-    character(len=*), intent(out) :: val
-    type(dict), intent(inout) :: d
-    character(len=*), intent(in), optional :: key
-    logical, intent(in), optional :: dealloc
-    type(var) :: v
-    type(dict) :: ld
-    integer :: hash, lhash
-
-    val = ' '
-    if ( .not. present(key) ) then
-       if ( .not. (.empty. d) ) then
-          call associate(v,d%first%value)
-       end if
-       return
-    end if
-
-    hash = hash_val(key)
-    ld = .first. d
-    search: do while ( .not. (.empty. ld) )
-       lhash = .hash. ld
-       if (      hash > lhash ) then
-          ! skip to next search
-       else if ( hash < lhash ) then
-          exit search
-       else if ( hash == lhash ) then
-          if ( key .eq. .KEY. ld ) then
-             call assign(val, ld%first%value)
-             return
-          end if
-       end if
-       ld = .next. ld
-    end do search
-
-  end subroutine dict_get_val_a_
-
-
   ! Compares two dict types against each other
   ! Will do comparison by hash.
   function d_eq_d(d1,d2) result(bool)
@@ -936,6 +824,118 @@ contains
     this%len = 0
 
   end subroutine nullify_
+
+  subroutine dict_get_val(val,d,key,dealloc)
+    type(var), intent(inout) :: val
+    type(dict), intent(inout) :: d
+    character(len=*), intent(in), optional :: key
+    logical, intent(in), optional :: dealloc
+    type(dict) :: ld
+    integer :: hash, lhash
+
+    if ( .not. present(key) ) then
+       if ( .not. (.empty. d) ) then
+          call assign(val,d%first%value,dealloc=dealloc)
+       else
+          call val_delete_request(val,dealloc=dealloc)
+       end if
+       return
+    end if
+
+    hash = hash_val(key)
+    ld = .first. d
+    search: do while ( .not. (.empty. ld) )
+       lhash = .hash. ld
+       if (      hash > lhash ) then
+          ! skip to next search
+       else if ( hash < lhash ) then
+          ! the key does not exist, delete if requested, else clean it
+          call val_delete_request(val,dealloc=dealloc)
+          exit search
+       else if ( hash == lhash ) then
+          if ( key .eq. .KEY. ld ) then
+             call assign(val,ld%first%value,dealloc=dealloc)
+             return
+          end if
+       end if
+       ld = .next. ld
+    end do search
+
+  end subroutine dict_get_val
+  
+  subroutine dict_get_p_val(val,d,key,dealloc)
+    type(var), intent(inout) :: val
+    type(dict), intent(inout) :: d
+    character(len=*), intent(in), optional :: key
+    logical, intent(in), optional :: dealloc
+    type(dict) :: ld
+    integer :: hash, lhash
+
+    if ( .not. present(key) ) then
+       if ( .not. (.empty. d) ) then
+          call associate(val,d%first%value,dealloc=dealloc)
+       else
+          call val_delete_request(val,dealloc=dealloc)
+       end if
+       return
+    end if
+
+    hash = hash_val(key)
+    ld = .first. d
+    search: do while ( .not. (.empty. ld) )
+       lhash = .hash. ld
+       if (      hash > lhash ) then
+          ! skip to next search
+       else if ( hash < lhash ) then
+          ! the key does not exist, delete if requested, else clean it
+          call val_delete_request(val,dealloc=dealloc)
+          exit search
+       else if ( hash == lhash ) then
+          if ( key .eq. .KEY. ld ) then
+             call associate(val,ld%first%value,dealloc=dealloc)
+             return
+          end if
+       end if
+       ld = .next. ld
+    end do search
+
+  end subroutine dict_get_p_val
+  
+  subroutine dict_get_val_a_(val,d,key,dealloc)
+    character(len=*), intent(out) :: val
+    type(dict), intent(inout) :: d
+    character(len=*), intent(in), optional :: key
+    logical, intent(in), optional :: dealloc
+    type(var) :: v
+    type(dict) :: ld
+    integer :: hash, lhash
+
+    val = ' '
+    if ( .not. present(key) ) then
+       if ( .not. (.empty. d) ) then
+          call associate(v,d%first%value)
+       end if
+       return
+    end if
+
+    hash = hash_val(key)
+    ld = .first. d
+    search: do while ( .not. (.empty. ld) )
+       lhash = .hash. ld
+       if (      hash > lhash ) then
+          ! skip to next search
+       else if ( hash < lhash ) then
+          exit search
+       else if ( hash == lhash ) then
+          if ( key .eq. .KEY. ld ) then
+             call assign(val, ld%first%value)
+             return
+          end if
+       end if
+       ld = .next. ld
+    end do search
+
+  end subroutine dict_get_val_a_
 
   function dict_kv_a0_0(key,val) result(this)
     character(len=*), intent(in) :: key
