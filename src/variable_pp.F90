@@ -4,8 +4,6 @@
 ! It has the power to transform into any variable at any time
 module variable
 
-  use iso_var_str
-
   implicit none
 
   private 
@@ -30,36 +28,50 @@ module variable
 !  public :: size
   interface which
      module procedure which_
-  end interface which
+  end interface
   public :: which
   interface delete
      module procedure delete_
-  end interface delete
+  end interface
   public :: delete
   interface nullify
      module procedure nullify_
-  end interface nullify
+  end interface
   public :: nullify
 
   interface print
      module procedure print_
-  end interface print
+  end interface
   public :: print
 
   ! Specific routines for passing types to variables
   interface associate_type
      module procedure associate_type_
-  end interface associate_type
+  end interface
   public :: associate_type
   interface enc
      module procedure enc_
-  end interface enc
+  end interface
   public :: enc
   interface size_enc
      module procedure size_enc_
-  end interface size_enc
+  end interface
   public :: size_enc
 
+
+  ! Specific routine for packing a character(len=*) to
+  ! character(len=1) (:)
+  interface cpack
+     module procedure cpack_
+  end interface cpack
+  public :: cpack
+
+  ! Specific routine for packing a character(len=*) to
+  ! character(len=1) (:)
+  interface cunpack
+     module procedure cunpack_
+  end interface cunpack
+  public :: cunpack
 
 #include "var_interface.inc"
 
@@ -81,10 +93,20 @@ contains
     logical, intent(in), optional :: dealloc
     logical :: ldealloc
 #include "var_declarations.inc"
+    integer :: i
+
     ldealloc = .true.
     if ( present(dealloc) ) ldealloc = dealloc
     if ( ldealloc ) then
 #include "var_delete.inc"
+       
+       if ( this%t == 'a-' ) then
+          pa_ = transfer(this%enc,pa_)
+          do i = 1 , size(pa_%p)
+             deallocate(pa_%p(i)%p)
+          end do
+          deallocate(pa_%p)
+       end if
     end if
     call nullify(this)
   end subroutine delete_
@@ -136,7 +158,7 @@ contains
   ! As this is the same as passing a char
   ! we MUST use a specific routine for this.
   ! One _could_, in principle, add an optional
-  ! logical flag for the assign_var_char0, however
+  ! logical flag for the assign_set_a_, however
   ! one cannot assign a type by passing a reference
   ! and hence we ONLY allow associate_type
   ! This also means that any de-allocation of variables
@@ -166,11 +188,33 @@ contains
 
   end subroutine associate_type_
 
+  function cpack_(c) result(car)
+    character(len=*), intent(in) :: c
+    character(len=1) :: car(len(c))
+    integer :: i
+    
+    do i = 1 , len(c)
+       car(i) = c(i:i)
+    end do
+    
+  end function cpack_
+  function cunpack_(car) result(c)
+    character(len=1), intent(in) :: car(:)
+    character(len=size(car)) :: c
+    integer :: i
+
+    do i = 1 , size(car)
+       c(i:i) = car(i)
+    end do
+    
+  end function cunpack_
+  
   subroutine assign_var(this,rhs,dealloc)
     type(var), intent(inout) :: this
     type(var), intent(in) :: rhs
     logical, intent(in), optional :: dealloc
     logical :: ldealloc
+    integer :: i
 #include "var_declarations2.inc"
     ! collect deallocation option (default as =)
     ! ASSIGNMENT in fortran is per default destructive
@@ -185,6 +229,17 @@ contains
     this%t = rhs%t
     ! First allocate the LHS
 #include "var_var_alloc.inc"
+
+    if ( this%t == 'a-' ) then ! character(len=*)
+       pa__2 = transfer(rhs%enc, pa__2)
+       allocate(pa__1%p(size(pa__2%p)))
+       do i = 1 , size(pa__2%p)
+          allocate(pa__1%p(i)%p)
+          pa__1%p(i)%p = pa__2%p(i)%p
+       end do
+       allocate(this%enc(size(transfer(pa__1, local_enc_type))))
+       this%enc = transfer(pa__1, local_enc_type)
+    end if
 
     ! copy over RHS and Save encoding
 #include "var_var_set.inc"
@@ -228,27 +283,125 @@ contains
     
   end function associatd_var
 
-  subroutine assign_set_char0(this,rhs,dealloc)
+  ! The character(len=*) is a bit difficult because
+  ! there is no way to generate a specific type for _all_
+  !   len=1,2,3,...
+  ! variables.
+  ! Instead we convert the character to char(len=1)
+  ! and store a pointer to this.
+  ! This ensures that it can be retrieved (via associate)
+  ! and mangled through another variable type
+  subroutine assign_set_a0_0(this,rhs,dealloc)
     type(var), intent(inout) :: this
     character(len=*), intent(in) :: rhs
     logical, intent(in), optional :: dealloc
-    type(var_str) :: str
-    str = rhs
-    call assign(this,str,dealloc=dealloc)
-    str = "" ! deallocation
-  end subroutine assign_set_char0
-
-  subroutine assign_get_char0(lhs,this,success)
+    character(len=1), pointer :: c(:) => null()
+    integer :: i
+    allocate(c(len(rhs)))
+    do i = 1 , size(c)
+       c(i) = rhs(i:i)
+    end do
+    ! This is still a "copy"
+    call associate(this, c, dealloc)
+    nullify(c)
+  end subroutine assign_set_a0_0
+  subroutine assign_get_a0_0(lhs,this,success)
     character(len=*), intent(out) :: lhs
     type(var), intent(inout) :: this
     logical, intent(out), optional :: success
-    type(var_str) :: str
+    character(len=1), pointer :: c(:) => null()
     logical :: lsuccess
-    call assign(str,this,success=lsuccess)
+    integer :: i
+    call associate(c, this, success=lsuccess)
+    if ( lsuccess ) lsuccess = len(lhs) >= size(c)
     if ( present(success) ) success = lsuccess
-    if ( lsuccess ) lhs = str
-    str = "" ! deallocation
-  end subroutine assign_get_char0
+    lhs = ' '
+    if ( .not. lsuccess ) return
+    do i = 1 , size(c)
+       lhs(i:i) = c(i)
+    end do
+  end subroutine assign_get_a0_0
+
+#ifdef NOT_WORKING
+  ! This routine is actually working, but
+  ! we do not allow it.
+  ! One should use the len=1 version of the characters.
+  subroutine associate_set_a0_0(this,rhs,dealloc)
+    type(var), intent(inout) :: this
+    character(len=*), intent(in), target :: rhs
+    logical, intent(in), optional :: dealloc
+    logical :: ldealloc
+    type :: pta_
+       type(pta__), pointer :: p(:) => null()
+    end type pta_
+    type :: pta__
+       character(len=1), pointer :: p => null()
+    end type pta__
+    type(pta_) :: p
+    integer :: i
+    ! ASSOCIATION in fortran is per default non-destructive
+    ldealloc = .false.
+    if(present(dealloc))ldealloc = dealloc
+    if (ldealloc) then
+       call delete(this)
+    else
+       call nullify(this)
+    end if
+    ! With pointer transfer we need to deallocate
+    ! else bounds might change...
+    this%t = 'a-'
+    allocate(p%p(len(rhs)))
+    do i = 1 , len(rhs)
+       p%p(i)%p => rhs(i:i)
+    end do
+    allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
+    this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+    nullify(p%p)
+  end subroutine associate_set_a0_0
+
+  !! THIS IS NOT WORKING
+  subroutine associate_get_a0_0(lhs,this,dealloc,success)
+    character(len=*), pointer :: lhs
+    type(var), intent(in) :: this
+    logical, intent(in), optional :: dealloc
+    logical, intent(out), optional :: success
+    logical :: ldealloc, lsuccess
+    type :: pt
+       type(ptc), pointer :: p(:) => null()
+    end type pt
+    type :: ptc
+       character(len=1), pointer :: p => null()
+    end type ptc
+    type(pt) :: p
+    integer :: i, ns
+    lsuccess = this%t == 'a-'
+    if ( lsuccess ) then
+       p = transfer(this%enc, p)
+       ! Figure out the trimmed length of the string
+       ! If it is smaller or equal to the output string
+       ! then all is good, else we consider it a failure
+       ns = size(p%p)
+       do i = size(p%p), 1, -1
+          if ( p%p(i)%p == ' ' ) then
+             ns = i-1
+          else
+             exit
+          end if
+       end do
+       lsuccess = len(lhs) >= ns
+    end if
+    ldealloc = .false.
+    if( present(dealloc) ) ldealloc = dealloc
+    if ( ldealloc .and. associated(lhs) ) deallocate(lhs)
+    nullify(lhs)
+    if ( present(success) ) success = lsuccess
+    if ( .not. lsuccess ) return
+    ns = min(ns, size(p%p))
+    do i = 1, ns
+       lhs(i:i) => p%p(i)%p(1:1)
+    end do
+  end subroutine associate_get_a0_0
+#endif
 
 #include "var_funcs.inc"
   

@@ -1,6 +1,5 @@
 module tst_utils
 
-  use iso_var_str
   use variable
   use dictionary
 

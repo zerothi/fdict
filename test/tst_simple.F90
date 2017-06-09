@@ -1,7 +1,6 @@
 program test1
 
   use tst_utils
-  use iso_var_str
   use variable
 
   implicit none
@@ -9,7 +8,7 @@ program test1
   type(var) :: va
   real(dp) :: a, b(2), c(2,2)
   real(dp), pointer :: pa =>null()
-  type(var_str) :: sa, sb
+  character(len=15) :: sa, sb
   character(len=20) :: ca, cb
   logical :: success
 

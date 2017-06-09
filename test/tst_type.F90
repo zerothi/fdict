@@ -1,7 +1,6 @@
 program tst_type
 
   use tst_utils
-  use iso_var_str
   use variable
 
   implicit none

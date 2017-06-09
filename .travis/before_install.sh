@@ -4,8 +4,7 @@
 echo "OS-name: $TRAVIS_OS_NAME"
 
 function fdict_osx {
-    brew update
-    brew install gfortran
+    brew install gcc
     {
       echo CPP = gcc -E -P -x c
     } > setup.make
