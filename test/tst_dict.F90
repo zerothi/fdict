@@ -42,8 +42,11 @@ program tst_dict
   end do
   if ( i /= 10 ) stop 9
 
+  call nullify(dic, 'dd')
   call delete(v)
   call delete(dic)
-  deallocate(d)
+  nullify(d) ! deleted through v
+
+  print *,'SUCCESS'
 
 end program tst_dict
