@@ -27,6 +27,8 @@ program tests
      end if
   end do
 
+  print *,'SUCCESS'
+
 contains
 
   subroutine mem(dealloc)

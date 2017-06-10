@@ -53,4 +53,6 @@ program tests
   print '(a2,tr1,i0)',va%t,pi0%p
   if ( 1 /= pi0%p ) stop 9
 
+  call delete(va)
+
 end program tests

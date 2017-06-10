@@ -14,7 +14,6 @@ program test_dict
   step = 25
 
   write(*,*) 'Overwriting same key'
-  ! we should here allocate around 1Gb
   do i = 1 , N
      dic = dic // ('string'.kv."Hello world")
      if ( mod(i,step) == 0 ) then

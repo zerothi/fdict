@@ -34,5 +34,7 @@ program tests
        hash_coll(d,max=.true.),' maximum at one hash value'
 
   call delete(d,dealloc=.false.)
+
+  print *,'SUCCESS'
   
 end program tests

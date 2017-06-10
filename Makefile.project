@@ -59,6 +59,10 @@ clean:
 settings.bash:
 	VPATH="$(TOP_DIR)" $(TOP_DIR)/setup.sh --default
 
+.PHONY: doc
+doc: source
+	ford ford_doc.md
+
 
 # Local Variables:
 #  mode: makefile-gmake

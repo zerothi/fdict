@@ -47,4 +47,6 @@ program test1
   cb = sb
   print *,cb
 
+  call delete(va)
+
 end program test1

@@ -34,5 +34,9 @@ program tests
   c = cunpack(d)
   if ( c /= 'Uello world3' ) stop 11
 
+  call nullify(da, 'Hello2')
+  call delete(da)
+
   print *,'SUCCESS'
+
 end program tests

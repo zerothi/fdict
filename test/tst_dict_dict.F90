@@ -13,7 +13,7 @@ program tests
   va = 1._dp
 
   ! Copying values
-  dic_va = ('va'.kv. va)
+  dic_va = ('va'.kv.va)
   
   ! Create dict of dict
   ! Insert dictionary reference into dict
@@ -29,12 +29,13 @@ program tests
   call assign(vb,dic2,'va')
   call assert(vb == va,'Retrieval of values not correct')
 
-  call remove(dic1,'dict')
+  call nullify(dic1,'dict')
   print *,'dic1',len(dic1)
   ! If we delete dic2, we delete dic_va, so we should not delete it
   ! We do not even need to nullify it (the dicitonary
   !call delete(dic2,dealloc=.false.)
   print *,'dic_va'
   call delete(dic_va)
+  call nullify(av)
 
 end program tests

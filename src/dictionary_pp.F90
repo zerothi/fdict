@@ -1,9 +1,7 @@
 ! @LICENSE@, see README.md
 
-!> A dictionary module for the usage of complex data structures
-!! in fortran.
-!! 
-!> \author Nick Papior Andersen, Copyright 2015
+! Generic purpose dictionary as in any scripting language
+! It has the power to contain any data by using the variable type.
 module dictionary
 
   use variable
@@ -153,11 +151,6 @@ module dictionary
   end interface
   public :: delete
 
-  interface remove
-     module procedure remove_
-  end interface
-  public :: remove
-
   interface pop
      module procedure pop_
   end interface
@@ -170,6 +163,7 @@ module dictionary
 
   interface nullify
      module procedure nullify_
+     module procedure nullify_key_
   end interface
   public :: nullify
 
@@ -771,7 +765,7 @@ contains
 
   end subroutine pop_
 
-  elemental subroutine remove_(this,key)
+  elemental subroutine nullify_key_(this,key)
     type(dict), intent(inout) :: this
     character(len=*), intent(in) :: key
     type(d_entry), pointer :: de, pr
@@ -813,7 +807,7 @@ contains
        de => de%next
     end do
     
-  end subroutine remove_
+  end subroutine nullify_key_
 
   elemental subroutine nullify_(this)
     type(dict), intent(inout) :: this

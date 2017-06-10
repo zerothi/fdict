@@ -37,7 +37,7 @@ contains
     va = 0.
     call extend(d,'hello'.kv.va)
     call associate(v,d,'hello')
-    call remove(d,'hello')
+    call nullify(d,'hello')
     if ( dealloc ) call delete(v)
   end subroutine mem_rem
 

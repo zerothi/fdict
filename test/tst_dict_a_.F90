@@ -22,5 +22,9 @@ program tests
   call assign(a, v)
   if ( a /= 'Hello world2' ) stop 9
 
+  call delete(v)
+  call delete(da)
+
   print *,'SUCCESS'
+  
 end program tests

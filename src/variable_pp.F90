@@ -3,7 +3,31 @@
 ! Generic purpose variable as in any scripting language
 ! It has the power to transform into any variable at any time
 module variable
-
+  !! A type-free variable module to contain _any_ data in fortran.
+  !!
+  !! This module implements a generic variable-type (`type(var)`)
+  !! which may contain _any_ data-type (even user-derived type constructs).
+  !!
+  !! Its basic usage is somewhat different than the regular assignment
+  !! in fortran.
+  !!
+  !! Example:
+  !!
+  !!```fortran
+  !! real :: r
+  !! real :: ra(10)
+  !! real, target :: rb(10)
+  !! type(var) :: v
+  !! call assign(v, r) ! v now contains value of r
+  !! call assign(v, ra) ! v now contains array with values of ra
+  !! call delete(v) ! delete content
+  !! call associate(v, ra) ! v now contains a pointer to rb
+  !! call assign(ra, v) ! copies data from rb to ra
+  !!```
+  !!
+  !! The assignment routine behaves like `=` (delete old value)
+  !! whereas the associate routine behaves like `=>` (nullify old value).
+  
   implicit none
 
   private 
@@ -26,6 +50,7 @@ module variable
      !! to the data and transfer the type to a character array via encoding.
      !! This enables one to retrieve the pointer position later and thus enables
      !! pointer assignments and easy copying of data.
+     
      character(len=4) :: t = '    '
      ! The encoding placement of all data
      character(len=1), dimension(:), allocatable :: enc
@@ -92,12 +117,13 @@ module variable
      !! to the size of the array.
      !!
      !! Example:
-     !! ```
+     !!
+     !!```fortran
      !! character(len=20) :: a
      !! character :: b(10)
      !! a = 'Hello'
      !! b(1:5) = cpack('Hello')
-     !! ```
+     !!```
      !!
      !! @note
      !! This is a requirement because it is not possible to create a unified pointer

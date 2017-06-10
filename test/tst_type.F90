@@ -58,4 +58,7 @@ program tst_type
   call assert(associated(b%pa,a%pa), &
        'Copying type did not work, target')
 
+  call delete(va)
+  deallocate(a%pa)
+
 end program tst_type

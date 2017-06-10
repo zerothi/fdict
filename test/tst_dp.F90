@@ -4,7 +4,7 @@ program tests
 
   implicit none
   
-  type(var) :: va , vb
+  type(var) :: va
   real(dp) :: a, b(2), c(2,2)
   real(dp), pointer :: pa =>null(), pb(:)=>null(), pc(:,:)=>null()
   logical :: success
@@ -44,5 +44,7 @@ program tests
   call assign(va,1)
   pi0 = transfer(va%enc,pi0)
   print '(a2,tr1,i0)',va%t,pi0%p
+
+  call delete(va)
 
 end program tests

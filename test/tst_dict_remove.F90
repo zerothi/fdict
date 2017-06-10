@@ -37,7 +37,7 @@ program test_dict
   call delete(v)
   call associate(v,dic,'d')
 
-  call remove(dic,'d')
+  call nullify(dic,'d')
   ! As the memory reference is the same,
   ! we will see the same result here. 
   ! However, the value in the key HAS been
@@ -57,5 +57,10 @@ program test_dict
   
   ! print all the values
   call print(dic)
+
+  deallocate(d)
+  call delete(dic)
+
+  print *,'SUCCESS'
 
 end program test_dict

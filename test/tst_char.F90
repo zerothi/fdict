@@ -43,6 +43,7 @@ program test
   ca = cunpack(pa)
   if ( 'H' /= ca ) stop 9
 
+  call nullify(va)
   print *,'SUCCESS'
 
 end program test
