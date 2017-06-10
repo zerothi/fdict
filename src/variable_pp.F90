@@ -19,27 +19,37 @@ module variable
   character(len=1) :: local_enc_type(1)
   
   type :: var
+     !! Container for _any_ fortran data-type, intrinsically handles all
+     !! from fortran and any external type may be added via external routines.
+     !!
+     !! The container is based on a type-transfer method by storing a pointer
+     !! to the data and transfer the type to a character array via encoding.
+     !! This enables one to retrieve the pointer position later and thus enables
+     !! pointer assignments and easy copying of data.
      character(len=4) :: t = '    '
      ! The encoding placement of all data
      character(len=1), dimension(:), allocatable :: enc
   end type var
   public :: var
 
-!  public :: size
   interface which
+     !! Type of content stored in the variable (`character(len=4)`)
      module procedure which_
   end interface
   public :: which
   interface delete
+     !! Delete the variable (equivalent to `deallocate(<>)`).
      module procedure delete_
   end interface
   public :: delete
   interface nullify
+     !! Nullify the variable (equivalent to `nullify(<>)`).
      module procedure nullify_
   end interface
   public :: nullify
 
   interface print
+     !! Print (to std-out) information regarding the variable, i.e. the type.
      module procedure print_
   end interface
   public :: print
@@ -50,10 +60,20 @@ module variable
   end interface
   public :: associate_type
   interface enc
+     !! The encoding of the stored pointer (`character, dimension(:)`)
+     !!
+     !! This is mainly intenteded for internal use to transfer between real
+     !! data and the data containers.
+     !!
+     !! It is however required to enable external type storage routines.
      module procedure enc_
   end interface
   public :: enc
   interface size_enc
+     !! The size of the encoding character array (`size(enc(<>))`)
+     !!
+     !! This is mainly intenteded for internal use to transfer between real
+     !! data and the data containers.
      module procedure size_enc_
   end interface
   public :: size_enc
@@ -62,6 +82,26 @@ module variable
   ! Specific routine for packing a character(len=*) to
   ! character(len=1) (:)
   interface cpack
+     !! Convert a `character(len=*)` to `character, dimension(:)`
+     !!
+     !! A routine requirement for creating pointers to character storages.
+     !! One can convert from `len=*` to an array of `len=1` and back using [[cunpack]].
+     !!
+     !! Because fortran requires dimensions of arrays assignments to be same size it
+     !! one has to specify ranges if the length of the character is not equivalent
+     !! to the size of the array.
+     !!
+     !! Example:
+     !! ```
+     !! character(len=20) :: a
+     !! character :: b(10)
+     !! a = 'Hello'
+     !! b(1:5) = cpack('Hello')
+     !! ```
+     !!
+     !! @note
+     !! This is a requirement because it is not possible to create a unified pointer
+     !! to arbitrary length characters. Hence we store all `len=*` variables as `len=1` character arrays.
      module procedure cpack_
   end interface cpack
   public :: cpack
@@ -69,6 +109,14 @@ module variable
   ! Specific routine for packing a character(len=*) to
   ! character(len=1) (:)
   interface cunpack
+     !! Convert a `character(len=1), dimensions(:)` to `character(len=*)`
+     !!
+     !! Pack an array into a character of arbitrary length.
+     !! This convenience function helps converting between arrays of characters
+     !! and fixed length characters.
+     !!
+     !! As character assignment is not restricted similarly as array assignments
+     !! it is not a requirement to specify ranges when using this function.
      module procedure cunpack_
   end interface cunpack
   public :: cunpack
