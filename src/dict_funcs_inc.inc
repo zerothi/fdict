@@ -25,34 +25,38 @@ this = new_d_key(key)
 call associate(this%first%value,val)
 end function ROUTINE(dict_kvp,VAR)
 
-subroutine ROUTINE(dict_get_val,VAR)(val,this,key)
+subroutine ROUTINE(dict_get_val,VAR)(val,this,key,success)
 VAR_TYPE, intent(out)DIMS :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine ROUTINE(dict_get_val,VAR)
 
-subroutine ROUTINE(dict_get_val_first,VAR)(val,this)
+subroutine ROUTINE(dict_get_val_first,VAR)(val,this,success)
 VAR_TYPE, intent(out)DIMS :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine ROUTINE(dict_get_val_first,VAR)
 
-subroutine ROUTINE(dict_get_p,VAR)(val,this,key)
+subroutine ROUTINE(dict_get_p,VAR)(val,this,key,success)
 VAR_TYPE, pointer DIMS :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine ROUTINE(dict_get_p,VAR)
 
-subroutine ROUTINE(dict_get_p_first,VAR)(val,this)
+subroutine ROUTINE(dict_get_p_first,VAR)(val,this,success)
 VAR_TYPE, pointer DIMS :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine ROUTINE(dict_get_p_first,VAR)

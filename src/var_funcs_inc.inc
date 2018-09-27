@@ -117,11 +117,12 @@ pure function ROUTINE(associatd_l,VAR)(lhs,this) result(ret)
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    VAR_TYPE, pointer DIMS :: p => null()
+    VAR_TYPE, pointer DIMS :: p
   end type
   type(pt) :: p
   ret = this%t == STR(VAR)
-  if (ret) then	
+  if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -131,11 +132,12 @@ pure function ROUTINE(associatd_r,VAR)(this,rhs) result(ret)
   VAR_TYPE, pointer DIMS :: rhs
   logical :: ret
   type :: pt
-    VAR_TYPE, pointer DIMS :: p => null()
+    VAR_TYPE, pointer DIMS :: p
   end type
   type(pt) :: p
   ret = this%t == STR(VAR)
   if (ret) then	
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
