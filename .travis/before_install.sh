@@ -11,7 +11,7 @@ function fdict_osx {
 }
 
 function fdict_linux {
-    sudo apt-get install -qq gfortran
+    sudo apt-get install -qq gcc
 }
 
 case "$TRAVIS_OS_NAME" in
