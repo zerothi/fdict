@@ -126,7 +126,7 @@ for v in ${vars[@]} ; do
 	_psnl "if ( this%t == '$v$d' ) then"
 	_psnl "p$v${d}_1%p = p$v${d}_2%p"
 	_psnl "allocate(this%enc(size(transfer(p$v${d}_1, local_enc_type))))"
-	_psnl "this%enc = transfer(p$v${d}_1, local_enc_type)"
+	_psnl "this%enc(:) = transfer(p$v${d}_1, local_enc_type)"
 	[ $d -lt $(var_N $v) ] && _ps "else"
     done
     _psnl "endif"
