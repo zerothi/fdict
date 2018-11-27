@@ -258,7 +258,7 @@ contains
     end if
     this%t = 'USER'
     allocate(this%enc(size(enc)))
-    this%enc = enc
+    this%enc(:) = enc
 
   end subroutine associate_type_
 
@@ -312,7 +312,7 @@ contains
           pa__1%p(i)%p = pa__2%p(i)%p
        end do
        allocate(this%enc(size(transfer(pa__1, local_enc_type))))
-       this%enc = transfer(pa__1, local_enc_type)
+       this%enc(:) = transfer(pa__1, local_enc_type)
     end if
 
     ! copy over RHS and Save encoding
@@ -341,7 +341,7 @@ contains
     ! Association is done by copying the encoding
     this%t = rhs%t
     allocate(this%enc(size(rhs%enc)))
-    this%enc = rhs%enc
+    this%enc(:) = rhs%enc
 
   end subroutine associate_var
 
@@ -429,7 +429,7 @@ contains
        p%p(i)%p => rhs(i:i)
     end do
     allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-    this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+    this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
     nullify(p%p)
   end subroutine associate_set_a0_0
 

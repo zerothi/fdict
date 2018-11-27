@@ -25,7 +25,7 @@ subroutine ROUTINE(assign_set,VAR)(this,rhs,dealloc)
   ALLOC(p%p,rhs) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine ROUTINE(assign_set,VAR)
@@ -109,7 +109,7 @@ subroutine ROUTINE(associate_set,VAR)(this,rhs,dealloc)
   this%t = STR(VAR)
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine ROUTINE(associate_set,VAR)
 
 pure function ROUTINE(associatd_l,VAR)(lhs,this) result(ret)
