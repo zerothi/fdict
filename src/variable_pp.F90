@@ -41,7 +41,12 @@ module variable
   ! To create a constant transfer data-type of the 
   ! pointer methods
   character(len=1) :: local_enc_type(1)
-  
+
+  ! Internal variable to hold the size of the "type" switch
+  !> Maximum character length of the type specifier in the variable, no
+  !! unique identifier may be longer than this.
+  integer, parameter, public :: VAR_TYPE_LENGTH = 4
+
   type :: var
      !! Container for _any_ fortran data-type, intrinsically handles all
      !! from fortran and any external type may be added via external routines.
@@ -51,14 +56,14 @@ module variable
      !! This enables one to retrieve the pointer position later and thus enables
      !! pointer assignments and easy copying of data.
      
-     character(len=4) :: t = '    '
+     character(len=VAR_TYPE_LENGTH) :: t = '    '
      ! The encoding placement of all data
      character(len=1), dimension(:), allocatable :: enc
   end type var
   public :: var
 
   interface which
-     !! Type of content stored in the variable (`character(len=4)`)
+     !! Type of content stored in the variable (`character(len=VAR_TYPE_LENGTH)`)
      module procedure which_
   end interface
   public :: which
@@ -158,7 +163,7 @@ contains
 
   elemental function which_(this) result(t)
     type(var), intent(in) :: this
-    character(len=4) :: t
+    character(len=VAR_TYPE_LENGTH) :: t
     t = this%t
   end function which_
     
@@ -258,7 +263,7 @@ contains
     end if
     this%t = 'USER'
     allocate(this%enc(size(enc)))
-    this%enc = enc
+    this%enc(:) = enc
 
   end subroutine associate_type_
 
@@ -312,7 +317,7 @@ contains
           pa__1%p(i)%p = pa__2%p(i)%p
        end do
        allocate(this%enc(size(transfer(pa__1, local_enc_type))))
-       this%enc = transfer(pa__1, local_enc_type)
+       this%enc(:) = transfer(pa__1, local_enc_type)
     end if
 
     ! copy over RHS and Save encoding
@@ -341,7 +346,7 @@ contains
     ! Association is done by copying the encoding
     this%t = rhs%t
     allocate(this%enc(size(rhs%enc)))
-    this%enc = rhs%enc
+    this%enc(:) = rhs%enc
 
   end subroutine associate_var
 
@@ -429,7 +434,7 @@ contains
        p%p(i)%p => rhs(i:i)
     end do
     allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-    this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+    this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
     nullify(p%p)
   end subroutine associate_set_a0_0
 

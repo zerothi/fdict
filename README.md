@@ -174,7 +174,7 @@ If you have a fix please consider adding a [pull request][pr].
 
 ## License ##
 
-The fdict license is [LGPL][lgpl], see the LICENSE file.
+The fdict license is [MPL-2.0][mpl-2], see the LICENSE file.
 
 ## Thanks ##
 
@@ -189,4 +189,4 @@ Links to external and internal sites.
 <!-- [fdict-doc]: https://github.com/zerothi/fdict/wiki -->
 [issue]: https://github.com/zerothi/fdict/issues
 [pr]: https://github.com/zerothi/fdict/pulls
-[lgpl]: http://www.gnu.org/licenses/lgpl.html
+[mpl-2]: https://opensource.org/licenses/MPL-2.0

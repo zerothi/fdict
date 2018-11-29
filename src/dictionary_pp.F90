@@ -23,7 +23,7 @@ module dictionary
   ! We could consider changing this to a variable size string
   ! However, that will increase the dependencies and will most likely not yield
   ! a better interface.
-  !> Maximum character length of the keys in the dictionary, no 
+  !> Maximum character length of the keys in the dictionary, no
   !! index/key can be longer than this.
   integer, parameter, public :: DICT_KEY_LENGTH = 48
   
@@ -957,7 +957,7 @@ contains
   function dict_key_which(this,key) result(t)
     type(dict), intent(in) :: this
     character(len=*), optional, intent(in) :: key
-    character(len=2) :: t
+    character(len=VAR_TYPE_LENGTH) :: t
     type(dict) :: ld
     integer :: hash, lhash
     
