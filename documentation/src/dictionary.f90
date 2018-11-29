@@ -1013,7 +1013,7 @@ contains
   function dict_key_which(this,key) result(t)
     type(dict), intent(in) :: this
     character(len=*), optional, intent(in) :: key
-    character(len=2) :: t
+    character(len=VAR_TYPE_LENGTH) :: t
     type(dict) :: ld
     integer :: hash, lhash
     if ( present(key) ) then
@@ -1052,33 +1052,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_a1
-subroutine dict_get_val_a1(val,this,key)
+subroutine dict_get_val_a1(val,this,key,success)
 character(len=1), intent(out), dimension(:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_a1
-subroutine dict_get_val_first_a1(val,this)
+subroutine dict_get_val_first_a1(val,this,success)
 character(len=1), intent(out), dimension(:) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_a1
-subroutine dict_get_p_a1(val,this,key)
+subroutine dict_get_p_a1(val,this,key,success)
 character(len=1), pointer , dimension(:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_a1
-subroutine dict_get_p_first_a1(val,this)
+subroutine dict_get_p_first_a1(val,this,success)
 character(len=1), pointer , dimension(:) :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_a1
 function dict_kv_s0(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -1094,33 +1098,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_s0
-subroutine dict_get_val_s0(val,this,key)
+subroutine dict_get_val_s0(val,this,key,success)
 real(sp), intent(out) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_s0
-subroutine dict_get_val_first_s0(val,this)
+subroutine dict_get_val_first_s0(val,this,success)
 real(sp), intent(out) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_s0
-subroutine dict_get_p_s0(val,this,key)
+subroutine dict_get_p_s0(val,this,key,success)
 real(sp), pointer :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_s0
-subroutine dict_get_p_first_s0(val,this)
+subroutine dict_get_p_first_s0(val,this,success)
 real(sp), pointer :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_s0
 function dict_kv_s1(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -1136,33 +1144,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_s1
-subroutine dict_get_val_s1(val,this,key)
+subroutine dict_get_val_s1(val,this,key,success)
 real(sp), intent(out), dimension(:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_s1
-subroutine dict_get_val_first_s1(val,this)
+subroutine dict_get_val_first_s1(val,this,success)
 real(sp), intent(out), dimension(:) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_s1
-subroutine dict_get_p_s1(val,this,key)
+subroutine dict_get_p_s1(val,this,key,success)
 real(sp), pointer , dimension(:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_s1
-subroutine dict_get_p_first_s1(val,this)
+subroutine dict_get_p_first_s1(val,this,success)
 real(sp), pointer , dimension(:) :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_s1
 function dict_kv_s2(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -1178,33 +1190,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_s2
-subroutine dict_get_val_s2(val,this,key)
+subroutine dict_get_val_s2(val,this,key,success)
 real(sp), intent(out), dimension(:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_s2
-subroutine dict_get_val_first_s2(val,this)
+subroutine dict_get_val_first_s2(val,this,success)
 real(sp), intent(out), dimension(:,:) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_s2
-subroutine dict_get_p_s2(val,this,key)
+subroutine dict_get_p_s2(val,this,key,success)
 real(sp), pointer , dimension(:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_s2
-subroutine dict_get_p_first_s2(val,this)
+subroutine dict_get_p_first_s2(val,this,success)
 real(sp), pointer , dimension(:,:) :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_s2
 function dict_kv_s3(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -1220,33 +1236,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_s3
-subroutine dict_get_val_s3(val,this,key)
+subroutine dict_get_val_s3(val,this,key,success)
 real(sp), intent(out), dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_s3
-subroutine dict_get_val_first_s3(val,this)
+subroutine dict_get_val_first_s3(val,this,success)
 real(sp), intent(out), dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_s3
-subroutine dict_get_p_s3(val,this,key)
+subroutine dict_get_p_s3(val,this,key,success)
 real(sp), pointer , dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_s3
-subroutine dict_get_p_first_s3(val,this)
+subroutine dict_get_p_first_s3(val,this,success)
 real(sp), pointer , dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_s3
 function dict_kv_d0(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -1262,33 +1282,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_d0
-subroutine dict_get_val_d0(val,this,key)
+subroutine dict_get_val_d0(val,this,key,success)
 real(dp), intent(out) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_d0
-subroutine dict_get_val_first_d0(val,this)
+subroutine dict_get_val_first_d0(val,this,success)
 real(dp), intent(out) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_d0
-subroutine dict_get_p_d0(val,this,key)
+subroutine dict_get_p_d0(val,this,key,success)
 real(dp), pointer :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_d0
-subroutine dict_get_p_first_d0(val,this)
+subroutine dict_get_p_first_d0(val,this,success)
 real(dp), pointer :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_d0
 function dict_kv_d1(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -1304,33 +1328,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_d1
-subroutine dict_get_val_d1(val,this,key)
+subroutine dict_get_val_d1(val,this,key,success)
 real(dp), intent(out), dimension(:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_d1
-subroutine dict_get_val_first_d1(val,this)
+subroutine dict_get_val_first_d1(val,this,success)
 real(dp), intent(out), dimension(:) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_d1
-subroutine dict_get_p_d1(val,this,key)
+subroutine dict_get_p_d1(val,this,key,success)
 real(dp), pointer , dimension(:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_d1
-subroutine dict_get_p_first_d1(val,this)
+subroutine dict_get_p_first_d1(val,this,success)
 real(dp), pointer , dimension(:) :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_d1
 function dict_kv_d2(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -1346,33 +1374,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_d2
-subroutine dict_get_val_d2(val,this,key)
+subroutine dict_get_val_d2(val,this,key,success)
 real(dp), intent(out), dimension(:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_d2
-subroutine dict_get_val_first_d2(val,this)
+subroutine dict_get_val_first_d2(val,this,success)
 real(dp), intent(out), dimension(:,:) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_d2
-subroutine dict_get_p_d2(val,this,key)
+subroutine dict_get_p_d2(val,this,key,success)
 real(dp), pointer , dimension(:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_d2
-subroutine dict_get_p_first_d2(val,this)
+subroutine dict_get_p_first_d2(val,this,success)
 real(dp), pointer , dimension(:,:) :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_d2
 function dict_kv_d3(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -1388,33 +1420,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_d3
-subroutine dict_get_val_d3(val,this,key)
+subroutine dict_get_val_d3(val,this,key,success)
 real(dp), intent(out), dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_d3
-subroutine dict_get_val_first_d3(val,this)
+subroutine dict_get_val_first_d3(val,this,success)
 real(dp), intent(out), dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_d3
-subroutine dict_get_p_d3(val,this,key)
+subroutine dict_get_p_d3(val,this,key,success)
 real(dp), pointer , dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_d3
-subroutine dict_get_p_first_d3(val,this)
+subroutine dict_get_p_first_d3(val,this,success)
 real(dp), pointer , dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_d3
 function dict_kv_c0(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -1430,33 +1466,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_c0
-subroutine dict_get_val_c0(val,this,key)
+subroutine dict_get_val_c0(val,this,key,success)
 complex(sp), intent(out) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_c0
-subroutine dict_get_val_first_c0(val,this)
+subroutine dict_get_val_first_c0(val,this,success)
 complex(sp), intent(out) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_c0
-subroutine dict_get_p_c0(val,this,key)
+subroutine dict_get_p_c0(val,this,key,success)
 complex(sp), pointer :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_c0
-subroutine dict_get_p_first_c0(val,this)
+subroutine dict_get_p_first_c0(val,this,success)
 complex(sp), pointer :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_c0
 function dict_kv_c1(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -1472,33 +1512,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_c1
-subroutine dict_get_val_c1(val,this,key)
+subroutine dict_get_val_c1(val,this,key,success)
 complex(sp), intent(out), dimension(:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_c1
-subroutine dict_get_val_first_c1(val,this)
+subroutine dict_get_val_first_c1(val,this,success)
 complex(sp), intent(out), dimension(:) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_c1
-subroutine dict_get_p_c1(val,this,key)
+subroutine dict_get_p_c1(val,this,key,success)
 complex(sp), pointer , dimension(:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_c1
-subroutine dict_get_p_first_c1(val,this)
+subroutine dict_get_p_first_c1(val,this,success)
 complex(sp), pointer , dimension(:) :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_c1
 function dict_kv_c2(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -1514,33 +1558,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_c2
-subroutine dict_get_val_c2(val,this,key)
+subroutine dict_get_val_c2(val,this,key,success)
 complex(sp), intent(out), dimension(:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_c2
-subroutine dict_get_val_first_c2(val,this)
+subroutine dict_get_val_first_c2(val,this,success)
 complex(sp), intent(out), dimension(:,:) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_c2
-subroutine dict_get_p_c2(val,this,key)
+subroutine dict_get_p_c2(val,this,key,success)
 complex(sp), pointer , dimension(:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_c2
-subroutine dict_get_p_first_c2(val,this)
+subroutine dict_get_p_first_c2(val,this,success)
 complex(sp), pointer , dimension(:,:) :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_c2
 function dict_kv_c3(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -1556,33 +1604,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_c3
-subroutine dict_get_val_c3(val,this,key)
+subroutine dict_get_val_c3(val,this,key,success)
 complex(sp), intent(out), dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_c3
-subroutine dict_get_val_first_c3(val,this)
+subroutine dict_get_val_first_c3(val,this,success)
 complex(sp), intent(out), dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_c3
-subroutine dict_get_p_c3(val,this,key)
+subroutine dict_get_p_c3(val,this,key,success)
 complex(sp), pointer , dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_c3
-subroutine dict_get_p_first_c3(val,this)
+subroutine dict_get_p_first_c3(val,this,success)
 complex(sp), pointer , dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_c3
 function dict_kv_z0(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -1598,33 +1650,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_z0
-subroutine dict_get_val_z0(val,this,key)
+subroutine dict_get_val_z0(val,this,key,success)
 complex(dp), intent(out) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_z0
-subroutine dict_get_val_first_z0(val,this)
+subroutine dict_get_val_first_z0(val,this,success)
 complex(dp), intent(out) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_z0
-subroutine dict_get_p_z0(val,this,key)
+subroutine dict_get_p_z0(val,this,key,success)
 complex(dp), pointer :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_z0
-subroutine dict_get_p_first_z0(val,this)
+subroutine dict_get_p_first_z0(val,this,success)
 complex(dp), pointer :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_z0
 function dict_kv_z1(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -1640,33 +1696,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_z1
-subroutine dict_get_val_z1(val,this,key)
+subroutine dict_get_val_z1(val,this,key,success)
 complex(dp), intent(out), dimension(:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_z1
-subroutine dict_get_val_first_z1(val,this)
+subroutine dict_get_val_first_z1(val,this,success)
 complex(dp), intent(out), dimension(:) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_z1
-subroutine dict_get_p_z1(val,this,key)
+subroutine dict_get_p_z1(val,this,key,success)
 complex(dp), pointer , dimension(:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_z1
-subroutine dict_get_p_first_z1(val,this)
+subroutine dict_get_p_first_z1(val,this,success)
 complex(dp), pointer , dimension(:) :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_z1
 function dict_kv_z2(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -1682,33 +1742,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_z2
-subroutine dict_get_val_z2(val,this,key)
+subroutine dict_get_val_z2(val,this,key,success)
 complex(dp), intent(out), dimension(:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_z2
-subroutine dict_get_val_first_z2(val,this)
+subroutine dict_get_val_first_z2(val,this,success)
 complex(dp), intent(out), dimension(:,:) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_z2
-subroutine dict_get_p_z2(val,this,key)
+subroutine dict_get_p_z2(val,this,key,success)
 complex(dp), pointer , dimension(:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_z2
-subroutine dict_get_p_first_z2(val,this)
+subroutine dict_get_p_first_z2(val,this,success)
 complex(dp), pointer , dimension(:,:) :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_z2
 function dict_kv_z3(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -1724,33 +1788,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_z3
-subroutine dict_get_val_z3(val,this,key)
+subroutine dict_get_val_z3(val,this,key,success)
 complex(dp), intent(out), dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_z3
-subroutine dict_get_val_first_z3(val,this)
+subroutine dict_get_val_first_z3(val,this,success)
 complex(dp), intent(out), dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_z3
-subroutine dict_get_p_z3(val,this,key)
+subroutine dict_get_p_z3(val,this,key,success)
 complex(dp), pointer , dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_z3
-subroutine dict_get_p_first_z3(val,this)
+subroutine dict_get_p_first_z3(val,this,success)
 complex(dp), pointer , dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_z3
 function dict_kv_b0(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -1766,33 +1834,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_b0
-subroutine dict_get_val_b0(val,this,key)
+subroutine dict_get_val_b0(val,this,key,success)
 logical, intent(out) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_b0
-subroutine dict_get_val_first_b0(val,this)
+subroutine dict_get_val_first_b0(val,this,success)
 logical, intent(out) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_b0
-subroutine dict_get_p_b0(val,this,key)
+subroutine dict_get_p_b0(val,this,key,success)
 logical, pointer :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_b0
-subroutine dict_get_p_first_b0(val,this)
+subroutine dict_get_p_first_b0(val,this,success)
 logical, pointer :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_b0
 function dict_kv_b1(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -1808,33 +1880,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_b1
-subroutine dict_get_val_b1(val,this,key)
+subroutine dict_get_val_b1(val,this,key,success)
 logical, intent(out), dimension(:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_b1
-subroutine dict_get_val_first_b1(val,this)
+subroutine dict_get_val_first_b1(val,this,success)
 logical, intent(out), dimension(:) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_b1
-subroutine dict_get_p_b1(val,this,key)
+subroutine dict_get_p_b1(val,this,key,success)
 logical, pointer , dimension(:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_b1
-subroutine dict_get_p_first_b1(val,this)
+subroutine dict_get_p_first_b1(val,this,success)
 logical, pointer , dimension(:) :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_b1
 function dict_kv_b2(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -1850,33 +1926,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_b2
-subroutine dict_get_val_b2(val,this,key)
+subroutine dict_get_val_b2(val,this,key,success)
 logical, intent(out), dimension(:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_b2
-subroutine dict_get_val_first_b2(val,this)
+subroutine dict_get_val_first_b2(val,this,success)
 logical, intent(out), dimension(:,:) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_b2
-subroutine dict_get_p_b2(val,this,key)
+subroutine dict_get_p_b2(val,this,key,success)
 logical, pointer , dimension(:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_b2
-subroutine dict_get_p_first_b2(val,this)
+subroutine dict_get_p_first_b2(val,this,success)
 logical, pointer , dimension(:,:) :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_b2
 function dict_kv_b3(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -1892,33 +1972,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_b3
-subroutine dict_get_val_b3(val,this,key)
+subroutine dict_get_val_b3(val,this,key,success)
 logical, intent(out), dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_b3
-subroutine dict_get_val_first_b3(val,this)
+subroutine dict_get_val_first_b3(val,this,success)
 logical, intent(out), dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_b3
-subroutine dict_get_p_b3(val,this,key)
+subroutine dict_get_p_b3(val,this,key,success)
 logical, pointer , dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_b3
-subroutine dict_get_p_first_b3(val,this)
+subroutine dict_get_p_first_b3(val,this,success)
 logical, pointer , dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_b3
 function dict_kv_h0(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -1934,33 +2018,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_h0
-subroutine dict_get_val_h0(val,this,key)
+subroutine dict_get_val_h0(val,this,key,success)
 integer(ih), intent(out) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_h0
-subroutine dict_get_val_first_h0(val,this)
+subroutine dict_get_val_first_h0(val,this,success)
 integer(ih), intent(out) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_h0
-subroutine dict_get_p_h0(val,this,key)
+subroutine dict_get_p_h0(val,this,key,success)
 integer(ih), pointer :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_h0
-subroutine dict_get_p_first_h0(val,this)
+subroutine dict_get_p_first_h0(val,this,success)
 integer(ih), pointer :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_h0
 function dict_kv_h1(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -1976,33 +2064,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_h1
-subroutine dict_get_val_h1(val,this,key)
+subroutine dict_get_val_h1(val,this,key,success)
 integer(ih), intent(out), dimension(:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_h1
-subroutine dict_get_val_first_h1(val,this)
+subroutine dict_get_val_first_h1(val,this,success)
 integer(ih), intent(out), dimension(:) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_h1
-subroutine dict_get_p_h1(val,this,key)
+subroutine dict_get_p_h1(val,this,key,success)
 integer(ih), pointer , dimension(:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_h1
-subroutine dict_get_p_first_h1(val,this)
+subroutine dict_get_p_first_h1(val,this,success)
 integer(ih), pointer , dimension(:) :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_h1
 function dict_kv_h2(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -2018,33 +2110,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_h2
-subroutine dict_get_val_h2(val,this,key)
+subroutine dict_get_val_h2(val,this,key,success)
 integer(ih), intent(out), dimension(:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_h2
-subroutine dict_get_val_first_h2(val,this)
+subroutine dict_get_val_first_h2(val,this,success)
 integer(ih), intent(out), dimension(:,:) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_h2
-subroutine dict_get_p_h2(val,this,key)
+subroutine dict_get_p_h2(val,this,key,success)
 integer(ih), pointer , dimension(:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_h2
-subroutine dict_get_p_first_h2(val,this)
+subroutine dict_get_p_first_h2(val,this,success)
 integer(ih), pointer , dimension(:,:) :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_h2
 function dict_kv_h3(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -2060,33 +2156,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_h3
-subroutine dict_get_val_h3(val,this,key)
+subroutine dict_get_val_h3(val,this,key,success)
 integer(ih), intent(out), dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_h3
-subroutine dict_get_val_first_h3(val,this)
+subroutine dict_get_val_first_h3(val,this,success)
 integer(ih), intent(out), dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_h3
-subroutine dict_get_p_h3(val,this,key)
+subroutine dict_get_p_h3(val,this,key,success)
 integer(ih), pointer , dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_h3
-subroutine dict_get_p_first_h3(val,this)
+subroutine dict_get_p_first_h3(val,this,success)
 integer(ih), pointer , dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_h3
 function dict_kv_i0(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -2102,33 +2202,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_i0
-subroutine dict_get_val_i0(val,this,key)
+subroutine dict_get_val_i0(val,this,key,success)
 integer(is), intent(out) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_i0
-subroutine dict_get_val_first_i0(val,this)
+subroutine dict_get_val_first_i0(val,this,success)
 integer(is), intent(out) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_i0
-subroutine dict_get_p_i0(val,this,key)
+subroutine dict_get_p_i0(val,this,key,success)
 integer(is), pointer :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_i0
-subroutine dict_get_p_first_i0(val,this)
+subroutine dict_get_p_first_i0(val,this,success)
 integer(is), pointer :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_i0
 function dict_kv_i1(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -2144,33 +2248,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_i1
-subroutine dict_get_val_i1(val,this,key)
+subroutine dict_get_val_i1(val,this,key,success)
 integer(is), intent(out), dimension(:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_i1
-subroutine dict_get_val_first_i1(val,this)
+subroutine dict_get_val_first_i1(val,this,success)
 integer(is), intent(out), dimension(:) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_i1
-subroutine dict_get_p_i1(val,this,key)
+subroutine dict_get_p_i1(val,this,key,success)
 integer(is), pointer , dimension(:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_i1
-subroutine dict_get_p_first_i1(val,this)
+subroutine dict_get_p_first_i1(val,this,success)
 integer(is), pointer , dimension(:) :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_i1
 function dict_kv_i2(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -2186,33 +2294,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_i2
-subroutine dict_get_val_i2(val,this,key)
+subroutine dict_get_val_i2(val,this,key,success)
 integer(is), intent(out), dimension(:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_i2
-subroutine dict_get_val_first_i2(val,this)
+subroutine dict_get_val_first_i2(val,this,success)
 integer(is), intent(out), dimension(:,:) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_i2
-subroutine dict_get_p_i2(val,this,key)
+subroutine dict_get_p_i2(val,this,key,success)
 integer(is), pointer , dimension(:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_i2
-subroutine dict_get_p_first_i2(val,this)
+subroutine dict_get_p_first_i2(val,this,success)
 integer(is), pointer , dimension(:,:) :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_i2
 function dict_kv_i3(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -2228,33 +2340,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_i3
-subroutine dict_get_val_i3(val,this,key)
+subroutine dict_get_val_i3(val,this,key,success)
 integer(is), intent(out), dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_i3
-subroutine dict_get_val_first_i3(val,this)
+subroutine dict_get_val_first_i3(val,this,success)
 integer(is), intent(out), dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_i3
-subroutine dict_get_p_i3(val,this,key)
+subroutine dict_get_p_i3(val,this,key,success)
 integer(is), pointer , dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_i3
-subroutine dict_get_p_first_i3(val,this)
+subroutine dict_get_p_first_i3(val,this,success)
 integer(is), pointer , dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_i3
 function dict_kv_l0(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -2270,33 +2386,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_l0
-subroutine dict_get_val_l0(val,this,key)
+subroutine dict_get_val_l0(val,this,key,success)
 integer(il), intent(out) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_l0
-subroutine dict_get_val_first_l0(val,this)
+subroutine dict_get_val_first_l0(val,this,success)
 integer(il), intent(out) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_l0
-subroutine dict_get_p_l0(val,this,key)
+subroutine dict_get_p_l0(val,this,key,success)
 integer(il), pointer :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_l0
-subroutine dict_get_p_first_l0(val,this)
+subroutine dict_get_p_first_l0(val,this,success)
 integer(il), pointer :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_l0
 function dict_kv_l1(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -2312,33 +2432,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_l1
-subroutine dict_get_val_l1(val,this,key)
+subroutine dict_get_val_l1(val,this,key,success)
 integer(il), intent(out), dimension(:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_l1
-subroutine dict_get_val_first_l1(val,this)
+subroutine dict_get_val_first_l1(val,this,success)
 integer(il), intent(out), dimension(:) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_l1
-subroutine dict_get_p_l1(val,this,key)
+subroutine dict_get_p_l1(val,this,key,success)
 integer(il), pointer , dimension(:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_l1
-subroutine dict_get_p_first_l1(val,this)
+subroutine dict_get_p_first_l1(val,this,success)
 integer(il), pointer , dimension(:) :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_l1
 function dict_kv_l2(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -2354,33 +2478,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_l2
-subroutine dict_get_val_l2(val,this,key)
+subroutine dict_get_val_l2(val,this,key,success)
 integer(il), intent(out), dimension(:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_l2
-subroutine dict_get_val_first_l2(val,this)
+subroutine dict_get_val_first_l2(val,this,success)
 integer(il), intent(out), dimension(:,:) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_l2
-subroutine dict_get_p_l2(val,this,key)
+subroutine dict_get_p_l2(val,this,key,success)
 integer(il), pointer , dimension(:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_l2
-subroutine dict_get_p_first_l2(val,this)
+subroutine dict_get_p_first_l2(val,this,success)
 integer(il), pointer , dimension(:,:) :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_l2
 function dict_kv_l3(key,val) result(this)
 character(len=*), intent(in) :: key
@@ -2396,33 +2524,37 @@ type(dict) :: this
 this = new_d_key(key)
 call associate(this%first%value,val)
 end function dict_kvp_l3
-subroutine dict_get_val_l3(val,this,key)
+subroutine dict_get_val_l3(val,this,key,success)
 integer(il), intent(out), dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call assign(val,v)
+call assign(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_val_l3
-subroutine dict_get_val_first_l3(val,this)
+subroutine dict_get_val_first_l3(val,this,success)
 integer(il), intent(out), dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
-call assign(val,this%first%value)
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
 end subroutine dict_get_val_first_l3
-subroutine dict_get_p_l3(val,this,key)
+subroutine dict_get_p_l3(val,this,key,success)
 integer(il), pointer , dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
 character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
 type(var) :: v
 call associate(v,this,key=key)
-call associate(val,v)
+call associate(val,v,success=success)
 call nullify(v)
 end subroutine dict_get_p_l3
-subroutine dict_get_p_first_l3(val,this)
+subroutine dict_get_p_first_l3(val,this,success)
 integer(il), pointer , dimension(:,:,:) :: val
 type(dict), intent(inout) :: this
-call associate(val,this%first%value)
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
 end subroutine dict_get_p_first_l3
   ! helper routines for often used stuff
   subroutine val_delete_request(val,dealloc)

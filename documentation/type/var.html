@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	 
-	 <meta name="description" content="Documentation of fortran type-free variable and dictionary">
+   
+   <meta name="description" content="Documentation of fortran type-free variable and dictionary">
     
     <meta name="author" content="Nick R. Papior" >
     <link rel="icon" href="../favicon.png">
@@ -17,6 +17,7 @@
     <link href="../css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/local.css" rel="stylesheet">
     
+    
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -26,8 +27,6 @@
     
     <script src="../js/jquery-2.1.3.min.js"></script>
     <script src="../js/svg-pan-zoom.min.js"></script>
-
-    
 
   </head>
 
@@ -43,35 +42,39 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../index.html">fdict <small>0.6</small></a>
+          <a class="navbar-brand" href="../index.html">fdict <small>0.6.0</small></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-				
+        
             <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
               <a href="#" class="dropdown-toggle"
               data-toggle="dropdown" role="button"
               aria-haspopup="true"
-		 aria-expanded="false">Contents <span class="caret"></span></a>
-	      <ul class="dropdown-menu">
+     aria-expanded="false">Contents <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          
               
             <li><a href="../lists/files.html">Source Files</a></li>
-				
-				
+        
+        
+        
             <li><a href="../lists/modules.html">Modules</a></li>
-				
+        
             
                                 
             <li><a href="../lists/procedures.html">Procedures</a></li>
-				
-								
+        
+               
             <li><a href="../lists/types.html">Derived Types</a></li>
-				
-				
+        
+        
             </ul>
             </li>
 
+
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/files.html">Source Files</a></li>
+
 
 
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
@@ -111,19 +114,23 @@
     
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
-	  data-placement="bottom" data-html="true"
-	  title="<p>50.0% of total for derived types.</p>Including implementation: 4 statements, 50.0% of total for derived types.">4 statements</a>
+    data-placement="bottom" data-html="true"
+    title="<p>50.0% of total for derived types.</p>Including implementation: 4 statements, 50.0% of total for derived types.">4 statements</a>
      </li> 
+     
      
      
     <li><i class="fa fa-code"></i><a href="../src/variable.f90"> Source File</a></li>
      
+     
   </ul>
   <ol class="breadcrumb in-well text-right">
   
+    
      <li><a href='../sourcefile/variable.f90.html'>variable.f90</a></li>
-  
+    
      <li><a href='../module/variable.html'>variable</a></li>
+    
   
      <li class="active">var</li>
   </ol>
@@ -143,6 +150,9 @@
     
 <div id="sidebar">
   
+<h3>Contents</h3>
+ 
+
 
 
 <div class="panel panel-primary">
@@ -177,41 +187,28 @@
 
 
 
-  <hr>
-  
 
-<div class="panel panel-default">
-  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#alltypes-0">All Derived Types</a></h3></div>
-  <div id="alltypes-0" class="panel-collapse collapse">
-    <div class="list-group">
-      
-      <a class="list-group-item" href="../type/dict.html">dict</a>
-      
-      <a class="list-group-item" href="../type/var.html">var</a>
-      
-    </div>
-  </div>
 </div>
-
-
-</div>  
 
     </div>
     
     <div class="col-md-9" id='text'>
       <h2>type, public :: var</h2>
-    
     <p>Container for <em>any</em> fortran data-type, intrinsically handles all
  from fortran and any external type may be added via external routines.</p>
 <p>The container is based on a type-transfer method by storing a pointer
  to the data and transfer the type to a character array via encoding.
  This enables one to retrieve the pointer position later and thus enables
  pointer assignments and easy copying of data.</p>
+    <br>
     
     
-    <h3>Inherited By</h3>
-    
-                <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+  <h3 class="panel-title">Inherited by</h3>
+      </div>
+      <div class="panel-body">
+     <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.40.1 (20161225.0304)
@@ -234,49 +231,39 @@
 <polygon fill="#5cb85c" stroke="#5cb85c" points="167,-24 113,-24 113,0 167,0 167,-24"/>
 <text text-anchor="middle" x="140" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="#ffffff">d_entry</text>
 </g>
-<!-- type~var&#45;&gt;type~d_entry -->
-<g id="type~~var~~InheritedByGraph_edge3" class="edge">
-<title>type~var&#45;&gt;type~d_entry</title>
-<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M54.0663,-12C68.6348,-12 86.8257,-12 102.7149,-12"/>
-<polygon fill="#ff0000" stroke="#ff0000" points="102.7629,-15.5001 112.7629,-12 102.7629,-8.5001 102.7629,-15.5001"/>
+<!-- type~d_entry&#45;&gt;type~var -->
+<g id="type~~var~~InheritedByGraph_edge1" class="edge">
+<title>type~d_entry&#45;&gt;type~var</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M112.9337,-12C98.3652,-12 80.1743,-12 64.2851,-12"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="64.2371,-8.5001 54.2371,-12 64.2371,-15.5001 64.2371,-8.5001"/>
 <text text-anchor="middle" x="83.5" y="-14.4" font-family="Helvetica,sans-Serif" font-size="9.50" fill="#000000">value</text>
 </g>
 <!-- type~d_entry&#45;&gt;type~d_entry -->
-<g id="type~~var~~InheritedByGraph_edge1" class="edge">
+<g id="type~~var~~InheritedByGraph_edge2" class="edge">
 <title>type~d_entry&#45;&gt;type~d_entry</title>
-<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M131.4021,-24.0139C128.3997,-32.9717 131.2656,-42 140,-42 145.3225,-42 148.4659,-38.6474 149.43,-34.0013"/>
-<polygon fill="#ff0000" stroke="#ff0000" points="152.9162,-33.6887 148.5979,-24.0139 145.9404,-34.27 152.9162,-33.6887"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M148.5979,-24.0139C151.6003,-32.9717 148.7344,-42 140,-42 134.6775,-42 131.5341,-38.6474 130.57,-34.0013"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="134.0596,-34.27 131.4021,-24.0139 127.0838,-33.6887 134.0596,-34.27"/>
 <text text-anchor="middle" x="140" y="-44.4" font-family="Helvetica,sans-Serif" font-size="9.50" fill="#000000">next</text>
 </g>
 <!-- type~dict -->
 <g id="type~~var~~InheritedByGraph_node3" class="node">
 <title>type~dict</title>
-<g id="a_type~~var~~InheritedByGraph_node3"><a xlink:href="../type/dict.html" xlink:title="dict">
+<g id="a_type~~var~~InheritedByGraph_node3"><a xlink:href=".././type/dict.html" xlink:title="dict">
 <polygon fill="#5cb85c" stroke="#5cb85c" points="273,-24 219,-24 219,0 273,0 273,-24"/>
 <text text-anchor="middle" x="246" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="#ffffff">dict</text>
 </a>
 </g>
 </g>
-<!-- type~d_entry&#45;&gt;type~dict -->
-<g id="type~~var~~InheritedByGraph_edge2" class="edge">
-<title>type~d_entry&#45;&gt;type~dict</title>
-<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M167.0225,-12C179.6333,-12 194.8509,-12 208.5484,-12"/>
-<polygon fill="#ff0000" stroke="#ff0000" points="208.6583,-15.5001 218.6582,-12 208.6582,-8.5001 208.6583,-15.5001"/>
+<!-- type~dict&#45;&gt;type~d_entry -->
+<g id="type~~var~~InheritedByGraph_edge3" class="edge">
+<title>type~dict&#45;&gt;type~d_entry</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M218.9775,-12C206.3667,-12 191.1491,-12 177.4516,-12"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="177.3418,-8.5001 167.3418,-12 177.3417,-15.5001 177.3418,-8.5001"/>
 <text text-anchor="middle" x="193" y="-14.4" font-family="Helvetica,sans-Serif" font-size="9.50" fill="#000000">first</text>
 </g>
 </g>
 </svg>
-</div>
-                <div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div>
-                <div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog">
-                  <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
-                      </div>
-                      <div class="modal-body">
-                        
+</div><div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div><div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog"><div class="modal-dialog modal-lg" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title" id="-graph-help-label">Graph Key</h4></div><div class="modal-body">
     <p>Nodes of different colours represent the following: </p>
     <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
@@ -305,21 +292,22 @@
 </svg>
 
     
-    <p>Solid arrows point from one derived type to another which extends
-    (inherits from) it. Dashed arrows point from a derived type to another
-    type containing it as a components, with a label listing the name(s) of
+    <p>Solid arrows point from a derived type to the parent type which it
+    extends. Dashed arrows point from a derived type to the other
+    types it contains as a components, with a label listing the name(s) of
     said component(s). Where possible, edges connecting nodes are given different colours to make them easier to distinguish in large graphs.
     </p>
+    </div></div></div></div>
+      </div>
+    </div>
     
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-    
+    <br>
 
     <section class="visible-xs visible-sm hidden-md">
       
+<h3>Contents</h3>
+ 
+
 
 
 <div class="panel panel-primary">
@@ -334,6 +322,7 @@
     </div>
   </div>
 </div>
+
 
 
 
@@ -376,7 +365,7 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-t"></span>character(len=4),</td>
+  <td><span class="anchor" id="variable-t"></span>character(len=VAR_TYPE_LENGTH),</td>
   
   <td>public</td>
   <td></td><td>::</td>
@@ -416,32 +405,14 @@
     </div>
   </div>
 
-  <section class="visible-xs visible-sm hidden-md">
-    <hr>
-    
-
-<div class="panel panel-default">
-  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#alltypes-1">All Derived Types</a></h3></div>
-  <div id="alltypes-1" class="panel-collapse collapse">
-    <div class="list-group">
-      
-      <a class="list-group-item" href="../type/dict.html">dict</a>
-      
-      <a class="list-group-item" href="../type/var.html">var</a>
-      
-    </div>
-  </div>
-</div>
-
-
-  </section>
 
     <hr>    
     </div> <!-- /container -->
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-4"><p>&copy; 2015-2017 </p></div>
+        <div class="col-xs-6 col-md-4"><p>&copy; 2015-2017 
+                                          </p></div>
         <div class="col-xs-6 col-md-4 col-md-push-4">
           <p class="text-right">
             Documentation generated by 
@@ -472,12 +443,13 @@
       MathJax.Hub.Config({
         TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
         jax: ['input/TeX','input/MathML','output/HTML-CSS'],
-        extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js'],
-        'HTML-CSS': { 
-           styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: '#000000 ! important'} }
-        }
+        extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
       });
     </script>
-    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+    
   </body>
 </html>

@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	 
-	 <meta name="description" content="Documentation of fortran type-free variable and dictionary">
+   
+   <meta name="description" content="Documentation of fortran type-free variable and dictionary">
     
     <meta name="author" content="Nick R. Papior" >
     <link rel="icon" href="../favicon.png">
@@ -17,6 +17,7 @@
     <link href="../css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/local.css" rel="stylesheet">
     
+    
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -26,8 +27,6 @@
     
     <script src="../js/jquery-2.1.3.min.js"></script>
     <script src="../js/svg-pan-zoom.min.js"></script>
-
-    
 
   </head>
 
@@ -43,35 +42,39 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../index.html">fdict <small>0.6</small></a>
+          <a class="navbar-brand" href="../index.html">fdict <small>0.6.0</small></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-				
+        
             <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
               <a href="#" class="dropdown-toggle"
               data-toggle="dropdown" role="button"
               aria-haspopup="true"
-		 aria-expanded="false">Contents <span class="caret"></span></a>
-	      <ul class="dropdown-menu">
+     aria-expanded="false">Contents <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          
               
             <li><a href="../lists/files.html">Source Files</a></li>
-				
-				
+        
+        
+        
             <li><a href="../lists/modules.html">Modules</a></li>
-				
+        
             
                                 
             <li><a href="../lists/procedures.html">Procedures</a></li>
-				
-								
+        
+               
             <li><a href="../lists/types.html">Derived Types</a></li>
-				
-				
+        
+        
             </ul>
             </li>
 
+
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/files.html">Source Files</a></li>
+
 
 
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
@@ -111,17 +114,21 @@
     
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
-	  data-placement="bottom" data-html="true"
-	  title="31.8% of total for modules and submodules.">2358 statements</a>
+    data-placement="bottom" data-html="true"
+    title="32.7% of total for modules and submodules.">2490 statements</a>
      </li> 
+     
      
      
     <li><i class="fa fa-code"></i><a href="../src/dictionary.f90"> Source File</a></li>
      
+     
   </ul>
   <ol class="breadcrumb in-well text-right">
   
+    
      <li><a href='../sourcefile/dictionary.f90.html'>dictionary.f90</a></li>
+    
   
      <li class="active">dictionary</li>
   </ol>
@@ -141,6 +148,9 @@
     
 <div id="sidebar">
   
+<h3>Contents</h3>
+ 
+
 
 
 <div class="panel panel-primary">
@@ -163,6 +173,7 @@
 
 
 
+
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#inters-0">Interfaces</a></h3></div>
   <div id="inters-0" class="panel-collapse collapse">
@@ -172,35 +183,36 @@
       
       <a class="list-group-item" href="../module/dictionary.html#interface-llen">llen</a>
       
-      <a class="list-group-item" href="../module/dictionary.html#interface-print%7E2">print</a>
+      <a class="list-group-item" href="../module/dictionary.html#interface-print~2">print</a>
       
       <a class="list-group-item" href="../module/dictionary.html#interface-operator%28%20SLASHSLASH%20%29">operator( // )</a>
       
       <a class="list-group-item" href="../module/dictionary.html#interface-hash_coll">hash_coll</a>
       
-      <a class="list-group-item" href="../module/dictionary.html#interface-delete%7E2">delete</a>
+      <a class="list-group-item" href="../module/dictionary.html#interface-delete~2">delete</a>
       
       <a class="list-group-item" href="../module/dictionary.html#interface-pop">pop</a>
       
       <a class="list-group-item" href="../module/dictionary.html#interface-copy">copy</a>
       
-      <a class="list-group-item" href="../module/dictionary.html#interface-nullify%7E2">nullify</a>
+      <a class="list-group-item" href="../module/dictionary.html#interface-nullify~2">nullify</a>
       
       <a class="list-group-item" href="../module/dictionary.html#interface-extend">extend</a>
       
-      <a class="list-group-item" href="../module/dictionary.html#interface-which%7E2">which</a>
+      <a class="list-group-item" href="../module/dictionary.html#interface-which~2">which</a>
       
       <a class="list-group-item" href="../module/dictionary.html#interface-operator%28.kv.%29">operator(.KV.)</a>
       
       <a class="list-group-item" href="../module/dictionary.html#interface-operator%28.kvp.%29">operator(.KVP.)</a>
       
-      <a class="list-group-item" href="../module/dictionary.html#interface-assign%7E2">assign</a>
+      <a class="list-group-item" href="../module/dictionary.html#interface-assign~2">assign</a>
       
-      <a class="list-group-item" href="../module/dictionary.html#interface-associate%7E2">associate</a>
+      <a class="list-group-item" href="../module/dictionary.html#interface-associate~2">associate</a>
       
     </div>
   </div>
 </div>
+
 
 
 
@@ -225,39 +237,34 @@
 
 
 
-  <hr>
-  
 
-<div class="panel panel-default">
-  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#allmods-0">All Modules</a></h3></div>
-  <div id="allmods-0" class="panel-collapse collapse">
-    <div class="list-group">
-      
-      <a class="list-group-item" href="../module/dictionary.html">dictionary</a>
-      
-      <a class="list-group-item" href="../module/variable.html">variable</a>
-      
-    </div>
-  </div>
 </div>
-
-
-</div>  
 
     </div>
     
     <div class="col-md-9" id='text'>
-      
+    
+      <br>
     
   
-    <ul class="list-inline">
-      <li><h4>Uses:</h4></li>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+  <h3 class="panel-title">Uses</h3>
+      </div>
+      <ul class="list-group">
       
-      <li><a href='../module/variable.html'>variable</a></li>
-      
-    </ul>
+      <li class="list-group-item">
+  <ul class="list-inline">
     
-                <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+    <li><a href='../module/variable.html'>variable</a></li>
+    
+  </ul>
+      </li>
+      
+      
+      
+      <li class="list-group-item">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.40.1 (20161225.0304)
@@ -277,31 +284,21 @@
 <!-- module~variable -->
 <g id="module~~dictionary~~UsesGraph_node2" class="node">
 <title>module~variable</title>
-<g id="a_module~~dictionary~~UsesGraph_node2"><a xlink:href="../module/variable.html" xlink:title="variable">
+<g id="a_module~~dictionary~~UsesGraph_node2"><a xlink:href=".././module/variable.html" xlink:title="variable">
 <polygon fill="#337ab7" stroke="#337ab7" points="54,-24 0,-24 0,0 54,0 54,-24"/>
 <text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="#ffffff">variable</text>
 </a>
 </g>
 </g>
-<!-- module~variable&#45;&gt;module~dictionary -->
+<!-- module~dictionary&#45;&gt;module~variable -->
 <g id="module~~dictionary~~UsesGraph_edge1" class="edge">
-<title>module~variable&#45;&gt;module~dictionary</title>
-<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M54.1054,-12C62.094,-12 71.0028,-12 79.5978,-12"/>
-<polygon fill="#ff0000" stroke="#ff0000" points="79.8433,-15.5001 89.8432,-12 79.8432,-8.5001 79.8433,-15.5001"/>
+<title>module~dictionary&#45;&gt;module~variable</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M89.8906,-12C81.7318,-12 72.7498,-12 64.1905,-12"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="64.0434,-8.5001 54.0434,-12 64.0434,-15.5001 64.0434,-8.5001"/>
 </g>
 </g>
 </svg>
-</div>
-                <div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div>
-                <div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog">
-                  <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
-                      </div>
-                      <div class="modal-body">
-                        
+</div><div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div><div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog"><div class="modal-dialog modal-lg" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title" id="-graph-help-label">Graph Key</h4></div><div class="modal-body">
     <p>Nodes of different colours represent the following: </p>
     <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
@@ -354,25 +351,27 @@
 </svg>
 
     
-    <p>Solid arrows point from a parent (sub)module to the submodule which is
-    descended from it. Dashed arrows point from a module being used to the
-    module or program unit using it. Where possible, edges connecting nodes are given different colours to make them easier to distinguish in large graphs.
+    <p>Solid arrows point from a submodule to the (sub)module which it is
+    descended from. Dashed arrows point from a module or program unit to 
+    modules which it uses. Where possible, edges connecting nodes are given different colours to make them easier to distinguish in large graphs.
     </p>
-    
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
+    </div></div></div></div>
+      </li>
+      
+      </ul>
+    </div>
     
 
     
     
-    
-    
+
+    <br>
 
     <section class="visible-xs visible-sm hidden-md">
       
+<h3>Contents</h3>
+ 
+
 
 
 <div class="panel panel-primary">
@@ -395,6 +394,7 @@
 
 
 
+
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#inters-1">Interfaces</a></h3></div>
   <div id="inters-1" class="panel-collapse collapse">
@@ -404,35 +404,36 @@
       
       <a class="list-group-item" href="../module/dictionary.html#interface-llen">llen</a>
       
-      <a class="list-group-item" href="../module/dictionary.html#interface-print%7E2">print</a>
+      <a class="list-group-item" href="../module/dictionary.html#interface-print~2">print</a>
       
       <a class="list-group-item" href="../module/dictionary.html#interface-operator%28%20SLASHSLASH%20%29">operator( // )</a>
       
       <a class="list-group-item" href="../module/dictionary.html#interface-hash_coll">hash_coll</a>
       
-      <a class="list-group-item" href="../module/dictionary.html#interface-delete%7E2">delete</a>
+      <a class="list-group-item" href="../module/dictionary.html#interface-delete~2">delete</a>
       
       <a class="list-group-item" href="../module/dictionary.html#interface-pop">pop</a>
       
       <a class="list-group-item" href="../module/dictionary.html#interface-copy">copy</a>
       
-      <a class="list-group-item" href="../module/dictionary.html#interface-nullify%7E2">nullify</a>
+      <a class="list-group-item" href="../module/dictionary.html#interface-nullify~2">nullify</a>
       
       <a class="list-group-item" href="../module/dictionary.html#interface-extend">extend</a>
       
-      <a class="list-group-item" href="../module/dictionary.html#interface-which%7E2">which</a>
+      <a class="list-group-item" href="../module/dictionary.html#interface-which~2">which</a>
       
       <a class="list-group-item" href="../module/dictionary.html#interface-operator%28.kv.%29">operator(.KV.)</a>
       
       <a class="list-group-item" href="../module/dictionary.html#interface-operator%28.kvp.%29">operator(.KVP.)</a>
       
-      <a class="list-group-item" href="../module/dictionary.html#interface-assign%7E2">assign</a>
+      <a class="list-group-item" href="../module/dictionary.html#interface-assign~2">assign</a>
       
-      <a class="list-group-item" href="../module/dictionary.html#interface-associate%7E2">associate</a>
+      <a class="list-group-item" href="../module/dictionary.html#interface-associate~2">associate</a>
       
     </div>
   </div>
 </div>
+
 
 
 
@@ -446,6 +447,7 @@
     </div>
   </div>
 </div>
+
 
 
 
@@ -515,9 +517,9 @@
     
     
     <section>
-	 <h2>Interfaces</h2>
-	 
-	   
+   <h2>Interfaces</h2>
+   
+     
 <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="interface-len"></span><h3>public interface <a href='../interface/len.html'>len</a>
     
@@ -539,7 +541,7 @@
 private pure function len_(d)
     
     
-	 
+   
 </h3>
     
     
@@ -594,7 +596,7 @@ private pure function len_(d)
 </div>
 
     
-	   
+     
 <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="interface-llen"></span><h3>public interface <a href='../interface/llen.html'>llen</a>
     
@@ -616,7 +618,7 @@ private pure function len_(d)
 private function llen_(this)
     
     
-	 
+   
 </h3>
     
     
@@ -671,9 +673,9 @@ private function llen_(this)
 </div>
 
     
-	   
+     
 <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="interface-print%7E2"></span><h3>public interface <a href='../interface/print%7E2.html'>print</a>
+  <div class="panel-heading codesum"><span class="anchor" id="interface-print~2"></span><h3>public interface <a href='../interface/print~2.html'>print</a>
     
   </h3></div>
   
@@ -693,7 +695,7 @@ private function llen_(this)
 private subroutine print_(d)
     
     
-	 
+   
 </h3>
     
     
@@ -739,7 +741,7 @@ private subroutine print_(d)
 </div>
 
     
-	   
+     
 <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="interface-operator%28%20SLASHSLASH%20%29"></span><h3>public interface <a href='../interface/operator%28%20SLASHSLASH%20%29.html'>operator( // )</a>
     
@@ -762,7 +764,7 @@ private subroutine print_(d)
 private function d_cat_d(d1, d2) result(d)
     
     
-	 
+   
 </h3>
     
     
@@ -832,7 +834,7 @@ private function d_cat_d(d1, d2) result(d)
 </div>
 
     
-	   
+     
 <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="interface-hash_coll"></span><h3>public interface <a href='../interface/hash_coll.html'>hash_coll</a>
     
@@ -849,7 +851,7 @@ private function d_cat_d(d1, d2) result(d)
 private function hash_coll_(this, max) result(col)
     
     
-	 
+   
 </h3>
     
     
@@ -919,9 +921,9 @@ private function hash_coll_(this, max) result(col)
 </div>
 
     
-	   
+     
 <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="interface-delete%7E2"></span><h3>public interface <a href='../interface/delete%7E2.html'>delete</a>
+  <div class="panel-heading codesum"><span class="anchor" id="interface-delete~2"></span><h3>public interface <a href='../interface/delete~2.html'>delete</a>
     
   </h3></div>
   
@@ -936,7 +938,7 @@ private function hash_coll_(this, max) result(col)
 private subroutine delete_(this, key, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -1012,7 +1014,7 @@ private subroutine delete_(this, key, dealloc)
 </div>
 
     
-	   
+     
 <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="interface-pop"></span><h3>public interface <a href='../interface/pop.html'>pop</a>
     
@@ -1029,7 +1031,7 @@ private subroutine delete_(this, key, dealloc)
 private subroutine pop_(val, this, key, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -1120,7 +1122,7 @@ private subroutine pop_(val, this, key, dealloc)
 </div>
 
     
-	   
+     
 <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="interface-copy"></span><h3>public interface <a href='../interface/copy.html'>copy</a>
     
@@ -1137,7 +1139,7 @@ private subroutine pop_(val, this, key, dealloc)
 private subroutine copy_(from, to)
     
     
-	 
+   
 </h3>
     
 
@@ -1202,9 +1204,9 @@ private subroutine copy_(from, to)
 </div>
 
     
-	   
+     
 <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="interface-nullify%7E2"></span><h3>public interface <a href='../interface/nullify%7E2.html'>nullify</a>
+  <div class="panel-heading codesum"><span class="anchor" id="interface-nullify~2"></span><h3>public interface <a href='../interface/nullify~2.html'>nullify</a>
     
   </h3></div>
   
@@ -1219,7 +1221,7 @@ private subroutine copy_(from, to)
 private elemental subroutine nullify_(this)
     
     
-	 
+   
 </h3>
     
     
@@ -1267,7 +1269,7 @@ private elemental subroutine nullify_(this)
 private elemental subroutine nullify_key_(this, key)
     
     
-	 
+   
 </h3>
     
     
@@ -1328,7 +1330,7 @@ private elemental subroutine nullify_key_(this, key)
 </div>
 
     
-	   
+     
 <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="interface-extend"></span><h3>public interface <a href='../interface/extend.html'>extend</a>
     
@@ -1345,7 +1347,7 @@ private elemental subroutine nullify_key_(this, key)
 private subroutine sub_d_cat_d(d, d2)
     
     
-	 
+   
 </h3>
     
     
@@ -1406,9 +1408,9 @@ private subroutine sub_d_cat_d(d, d2)
 </div>
 
     
-	   
+     
 <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="interface-which%7E2"></span><h3>public interface <a href='../interface/which%7E2.html'>which</a>
+  <div class="panel-heading codesum"><span class="anchor" id="interface-which~2"></span><h3>public interface <a href='../interface/which~2.html'>which</a>
     
   </h3></div>
   
@@ -1423,7 +1425,7 @@ private subroutine sub_d_cat_d(d, d2)
 private function dict_key_which(this, key) result(t)
     
     
-	 
+   
 </h3>
     
     
@@ -1481,7 +1483,7 @@ private function dict_key_which(this, key) result(t)
   
   
   
-     <h4>Return Value <small>character(len=2)
+     <h4>Return Value <small>character(len=VAR_TYPE_LENGTH)
   </small></h4>
   
     
@@ -1493,7 +1495,7 @@ private function dict_key_which(this, key) result(t)
 </div>
 
     
-	   
+     
 <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="interface-operator%28.kv.%29"></span><h3>public interface <a href='../interface/operator%28.kv.%29.html'>operator(.KV.)</a>
     
@@ -1510,7 +1512,7 @@ private function dict_key_which(this, key) result(t)
 private function dict_kv_a0_0(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -1582,7 +1584,7 @@ private function dict_kv_a0_0(key, val) result(this)
 private function dict_kv_var(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -1654,7 +1656,7 @@ private function dict_kv_var(key, val) result(this)
 private function dict_kv_a1(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -1726,7 +1728,7 @@ private function dict_kv_a1(key, val) result(this)
 private function dict_kv_s0(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -1798,7 +1800,7 @@ private function dict_kv_s0(key, val) result(this)
 private function dict_kv_s1(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -1870,7 +1872,7 @@ private function dict_kv_s1(key, val) result(this)
 private function dict_kv_s2(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -1942,7 +1944,7 @@ private function dict_kv_s2(key, val) result(this)
 private function dict_kv_s3(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -2014,7 +2016,7 @@ private function dict_kv_s3(key, val) result(this)
 private function dict_kv_d0(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -2086,7 +2088,7 @@ private function dict_kv_d0(key, val) result(this)
 private function dict_kv_d1(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -2158,7 +2160,7 @@ private function dict_kv_d1(key, val) result(this)
 private function dict_kv_d2(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -2230,7 +2232,7 @@ private function dict_kv_d2(key, val) result(this)
 private function dict_kv_d3(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -2302,7 +2304,7 @@ private function dict_kv_d3(key, val) result(this)
 private function dict_kv_c0(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -2374,7 +2376,7 @@ private function dict_kv_c0(key, val) result(this)
 private function dict_kv_c1(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -2446,7 +2448,7 @@ private function dict_kv_c1(key, val) result(this)
 private function dict_kv_c2(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -2518,7 +2520,7 @@ private function dict_kv_c2(key, val) result(this)
 private function dict_kv_c3(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -2590,7 +2592,7 @@ private function dict_kv_c3(key, val) result(this)
 private function dict_kv_z0(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -2662,7 +2664,7 @@ private function dict_kv_z0(key, val) result(this)
 private function dict_kv_z1(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -2734,7 +2736,7 @@ private function dict_kv_z1(key, val) result(this)
 private function dict_kv_z2(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -2806,7 +2808,7 @@ private function dict_kv_z2(key, val) result(this)
 private function dict_kv_z3(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -2878,7 +2880,7 @@ private function dict_kv_z3(key, val) result(this)
 private function dict_kv_b0(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -2950,7 +2952,7 @@ private function dict_kv_b0(key, val) result(this)
 private function dict_kv_b1(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -3022,7 +3024,7 @@ private function dict_kv_b1(key, val) result(this)
 private function dict_kv_b2(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -3094,7 +3096,7 @@ private function dict_kv_b2(key, val) result(this)
 private function dict_kv_b3(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -3166,7 +3168,7 @@ private function dict_kv_b3(key, val) result(this)
 private function dict_kv_h0(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -3238,7 +3240,7 @@ private function dict_kv_h0(key, val) result(this)
 private function dict_kv_h1(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -3310,7 +3312,7 @@ private function dict_kv_h1(key, val) result(this)
 private function dict_kv_h2(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -3382,7 +3384,7 @@ private function dict_kv_h2(key, val) result(this)
 private function dict_kv_h3(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -3454,7 +3456,7 @@ private function dict_kv_h3(key, val) result(this)
 private function dict_kv_i0(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -3526,7 +3528,7 @@ private function dict_kv_i0(key, val) result(this)
 private function dict_kv_i1(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -3598,7 +3600,7 @@ private function dict_kv_i1(key, val) result(this)
 private function dict_kv_i2(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -3670,7 +3672,7 @@ private function dict_kv_i2(key, val) result(this)
 private function dict_kv_i3(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -3742,7 +3744,7 @@ private function dict_kv_i3(key, val) result(this)
 private function dict_kv_l0(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -3814,7 +3816,7 @@ private function dict_kv_l0(key, val) result(this)
 private function dict_kv_l1(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -3886,7 +3888,7 @@ private function dict_kv_l1(key, val) result(this)
 private function dict_kv_l2(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -3958,7 +3960,7 @@ private function dict_kv_l2(key, val) result(this)
 private function dict_kv_l3(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -4028,7 +4030,7 @@ private function dict_kv_l3(key, val) result(this)
 </div>
 
     
-	   
+     
 <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="interface-operator%28.kvp.%29"></span><h3>public interface <a href='../interface/operator%28.kvp.%29.html'>operator(.KVP.)</a>
     
@@ -4045,7 +4047,7 @@ private function dict_kv_l3(key, val) result(this)
 private function dict_kvp_var(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -4117,7 +4119,7 @@ private function dict_kvp_var(key, val) result(this)
 private function dict_kvp_dict(key, dic) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -4189,7 +4191,7 @@ private function dict_kvp_dict(key, dic) result(this)
 private function dict_kvp_a1(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -4261,7 +4263,7 @@ private function dict_kvp_a1(key, val) result(this)
 private function dict_kvp_s0(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -4333,7 +4335,7 @@ private function dict_kvp_s0(key, val) result(this)
 private function dict_kvp_s1(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -4405,7 +4407,7 @@ private function dict_kvp_s1(key, val) result(this)
 private function dict_kvp_s2(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -4477,7 +4479,7 @@ private function dict_kvp_s2(key, val) result(this)
 private function dict_kvp_s3(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -4549,7 +4551,7 @@ private function dict_kvp_s3(key, val) result(this)
 private function dict_kvp_d0(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -4621,7 +4623,7 @@ private function dict_kvp_d0(key, val) result(this)
 private function dict_kvp_d1(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -4693,7 +4695,7 @@ private function dict_kvp_d1(key, val) result(this)
 private function dict_kvp_d2(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -4765,7 +4767,7 @@ private function dict_kvp_d2(key, val) result(this)
 private function dict_kvp_d3(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -4837,7 +4839,7 @@ private function dict_kvp_d3(key, val) result(this)
 private function dict_kvp_c0(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -4909,7 +4911,7 @@ private function dict_kvp_c0(key, val) result(this)
 private function dict_kvp_c1(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -4981,7 +4983,7 @@ private function dict_kvp_c1(key, val) result(this)
 private function dict_kvp_c2(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -5053,7 +5055,7 @@ private function dict_kvp_c2(key, val) result(this)
 private function dict_kvp_c3(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -5125,7 +5127,7 @@ private function dict_kvp_c3(key, val) result(this)
 private function dict_kvp_z0(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -5197,7 +5199,7 @@ private function dict_kvp_z0(key, val) result(this)
 private function dict_kvp_z1(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -5269,7 +5271,7 @@ private function dict_kvp_z1(key, val) result(this)
 private function dict_kvp_z2(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -5341,7 +5343,7 @@ private function dict_kvp_z2(key, val) result(this)
 private function dict_kvp_z3(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -5413,7 +5415,7 @@ private function dict_kvp_z3(key, val) result(this)
 private function dict_kvp_b0(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -5485,7 +5487,7 @@ private function dict_kvp_b0(key, val) result(this)
 private function dict_kvp_b1(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -5557,7 +5559,7 @@ private function dict_kvp_b1(key, val) result(this)
 private function dict_kvp_b2(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -5629,7 +5631,7 @@ private function dict_kvp_b2(key, val) result(this)
 private function dict_kvp_b3(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -5701,7 +5703,7 @@ private function dict_kvp_b3(key, val) result(this)
 private function dict_kvp_h0(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -5773,7 +5775,7 @@ private function dict_kvp_h0(key, val) result(this)
 private function dict_kvp_h1(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -5845,7 +5847,7 @@ private function dict_kvp_h1(key, val) result(this)
 private function dict_kvp_h2(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -5917,7 +5919,7 @@ private function dict_kvp_h2(key, val) result(this)
 private function dict_kvp_h3(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -5989,7 +5991,7 @@ private function dict_kvp_h3(key, val) result(this)
 private function dict_kvp_i0(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -6061,7 +6063,7 @@ private function dict_kvp_i0(key, val) result(this)
 private function dict_kvp_i1(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -6133,7 +6135,7 @@ private function dict_kvp_i1(key, val) result(this)
 private function dict_kvp_i2(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -6205,7 +6207,7 @@ private function dict_kvp_i2(key, val) result(this)
 private function dict_kvp_i3(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -6277,7 +6279,7 @@ private function dict_kvp_i3(key, val) result(this)
 private function dict_kvp_l0(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -6349,7 +6351,7 @@ private function dict_kvp_l0(key, val) result(this)
 private function dict_kvp_l1(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -6421,7 +6423,7 @@ private function dict_kvp_l1(key, val) result(this)
 private function dict_kvp_l2(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -6493,7 +6495,7 @@ private function dict_kvp_l2(key, val) result(this)
 private function dict_kvp_l3(key, val) result(this)
     
     
-	 
+   
 </h3>
     
     
@@ -6563,9 +6565,9 @@ private function dict_kvp_l3(key, val) result(this)
 </div>
 
     
-	   
+     
 <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="interface-assign%7E2"></span><h3>public interface <a href='../interface/assign%7E2.html'>assign</a>
+  <div class="panel-heading codesum"><span class="anchor" id="interface-assign~2"></span><h3>public interface <a href='../interface/assign~2.html'>assign</a>
     
   </h3></div>
   
@@ -6580,7 +6582,7 @@ private function dict_kvp_l3(key, val) result(this)
 private subroutine dict_get_val(val, d, key, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -6673,7 +6675,7 @@ private subroutine dict_get_val(val, d, key, dealloc)
 private subroutine dict_get_val_a_(val, d, key, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -6763,10 +6765,10 @@ private subroutine dict_get_val_a_(val, d, key, dealloc)
     
     
     <h3>
-private subroutine dict_get_val_a1(val, this, key)
+private subroutine dict_get_val_a1(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -6828,6 +6830,21 @@ private subroutine dict_get_val_a1(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -6841,10 +6858,10 @@ private subroutine dict_get_val_a1(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_a1(val, this)
+private subroutine dict_get_val_first_a1(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -6891,6 +6908,21 @@ private subroutine dict_get_val_first_a1(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -6904,10 +6936,10 @@ private subroutine dict_get_val_first_a1(val, this)
     
     
     <h3>
-private subroutine dict_get_val_s0(val, this, key)
+private subroutine dict_get_val_s0(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -6969,6 +7001,21 @@ private subroutine dict_get_val_s0(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -6982,10 +7029,10 @@ private subroutine dict_get_val_s0(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_s0(val, this)
+private subroutine dict_get_val_first_s0(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -7032,6 +7079,21 @@ private subroutine dict_get_val_first_s0(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -7045,10 +7107,10 @@ private subroutine dict_get_val_first_s0(val, this)
     
     
     <h3>
-private subroutine dict_get_val_s1(val, this, key)
+private subroutine dict_get_val_s1(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -7110,6 +7172,21 @@ private subroutine dict_get_val_s1(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -7123,10 +7200,10 @@ private subroutine dict_get_val_s1(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_s1(val, this)
+private subroutine dict_get_val_first_s1(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -7173,6 +7250,21 @@ private subroutine dict_get_val_first_s1(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -7186,10 +7278,10 @@ private subroutine dict_get_val_first_s1(val, this)
     
     
     <h3>
-private subroutine dict_get_val_s2(val, this, key)
+private subroutine dict_get_val_s2(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -7251,6 +7343,21 @@ private subroutine dict_get_val_s2(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -7264,10 +7371,10 @@ private subroutine dict_get_val_s2(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_s2(val, this)
+private subroutine dict_get_val_first_s2(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -7314,6 +7421,21 @@ private subroutine dict_get_val_first_s2(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -7327,10 +7449,10 @@ private subroutine dict_get_val_first_s2(val, this)
     
     
     <h3>
-private subroutine dict_get_val_s3(val, this, key)
+private subroutine dict_get_val_s3(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -7392,6 +7514,21 @@ private subroutine dict_get_val_s3(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -7405,10 +7542,10 @@ private subroutine dict_get_val_s3(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_s3(val, this)
+private subroutine dict_get_val_first_s3(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -7455,6 +7592,21 @@ private subroutine dict_get_val_first_s3(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -7468,10 +7620,10 @@ private subroutine dict_get_val_first_s3(val, this)
     
     
     <h3>
-private subroutine dict_get_val_d0(val, this, key)
+private subroutine dict_get_val_d0(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -7533,6 +7685,21 @@ private subroutine dict_get_val_d0(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -7546,10 +7713,10 @@ private subroutine dict_get_val_d0(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_d0(val, this)
+private subroutine dict_get_val_first_d0(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -7596,6 +7763,21 @@ private subroutine dict_get_val_first_d0(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -7609,10 +7791,10 @@ private subroutine dict_get_val_first_d0(val, this)
     
     
     <h3>
-private subroutine dict_get_val_d1(val, this, key)
+private subroutine dict_get_val_d1(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -7674,6 +7856,21 @@ private subroutine dict_get_val_d1(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -7687,10 +7884,10 @@ private subroutine dict_get_val_d1(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_d1(val, this)
+private subroutine dict_get_val_first_d1(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -7737,6 +7934,21 @@ private subroutine dict_get_val_first_d1(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -7750,10 +7962,10 @@ private subroutine dict_get_val_first_d1(val, this)
     
     
     <h3>
-private subroutine dict_get_val_d2(val, this, key)
+private subroutine dict_get_val_d2(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -7815,6 +8027,21 @@ private subroutine dict_get_val_d2(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -7828,10 +8055,10 @@ private subroutine dict_get_val_d2(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_d2(val, this)
+private subroutine dict_get_val_first_d2(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -7878,6 +8105,21 @@ private subroutine dict_get_val_first_d2(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -7891,10 +8133,10 @@ private subroutine dict_get_val_first_d2(val, this)
     
     
     <h3>
-private subroutine dict_get_val_d3(val, this, key)
+private subroutine dict_get_val_d3(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -7956,6 +8198,21 @@ private subroutine dict_get_val_d3(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -7969,10 +8226,10 @@ private subroutine dict_get_val_d3(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_d3(val, this)
+private subroutine dict_get_val_first_d3(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -8019,6 +8276,21 @@ private subroutine dict_get_val_first_d3(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -8032,10 +8304,10 @@ private subroutine dict_get_val_first_d3(val, this)
     
     
     <h3>
-private subroutine dict_get_val_c0(val, this, key)
+private subroutine dict_get_val_c0(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -8097,6 +8369,21 @@ private subroutine dict_get_val_c0(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -8110,10 +8397,10 @@ private subroutine dict_get_val_c0(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_c0(val, this)
+private subroutine dict_get_val_first_c0(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -8160,6 +8447,21 @@ private subroutine dict_get_val_first_c0(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -8173,10 +8475,10 @@ private subroutine dict_get_val_first_c0(val, this)
     
     
     <h3>
-private subroutine dict_get_val_c1(val, this, key)
+private subroutine dict_get_val_c1(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -8238,6 +8540,21 @@ private subroutine dict_get_val_c1(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -8251,10 +8568,10 @@ private subroutine dict_get_val_c1(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_c1(val, this)
+private subroutine dict_get_val_first_c1(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -8301,6 +8618,21 @@ private subroutine dict_get_val_first_c1(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -8314,10 +8646,10 @@ private subroutine dict_get_val_first_c1(val, this)
     
     
     <h3>
-private subroutine dict_get_val_c2(val, this, key)
+private subroutine dict_get_val_c2(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -8379,6 +8711,21 @@ private subroutine dict_get_val_c2(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -8392,10 +8739,10 @@ private subroutine dict_get_val_c2(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_c2(val, this)
+private subroutine dict_get_val_first_c2(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -8442,6 +8789,21 @@ private subroutine dict_get_val_first_c2(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -8455,10 +8817,10 @@ private subroutine dict_get_val_first_c2(val, this)
     
     
     <h3>
-private subroutine dict_get_val_c3(val, this, key)
+private subroutine dict_get_val_c3(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -8520,6 +8882,21 @@ private subroutine dict_get_val_c3(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -8533,10 +8910,10 @@ private subroutine dict_get_val_c3(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_c3(val, this)
+private subroutine dict_get_val_first_c3(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -8583,6 +8960,21 @@ private subroutine dict_get_val_first_c3(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -8596,10 +8988,10 @@ private subroutine dict_get_val_first_c3(val, this)
     
     
     <h3>
-private subroutine dict_get_val_z0(val, this, key)
+private subroutine dict_get_val_z0(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -8661,6 +9053,21 @@ private subroutine dict_get_val_z0(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -8674,10 +9081,10 @@ private subroutine dict_get_val_z0(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_z0(val, this)
+private subroutine dict_get_val_first_z0(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -8724,6 +9131,21 @@ private subroutine dict_get_val_first_z0(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -8737,10 +9159,10 @@ private subroutine dict_get_val_first_z0(val, this)
     
     
     <h3>
-private subroutine dict_get_val_z1(val, this, key)
+private subroutine dict_get_val_z1(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -8802,6 +9224,21 @@ private subroutine dict_get_val_z1(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -8815,10 +9252,10 @@ private subroutine dict_get_val_z1(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_z1(val, this)
+private subroutine dict_get_val_first_z1(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -8865,6 +9302,21 @@ private subroutine dict_get_val_first_z1(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -8878,10 +9330,10 @@ private subroutine dict_get_val_first_z1(val, this)
     
     
     <h3>
-private subroutine dict_get_val_z2(val, this, key)
+private subroutine dict_get_val_z2(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -8943,6 +9395,21 @@ private subroutine dict_get_val_z2(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -8956,10 +9423,10 @@ private subroutine dict_get_val_z2(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_z2(val, this)
+private subroutine dict_get_val_first_z2(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -9006,6 +9473,21 @@ private subroutine dict_get_val_first_z2(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -9019,10 +9501,10 @@ private subroutine dict_get_val_first_z2(val, this)
     
     
     <h3>
-private subroutine dict_get_val_z3(val, this, key)
+private subroutine dict_get_val_z3(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -9084,6 +9566,21 @@ private subroutine dict_get_val_z3(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -9097,10 +9594,10 @@ private subroutine dict_get_val_z3(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_z3(val, this)
+private subroutine dict_get_val_first_z3(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -9147,6 +9644,21 @@ private subroutine dict_get_val_first_z3(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -9160,10 +9672,10 @@ private subroutine dict_get_val_first_z3(val, this)
     
     
     <h3>
-private subroutine dict_get_val_b0(val, this, key)
+private subroutine dict_get_val_b0(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -9225,6 +9737,21 @@ private subroutine dict_get_val_b0(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -9238,10 +9765,10 @@ private subroutine dict_get_val_b0(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_b0(val, this)
+private subroutine dict_get_val_first_b0(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -9288,6 +9815,21 @@ private subroutine dict_get_val_first_b0(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -9301,10 +9843,10 @@ private subroutine dict_get_val_first_b0(val, this)
     
     
     <h3>
-private subroutine dict_get_val_b1(val, this, key)
+private subroutine dict_get_val_b1(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -9366,6 +9908,21 @@ private subroutine dict_get_val_b1(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -9379,10 +9936,10 @@ private subroutine dict_get_val_b1(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_b1(val, this)
+private subroutine dict_get_val_first_b1(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -9429,6 +9986,21 @@ private subroutine dict_get_val_first_b1(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -9442,10 +10014,10 @@ private subroutine dict_get_val_first_b1(val, this)
     
     
     <h3>
-private subroutine dict_get_val_b2(val, this, key)
+private subroutine dict_get_val_b2(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -9507,6 +10079,21 @@ private subroutine dict_get_val_b2(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -9520,10 +10107,10 @@ private subroutine dict_get_val_b2(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_b2(val, this)
+private subroutine dict_get_val_first_b2(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -9570,6 +10157,21 @@ private subroutine dict_get_val_first_b2(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -9583,10 +10185,10 @@ private subroutine dict_get_val_first_b2(val, this)
     
     
     <h3>
-private subroutine dict_get_val_b3(val, this, key)
+private subroutine dict_get_val_b3(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -9648,6 +10250,21 @@ private subroutine dict_get_val_b3(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -9661,10 +10278,10 @@ private subroutine dict_get_val_b3(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_b3(val, this)
+private subroutine dict_get_val_first_b3(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -9711,6 +10328,21 @@ private subroutine dict_get_val_first_b3(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -9724,10 +10356,10 @@ private subroutine dict_get_val_first_b3(val, this)
     
     
     <h3>
-private subroutine dict_get_val_h0(val, this, key)
+private subroutine dict_get_val_h0(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -9789,6 +10421,21 @@ private subroutine dict_get_val_h0(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -9802,10 +10449,10 @@ private subroutine dict_get_val_h0(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_h0(val, this)
+private subroutine dict_get_val_first_h0(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -9852,6 +10499,21 @@ private subroutine dict_get_val_first_h0(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -9865,10 +10527,10 @@ private subroutine dict_get_val_first_h0(val, this)
     
     
     <h3>
-private subroutine dict_get_val_h1(val, this, key)
+private subroutine dict_get_val_h1(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -9930,6 +10592,21 @@ private subroutine dict_get_val_h1(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -9943,10 +10620,10 @@ private subroutine dict_get_val_h1(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_h1(val, this)
+private subroutine dict_get_val_first_h1(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -9993,6 +10670,21 @@ private subroutine dict_get_val_first_h1(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -10006,10 +10698,10 @@ private subroutine dict_get_val_first_h1(val, this)
     
     
     <h3>
-private subroutine dict_get_val_h2(val, this, key)
+private subroutine dict_get_val_h2(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -10071,6 +10763,21 @@ private subroutine dict_get_val_h2(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -10084,10 +10791,10 @@ private subroutine dict_get_val_h2(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_h2(val, this)
+private subroutine dict_get_val_first_h2(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -10134,6 +10841,21 @@ private subroutine dict_get_val_first_h2(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -10147,10 +10869,10 @@ private subroutine dict_get_val_first_h2(val, this)
     
     
     <h3>
-private subroutine dict_get_val_h3(val, this, key)
+private subroutine dict_get_val_h3(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -10212,6 +10934,21 @@ private subroutine dict_get_val_h3(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -10225,10 +10962,10 @@ private subroutine dict_get_val_h3(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_h3(val, this)
+private subroutine dict_get_val_first_h3(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -10275,6 +11012,21 @@ private subroutine dict_get_val_first_h3(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -10288,10 +11040,10 @@ private subroutine dict_get_val_first_h3(val, this)
     
     
     <h3>
-private subroutine dict_get_val_i0(val, this, key)
+private subroutine dict_get_val_i0(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -10353,6 +11105,21 @@ private subroutine dict_get_val_i0(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -10366,10 +11133,10 @@ private subroutine dict_get_val_i0(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_i0(val, this)
+private subroutine dict_get_val_first_i0(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -10416,6 +11183,21 @@ private subroutine dict_get_val_first_i0(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -10429,10 +11211,10 @@ private subroutine dict_get_val_first_i0(val, this)
     
     
     <h3>
-private subroutine dict_get_val_i1(val, this, key)
+private subroutine dict_get_val_i1(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -10494,6 +11276,21 @@ private subroutine dict_get_val_i1(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -10507,10 +11304,10 @@ private subroutine dict_get_val_i1(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_i1(val, this)
+private subroutine dict_get_val_first_i1(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -10557,6 +11354,21 @@ private subroutine dict_get_val_first_i1(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -10570,10 +11382,10 @@ private subroutine dict_get_val_first_i1(val, this)
     
     
     <h3>
-private subroutine dict_get_val_i2(val, this, key)
+private subroutine dict_get_val_i2(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -10635,6 +11447,21 @@ private subroutine dict_get_val_i2(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -10648,10 +11475,10 @@ private subroutine dict_get_val_i2(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_i2(val, this)
+private subroutine dict_get_val_first_i2(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -10698,6 +11525,21 @@ private subroutine dict_get_val_first_i2(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -10711,10 +11553,10 @@ private subroutine dict_get_val_first_i2(val, this)
     
     
     <h3>
-private subroutine dict_get_val_i3(val, this, key)
+private subroutine dict_get_val_i3(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -10776,6 +11618,21 @@ private subroutine dict_get_val_i3(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -10789,10 +11646,10 @@ private subroutine dict_get_val_i3(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_i3(val, this)
+private subroutine dict_get_val_first_i3(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -10839,6 +11696,21 @@ private subroutine dict_get_val_first_i3(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -10852,10 +11724,10 @@ private subroutine dict_get_val_first_i3(val, this)
     
     
     <h3>
-private subroutine dict_get_val_l0(val, this, key)
+private subroutine dict_get_val_l0(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -10917,6 +11789,21 @@ private subroutine dict_get_val_l0(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -10930,10 +11817,10 @@ private subroutine dict_get_val_l0(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_l0(val, this)
+private subroutine dict_get_val_first_l0(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -10980,6 +11867,21 @@ private subroutine dict_get_val_first_l0(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -10993,10 +11895,10 @@ private subroutine dict_get_val_first_l0(val, this)
     
     
     <h3>
-private subroutine dict_get_val_l1(val, this, key)
+private subroutine dict_get_val_l1(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -11058,6 +11960,21 @@ private subroutine dict_get_val_l1(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -11071,10 +11988,10 @@ private subroutine dict_get_val_l1(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_l1(val, this)
+private subroutine dict_get_val_first_l1(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -11121,6 +12038,21 @@ private subroutine dict_get_val_first_l1(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -11134,10 +12066,10 @@ private subroutine dict_get_val_first_l1(val, this)
     
     
     <h3>
-private subroutine dict_get_val_l2(val, this, key)
+private subroutine dict_get_val_l2(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -11199,6 +12131,21 @@ private subroutine dict_get_val_l2(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -11212,10 +12159,10 @@ private subroutine dict_get_val_l2(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_l2(val, this)
+private subroutine dict_get_val_first_l2(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -11262,6 +12209,21 @@ private subroutine dict_get_val_first_l2(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -11275,10 +12237,10 @@ private subroutine dict_get_val_first_l2(val, this)
     
     
     <h3>
-private subroutine dict_get_val_l3(val, this, key)
+private subroutine dict_get_val_l3(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -11340,6 +12302,21 @@ private subroutine dict_get_val_l3(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -11353,10 +12330,10 @@ private subroutine dict_get_val_l3(val, this, key)
     
     
     <h3>
-private subroutine dict_get_val_first_l3(val, this)
+private subroutine dict_get_val_first_l3(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -11400,6 +12377,21 @@ private subroutine dict_get_val_first_l3(val, this)
   
   <td></td><td>::</td>
   <td><strong>this</strong></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
   
 </tr>
 
@@ -11417,9 +12409,9 @@ private subroutine dict_get_val_first_l3(val, this)
 </div>
 
     
-	   
+     
 <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="interface-associate%7E2"></span><h3>public interface <a href='../interface/associate%7E2.html'>associate</a>
+  <div class="panel-heading codesum"><span class="anchor" id="interface-associate~2"></span><h3>public interface <a href='../interface/associate~2.html'>associate</a>
     
   </h3></div>
   
@@ -11434,7 +12426,7 @@ private subroutine dict_get_val_first_l3(val, this)
 private subroutine dict_get_p_val(val, d, key, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -11527,7 +12519,7 @@ private subroutine dict_get_p_val(val, d, key, dealloc)
 private subroutine dict_get_p_dict(dic, d, key, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -11617,10 +12609,10 @@ private subroutine dict_get_p_dict(dic, d, key, dealloc)
     
     
     <h3>
-private subroutine dict_get_p_a1(val, this, key)
+private subroutine dict_get_p_a1(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -11682,6 +12674,21 @@ private subroutine dict_get_p_a1(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -11695,10 +12702,10 @@ private subroutine dict_get_p_a1(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_a1(val, this)
+private subroutine dict_get_p_first_a1(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -11745,6 +12752,21 @@ private subroutine dict_get_p_first_a1(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -11758,10 +12780,10 @@ private subroutine dict_get_p_first_a1(val, this)
     
     
     <h3>
-private subroutine dict_get_p_s0(val, this, key)
+private subroutine dict_get_p_s0(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -11823,6 +12845,21 @@ private subroutine dict_get_p_s0(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -11836,10 +12873,10 @@ private subroutine dict_get_p_s0(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_s0(val, this)
+private subroutine dict_get_p_first_s0(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -11886,6 +12923,21 @@ private subroutine dict_get_p_first_s0(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -11899,10 +12951,10 @@ private subroutine dict_get_p_first_s0(val, this)
     
     
     <h3>
-private subroutine dict_get_p_s1(val, this, key)
+private subroutine dict_get_p_s1(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -11964,6 +13016,21 @@ private subroutine dict_get_p_s1(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -11977,10 +13044,10 @@ private subroutine dict_get_p_s1(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_s1(val, this)
+private subroutine dict_get_p_first_s1(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -12027,6 +13094,21 @@ private subroutine dict_get_p_first_s1(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -12040,10 +13122,10 @@ private subroutine dict_get_p_first_s1(val, this)
     
     
     <h3>
-private subroutine dict_get_p_s2(val, this, key)
+private subroutine dict_get_p_s2(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -12105,6 +13187,21 @@ private subroutine dict_get_p_s2(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -12118,10 +13215,10 @@ private subroutine dict_get_p_s2(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_s2(val, this)
+private subroutine dict_get_p_first_s2(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -12168,6 +13265,21 @@ private subroutine dict_get_p_first_s2(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -12181,10 +13293,10 @@ private subroutine dict_get_p_first_s2(val, this)
     
     
     <h3>
-private subroutine dict_get_p_s3(val, this, key)
+private subroutine dict_get_p_s3(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -12246,6 +13358,21 @@ private subroutine dict_get_p_s3(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -12259,10 +13386,10 @@ private subroutine dict_get_p_s3(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_s3(val, this)
+private subroutine dict_get_p_first_s3(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -12309,6 +13436,21 @@ private subroutine dict_get_p_first_s3(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -12322,10 +13464,10 @@ private subroutine dict_get_p_first_s3(val, this)
     
     
     <h3>
-private subroutine dict_get_p_d0(val, this, key)
+private subroutine dict_get_p_d0(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -12387,6 +13529,21 @@ private subroutine dict_get_p_d0(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -12400,10 +13557,10 @@ private subroutine dict_get_p_d0(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_d0(val, this)
+private subroutine dict_get_p_first_d0(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -12450,6 +13607,21 @@ private subroutine dict_get_p_first_d0(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -12463,10 +13635,10 @@ private subroutine dict_get_p_first_d0(val, this)
     
     
     <h3>
-private subroutine dict_get_p_d1(val, this, key)
+private subroutine dict_get_p_d1(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -12528,6 +13700,21 @@ private subroutine dict_get_p_d1(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -12541,10 +13728,10 @@ private subroutine dict_get_p_d1(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_d1(val, this)
+private subroutine dict_get_p_first_d1(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -12591,6 +13778,21 @@ private subroutine dict_get_p_first_d1(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -12604,10 +13806,10 @@ private subroutine dict_get_p_first_d1(val, this)
     
     
     <h3>
-private subroutine dict_get_p_d2(val, this, key)
+private subroutine dict_get_p_d2(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -12669,6 +13871,21 @@ private subroutine dict_get_p_d2(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -12682,10 +13899,10 @@ private subroutine dict_get_p_d2(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_d2(val, this)
+private subroutine dict_get_p_first_d2(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -12732,6 +13949,21 @@ private subroutine dict_get_p_first_d2(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -12745,10 +13977,10 @@ private subroutine dict_get_p_first_d2(val, this)
     
     
     <h3>
-private subroutine dict_get_p_d3(val, this, key)
+private subroutine dict_get_p_d3(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -12810,6 +14042,21 @@ private subroutine dict_get_p_d3(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -12823,10 +14070,10 @@ private subroutine dict_get_p_d3(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_d3(val, this)
+private subroutine dict_get_p_first_d3(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -12873,6 +14120,21 @@ private subroutine dict_get_p_first_d3(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -12886,10 +14148,10 @@ private subroutine dict_get_p_first_d3(val, this)
     
     
     <h3>
-private subroutine dict_get_p_c0(val, this, key)
+private subroutine dict_get_p_c0(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -12951,6 +14213,21 @@ private subroutine dict_get_p_c0(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -12964,10 +14241,10 @@ private subroutine dict_get_p_c0(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_c0(val, this)
+private subroutine dict_get_p_first_c0(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -13014,6 +14291,21 @@ private subroutine dict_get_p_first_c0(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -13027,10 +14319,10 @@ private subroutine dict_get_p_first_c0(val, this)
     
     
     <h3>
-private subroutine dict_get_p_c1(val, this, key)
+private subroutine dict_get_p_c1(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -13092,6 +14384,21 @@ private subroutine dict_get_p_c1(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -13105,10 +14412,10 @@ private subroutine dict_get_p_c1(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_c1(val, this)
+private subroutine dict_get_p_first_c1(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -13155,6 +14462,21 @@ private subroutine dict_get_p_first_c1(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -13168,10 +14490,10 @@ private subroutine dict_get_p_first_c1(val, this)
     
     
     <h3>
-private subroutine dict_get_p_c2(val, this, key)
+private subroutine dict_get_p_c2(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -13233,6 +14555,21 @@ private subroutine dict_get_p_c2(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -13246,10 +14583,10 @@ private subroutine dict_get_p_c2(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_c2(val, this)
+private subroutine dict_get_p_first_c2(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -13296,6 +14633,21 @@ private subroutine dict_get_p_first_c2(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -13309,10 +14661,10 @@ private subroutine dict_get_p_first_c2(val, this)
     
     
     <h3>
-private subroutine dict_get_p_c3(val, this, key)
+private subroutine dict_get_p_c3(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -13374,6 +14726,21 @@ private subroutine dict_get_p_c3(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -13387,10 +14754,10 @@ private subroutine dict_get_p_c3(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_c3(val, this)
+private subroutine dict_get_p_first_c3(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -13437,6 +14804,21 @@ private subroutine dict_get_p_first_c3(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -13450,10 +14832,10 @@ private subroutine dict_get_p_first_c3(val, this)
     
     
     <h3>
-private subroutine dict_get_p_z0(val, this, key)
+private subroutine dict_get_p_z0(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -13515,6 +14897,21 @@ private subroutine dict_get_p_z0(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -13528,10 +14925,10 @@ private subroutine dict_get_p_z0(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_z0(val, this)
+private subroutine dict_get_p_first_z0(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -13578,6 +14975,21 @@ private subroutine dict_get_p_first_z0(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -13591,10 +15003,10 @@ private subroutine dict_get_p_first_z0(val, this)
     
     
     <h3>
-private subroutine dict_get_p_z1(val, this, key)
+private subroutine dict_get_p_z1(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -13656,6 +15068,21 @@ private subroutine dict_get_p_z1(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -13669,10 +15096,10 @@ private subroutine dict_get_p_z1(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_z1(val, this)
+private subroutine dict_get_p_first_z1(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -13719,6 +15146,21 @@ private subroutine dict_get_p_first_z1(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -13732,10 +15174,10 @@ private subroutine dict_get_p_first_z1(val, this)
     
     
     <h3>
-private subroutine dict_get_p_z2(val, this, key)
+private subroutine dict_get_p_z2(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -13797,6 +15239,21 @@ private subroutine dict_get_p_z2(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -13810,10 +15267,10 @@ private subroutine dict_get_p_z2(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_z2(val, this)
+private subroutine dict_get_p_first_z2(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -13860,6 +15317,21 @@ private subroutine dict_get_p_first_z2(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -13873,10 +15345,10 @@ private subroutine dict_get_p_first_z2(val, this)
     
     
     <h3>
-private subroutine dict_get_p_z3(val, this, key)
+private subroutine dict_get_p_z3(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -13938,6 +15410,21 @@ private subroutine dict_get_p_z3(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -13951,10 +15438,10 @@ private subroutine dict_get_p_z3(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_z3(val, this)
+private subroutine dict_get_p_first_z3(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -14001,6 +15488,21 @@ private subroutine dict_get_p_first_z3(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -14014,10 +15516,10 @@ private subroutine dict_get_p_first_z3(val, this)
     
     
     <h3>
-private subroutine dict_get_p_b0(val, this, key)
+private subroutine dict_get_p_b0(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -14079,6 +15581,21 @@ private subroutine dict_get_p_b0(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -14092,10 +15609,10 @@ private subroutine dict_get_p_b0(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_b0(val, this)
+private subroutine dict_get_p_first_b0(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -14142,6 +15659,21 @@ private subroutine dict_get_p_first_b0(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -14155,10 +15687,10 @@ private subroutine dict_get_p_first_b0(val, this)
     
     
     <h3>
-private subroutine dict_get_p_b1(val, this, key)
+private subroutine dict_get_p_b1(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -14220,6 +15752,21 @@ private subroutine dict_get_p_b1(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -14233,10 +15780,10 @@ private subroutine dict_get_p_b1(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_b1(val, this)
+private subroutine dict_get_p_first_b1(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -14283,6 +15830,21 @@ private subroutine dict_get_p_first_b1(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -14296,10 +15858,10 @@ private subroutine dict_get_p_first_b1(val, this)
     
     
     <h3>
-private subroutine dict_get_p_b2(val, this, key)
+private subroutine dict_get_p_b2(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -14361,6 +15923,21 @@ private subroutine dict_get_p_b2(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -14374,10 +15951,10 @@ private subroutine dict_get_p_b2(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_b2(val, this)
+private subroutine dict_get_p_first_b2(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -14424,6 +16001,21 @@ private subroutine dict_get_p_first_b2(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -14437,10 +16029,10 @@ private subroutine dict_get_p_first_b2(val, this)
     
     
     <h3>
-private subroutine dict_get_p_b3(val, this, key)
+private subroutine dict_get_p_b3(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -14502,6 +16094,21 @@ private subroutine dict_get_p_b3(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -14515,10 +16122,10 @@ private subroutine dict_get_p_b3(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_b3(val, this)
+private subroutine dict_get_p_first_b3(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -14565,6 +16172,21 @@ private subroutine dict_get_p_first_b3(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -14578,10 +16200,10 @@ private subroutine dict_get_p_first_b3(val, this)
     
     
     <h3>
-private subroutine dict_get_p_h0(val, this, key)
+private subroutine dict_get_p_h0(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -14643,6 +16265,21 @@ private subroutine dict_get_p_h0(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -14656,10 +16293,10 @@ private subroutine dict_get_p_h0(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_h0(val, this)
+private subroutine dict_get_p_first_h0(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -14706,6 +16343,21 @@ private subroutine dict_get_p_first_h0(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -14719,10 +16371,10 @@ private subroutine dict_get_p_first_h0(val, this)
     
     
     <h3>
-private subroutine dict_get_p_h1(val, this, key)
+private subroutine dict_get_p_h1(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -14784,6 +16436,21 @@ private subroutine dict_get_p_h1(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -14797,10 +16464,10 @@ private subroutine dict_get_p_h1(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_h1(val, this)
+private subroutine dict_get_p_first_h1(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -14847,6 +16514,21 @@ private subroutine dict_get_p_first_h1(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -14860,10 +16542,10 @@ private subroutine dict_get_p_first_h1(val, this)
     
     
     <h3>
-private subroutine dict_get_p_h2(val, this, key)
+private subroutine dict_get_p_h2(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -14925,6 +16607,21 @@ private subroutine dict_get_p_h2(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -14938,10 +16635,10 @@ private subroutine dict_get_p_h2(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_h2(val, this)
+private subroutine dict_get_p_first_h2(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -14988,6 +16685,21 @@ private subroutine dict_get_p_first_h2(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -15001,10 +16713,10 @@ private subroutine dict_get_p_first_h2(val, this)
     
     
     <h3>
-private subroutine dict_get_p_h3(val, this, key)
+private subroutine dict_get_p_h3(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -15066,6 +16778,21 @@ private subroutine dict_get_p_h3(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -15079,10 +16806,10 @@ private subroutine dict_get_p_h3(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_h3(val, this)
+private subroutine dict_get_p_first_h3(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -15129,6 +16856,21 @@ private subroutine dict_get_p_first_h3(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -15142,10 +16884,10 @@ private subroutine dict_get_p_first_h3(val, this)
     
     
     <h3>
-private subroutine dict_get_p_i0(val, this, key)
+private subroutine dict_get_p_i0(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -15207,6 +16949,21 @@ private subroutine dict_get_p_i0(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -15220,10 +16977,10 @@ private subroutine dict_get_p_i0(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_i0(val, this)
+private subroutine dict_get_p_first_i0(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -15270,6 +17027,21 @@ private subroutine dict_get_p_first_i0(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -15283,10 +17055,10 @@ private subroutine dict_get_p_first_i0(val, this)
     
     
     <h3>
-private subroutine dict_get_p_i1(val, this, key)
+private subroutine dict_get_p_i1(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -15348,6 +17120,21 @@ private subroutine dict_get_p_i1(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -15361,10 +17148,10 @@ private subroutine dict_get_p_i1(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_i1(val, this)
+private subroutine dict_get_p_first_i1(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -15411,6 +17198,21 @@ private subroutine dict_get_p_first_i1(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -15424,10 +17226,10 @@ private subroutine dict_get_p_first_i1(val, this)
     
     
     <h3>
-private subroutine dict_get_p_i2(val, this, key)
+private subroutine dict_get_p_i2(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -15489,6 +17291,21 @@ private subroutine dict_get_p_i2(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -15502,10 +17319,10 @@ private subroutine dict_get_p_i2(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_i2(val, this)
+private subroutine dict_get_p_first_i2(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -15552,6 +17369,21 @@ private subroutine dict_get_p_first_i2(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -15565,10 +17397,10 @@ private subroutine dict_get_p_first_i2(val, this)
     
     
     <h3>
-private subroutine dict_get_p_i3(val, this, key)
+private subroutine dict_get_p_i3(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -15630,6 +17462,21 @@ private subroutine dict_get_p_i3(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -15643,10 +17490,10 @@ private subroutine dict_get_p_i3(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_i3(val, this)
+private subroutine dict_get_p_first_i3(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -15693,6 +17540,21 @@ private subroutine dict_get_p_first_i3(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -15706,10 +17568,10 @@ private subroutine dict_get_p_first_i3(val, this)
     
     
     <h3>
-private subroutine dict_get_p_l0(val, this, key)
+private subroutine dict_get_p_l0(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -15771,6 +17633,21 @@ private subroutine dict_get_p_l0(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -15784,10 +17661,10 @@ private subroutine dict_get_p_l0(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_l0(val, this)
+private subroutine dict_get_p_first_l0(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -15834,6 +17711,21 @@ private subroutine dict_get_p_first_l0(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -15847,10 +17739,10 @@ private subroutine dict_get_p_first_l0(val, this)
     
     
     <h3>
-private subroutine dict_get_p_l1(val, this, key)
+private subroutine dict_get_p_l1(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -15912,6 +17804,21 @@ private subroutine dict_get_p_l1(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -15925,10 +17832,10 @@ private subroutine dict_get_p_l1(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_l1(val, this)
+private subroutine dict_get_p_first_l1(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -15975,6 +17882,21 @@ private subroutine dict_get_p_first_l1(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -15988,10 +17910,10 @@ private subroutine dict_get_p_first_l1(val, this)
     
     
     <h3>
-private subroutine dict_get_p_l2(val, this, key)
+private subroutine dict_get_p_l2(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -16053,6 +17975,21 @@ private subroutine dict_get_p_l2(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -16066,10 +18003,10 @@ private subroutine dict_get_p_l2(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_l2(val, this)
+private subroutine dict_get_p_first_l2(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -16116,6 +18053,21 @@ private subroutine dict_get_p_first_l2(val, this)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -16129,10 +18081,10 @@ private subroutine dict_get_p_first_l2(val, this)
     
     
     <h3>
-private subroutine dict_get_p_l3(val, this, key)
+private subroutine dict_get_p_l3(val, this, key, success)
     
     
-	 
+   
 </h3>
     
     
@@ -16194,6 +18146,21 @@ private subroutine dict_get_p_l3(val, this, key)
   
 </tr>
 
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
 </tbody>
 </table>
 
@@ -16207,10 +18174,10 @@ private subroutine dict_get_p_l3(val, this, key)
     
     
     <h3>
-private subroutine dict_get_p_first_l3(val, this)
+private subroutine dict_get_p_first_l3(val, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -16254,6 +18221,21 @@ private subroutine dict_get_p_first_l3(val, this)
   
   <td></td><td>::</td>
   <td><strong>this</strong></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
   
 </tr>
 
@@ -16272,7 +18254,7 @@ private subroutine dict_get_p_first_l3(val, this)
 
     
     </section>
-	<br>
+  <br>
     
 
     
@@ -16280,8 +18262,8 @@ private subroutine dict_get_p_first_l3(val, this)
     
     <section>
      <h2>Derived Types</h2>
-	 
-	   
+   
+     
 <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="type-dict"></span><h3>type, public :: <a href='../type/dict.html'>dict</a>
     
@@ -16289,7 +18271,7 @@ private subroutine dict_get_p_first_l3(val, this)
   <div class="panel-body">
     
     
-    <p>The dictionary container it-self</p>
+    <p>The dictionary container it-self</p><a href="../type/dict.html" class="pull-right"><emph>Read more&hellip;</emph></a>
     
      
      <h4>Components</h4>
@@ -16343,7 +18325,7 @@ private subroutine dict_get_p_first_l3(val, this)
 
      
     </section>
-	<br>
+  <br>
     
     
     
@@ -16354,32 +18336,14 @@ private subroutine dict_get_p_first_l3(val, this)
     </div>
   </div>
 
-  <section class="visible-xs visible-sm hidden-md">
-    <hr>
-    
-
-<div class="panel panel-default">
-  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#allmods-1">All Modules</a></h3></div>
-  <div id="allmods-1" class="panel-collapse collapse">
-    <div class="list-group">
-      
-      <a class="list-group-item" href="../module/dictionary.html">dictionary</a>
-      
-      <a class="list-group-item" href="../module/variable.html">variable</a>
-      
-    </div>
-  </div>
-</div>
-
-
-  </section>
   
     <hr>    
     </div> <!-- /container -->
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-4"><p>&copy; 2015-2017 </p></div>
+        <div class="col-xs-6 col-md-4"><p>&copy; 2015-2017 
+                                          </p></div>
         <div class="col-xs-6 col-md-4 col-md-push-4">
           <p class="text-right">
             Documentation generated by 
@@ -16410,12 +18374,13 @@ private subroutine dict_get_p_first_l3(val, this)
       MathJax.Hub.Config({
         TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
         jax: ['input/TeX','input/MathML','output/HTML-CSS'],
-        extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js'],
-        'HTML-CSS': { 
-           styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: '#000000 ! important'} }
-        }
+        extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
       });
     </script>
-    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+    
   </body>
 </html>

@@ -36,6 +36,10 @@ module variable
   ! To create a constant transfer data-type of the
   ! pointer methods
   character(len=1) :: local_enc_type(1)
+  ! Internal variable to hold the size of the "type" switch
+  !> Maximum character length of the type specifier in the variable, no
+  !! unique identifier may be longer than this.
+  integer, parameter, public :: VAR_TYPE_LENGTH = 4
   type :: var
      !! Container for _any_ fortran data-type, intrinsically handles all
      !! from fortran and any external type may be added via external routines.
@@ -44,13 +48,13 @@ module variable
      !! to the data and transfer the type to a character array via encoding.
      !! This enables one to retrieve the pointer position later and thus enables
      !! pointer assignments and easy copying of data.
-     character(len=4) :: t = '    '
+     character(len=VAR_TYPE_LENGTH) :: t = '    '
      ! The encoding placement of all data
      character(len=1), dimension(:), allocatable :: enc
   end type var
   public :: var
   interface which
-     !! Type of content stored in the variable (`character(len=4)`)
+     !! Type of content stored in the variable (`character(len=VAR_TYPE_LENGTH)`)
      module procedure which_
   end interface
   public :: which
@@ -351,7 +355,7 @@ contains
   end subroutine print_
   elemental function which_(this) result(t)
     type(var), intent(in) :: this
-    character(len=4) :: t
+    character(len=VAR_TYPE_LENGTH) :: t
     t = this%t
   end function which_
   subroutine delete_(this,dealloc)
@@ -711,7 +715,7 @@ end if
     end if
     this%t = 'USER'
     allocate(this%enc(size(enc)))
-    this%enc = enc
+    this%enc(:) = enc
   end subroutine associate_type_
   function cpack_(c) result(car)
     character(len=*), intent(in) :: c
@@ -1002,149 +1006,149 @@ endif
           pa__1%p(i)%p = pa__2%p(i)%p
        end do
        allocate(this%enc(size(transfer(pa__1, local_enc_type))))
-       this%enc = transfer(pa__1, local_enc_type)
+       this%enc(:) = transfer(pa__1, local_enc_type)
     end if
     ! copy over RHS and Save encoding
 if ( this%t == 'a1' ) then
 pa1_1%p = pa1_2%p
 allocate(this%enc(size(transfer(pa1_1, local_enc_type))))
-this%enc = transfer(pa1_1, local_enc_type)
+this%enc(:) = transfer(pa1_1, local_enc_type)
 endif
 if ( this%t == 's0' ) then
 ps0_1%p = ps0_2%p
 allocate(this%enc(size(transfer(ps0_1, local_enc_type))))
-this%enc = transfer(ps0_1, local_enc_type)
+this%enc(:) = transfer(ps0_1, local_enc_type)
 elseif ( this%t == 's1' ) then
 ps1_1%p = ps1_2%p
 allocate(this%enc(size(transfer(ps1_1, local_enc_type))))
-this%enc = transfer(ps1_1, local_enc_type)
+this%enc(:) = transfer(ps1_1, local_enc_type)
 elseif ( this%t == 's2' ) then
 ps2_1%p = ps2_2%p
 allocate(this%enc(size(transfer(ps2_1, local_enc_type))))
-this%enc = transfer(ps2_1, local_enc_type)
+this%enc(:) = transfer(ps2_1, local_enc_type)
 elseif ( this%t == 's3' ) then
 ps3_1%p = ps3_2%p
 allocate(this%enc(size(transfer(ps3_1, local_enc_type))))
-this%enc = transfer(ps3_1, local_enc_type)
+this%enc(:) = transfer(ps3_1, local_enc_type)
 endif
 if ( this%t == 'd0' ) then
 pd0_1%p = pd0_2%p
 allocate(this%enc(size(transfer(pd0_1, local_enc_type))))
-this%enc = transfer(pd0_1, local_enc_type)
+this%enc(:) = transfer(pd0_1, local_enc_type)
 elseif ( this%t == 'd1' ) then
 pd1_1%p = pd1_2%p
 allocate(this%enc(size(transfer(pd1_1, local_enc_type))))
-this%enc = transfer(pd1_1, local_enc_type)
+this%enc(:) = transfer(pd1_1, local_enc_type)
 elseif ( this%t == 'd2' ) then
 pd2_1%p = pd2_2%p
 allocate(this%enc(size(transfer(pd2_1, local_enc_type))))
-this%enc = transfer(pd2_1, local_enc_type)
+this%enc(:) = transfer(pd2_1, local_enc_type)
 elseif ( this%t == 'd3' ) then
 pd3_1%p = pd3_2%p
 allocate(this%enc(size(transfer(pd3_1, local_enc_type))))
-this%enc = transfer(pd3_1, local_enc_type)
+this%enc(:) = transfer(pd3_1, local_enc_type)
 endif
 if ( this%t == 'c0' ) then
 pc0_1%p = pc0_2%p
 allocate(this%enc(size(transfer(pc0_1, local_enc_type))))
-this%enc = transfer(pc0_1, local_enc_type)
+this%enc(:) = transfer(pc0_1, local_enc_type)
 elseif ( this%t == 'c1' ) then
 pc1_1%p = pc1_2%p
 allocate(this%enc(size(transfer(pc1_1, local_enc_type))))
-this%enc = transfer(pc1_1, local_enc_type)
+this%enc(:) = transfer(pc1_1, local_enc_type)
 elseif ( this%t == 'c2' ) then
 pc2_1%p = pc2_2%p
 allocate(this%enc(size(transfer(pc2_1, local_enc_type))))
-this%enc = transfer(pc2_1, local_enc_type)
+this%enc(:) = transfer(pc2_1, local_enc_type)
 elseif ( this%t == 'c3' ) then
 pc3_1%p = pc3_2%p
 allocate(this%enc(size(transfer(pc3_1, local_enc_type))))
-this%enc = transfer(pc3_1, local_enc_type)
+this%enc(:) = transfer(pc3_1, local_enc_type)
 endif
 if ( this%t == 'z0' ) then
 pz0_1%p = pz0_2%p
 allocate(this%enc(size(transfer(pz0_1, local_enc_type))))
-this%enc = transfer(pz0_1, local_enc_type)
+this%enc(:) = transfer(pz0_1, local_enc_type)
 elseif ( this%t == 'z1' ) then
 pz1_1%p = pz1_2%p
 allocate(this%enc(size(transfer(pz1_1, local_enc_type))))
-this%enc = transfer(pz1_1, local_enc_type)
+this%enc(:) = transfer(pz1_1, local_enc_type)
 elseif ( this%t == 'z2' ) then
 pz2_1%p = pz2_2%p
 allocate(this%enc(size(transfer(pz2_1, local_enc_type))))
-this%enc = transfer(pz2_1, local_enc_type)
+this%enc(:) = transfer(pz2_1, local_enc_type)
 elseif ( this%t == 'z3' ) then
 pz3_1%p = pz3_2%p
 allocate(this%enc(size(transfer(pz3_1, local_enc_type))))
-this%enc = transfer(pz3_1, local_enc_type)
+this%enc(:) = transfer(pz3_1, local_enc_type)
 endif
 if ( this%t == 'b0' ) then
 pb0_1%p = pb0_2%p
 allocate(this%enc(size(transfer(pb0_1, local_enc_type))))
-this%enc = transfer(pb0_1, local_enc_type)
+this%enc(:) = transfer(pb0_1, local_enc_type)
 elseif ( this%t == 'b1' ) then
 pb1_1%p = pb1_2%p
 allocate(this%enc(size(transfer(pb1_1, local_enc_type))))
-this%enc = transfer(pb1_1, local_enc_type)
+this%enc(:) = transfer(pb1_1, local_enc_type)
 elseif ( this%t == 'b2' ) then
 pb2_1%p = pb2_2%p
 allocate(this%enc(size(transfer(pb2_1, local_enc_type))))
-this%enc = transfer(pb2_1, local_enc_type)
+this%enc(:) = transfer(pb2_1, local_enc_type)
 elseif ( this%t == 'b3' ) then
 pb3_1%p = pb3_2%p
 allocate(this%enc(size(transfer(pb3_1, local_enc_type))))
-this%enc = transfer(pb3_1, local_enc_type)
+this%enc(:) = transfer(pb3_1, local_enc_type)
 endif
 if ( this%t == 'h0' ) then
 ph0_1%p = ph0_2%p
 allocate(this%enc(size(transfer(ph0_1, local_enc_type))))
-this%enc = transfer(ph0_1, local_enc_type)
+this%enc(:) = transfer(ph0_1, local_enc_type)
 elseif ( this%t == 'h1' ) then
 ph1_1%p = ph1_2%p
 allocate(this%enc(size(transfer(ph1_1, local_enc_type))))
-this%enc = transfer(ph1_1, local_enc_type)
+this%enc(:) = transfer(ph1_1, local_enc_type)
 elseif ( this%t == 'h2' ) then
 ph2_1%p = ph2_2%p
 allocate(this%enc(size(transfer(ph2_1, local_enc_type))))
-this%enc = transfer(ph2_1, local_enc_type)
+this%enc(:) = transfer(ph2_1, local_enc_type)
 elseif ( this%t == 'h3' ) then
 ph3_1%p = ph3_2%p
 allocate(this%enc(size(transfer(ph3_1, local_enc_type))))
-this%enc = transfer(ph3_1, local_enc_type)
+this%enc(:) = transfer(ph3_1, local_enc_type)
 endif
 if ( this%t == 'i0' ) then
 pi0_1%p = pi0_2%p
 allocate(this%enc(size(transfer(pi0_1, local_enc_type))))
-this%enc = transfer(pi0_1, local_enc_type)
+this%enc(:) = transfer(pi0_1, local_enc_type)
 elseif ( this%t == 'i1' ) then
 pi1_1%p = pi1_2%p
 allocate(this%enc(size(transfer(pi1_1, local_enc_type))))
-this%enc = transfer(pi1_1, local_enc_type)
+this%enc(:) = transfer(pi1_1, local_enc_type)
 elseif ( this%t == 'i2' ) then
 pi2_1%p = pi2_2%p
 allocate(this%enc(size(transfer(pi2_1, local_enc_type))))
-this%enc = transfer(pi2_1, local_enc_type)
+this%enc(:) = transfer(pi2_1, local_enc_type)
 elseif ( this%t == 'i3' ) then
 pi3_1%p = pi3_2%p
 allocate(this%enc(size(transfer(pi3_1, local_enc_type))))
-this%enc = transfer(pi3_1, local_enc_type)
+this%enc(:) = transfer(pi3_1, local_enc_type)
 endif
 if ( this%t == 'l0' ) then
 pl0_1%p = pl0_2%p
 allocate(this%enc(size(transfer(pl0_1, local_enc_type))))
-this%enc = transfer(pl0_1, local_enc_type)
+this%enc(:) = transfer(pl0_1, local_enc_type)
 elseif ( this%t == 'l1' ) then
 pl1_1%p = pl1_2%p
 allocate(this%enc(size(transfer(pl1_1, local_enc_type))))
-this%enc = transfer(pl1_1, local_enc_type)
+this%enc(:) = transfer(pl1_1, local_enc_type)
 elseif ( this%t == 'l2' ) then
 pl2_1%p = pl2_2%p
 allocate(this%enc(size(transfer(pl2_1, local_enc_type))))
-this%enc = transfer(pl2_1, local_enc_type)
+this%enc(:) = transfer(pl2_1, local_enc_type)
 elseif ( this%t == 'l3' ) then
 pl3_1%p = pl3_2%p
 allocate(this%enc(size(transfer(pl3_1, local_enc_type))))
-this%enc = transfer(pl3_1, local_enc_type)
+this%enc(:) = transfer(pl3_1, local_enc_type)
 endif
 if ( this%t == 'USER' ) then
 write(*,'(a)') 'var: Cannot assign a UT, USE call associate(..)'
@@ -1170,7 +1174,7 @@ end if
     ! Association is done by copying the encoding
     this%t = rhs%t
     allocate(this%enc(size(rhs%enc)))
-    this%enc = rhs%enc
+    this%enc(:) = rhs%enc
   end subroutine associate_var
   pure function associatd_var(this,rhs) result(ret)
     type(var), intent(in) :: this
@@ -1523,7 +1527,7 @@ subroutine assign_set_a1(this,rhs,dealloc)
   allocate(p%p(size(rhs))) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_a1
@@ -1591,18 +1595,19 @@ subroutine associate_set_a1(this,rhs,dealloc)
   this%t = "a1"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_a1
 pure function associatd_l_a1(lhs,this) result(ret)
   character(len=1), pointer , dimension(:) :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    character(len=1), pointer , dimension(:) :: p => null()
+    character(len=1), pointer , dimension(:) :: p
   end type
   type(pt) :: p
   ret = this%t == "a1"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -1612,11 +1617,12 @@ pure function associatd_r_a1(this,rhs) result(ret)
   character(len=1), pointer , dimension(:) :: rhs
   logical :: ret
   type :: pt
-    character(len=1), pointer , dimension(:) :: p => null()
+    character(len=1), pointer , dimension(:) :: p
   end type
   type(pt) :: p
   ret = this%t == "a1"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -1645,7 +1651,7 @@ subroutine assign_set_s0(this,rhs,dealloc)
   allocate(p%p) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_s0
@@ -1708,18 +1714,19 @@ subroutine associate_set_s0(this,rhs,dealloc)
   this%t = "s0"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_s0
 pure function associatd_l_s0(lhs,this) result(ret)
   real(sp), pointer :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    real(sp), pointer :: p => null()
+    real(sp), pointer :: p
   end type
   type(pt) :: p
   ret = this%t == "s0"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -1729,11 +1736,12 @@ pure function associatd_r_s0(this,rhs) result(ret)
   real(sp), pointer :: rhs
   logical :: ret
   type :: pt
-    real(sp), pointer :: p => null()
+    real(sp), pointer :: p
   end type
   type(pt) :: p
   ret = this%t == "s0"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -1762,7 +1770,7 @@ subroutine assign_set_s1(this,rhs,dealloc)
   allocate(p%p(size(rhs))) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_s1
@@ -1830,18 +1838,19 @@ subroutine associate_set_s1(this,rhs,dealloc)
   this%t = "s1"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_s1
 pure function associatd_l_s1(lhs,this) result(ret)
   real(sp), pointer , dimension(:) :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    real(sp), pointer , dimension(:) :: p => null()
+    real(sp), pointer , dimension(:) :: p
   end type
   type(pt) :: p
   ret = this%t == "s1"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -1851,11 +1860,12 @@ pure function associatd_r_s1(this,rhs) result(ret)
   real(sp), pointer , dimension(:) :: rhs
   logical :: ret
   type :: pt
-    real(sp), pointer , dimension(:) :: p => null()
+    real(sp), pointer , dimension(:) :: p
   end type
   type(pt) :: p
   ret = this%t == "s1"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -1884,7 +1894,7 @@ subroutine assign_set_s2(this,rhs,dealloc)
   allocate(p%p(size(rhs,1),size(rhs,2))) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_s2
@@ -1952,18 +1962,19 @@ subroutine associate_set_s2(this,rhs,dealloc)
   this%t = "s2"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_s2
 pure function associatd_l_s2(lhs,this) result(ret)
   real(sp), pointer , dimension(:,:) :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    real(sp), pointer , dimension(:,:) :: p => null()
+    real(sp), pointer , dimension(:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "s2"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -1973,11 +1984,12 @@ pure function associatd_r_s2(this,rhs) result(ret)
   real(sp), pointer , dimension(:,:) :: rhs
   logical :: ret
   type :: pt
-    real(sp), pointer , dimension(:,:) :: p => null()
+    real(sp), pointer , dimension(:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "s2"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -2006,7 +2018,7 @@ subroutine assign_set_s3(this,rhs,dealloc)
   allocate(p%p(size(rhs,1),size(rhs,2),size(rhs,3))) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_s3
@@ -2074,18 +2086,19 @@ subroutine associate_set_s3(this,rhs,dealloc)
   this%t = "s3"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_s3
 pure function associatd_l_s3(lhs,this) result(ret)
   real(sp), pointer , dimension(:,:,:) :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    real(sp), pointer , dimension(:,:,:) :: p => null()
+    real(sp), pointer , dimension(:,:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "s3"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -2095,11 +2108,12 @@ pure function associatd_r_s3(this,rhs) result(ret)
   real(sp), pointer , dimension(:,:,:) :: rhs
   logical :: ret
   type :: pt
-    real(sp), pointer , dimension(:,:,:) :: p => null()
+    real(sp), pointer , dimension(:,:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "s3"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -2128,7 +2142,7 @@ subroutine assign_set_d0(this,rhs,dealloc)
   allocate(p%p) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_d0
@@ -2191,18 +2205,19 @@ subroutine associate_set_d0(this,rhs,dealloc)
   this%t = "d0"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_d0
 pure function associatd_l_d0(lhs,this) result(ret)
   real(dp), pointer :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    real(dp), pointer :: p => null()
+    real(dp), pointer :: p
   end type
   type(pt) :: p
   ret = this%t == "d0"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -2212,11 +2227,12 @@ pure function associatd_r_d0(this,rhs) result(ret)
   real(dp), pointer :: rhs
   logical :: ret
   type :: pt
-    real(dp), pointer :: p => null()
+    real(dp), pointer :: p
   end type
   type(pt) :: p
   ret = this%t == "d0"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -2245,7 +2261,7 @@ subroutine assign_set_d1(this,rhs,dealloc)
   allocate(p%p(size(rhs))) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_d1
@@ -2313,18 +2329,19 @@ subroutine associate_set_d1(this,rhs,dealloc)
   this%t = "d1"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_d1
 pure function associatd_l_d1(lhs,this) result(ret)
   real(dp), pointer , dimension(:) :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    real(dp), pointer , dimension(:) :: p => null()
+    real(dp), pointer , dimension(:) :: p
   end type
   type(pt) :: p
   ret = this%t == "d1"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -2334,11 +2351,12 @@ pure function associatd_r_d1(this,rhs) result(ret)
   real(dp), pointer , dimension(:) :: rhs
   logical :: ret
   type :: pt
-    real(dp), pointer , dimension(:) :: p => null()
+    real(dp), pointer , dimension(:) :: p
   end type
   type(pt) :: p
   ret = this%t == "d1"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -2367,7 +2385,7 @@ subroutine assign_set_d2(this,rhs,dealloc)
   allocate(p%p(size(rhs,1),size(rhs,2))) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_d2
@@ -2435,18 +2453,19 @@ subroutine associate_set_d2(this,rhs,dealloc)
   this%t = "d2"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_d2
 pure function associatd_l_d2(lhs,this) result(ret)
   real(dp), pointer , dimension(:,:) :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    real(dp), pointer , dimension(:,:) :: p => null()
+    real(dp), pointer , dimension(:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "d2"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -2456,11 +2475,12 @@ pure function associatd_r_d2(this,rhs) result(ret)
   real(dp), pointer , dimension(:,:) :: rhs
   logical :: ret
   type :: pt
-    real(dp), pointer , dimension(:,:) :: p => null()
+    real(dp), pointer , dimension(:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "d2"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -2489,7 +2509,7 @@ subroutine assign_set_d3(this,rhs,dealloc)
   allocate(p%p(size(rhs,1),size(rhs,2),size(rhs,3))) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_d3
@@ -2557,18 +2577,19 @@ subroutine associate_set_d3(this,rhs,dealloc)
   this%t = "d3"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_d3
 pure function associatd_l_d3(lhs,this) result(ret)
   real(dp), pointer , dimension(:,:,:) :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    real(dp), pointer , dimension(:,:,:) :: p => null()
+    real(dp), pointer , dimension(:,:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "d3"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -2578,11 +2599,12 @@ pure function associatd_r_d3(this,rhs) result(ret)
   real(dp), pointer , dimension(:,:,:) :: rhs
   logical :: ret
   type :: pt
-    real(dp), pointer , dimension(:,:,:) :: p => null()
+    real(dp), pointer , dimension(:,:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "d3"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -2611,7 +2633,7 @@ subroutine assign_set_c0(this,rhs,dealloc)
   allocate(p%p) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_c0
@@ -2674,18 +2696,19 @@ subroutine associate_set_c0(this,rhs,dealloc)
   this%t = "c0"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_c0
 pure function associatd_l_c0(lhs,this) result(ret)
   complex(sp), pointer :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    complex(sp), pointer :: p => null()
+    complex(sp), pointer :: p
   end type
   type(pt) :: p
   ret = this%t == "c0"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -2695,11 +2718,12 @@ pure function associatd_r_c0(this,rhs) result(ret)
   complex(sp), pointer :: rhs
   logical :: ret
   type :: pt
-    complex(sp), pointer :: p => null()
+    complex(sp), pointer :: p
   end type
   type(pt) :: p
   ret = this%t == "c0"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -2728,7 +2752,7 @@ subroutine assign_set_c1(this,rhs,dealloc)
   allocate(p%p(size(rhs))) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_c1
@@ -2796,18 +2820,19 @@ subroutine associate_set_c1(this,rhs,dealloc)
   this%t = "c1"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_c1
 pure function associatd_l_c1(lhs,this) result(ret)
   complex(sp), pointer , dimension(:) :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    complex(sp), pointer , dimension(:) :: p => null()
+    complex(sp), pointer , dimension(:) :: p
   end type
   type(pt) :: p
   ret = this%t == "c1"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -2817,11 +2842,12 @@ pure function associatd_r_c1(this,rhs) result(ret)
   complex(sp), pointer , dimension(:) :: rhs
   logical :: ret
   type :: pt
-    complex(sp), pointer , dimension(:) :: p => null()
+    complex(sp), pointer , dimension(:) :: p
   end type
   type(pt) :: p
   ret = this%t == "c1"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -2850,7 +2876,7 @@ subroutine assign_set_c2(this,rhs,dealloc)
   allocate(p%p(size(rhs,1),size(rhs,2))) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_c2
@@ -2918,18 +2944,19 @@ subroutine associate_set_c2(this,rhs,dealloc)
   this%t = "c2"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_c2
 pure function associatd_l_c2(lhs,this) result(ret)
   complex(sp), pointer , dimension(:,:) :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    complex(sp), pointer , dimension(:,:) :: p => null()
+    complex(sp), pointer , dimension(:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "c2"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -2939,11 +2966,12 @@ pure function associatd_r_c2(this,rhs) result(ret)
   complex(sp), pointer , dimension(:,:) :: rhs
   logical :: ret
   type :: pt
-    complex(sp), pointer , dimension(:,:) :: p => null()
+    complex(sp), pointer , dimension(:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "c2"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -2972,7 +3000,7 @@ subroutine assign_set_c3(this,rhs,dealloc)
   allocate(p%p(size(rhs,1),size(rhs,2),size(rhs,3))) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_c3
@@ -3040,18 +3068,19 @@ subroutine associate_set_c3(this,rhs,dealloc)
   this%t = "c3"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_c3
 pure function associatd_l_c3(lhs,this) result(ret)
   complex(sp), pointer , dimension(:,:,:) :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    complex(sp), pointer , dimension(:,:,:) :: p => null()
+    complex(sp), pointer , dimension(:,:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "c3"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -3061,11 +3090,12 @@ pure function associatd_r_c3(this,rhs) result(ret)
   complex(sp), pointer , dimension(:,:,:) :: rhs
   logical :: ret
   type :: pt
-    complex(sp), pointer , dimension(:,:,:) :: p => null()
+    complex(sp), pointer , dimension(:,:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "c3"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -3094,7 +3124,7 @@ subroutine assign_set_z0(this,rhs,dealloc)
   allocate(p%p) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_z0
@@ -3157,18 +3187,19 @@ subroutine associate_set_z0(this,rhs,dealloc)
   this%t = "z0"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_z0
 pure function associatd_l_z0(lhs,this) result(ret)
   complex(dp), pointer :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    complex(dp), pointer :: p => null()
+    complex(dp), pointer :: p
   end type
   type(pt) :: p
   ret = this%t == "z0"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -3178,11 +3209,12 @@ pure function associatd_r_z0(this,rhs) result(ret)
   complex(dp), pointer :: rhs
   logical :: ret
   type :: pt
-    complex(dp), pointer :: p => null()
+    complex(dp), pointer :: p
   end type
   type(pt) :: p
   ret = this%t == "z0"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -3211,7 +3243,7 @@ subroutine assign_set_z1(this,rhs,dealloc)
   allocate(p%p(size(rhs))) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_z1
@@ -3279,18 +3311,19 @@ subroutine associate_set_z1(this,rhs,dealloc)
   this%t = "z1"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_z1
 pure function associatd_l_z1(lhs,this) result(ret)
   complex(dp), pointer , dimension(:) :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    complex(dp), pointer , dimension(:) :: p => null()
+    complex(dp), pointer , dimension(:) :: p
   end type
   type(pt) :: p
   ret = this%t == "z1"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -3300,11 +3333,12 @@ pure function associatd_r_z1(this,rhs) result(ret)
   complex(dp), pointer , dimension(:) :: rhs
   logical :: ret
   type :: pt
-    complex(dp), pointer , dimension(:) :: p => null()
+    complex(dp), pointer , dimension(:) :: p
   end type
   type(pt) :: p
   ret = this%t == "z1"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -3333,7 +3367,7 @@ subroutine assign_set_z2(this,rhs,dealloc)
   allocate(p%p(size(rhs,1),size(rhs,2))) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_z2
@@ -3401,18 +3435,19 @@ subroutine associate_set_z2(this,rhs,dealloc)
   this%t = "z2"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_z2
 pure function associatd_l_z2(lhs,this) result(ret)
   complex(dp), pointer , dimension(:,:) :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    complex(dp), pointer , dimension(:,:) :: p => null()
+    complex(dp), pointer , dimension(:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "z2"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -3422,11 +3457,12 @@ pure function associatd_r_z2(this,rhs) result(ret)
   complex(dp), pointer , dimension(:,:) :: rhs
   logical :: ret
   type :: pt
-    complex(dp), pointer , dimension(:,:) :: p => null()
+    complex(dp), pointer , dimension(:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "z2"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -3455,7 +3491,7 @@ subroutine assign_set_z3(this,rhs,dealloc)
   allocate(p%p(size(rhs,1),size(rhs,2),size(rhs,3))) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_z3
@@ -3523,18 +3559,19 @@ subroutine associate_set_z3(this,rhs,dealloc)
   this%t = "z3"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_z3
 pure function associatd_l_z3(lhs,this) result(ret)
   complex(dp), pointer , dimension(:,:,:) :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    complex(dp), pointer , dimension(:,:,:) :: p => null()
+    complex(dp), pointer , dimension(:,:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "z3"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -3544,11 +3581,12 @@ pure function associatd_r_z3(this,rhs) result(ret)
   complex(dp), pointer , dimension(:,:,:) :: rhs
   logical :: ret
   type :: pt
-    complex(dp), pointer , dimension(:,:,:) :: p => null()
+    complex(dp), pointer , dimension(:,:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "z3"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -3577,7 +3615,7 @@ subroutine assign_set_b0(this,rhs,dealloc)
   allocate(p%p) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_b0
@@ -3640,18 +3678,19 @@ subroutine associate_set_b0(this,rhs,dealloc)
   this%t = "b0"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_b0
 pure function associatd_l_b0(lhs,this) result(ret)
   logical, pointer :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    logical, pointer :: p => null()
+    logical, pointer :: p
   end type
   type(pt) :: p
   ret = this%t == "b0"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -3661,11 +3700,12 @@ pure function associatd_r_b0(this,rhs) result(ret)
   logical, pointer :: rhs
   logical :: ret
   type :: pt
-    logical, pointer :: p => null()
+    logical, pointer :: p
   end type
   type(pt) :: p
   ret = this%t == "b0"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -3694,7 +3734,7 @@ subroutine assign_set_b1(this,rhs,dealloc)
   allocate(p%p(size(rhs))) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_b1
@@ -3762,18 +3802,19 @@ subroutine associate_set_b1(this,rhs,dealloc)
   this%t = "b1"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_b1
 pure function associatd_l_b1(lhs,this) result(ret)
   logical, pointer , dimension(:) :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    logical, pointer , dimension(:) :: p => null()
+    logical, pointer , dimension(:) :: p
   end type
   type(pt) :: p
   ret = this%t == "b1"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -3783,11 +3824,12 @@ pure function associatd_r_b1(this,rhs) result(ret)
   logical, pointer , dimension(:) :: rhs
   logical :: ret
   type :: pt
-    logical, pointer , dimension(:) :: p => null()
+    logical, pointer , dimension(:) :: p
   end type
   type(pt) :: p
   ret = this%t == "b1"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -3816,7 +3858,7 @@ subroutine assign_set_b2(this,rhs,dealloc)
   allocate(p%p(size(rhs,1),size(rhs,2))) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_b2
@@ -3884,18 +3926,19 @@ subroutine associate_set_b2(this,rhs,dealloc)
   this%t = "b2"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_b2
 pure function associatd_l_b2(lhs,this) result(ret)
   logical, pointer , dimension(:,:) :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    logical, pointer , dimension(:,:) :: p => null()
+    logical, pointer , dimension(:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "b2"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -3905,11 +3948,12 @@ pure function associatd_r_b2(this,rhs) result(ret)
   logical, pointer , dimension(:,:) :: rhs
   logical :: ret
   type :: pt
-    logical, pointer , dimension(:,:) :: p => null()
+    logical, pointer , dimension(:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "b2"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -3938,7 +3982,7 @@ subroutine assign_set_b3(this,rhs,dealloc)
   allocate(p%p(size(rhs,1),size(rhs,2),size(rhs,3))) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_b3
@@ -4006,18 +4050,19 @@ subroutine associate_set_b3(this,rhs,dealloc)
   this%t = "b3"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_b3
 pure function associatd_l_b3(lhs,this) result(ret)
   logical, pointer , dimension(:,:,:) :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    logical, pointer , dimension(:,:,:) :: p => null()
+    logical, pointer , dimension(:,:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "b3"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -4027,11 +4072,12 @@ pure function associatd_r_b3(this,rhs) result(ret)
   logical, pointer , dimension(:,:,:) :: rhs
   logical :: ret
   type :: pt
-    logical, pointer , dimension(:,:,:) :: p => null()
+    logical, pointer , dimension(:,:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "b3"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -4060,7 +4106,7 @@ subroutine assign_set_h0(this,rhs,dealloc)
   allocate(p%p) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_h0
@@ -4123,18 +4169,19 @@ subroutine associate_set_h0(this,rhs,dealloc)
   this%t = "h0"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_h0
 pure function associatd_l_h0(lhs,this) result(ret)
   integer(ih), pointer :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    integer(ih), pointer :: p => null()
+    integer(ih), pointer :: p
   end type
   type(pt) :: p
   ret = this%t == "h0"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -4144,11 +4191,12 @@ pure function associatd_r_h0(this,rhs) result(ret)
   integer(ih), pointer :: rhs
   logical :: ret
   type :: pt
-    integer(ih), pointer :: p => null()
+    integer(ih), pointer :: p
   end type
   type(pt) :: p
   ret = this%t == "h0"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -4177,7 +4225,7 @@ subroutine assign_set_h1(this,rhs,dealloc)
   allocate(p%p(size(rhs))) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_h1
@@ -4245,18 +4293,19 @@ subroutine associate_set_h1(this,rhs,dealloc)
   this%t = "h1"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_h1
 pure function associatd_l_h1(lhs,this) result(ret)
   integer(ih), pointer , dimension(:) :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    integer(ih), pointer , dimension(:) :: p => null()
+    integer(ih), pointer , dimension(:) :: p
   end type
   type(pt) :: p
   ret = this%t == "h1"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -4266,11 +4315,12 @@ pure function associatd_r_h1(this,rhs) result(ret)
   integer(ih), pointer , dimension(:) :: rhs
   logical :: ret
   type :: pt
-    integer(ih), pointer , dimension(:) :: p => null()
+    integer(ih), pointer , dimension(:) :: p
   end type
   type(pt) :: p
   ret = this%t == "h1"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -4299,7 +4349,7 @@ subroutine assign_set_h2(this,rhs,dealloc)
   allocate(p%p(size(rhs,1),size(rhs,2))) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_h2
@@ -4367,18 +4417,19 @@ subroutine associate_set_h2(this,rhs,dealloc)
   this%t = "h2"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_h2
 pure function associatd_l_h2(lhs,this) result(ret)
   integer(ih), pointer , dimension(:,:) :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    integer(ih), pointer , dimension(:,:) :: p => null()
+    integer(ih), pointer , dimension(:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "h2"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -4388,11 +4439,12 @@ pure function associatd_r_h2(this,rhs) result(ret)
   integer(ih), pointer , dimension(:,:) :: rhs
   logical :: ret
   type :: pt
-    integer(ih), pointer , dimension(:,:) :: p => null()
+    integer(ih), pointer , dimension(:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "h2"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -4421,7 +4473,7 @@ subroutine assign_set_h3(this,rhs,dealloc)
   allocate(p%p(size(rhs,1),size(rhs,2),size(rhs,3))) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_h3
@@ -4489,18 +4541,19 @@ subroutine associate_set_h3(this,rhs,dealloc)
   this%t = "h3"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_h3
 pure function associatd_l_h3(lhs,this) result(ret)
   integer(ih), pointer , dimension(:,:,:) :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    integer(ih), pointer , dimension(:,:,:) :: p => null()
+    integer(ih), pointer , dimension(:,:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "h3"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -4510,11 +4563,12 @@ pure function associatd_r_h3(this,rhs) result(ret)
   integer(ih), pointer , dimension(:,:,:) :: rhs
   logical :: ret
   type :: pt
-    integer(ih), pointer , dimension(:,:,:) :: p => null()
+    integer(ih), pointer , dimension(:,:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "h3"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -4543,7 +4597,7 @@ subroutine assign_set_i0(this,rhs,dealloc)
   allocate(p%p) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_i0
@@ -4606,18 +4660,19 @@ subroutine associate_set_i0(this,rhs,dealloc)
   this%t = "i0"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_i0
 pure function associatd_l_i0(lhs,this) result(ret)
   integer(is), pointer :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    integer(is), pointer :: p => null()
+    integer(is), pointer :: p
   end type
   type(pt) :: p
   ret = this%t == "i0"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -4627,11 +4682,12 @@ pure function associatd_r_i0(this,rhs) result(ret)
   integer(is), pointer :: rhs
   logical :: ret
   type :: pt
-    integer(is), pointer :: p => null()
+    integer(is), pointer :: p
   end type
   type(pt) :: p
   ret = this%t == "i0"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -4660,7 +4716,7 @@ subroutine assign_set_i1(this,rhs,dealloc)
   allocate(p%p(size(rhs))) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_i1
@@ -4728,18 +4784,19 @@ subroutine associate_set_i1(this,rhs,dealloc)
   this%t = "i1"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_i1
 pure function associatd_l_i1(lhs,this) result(ret)
   integer(is), pointer , dimension(:) :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    integer(is), pointer , dimension(:) :: p => null()
+    integer(is), pointer , dimension(:) :: p
   end type
   type(pt) :: p
   ret = this%t == "i1"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -4749,11 +4806,12 @@ pure function associatd_r_i1(this,rhs) result(ret)
   integer(is), pointer , dimension(:) :: rhs
   logical :: ret
   type :: pt
-    integer(is), pointer , dimension(:) :: p => null()
+    integer(is), pointer , dimension(:) :: p
   end type
   type(pt) :: p
   ret = this%t == "i1"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -4782,7 +4840,7 @@ subroutine assign_set_i2(this,rhs,dealloc)
   allocate(p%p(size(rhs,1),size(rhs,2))) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_i2
@@ -4850,18 +4908,19 @@ subroutine associate_set_i2(this,rhs,dealloc)
   this%t = "i2"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_i2
 pure function associatd_l_i2(lhs,this) result(ret)
   integer(is), pointer , dimension(:,:) :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    integer(is), pointer , dimension(:,:) :: p => null()
+    integer(is), pointer , dimension(:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "i2"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -4871,11 +4930,12 @@ pure function associatd_r_i2(this,rhs) result(ret)
   integer(is), pointer , dimension(:,:) :: rhs
   logical :: ret
   type :: pt
-    integer(is), pointer , dimension(:,:) :: p => null()
+    integer(is), pointer , dimension(:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "i2"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -4904,7 +4964,7 @@ subroutine assign_set_i3(this,rhs,dealloc)
   allocate(p%p(size(rhs,1),size(rhs,2),size(rhs,3))) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_i3
@@ -4972,18 +5032,19 @@ subroutine associate_set_i3(this,rhs,dealloc)
   this%t = "i3"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_i3
 pure function associatd_l_i3(lhs,this) result(ret)
   integer(is), pointer , dimension(:,:,:) :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    integer(is), pointer , dimension(:,:,:) :: p => null()
+    integer(is), pointer , dimension(:,:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "i3"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -4993,11 +5054,12 @@ pure function associatd_r_i3(this,rhs) result(ret)
   integer(is), pointer , dimension(:,:,:) :: rhs
   logical :: ret
   type :: pt
-    integer(is), pointer , dimension(:,:,:) :: p => null()
+    integer(is), pointer , dimension(:,:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "i3"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -5026,7 +5088,7 @@ subroutine assign_set_l0(this,rhs,dealloc)
   allocate(p%p) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_l0
@@ -5089,18 +5151,19 @@ subroutine associate_set_l0(this,rhs,dealloc)
   this%t = "l0"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_l0
 pure function associatd_l_l0(lhs,this) result(ret)
   integer(il), pointer :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    integer(il), pointer :: p => null()
+    integer(il), pointer :: p
   end type
   type(pt) :: p
   ret = this%t == "l0"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -5110,11 +5173,12 @@ pure function associatd_r_l0(this,rhs) result(ret)
   integer(il), pointer :: rhs
   logical :: ret
   type :: pt
-    integer(il), pointer :: p => null()
+    integer(il), pointer :: p
   end type
   type(pt) :: p
   ret = this%t == "l0"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -5143,7 +5207,7 @@ subroutine assign_set_l1(this,rhs,dealloc)
   allocate(p%p(size(rhs))) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_l1
@@ -5211,18 +5275,19 @@ subroutine associate_set_l1(this,rhs,dealloc)
   this%t = "l1"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_l1
 pure function associatd_l_l1(lhs,this) result(ret)
   integer(il), pointer , dimension(:) :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    integer(il), pointer , dimension(:) :: p => null()
+    integer(il), pointer , dimension(:) :: p
   end type
   type(pt) :: p
   ret = this%t == "l1"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -5232,11 +5297,12 @@ pure function associatd_r_l1(this,rhs) result(ret)
   integer(il), pointer , dimension(:) :: rhs
   logical :: ret
   type :: pt
-    integer(il), pointer , dimension(:) :: p => null()
+    integer(il), pointer , dimension(:) :: p
   end type
   type(pt) :: p
   ret = this%t == "l1"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -5265,7 +5331,7 @@ subroutine assign_set_l2(this,rhs,dealloc)
   allocate(p%p(size(rhs,1),size(rhs,2))) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_l2
@@ -5333,18 +5399,19 @@ subroutine associate_set_l2(this,rhs,dealloc)
   this%t = "l2"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_l2
 pure function associatd_l_l2(lhs,this) result(ret)
   integer(il), pointer , dimension(:,:) :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    integer(il), pointer , dimension(:,:) :: p => null()
+    integer(il), pointer , dimension(:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "l2"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -5354,11 +5421,12 @@ pure function associatd_r_l2(this,rhs) result(ret)
   integer(il), pointer , dimension(:,:) :: rhs
   logical :: ret
   type :: pt
-    integer(il), pointer , dimension(:,:) :: p => null()
+    integer(il), pointer , dimension(:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "l2"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif
@@ -5387,7 +5455,7 @@ subroutine assign_set_l3(this,rhs,dealloc)
   allocate(p%p(size(rhs,1),size(rhs,2),size(rhs,3))) ! allocate space
   p%p = rhs ! copy data over
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
   ! We already have shipped it
   nullify(p%p)
 end subroutine assign_set_l3
@@ -5455,18 +5523,19 @@ subroutine associate_set_l3(this,rhs,dealloc)
   this%t = "l3"
   p%p => rhs
   allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-  this%enc = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
 end subroutine associate_set_l3
 pure function associatd_l_l3(lhs,this) result(ret)
   integer(il), pointer , dimension(:,:,:) :: lhs
   type(var), intent(in) :: this
   logical :: ret
   type :: pt
-    integer(il), pointer , dimension(:,:,:) :: p => null()
+    integer(il), pointer , dimension(:,:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "l3"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(lhs,p%p)
   endif
@@ -5476,11 +5545,12 @@ pure function associatd_r_l3(this,rhs) result(ret)
   integer(il), pointer , dimension(:,:,:) :: rhs
   logical :: ret
   type :: pt
-    integer(il), pointer , dimension(:,:,:) :: p => null()
+    integer(il), pointer , dimension(:,:,:) :: p
   end type
   type(pt) :: p
   ret = this%t == "l3"
   if (ret) then
+     nullify(p%p)
      p = transfer(this%enc,p)
      ret = associated(p%p,rhs)
   endif

@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	 
-	 <meta name="description" content="Documentation of fortran type-free variable and dictionary">
+   
+   <meta name="description" content="Documentation of fortran type-free variable and dictionary">
     
     <meta name="author" content="Nick R. Papior" >
     <link rel="icon" href="../favicon.png">
@@ -17,6 +17,7 @@
     <link href="../css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/local.css" rel="stylesheet">
     
+    
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -26,8 +27,6 @@
     
     <script src="../js/jquery-2.1.3.min.js"></script>
     <script src="../js/svg-pan-zoom.min.js"></script>
-
-    
 
   </head>
 
@@ -43,35 +42,39 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../index.html">fdict <small>0.6</small></a>
+          <a class="navbar-brand" href="../index.html">fdict <small>0.6.0</small></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-				
+        
             <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
               <a href="#" class="dropdown-toggle"
               data-toggle="dropdown" role="button"
               aria-haspopup="true"
-		 aria-expanded="false">Contents <span class="caret"></span></a>
-	      <ul class="dropdown-menu">
+     aria-expanded="false">Contents <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          
               
             <li><a href="../lists/files.html">Source Files</a></li>
-				
-				
+        
+        
+        
             <li><a href="../lists/modules.html">Modules</a></li>
-				
+        
             
                                 
             <li><a href="../lists/procedures.html">Procedures</a></li>
-				
-								
+        
+               
             <li><a href="../lists/types.html">Derived Types</a></li>
-				
-				
+        
+        
             </ul>
             </li>
 
+
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/files.html">Source Files</a></li>
+
 
 
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
@@ -111,17 +114,21 @@
     
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
-	  data-placement="bottom" data-html="true"
-	  title="68.2% of total for modules and submodules.">5047 statements</a>
+    data-placement="bottom" data-html="true"
+    title="67.3% of total for modules and submodules.">5114 statements</a>
      </li> 
+     
      
      
     <li><i class="fa fa-code"></i><a href="../src/variable.f90"> Source File</a></li>
      
+     
   </ul>
   <ol class="breadcrumb in-well text-right">
   
+    
      <li><a href='../sourcefile/variable.f90.html'>variable.f90</a></li>
+    
   
      <li class="active">variable</li>
   </ol>
@@ -141,6 +148,21 @@
     
 <div id="sidebar">
   
+<h3>Contents</h3>
+ 
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-0">Variables</a></h3></div>
+  <div id="vars-0" class="panel-collapse collapse">
+    <div class="list-group">
+      
+      <a class="list-group-item" href="../module/variable.html#variable-var_type_length">VAR_TYPE_LENGTH</a>
+      
+    </div>
+  </div>
+</div>
 
 
 
@@ -185,6 +207,7 @@
 
 
 
+
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#types-0">Derived Types</a></h3></div>
   <div id="types-0" class="panel-collapse collapse">
@@ -206,33 +229,12 @@
 
 
 
-  <hr>
-  
 
-<div class="panel panel-default">
-  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#allmods-0">All Modules</a></h3></div>
-  <div id="allmods-0" class="panel-collapse collapse">
-    <div class="list-group">
-      
-      <a class="list-group-item" href="../module/dictionary.html">dictionary</a>
-      
-      <a class="list-group-item" href="../module/variable.html">variable</a>
-      
-    </div>
-  </div>
 </div>
-
-
-</div>  
 
     </div>
     
     <div class="col-md-9" id='text'>
-      
-    
-  
-
-    
     <p>A type-free variable module to contain <em>any</em> data in fortran.</p>
 <p>This module implements a generic variable-type (<code>type(var)</code>)
  which may contain <em>any</em> data-type (even user-derived type constructs).</p>
@@ -253,11 +255,21 @@
 
 <p>The assignment routine behaves like <code>=</code> (delete old value)
  whereas the associate routine behaves like <code>=&gt;</code> (nullify old value).</p>
+      <br>
+    
+  
+
     
     
-    <h3>Used By</h3>
-    
-                <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+  <h3 class="panel-title">Used by</h3>
+      </div>
+      <ul class="list-group">
+  
+  
+  <li class="list-group-item">
+    <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.40.1 (20161225.0304)
@@ -277,31 +289,21 @@
 <!-- module~dictionary -->
 <g id="module~~variable~~UsedByGraph_node2" class="node">
 <title>module~dictionary</title>
-<g id="a_module~~variable~~UsedByGraph_node2"><a xlink:href="../module/dictionary.html" xlink:title="dictionary">
+<g id="a_module~~variable~~UsedByGraph_node2"><a xlink:href=".././module/dictionary.html" xlink:title="dictionary">
 <polygon fill="#337ab7" stroke="#337ab7" points="148,-24 90,-24 90,0 148,0 148,-24"/>
 <text text-anchor="middle" x="119" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="#ffffff">dictionary</text>
 </a>
 </g>
 </g>
-<!-- module~variable&#45;&gt;module~dictionary -->
+<!-- module~dictionary&#45;&gt;module~variable -->
 <g id="module~~variable~~UsedByGraph_edge1" class="edge">
-<title>module~variable&#45;&gt;module~dictionary</title>
-<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M54.1054,-12C62.094,-12 71.0028,-12 79.5978,-12"/>
-<polygon fill="#ff0000" stroke="#ff0000" points="79.8433,-15.5001 89.8432,-12 79.8432,-8.5001 79.8433,-15.5001"/>
+<title>module~dictionary&#45;&gt;module~variable</title>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M89.8906,-12C81.7318,-12 72.7498,-12 64.1905,-12"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="64.0434,-8.5001 54.0434,-12 64.0434,-15.5001 64.0434,-8.5001"/>
 </g>
 </g>
 </svg>
-</div>
-                <div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div>
-                <div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog">
-                  <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
-                      </div>
-                      <div class="modal-body">
-                        
+</div><div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div><div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog"><div class="modal-dialog modal-lg" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title" id="-graph-help-label">Graph Key</h4></div><div class="modal-body">
     <p>Nodes of different colours represent the following: </p>
     <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
@@ -354,21 +356,36 @@
 </svg>
 
     
-    <p>Solid arrows point from a parent (sub)module to the submodule which is
-    descended from it. Dashed arrows point from a module being used to the
-    module or program unit using it. Where possible, edges connecting nodes are given different colours to make them easier to distinguish in large graphs.
+    <p>Solid arrows point from a submodule to the (sub)module which it is
+    descended from. Dashed arrows point from a module or program unit to 
+    modules which it uses. Where possible, edges connecting nodes are given different colours to make them easier to distinguish in large graphs.
     </p>
+    </div></div></div></div>
+  </li>
+  
+      </ul>
+    </div>
     
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
+
     <br>
-    
 
     <section class="visible-xs visible-sm hidden-md">
       
+<h3>Contents</h3>
+ 
+
+
+
+<div class="panel panel-primary">
+  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-1">Variables</a></h3></div>
+  <div id="vars-1" class="panel-collapse collapse">
+    <div class="list-group">
+      
+      <a class="list-group-item" href="../module/variable.html#variable-var_type_length">VAR_TYPE_LENGTH</a>
+      
+    </div>
+  </div>
+</div>
 
 
 
@@ -413,6 +430,7 @@
 
 
 
+
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#types-1">Derived Types</a></h3></div>
   <div id="types-1" class="panel-collapse collapse">
@@ -434,20 +452,54 @@
 
 
 
+
     </section>
     <br class="visible-xs visible-sm hidden-md">
 
     
 
     
+    <section>
+    <h2>Variables</h2>
+    
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th><th>Visibility</th>
+
+<th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-var_type_length"></span>integer,</td>
+  
+  <td>public,</td>
+  <td>parameter</td><td>::</td>
+  <td><strong>VAR_TYPE_LENGTH</strong></td><td> =</td><td>4</td><td><p>Maximum character length of the type specifier in the variable, no
+ unique identifier may be longer than this.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+    </section>
+    <br>
+    
     
     
     
     
     <section>
-	 <h2>Interfaces</h2>
-	 
-	   
+   <h2>Interfaces</h2>
+   
+     
 <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="interface-which"></span><h3>public interface <a href='../interface/which.html'>which</a>
     
@@ -455,7 +507,7 @@
   
   <div class="panel-body">
     
-    <p>Type of content stored in the variable (<code>character(len=4)</code>)</p>
+    <p>Type of content stored in the variable (<code>character(len=VAR_TYPE_LENGTH)</code>)</p>
   </div>
   
   <ul class="list-group">
@@ -469,7 +521,7 @@
 private elemental function which_(this) result(t)
     
     
-	 
+   
 </h3>
     
     
@@ -512,7 +564,7 @@ private elemental function which_(this) result(t)
   
   
   
-     <h4>Return Value <small>character(len=4)
+     <h4>Return Value <small>character(len=VAR_TYPE_LENGTH)
   </small></h4>
   
     
@@ -524,7 +576,7 @@ private elemental function which_(this) result(t)
 </div>
 
     
-	   
+     
 <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="interface-delete"></span><h3>public interface <a href='../interface/delete.html'>delete</a>
     
@@ -546,7 +598,7 @@ private elemental function which_(this) result(t)
 private subroutine delete_(this, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -607,7 +659,7 @@ private subroutine delete_(this, dealloc)
 </div>
 
     
-	   
+     
 <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="interface-nullify"></span><h3>public interface <a href='../interface/nullify.html'>nullify</a>
     
@@ -629,7 +681,7 @@ private subroutine delete_(this, dealloc)
 private elemental subroutine nullify_(this)
     
     
-	 
+   
 </h3>
     
     
@@ -675,7 +727,7 @@ private elemental subroutine nullify_(this)
 </div>
 
     
-	   
+     
 <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="interface-print"></span><h3>public interface <a href='../interface/print.html'>print</a>
     
@@ -697,7 +749,7 @@ private elemental subroutine nullify_(this)
 private subroutine print_(this)
     
     
-	 
+   
 </h3>
     
     
@@ -743,7 +795,7 @@ private subroutine print_(this)
 </div>
 
     
-	   
+     
 <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="interface-associate_type"></span><h3>public interface <a href='../interface/associate_type.html'>associate_type</a>
     
@@ -760,7 +812,7 @@ private subroutine print_(this)
 private subroutine associate_type_(this, enc, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -836,7 +888,7 @@ private subroutine associate_type_(this, enc, dealloc)
 </div>
 
     
-	   
+     
 <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="interface-enc"></span><h3>public interface <a href='../interface/enc.html'>enc</a>
     
@@ -844,7 +896,7 @@ private subroutine associate_type_(this, enc, dealloc)
   
   <div class="panel-body">
     
-    <p>The encoding of the stored pointer (<code>character, dimension(:)</code>)</p>
+    <p>The encoding of the stored pointer (<code>character, dimension(:)</code>)</p><a href="../interface/enc.html" class="pull-right"><emph>Read more&hellip;</emph></a>
   </div>
   
   <ul class="list-group">
@@ -858,7 +910,7 @@ private subroutine associate_type_(this, enc, dealloc)
 private subroutine enc_(this, enc)
     
     
-	 
+   
 </h3>
     
     
@@ -919,7 +971,7 @@ private subroutine enc_(this, enc)
 </div>
 
     
-	   
+     
 <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="interface-size_enc"></span><h3>public interface <a href='../interface/size_enc.html'>size_enc</a>
     
@@ -927,7 +979,7 @@ private subroutine enc_(this, enc)
   
   <div class="panel-body">
     
-    <p>The size of the encoding character array (<code>size(enc(&lt;&gt;))</code>)</p>
+    <p>The size of the encoding character array (<code>size(enc(&lt;&gt;))</code>)</p><a href="../interface/size_enc.html" class="pull-right"><emph>Read more&hellip;</emph></a>
   </div>
   
   <ul class="list-group">
@@ -941,7 +993,7 @@ private subroutine enc_(this, enc)
 private function size_enc_(this) result(len)
     
     
-	 
+   
 </h3>
     
     
@@ -996,7 +1048,7 @@ private function size_enc_(this) result(len)
 </div>
 
     
-	   
+     
 <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="interface-cpack"></span><h3>public interface <a href='../interface/cpack.html'>cpack</a>
     
@@ -1004,7 +1056,7 @@ private function size_enc_(this) result(len)
   
   <div class="panel-body">
     
-    <p>Convert a <code>character(len=*)</code> to <code>character, dimension(:)</code></p>
+    <p>Convert a <code>character(len=*)</code> to <code>character, dimension(:)</code></p><a href="../interface/cpack.html" class="pull-right"><emph>Read more&hellip;</emph></a>
   </div>
   
   <ul class="list-group">
@@ -1018,7 +1070,7 @@ private function size_enc_(this) result(len)
 private function cpack_(c) result(car)
     
     
-	 
+   
 </h3>
     
     
@@ -1073,7 +1125,7 @@ private function cpack_(c) result(car)
 </div>
 
     
-	   
+     
 <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="interface-cunpack"></span><h3>public interface <a href='../interface/cunpack.html'>cunpack</a>
     
@@ -1081,7 +1133,7 @@ private function cpack_(c) result(car)
   
   <div class="panel-body">
     
-    <p>Convert a <code>character(len=1), dimensions(:)</code> to <code>character(len=*)</code></p>
+    <p>Convert a <code>character(len=1), dimensions(:)</code> to <code>character(len=*)</code></p><a href="../interface/cunpack.html" class="pull-right"><emph>Read more&hellip;</emph></a>
   </div>
   
   <ul class="list-group">
@@ -1095,7 +1147,7 @@ private function cpack_(c) result(car)
 private function cunpack_(car) result(c)
     
     
-	 
+   
 </h3>
     
     
@@ -1150,7 +1202,7 @@ private function cunpack_(car) result(c)
 </div>
 
     
-	   
+     
 <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="interface-assign"></span><h3>public interface <a href='../interface/assign.html'>assign</a>
     
@@ -1167,7 +1219,7 @@ private function cunpack_(car) result(c)
 private subroutine assign_get_a0_0(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -1245,7 +1297,7 @@ private subroutine assign_get_a0_0(lhs, this, success)
 private subroutine assign_set_a0_0(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -1323,7 +1375,7 @@ private subroutine assign_set_a0_0(this, rhs, dealloc)
 private subroutine assign_var(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -1401,7 +1453,7 @@ private subroutine assign_var(this, rhs, dealloc)
 private subroutine assign_get_a1(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -1479,7 +1531,7 @@ private subroutine assign_get_a1(lhs, this, success)
 private subroutine assign_set_a1(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -1557,7 +1609,7 @@ private subroutine assign_set_a1(this, rhs, dealloc)
 private subroutine assign_get_s0(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -1635,7 +1687,7 @@ private subroutine assign_get_s0(lhs, this, success)
 private subroutine assign_set_s0(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -1713,7 +1765,7 @@ private subroutine assign_set_s0(this, rhs, dealloc)
 private subroutine assign_get_s1(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -1791,7 +1843,7 @@ private subroutine assign_get_s1(lhs, this, success)
 private subroutine assign_set_s1(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -1869,7 +1921,7 @@ private subroutine assign_set_s1(this, rhs, dealloc)
 private subroutine assign_get_s2(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -1947,7 +1999,7 @@ private subroutine assign_get_s2(lhs, this, success)
 private subroutine assign_set_s2(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -2025,7 +2077,7 @@ private subroutine assign_set_s2(this, rhs, dealloc)
 private subroutine assign_get_s3(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -2103,7 +2155,7 @@ private subroutine assign_get_s3(lhs, this, success)
 private subroutine assign_set_s3(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -2181,7 +2233,7 @@ private subroutine assign_set_s3(this, rhs, dealloc)
 private subroutine assign_get_d0(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -2259,7 +2311,7 @@ private subroutine assign_get_d0(lhs, this, success)
 private subroutine assign_set_d0(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -2337,7 +2389,7 @@ private subroutine assign_set_d0(this, rhs, dealloc)
 private subroutine assign_get_d1(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -2415,7 +2467,7 @@ private subroutine assign_get_d1(lhs, this, success)
 private subroutine assign_set_d1(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -2493,7 +2545,7 @@ private subroutine assign_set_d1(this, rhs, dealloc)
 private subroutine assign_get_d2(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -2571,7 +2623,7 @@ private subroutine assign_get_d2(lhs, this, success)
 private subroutine assign_set_d2(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -2649,7 +2701,7 @@ private subroutine assign_set_d2(this, rhs, dealloc)
 private subroutine assign_get_d3(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -2727,7 +2779,7 @@ private subroutine assign_get_d3(lhs, this, success)
 private subroutine assign_set_d3(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -2805,7 +2857,7 @@ private subroutine assign_set_d3(this, rhs, dealloc)
 private subroutine assign_get_c0(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -2883,7 +2935,7 @@ private subroutine assign_get_c0(lhs, this, success)
 private subroutine assign_set_c0(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -2961,7 +3013,7 @@ private subroutine assign_set_c0(this, rhs, dealloc)
 private subroutine assign_get_c1(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -3039,7 +3091,7 @@ private subroutine assign_get_c1(lhs, this, success)
 private subroutine assign_set_c1(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -3117,7 +3169,7 @@ private subroutine assign_set_c1(this, rhs, dealloc)
 private subroutine assign_get_c2(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -3195,7 +3247,7 @@ private subroutine assign_get_c2(lhs, this, success)
 private subroutine assign_set_c2(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -3273,7 +3325,7 @@ private subroutine assign_set_c2(this, rhs, dealloc)
 private subroutine assign_get_c3(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -3351,7 +3403,7 @@ private subroutine assign_get_c3(lhs, this, success)
 private subroutine assign_set_c3(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -3429,7 +3481,7 @@ private subroutine assign_set_c3(this, rhs, dealloc)
 private subroutine assign_get_z0(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -3507,7 +3559,7 @@ private subroutine assign_get_z0(lhs, this, success)
 private subroutine assign_set_z0(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -3585,7 +3637,7 @@ private subroutine assign_set_z0(this, rhs, dealloc)
 private subroutine assign_get_z1(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -3663,7 +3715,7 @@ private subroutine assign_get_z1(lhs, this, success)
 private subroutine assign_set_z1(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -3741,7 +3793,7 @@ private subroutine assign_set_z1(this, rhs, dealloc)
 private subroutine assign_get_z2(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -3819,7 +3871,7 @@ private subroutine assign_get_z2(lhs, this, success)
 private subroutine assign_set_z2(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -3897,7 +3949,7 @@ private subroutine assign_set_z2(this, rhs, dealloc)
 private subroutine assign_get_z3(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -3975,7 +4027,7 @@ private subroutine assign_get_z3(lhs, this, success)
 private subroutine assign_set_z3(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -4053,7 +4105,7 @@ private subroutine assign_set_z3(this, rhs, dealloc)
 private subroutine assign_get_b0(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -4131,7 +4183,7 @@ private subroutine assign_get_b0(lhs, this, success)
 private subroutine assign_set_b0(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -4209,7 +4261,7 @@ private subroutine assign_set_b0(this, rhs, dealloc)
 private subroutine assign_get_b1(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -4287,7 +4339,7 @@ private subroutine assign_get_b1(lhs, this, success)
 private subroutine assign_set_b1(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -4365,7 +4417,7 @@ private subroutine assign_set_b1(this, rhs, dealloc)
 private subroutine assign_get_b2(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -4443,7 +4495,7 @@ private subroutine assign_get_b2(lhs, this, success)
 private subroutine assign_set_b2(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -4521,7 +4573,7 @@ private subroutine assign_set_b2(this, rhs, dealloc)
 private subroutine assign_get_b3(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -4599,7 +4651,7 @@ private subroutine assign_get_b3(lhs, this, success)
 private subroutine assign_set_b3(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -4677,7 +4729,7 @@ private subroutine assign_set_b3(this, rhs, dealloc)
 private subroutine assign_get_h0(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -4755,7 +4807,7 @@ private subroutine assign_get_h0(lhs, this, success)
 private subroutine assign_set_h0(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -4833,7 +4885,7 @@ private subroutine assign_set_h0(this, rhs, dealloc)
 private subroutine assign_get_h1(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -4911,7 +4963,7 @@ private subroutine assign_get_h1(lhs, this, success)
 private subroutine assign_set_h1(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -4989,7 +5041,7 @@ private subroutine assign_set_h1(this, rhs, dealloc)
 private subroutine assign_get_h2(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -5067,7 +5119,7 @@ private subroutine assign_get_h2(lhs, this, success)
 private subroutine assign_set_h2(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -5145,7 +5197,7 @@ private subroutine assign_set_h2(this, rhs, dealloc)
 private subroutine assign_get_h3(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -5223,7 +5275,7 @@ private subroutine assign_get_h3(lhs, this, success)
 private subroutine assign_set_h3(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -5301,7 +5353,7 @@ private subroutine assign_set_h3(this, rhs, dealloc)
 private subroutine assign_get_i0(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -5379,7 +5431,7 @@ private subroutine assign_get_i0(lhs, this, success)
 private subroutine assign_set_i0(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -5457,7 +5509,7 @@ private subroutine assign_set_i0(this, rhs, dealloc)
 private subroutine assign_get_i1(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -5535,7 +5587,7 @@ private subroutine assign_get_i1(lhs, this, success)
 private subroutine assign_set_i1(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -5613,7 +5665,7 @@ private subroutine assign_set_i1(this, rhs, dealloc)
 private subroutine assign_get_i2(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -5691,7 +5743,7 @@ private subroutine assign_get_i2(lhs, this, success)
 private subroutine assign_set_i2(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -5769,7 +5821,7 @@ private subroutine assign_set_i2(this, rhs, dealloc)
 private subroutine assign_get_i3(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -5847,7 +5899,7 @@ private subroutine assign_get_i3(lhs, this, success)
 private subroutine assign_set_i3(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -5925,7 +5977,7 @@ private subroutine assign_set_i3(this, rhs, dealloc)
 private subroutine assign_get_l0(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -6003,7 +6055,7 @@ private subroutine assign_get_l0(lhs, this, success)
 private subroutine assign_set_l0(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -6081,7 +6133,7 @@ private subroutine assign_set_l0(this, rhs, dealloc)
 private subroutine assign_get_l1(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -6159,7 +6211,7 @@ private subroutine assign_get_l1(lhs, this, success)
 private subroutine assign_set_l1(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -6237,7 +6289,7 @@ private subroutine assign_set_l1(this, rhs, dealloc)
 private subroutine assign_get_l2(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -6315,7 +6367,7 @@ private subroutine assign_get_l2(lhs, this, success)
 private subroutine assign_set_l2(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -6393,7 +6445,7 @@ private subroutine assign_set_l2(this, rhs, dealloc)
 private subroutine assign_get_l3(lhs, this, success)
     
     
-	 
+   
 </h3>
     
     
@@ -6471,7 +6523,7 @@ private subroutine assign_get_l3(lhs, this, success)
 private subroutine assign_set_l3(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -6547,7 +6599,7 @@ private subroutine assign_set_l3(this, rhs, dealloc)
 </div>
 
     
-	   
+     
 <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="interface-associate"></span><h3>public interface <a href='../interface/associate.html'>associate</a>
     
@@ -6564,7 +6616,7 @@ private subroutine assign_set_l3(this, rhs, dealloc)
 private subroutine associate_var(this, rhs, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -6657,7 +6709,7 @@ private subroutine associate_var(this, rhs, dealloc, success)
 private subroutine associate_get_a1(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -6750,7 +6802,7 @@ private subroutine associate_get_a1(lhs, this, dealloc, success)
 private subroutine associate_set_a1(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -6828,7 +6880,7 @@ private subroutine associate_set_a1(this, rhs, dealloc)
 private subroutine associate_get_s0(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -6921,7 +6973,7 @@ private subroutine associate_get_s0(lhs, this, dealloc, success)
 private subroutine associate_set_s0(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -6999,7 +7051,7 @@ private subroutine associate_set_s0(this, rhs, dealloc)
 private subroutine associate_get_s1(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -7092,7 +7144,7 @@ private subroutine associate_get_s1(lhs, this, dealloc, success)
 private subroutine associate_set_s1(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -7170,7 +7222,7 @@ private subroutine associate_set_s1(this, rhs, dealloc)
 private subroutine associate_get_s2(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -7263,7 +7315,7 @@ private subroutine associate_get_s2(lhs, this, dealloc, success)
 private subroutine associate_set_s2(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -7341,7 +7393,7 @@ private subroutine associate_set_s2(this, rhs, dealloc)
 private subroutine associate_get_s3(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -7434,7 +7486,7 @@ private subroutine associate_get_s3(lhs, this, dealloc, success)
 private subroutine associate_set_s3(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -7512,7 +7564,7 @@ private subroutine associate_set_s3(this, rhs, dealloc)
 private subroutine associate_get_d0(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -7605,7 +7657,7 @@ private subroutine associate_get_d0(lhs, this, dealloc, success)
 private subroutine associate_set_d0(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -7683,7 +7735,7 @@ private subroutine associate_set_d0(this, rhs, dealloc)
 private subroutine associate_get_d1(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -7776,7 +7828,7 @@ private subroutine associate_get_d1(lhs, this, dealloc, success)
 private subroutine associate_set_d1(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -7854,7 +7906,7 @@ private subroutine associate_set_d1(this, rhs, dealloc)
 private subroutine associate_get_d2(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -7947,7 +7999,7 @@ private subroutine associate_get_d2(lhs, this, dealloc, success)
 private subroutine associate_set_d2(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -8025,7 +8077,7 @@ private subroutine associate_set_d2(this, rhs, dealloc)
 private subroutine associate_get_d3(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -8118,7 +8170,7 @@ private subroutine associate_get_d3(lhs, this, dealloc, success)
 private subroutine associate_set_d3(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -8196,7 +8248,7 @@ private subroutine associate_set_d3(this, rhs, dealloc)
 private subroutine associate_get_c0(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -8289,7 +8341,7 @@ private subroutine associate_get_c0(lhs, this, dealloc, success)
 private subroutine associate_set_c0(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -8367,7 +8419,7 @@ private subroutine associate_set_c0(this, rhs, dealloc)
 private subroutine associate_get_c1(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -8460,7 +8512,7 @@ private subroutine associate_get_c1(lhs, this, dealloc, success)
 private subroutine associate_set_c1(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -8538,7 +8590,7 @@ private subroutine associate_set_c1(this, rhs, dealloc)
 private subroutine associate_get_c2(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -8631,7 +8683,7 @@ private subroutine associate_get_c2(lhs, this, dealloc, success)
 private subroutine associate_set_c2(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -8709,7 +8761,7 @@ private subroutine associate_set_c2(this, rhs, dealloc)
 private subroutine associate_get_c3(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -8802,7 +8854,7 @@ private subroutine associate_get_c3(lhs, this, dealloc, success)
 private subroutine associate_set_c3(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -8880,7 +8932,7 @@ private subroutine associate_set_c3(this, rhs, dealloc)
 private subroutine associate_get_z0(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -8973,7 +9025,7 @@ private subroutine associate_get_z0(lhs, this, dealloc, success)
 private subroutine associate_set_z0(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -9051,7 +9103,7 @@ private subroutine associate_set_z0(this, rhs, dealloc)
 private subroutine associate_get_z1(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -9144,7 +9196,7 @@ private subroutine associate_get_z1(lhs, this, dealloc, success)
 private subroutine associate_set_z1(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -9222,7 +9274,7 @@ private subroutine associate_set_z1(this, rhs, dealloc)
 private subroutine associate_get_z2(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -9315,7 +9367,7 @@ private subroutine associate_get_z2(lhs, this, dealloc, success)
 private subroutine associate_set_z2(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -9393,7 +9445,7 @@ private subroutine associate_set_z2(this, rhs, dealloc)
 private subroutine associate_get_z3(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -9486,7 +9538,7 @@ private subroutine associate_get_z3(lhs, this, dealloc, success)
 private subroutine associate_set_z3(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -9564,7 +9616,7 @@ private subroutine associate_set_z3(this, rhs, dealloc)
 private subroutine associate_get_b0(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -9657,7 +9709,7 @@ private subroutine associate_get_b0(lhs, this, dealloc, success)
 private subroutine associate_set_b0(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -9735,7 +9787,7 @@ private subroutine associate_set_b0(this, rhs, dealloc)
 private subroutine associate_get_b1(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -9828,7 +9880,7 @@ private subroutine associate_get_b1(lhs, this, dealloc, success)
 private subroutine associate_set_b1(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -9906,7 +9958,7 @@ private subroutine associate_set_b1(this, rhs, dealloc)
 private subroutine associate_get_b2(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -9999,7 +10051,7 @@ private subroutine associate_get_b2(lhs, this, dealloc, success)
 private subroutine associate_set_b2(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -10077,7 +10129,7 @@ private subroutine associate_set_b2(this, rhs, dealloc)
 private subroutine associate_get_b3(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -10170,7 +10222,7 @@ private subroutine associate_get_b3(lhs, this, dealloc, success)
 private subroutine associate_set_b3(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -10248,7 +10300,7 @@ private subroutine associate_set_b3(this, rhs, dealloc)
 private subroutine associate_get_h0(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -10341,7 +10393,7 @@ private subroutine associate_get_h0(lhs, this, dealloc, success)
 private subroutine associate_set_h0(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -10419,7 +10471,7 @@ private subroutine associate_set_h0(this, rhs, dealloc)
 private subroutine associate_get_h1(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -10512,7 +10564,7 @@ private subroutine associate_get_h1(lhs, this, dealloc, success)
 private subroutine associate_set_h1(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -10590,7 +10642,7 @@ private subroutine associate_set_h1(this, rhs, dealloc)
 private subroutine associate_get_h2(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -10683,7 +10735,7 @@ private subroutine associate_get_h2(lhs, this, dealloc, success)
 private subroutine associate_set_h2(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -10761,7 +10813,7 @@ private subroutine associate_set_h2(this, rhs, dealloc)
 private subroutine associate_get_h3(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -10854,7 +10906,7 @@ private subroutine associate_get_h3(lhs, this, dealloc, success)
 private subroutine associate_set_h3(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -10932,7 +10984,7 @@ private subroutine associate_set_h3(this, rhs, dealloc)
 private subroutine associate_get_i0(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -11025,7 +11077,7 @@ private subroutine associate_get_i0(lhs, this, dealloc, success)
 private subroutine associate_set_i0(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -11103,7 +11155,7 @@ private subroutine associate_set_i0(this, rhs, dealloc)
 private subroutine associate_get_i1(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -11196,7 +11248,7 @@ private subroutine associate_get_i1(lhs, this, dealloc, success)
 private subroutine associate_set_i1(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -11274,7 +11326,7 @@ private subroutine associate_set_i1(this, rhs, dealloc)
 private subroutine associate_get_i2(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -11367,7 +11419,7 @@ private subroutine associate_get_i2(lhs, this, dealloc, success)
 private subroutine associate_set_i2(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -11445,7 +11497,7 @@ private subroutine associate_set_i2(this, rhs, dealloc)
 private subroutine associate_get_i3(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -11538,7 +11590,7 @@ private subroutine associate_get_i3(lhs, this, dealloc, success)
 private subroutine associate_set_i3(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -11616,7 +11668,7 @@ private subroutine associate_set_i3(this, rhs, dealloc)
 private subroutine associate_get_l0(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -11709,7 +11761,7 @@ private subroutine associate_get_l0(lhs, this, dealloc, success)
 private subroutine associate_set_l0(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -11787,7 +11839,7 @@ private subroutine associate_set_l0(this, rhs, dealloc)
 private subroutine associate_get_l1(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -11880,7 +11932,7 @@ private subroutine associate_get_l1(lhs, this, dealloc, success)
 private subroutine associate_set_l1(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -11958,7 +12010,7 @@ private subroutine associate_set_l1(this, rhs, dealloc)
 private subroutine associate_get_l2(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -12051,7 +12103,7 @@ private subroutine associate_get_l2(lhs, this, dealloc, success)
 private subroutine associate_set_l2(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -12129,7 +12181,7 @@ private subroutine associate_set_l2(this, rhs, dealloc)
 private subroutine associate_get_l3(lhs, this, dealloc, success)
     
     
-	 
+   
 </h3>
     
     
@@ -12222,7 +12274,7 @@ private subroutine associate_get_l3(lhs, this, dealloc, success)
 private subroutine associate_set_l3(this, rhs, dealloc)
     
     
-	 
+   
 </h3>
     
     
@@ -12298,7 +12350,7 @@ private subroutine associate_set_l3(this, rhs, dealloc)
 </div>
 
     
-	   
+     
 <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="interface-associatd"></span><h3>public interface <a href='../interface/associatd.html'>associatd</a>
     
@@ -12315,7 +12367,7 @@ private subroutine associate_set_l3(this, rhs, dealloc)
 private pure function associatd_l_a1(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -12387,7 +12439,7 @@ private pure function associatd_l_a1(lhs, this) result(ret)
 private pure function associatd_r_a1(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -12459,7 +12511,7 @@ private pure function associatd_r_a1(this, rhs) result(ret)
 private pure function associatd_l_s0(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -12531,7 +12583,7 @@ private pure function associatd_l_s0(lhs, this) result(ret)
 private pure function associatd_r_s0(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -12603,7 +12655,7 @@ private pure function associatd_r_s0(this, rhs) result(ret)
 private pure function associatd_l_s1(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -12675,7 +12727,7 @@ private pure function associatd_l_s1(lhs, this) result(ret)
 private pure function associatd_r_s1(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -12747,7 +12799,7 @@ private pure function associatd_r_s1(this, rhs) result(ret)
 private pure function associatd_l_s2(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -12819,7 +12871,7 @@ private pure function associatd_l_s2(lhs, this) result(ret)
 private pure function associatd_r_s2(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -12891,7 +12943,7 @@ private pure function associatd_r_s2(this, rhs) result(ret)
 private pure function associatd_l_s3(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -12963,7 +13015,7 @@ private pure function associatd_l_s3(lhs, this) result(ret)
 private pure function associatd_r_s3(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -13035,7 +13087,7 @@ private pure function associatd_r_s3(this, rhs) result(ret)
 private pure function associatd_l_d0(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -13107,7 +13159,7 @@ private pure function associatd_l_d0(lhs, this) result(ret)
 private pure function associatd_r_d0(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -13179,7 +13231,7 @@ private pure function associatd_r_d0(this, rhs) result(ret)
 private pure function associatd_l_d1(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -13251,7 +13303,7 @@ private pure function associatd_l_d1(lhs, this) result(ret)
 private pure function associatd_r_d1(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -13323,7 +13375,7 @@ private pure function associatd_r_d1(this, rhs) result(ret)
 private pure function associatd_l_d2(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -13395,7 +13447,7 @@ private pure function associatd_l_d2(lhs, this) result(ret)
 private pure function associatd_r_d2(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -13467,7 +13519,7 @@ private pure function associatd_r_d2(this, rhs) result(ret)
 private pure function associatd_l_d3(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -13539,7 +13591,7 @@ private pure function associatd_l_d3(lhs, this) result(ret)
 private pure function associatd_r_d3(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -13611,7 +13663,7 @@ private pure function associatd_r_d3(this, rhs) result(ret)
 private pure function associatd_l_c0(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -13683,7 +13735,7 @@ private pure function associatd_l_c0(lhs, this) result(ret)
 private pure function associatd_r_c0(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -13755,7 +13807,7 @@ private pure function associatd_r_c0(this, rhs) result(ret)
 private pure function associatd_l_c1(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -13827,7 +13879,7 @@ private pure function associatd_l_c1(lhs, this) result(ret)
 private pure function associatd_r_c1(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -13899,7 +13951,7 @@ private pure function associatd_r_c1(this, rhs) result(ret)
 private pure function associatd_l_c2(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -13971,7 +14023,7 @@ private pure function associatd_l_c2(lhs, this) result(ret)
 private pure function associatd_r_c2(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -14043,7 +14095,7 @@ private pure function associatd_r_c2(this, rhs) result(ret)
 private pure function associatd_l_c3(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -14115,7 +14167,7 @@ private pure function associatd_l_c3(lhs, this) result(ret)
 private pure function associatd_r_c3(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -14187,7 +14239,7 @@ private pure function associatd_r_c3(this, rhs) result(ret)
 private pure function associatd_l_z0(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -14259,7 +14311,7 @@ private pure function associatd_l_z0(lhs, this) result(ret)
 private pure function associatd_r_z0(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -14331,7 +14383,7 @@ private pure function associatd_r_z0(this, rhs) result(ret)
 private pure function associatd_l_z1(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -14403,7 +14455,7 @@ private pure function associatd_l_z1(lhs, this) result(ret)
 private pure function associatd_r_z1(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -14475,7 +14527,7 @@ private pure function associatd_r_z1(this, rhs) result(ret)
 private pure function associatd_l_z2(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -14547,7 +14599,7 @@ private pure function associatd_l_z2(lhs, this) result(ret)
 private pure function associatd_r_z2(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -14619,7 +14671,7 @@ private pure function associatd_r_z2(this, rhs) result(ret)
 private pure function associatd_l_z3(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -14691,7 +14743,7 @@ private pure function associatd_l_z3(lhs, this) result(ret)
 private pure function associatd_r_z3(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -14763,7 +14815,7 @@ private pure function associatd_r_z3(this, rhs) result(ret)
 private pure function associatd_l_b0(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -14835,7 +14887,7 @@ private pure function associatd_l_b0(lhs, this) result(ret)
 private pure function associatd_r_b0(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -14907,7 +14959,7 @@ private pure function associatd_r_b0(this, rhs) result(ret)
 private pure function associatd_l_b1(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -14979,7 +15031,7 @@ private pure function associatd_l_b1(lhs, this) result(ret)
 private pure function associatd_r_b1(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -15051,7 +15103,7 @@ private pure function associatd_r_b1(this, rhs) result(ret)
 private pure function associatd_l_b2(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -15123,7 +15175,7 @@ private pure function associatd_l_b2(lhs, this) result(ret)
 private pure function associatd_r_b2(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -15195,7 +15247,7 @@ private pure function associatd_r_b2(this, rhs) result(ret)
 private pure function associatd_l_b3(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -15267,7 +15319,7 @@ private pure function associatd_l_b3(lhs, this) result(ret)
 private pure function associatd_r_b3(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -15339,7 +15391,7 @@ private pure function associatd_r_b3(this, rhs) result(ret)
 private pure function associatd_l_h0(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -15411,7 +15463,7 @@ private pure function associatd_l_h0(lhs, this) result(ret)
 private pure function associatd_r_h0(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -15483,7 +15535,7 @@ private pure function associatd_r_h0(this, rhs) result(ret)
 private pure function associatd_l_h1(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -15555,7 +15607,7 @@ private pure function associatd_l_h1(lhs, this) result(ret)
 private pure function associatd_r_h1(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -15627,7 +15679,7 @@ private pure function associatd_r_h1(this, rhs) result(ret)
 private pure function associatd_l_h2(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -15699,7 +15751,7 @@ private pure function associatd_l_h2(lhs, this) result(ret)
 private pure function associatd_r_h2(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -15771,7 +15823,7 @@ private pure function associatd_r_h2(this, rhs) result(ret)
 private pure function associatd_l_h3(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -15843,7 +15895,7 @@ private pure function associatd_l_h3(lhs, this) result(ret)
 private pure function associatd_r_h3(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -15915,7 +15967,7 @@ private pure function associatd_r_h3(this, rhs) result(ret)
 private pure function associatd_l_i0(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -15987,7 +16039,7 @@ private pure function associatd_l_i0(lhs, this) result(ret)
 private pure function associatd_r_i0(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -16059,7 +16111,7 @@ private pure function associatd_r_i0(this, rhs) result(ret)
 private pure function associatd_l_i1(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -16131,7 +16183,7 @@ private pure function associatd_l_i1(lhs, this) result(ret)
 private pure function associatd_r_i1(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -16203,7 +16255,7 @@ private pure function associatd_r_i1(this, rhs) result(ret)
 private pure function associatd_l_i2(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -16275,7 +16327,7 @@ private pure function associatd_l_i2(lhs, this) result(ret)
 private pure function associatd_r_i2(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -16347,7 +16399,7 @@ private pure function associatd_r_i2(this, rhs) result(ret)
 private pure function associatd_l_i3(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -16419,7 +16471,7 @@ private pure function associatd_l_i3(lhs, this) result(ret)
 private pure function associatd_r_i3(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -16491,7 +16543,7 @@ private pure function associatd_r_i3(this, rhs) result(ret)
 private pure function associatd_l_l0(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -16563,7 +16615,7 @@ private pure function associatd_l_l0(lhs, this) result(ret)
 private pure function associatd_r_l0(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -16635,7 +16687,7 @@ private pure function associatd_r_l0(this, rhs) result(ret)
 private pure function associatd_l_l1(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -16707,7 +16759,7 @@ private pure function associatd_l_l1(lhs, this) result(ret)
 private pure function associatd_r_l1(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -16779,7 +16831,7 @@ private pure function associatd_r_l1(this, rhs) result(ret)
 private pure function associatd_l_l2(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -16851,7 +16903,7 @@ private pure function associatd_l_l2(lhs, this) result(ret)
 private pure function associatd_r_l2(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -16923,7 +16975,7 @@ private pure function associatd_r_l2(this, rhs) result(ret)
 private pure function associatd_l_l3(lhs, this) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -16995,7 +17047,7 @@ private pure function associatd_l_l3(lhs, this) result(ret)
 private pure function associatd_r_l3(this, rhs) result(ret)
     
     
-	 
+   
 </h3>
     
     
@@ -17066,7 +17118,7 @@ private pure function associatd_r_l3(this, rhs) result(ret)
 
     
     </section>
-	<br>
+  <br>
     
 
     
@@ -17074,8 +17126,8 @@ private pure function associatd_r_l3(this, rhs) result(ret)
     
     <section>
      <h2>Derived Types</h2>
-	 
-	   
+   
+     
 <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="type-var"></span><h3>type, public :: <a href='../type/var.html'>var</a>
     
@@ -17084,7 +17136,7 @@ private pure function associatd_r_l3(this, rhs) result(ret)
     
     
     <p>Container for <em>any</em> fortran data-type, intrinsically handles all
- from fortran and any external type may be added via external routines.</p>
+ from fortran and any external type may be added via external routines.</p><a href="../type/var.html" class="pull-right"><emph>Read more&hellip;</emph></a>
     
      
      <h4>Components</h4>
@@ -17104,7 +17156,7 @@ private pure function associatd_r_l3(this, rhs) result(ret)
   
 <tr>
   
-  <td><span class="anchor" id="variable-t"></span>character(len=4),</td>
+  <td><span class="anchor" id="variable-t"></span>character(len=VAR_TYPE_LENGTH),</td>
   
   <td>public</td>
   <td></td><td>::</td>
@@ -17138,7 +17190,7 @@ private pure function associatd_r_l3(this, rhs) result(ret)
 
      
     </section>
-	<br>
+  <br>
     
     
     
@@ -17149,32 +17201,14 @@ private pure function associatd_r_l3(this, rhs) result(ret)
     </div>
   </div>
 
-  <section class="visible-xs visible-sm hidden-md">
-    <hr>
-    
-
-<div class="panel panel-default">
-  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#allmods-1">All Modules</a></h3></div>
-  <div id="allmods-1" class="panel-collapse collapse">
-    <div class="list-group">
-      
-      <a class="list-group-item" href="../module/dictionary.html">dictionary</a>
-      
-      <a class="list-group-item" href="../module/variable.html">variable</a>
-      
-    </div>
-  </div>
-</div>
-
-
-  </section>
   
     <hr>    
     </div> <!-- /container -->
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-4"><p>&copy; 2015-2017 </p></div>
+        <div class="col-xs-6 col-md-4"><p>&copy; 2015-2017 
+                                          </p></div>
         <div class="col-xs-6 col-md-4 col-md-push-4">
           <p class="text-right">
             Documentation generated by 
@@ -17205,12 +17239,13 @@ private pure function associatd_r_l3(this, rhs) result(ret)
       MathJax.Hub.Config({
         TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
         jax: ['input/TeX','input/MathML','output/HTML-CSS'],
-        extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js'],
-        'HTML-CSS': { 
-           styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: '#000000 ! important'} }
-        }
+        extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
       });
     </script>
-    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+    
   </body>
 </html>
