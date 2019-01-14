@@ -29,7 +29,7 @@ OBJECTS += $(src_OBJECTS)
 
 
 # Ensure that the objects are built with the correct module path
-$(src_FPP_SOURCES): INCLUDES += -I$(src_DIR)
+$(src_FPP_SOURCES): INCLUDES += -I. -I$(src_DIR) 
 
 .PHONY: source-src
 source-src: $(src_SOURCES)

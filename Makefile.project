@@ -43,12 +43,12 @@ endif
 .NOTPARALLEL: install-mod
 smeka-install: install-mod
 install-mod:
-	install -pm $(_OCT_rwrr) -t $(FMOD_DIR) $(F_MODS)
+	install -pm $(_OCT_rwrr) -t $(DESTDIR)$(FMOD_DIR) $(F_MODS)
 
 .NOTPARALLEL: install-settings
 smeka-install: install-settings
 install-settings:
-	install -pm $(_OCT_rwrr) -t $(BIN_DIR) settings.bash
+	install -pm $(_OCT_rwrr) -t $(DESTDIR)$(BIN_DIR) settings.bash
 
 
 # Force the deletion of both libraries

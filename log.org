@@ -14,7 +14,7 @@ may build fdict using:
 to control whether shared/static libraries are build.
 (Both may be opted individually)
 Using the new build system an installation script also exists
-  make PREFIX=... install
+  make prefix=... install
 
 
 ** Added test of speed <2015-10-17 Sat>

@@ -13,16 +13,16 @@ install: smeka-install-lib smeka-install
 .NOTPARALLEL: smeka-install-lib
 smeka-install-lib: smeka-install-init-dir
 ifneq ($(LIBRARIES),)
-	install -pm $(_OCT_rwxrxrx) -t $(LIB_DIR) $(LIBRARIES)
+	install -pm $(_OCT_rwxrxrx) -t $(DESTDIR)$(LIB_DIR) $(LIBRARIES)
 endif
 
 
 .PHONY: smeka-install-init-dir
 .NOTPARALLEL: smeka-install-init-dir
 smeka-install-init-dir:
-	-mkdir -p $(INC_DIR)
-	-mkdir -p $(LIB_DIR)
-	-mkdir -p $(BIN_DIR)
+	-mkdir -p $(DESTDIR)$(INC_DIR)
+	-mkdir -p $(DESTDIR)$(LIB_DIR)
+	-mkdir -p $(DESTDIR)$(BIN_DIR)
 
 
 # Issuing uninstall will forcefully remove the installation directory
@@ -31,14 +31,14 @@ smeka-install-init-dir:
 smeka-uninstall-install:
 	@echo ""
 	@echo "The directory tree:"
-	@echo "  $(PREFIX)"
+	@echo "  $(DESTDIR)$(prefix)"
 	@echo "will be deleted!"
 	@echo "You may abort the operation within 2 secs by pressing:"
 	@echo ""
 	@echo "  Ctrl+C or ^C"
 	@echo ""
 	@sleep 2
-	@rm -rf $(PREFIX)
+	@rm -rf $(DESTDIR)$(prefix)
 uninstall: smeka-uninstall-install
 
 

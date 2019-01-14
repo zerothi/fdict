@@ -31,7 +31,7 @@ Extract and create an `setup.make` file for compilation, a minimal
 Type `make` and a library called `libfdict.a` is created.  
 Subsequently the installation may be performed by:
 
-    make PREFIX=/papth/to/fdict install
+    make prefix=/papth/to/fdict install
 
 which installs the required files (modules and libraries) to the folder.
 

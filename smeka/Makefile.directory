@@ -16,30 +16,30 @@ endif
 
 
 # Default directories
-PREFIX ?= $(HOME)/$(PROJECT_NAME)
+prefix ?= $(HOME)/$(PROJECT_NAME)
 # Include directory (.h)
-INC_DIR ?= $(PREFIX)/include
+INC_DIR ?= $(prefix)/include
 # Module directory (.mod)
 FMOD_DIR ?= $(INC_DIR)
 # Executables
-BIN_DIR ?= $(PREFIX)/bin
+BIN_DIR ?= $(prefix)/bin
 # Library directory (.a/.so)
-LIB_DIR ?= $(PREFIX)/lib
+LIB_DIR ?= $(prefix)/lib
 # shared folder
-SHARE_DIR ?= $(PREFIX)/share
+SHARE_DIR ?= $(prefix)/share
 # Manual folder (man ***)
 MAN_DIR ?= $(SHARE_DIR)/man
 # pkg-config files
 PKG_DIR ?= $(LIB_DIR)/pkgconfig
 # additional files (settings etc.)
-ETC_DIR ?= $(PREFIX)/etc
+ETC_DIR ?= $(prefix)/etc
 
 
 # Print out settings from this file
 .PHONY: smeka-settings-dir
 smeka-settings-dir:
 	@echo "Directory settings:"
-	@echo "Prefix            (PREFIX) : $(PREFIX)"
+	@echo "Prefix            (prefix) : $(prefix)"
 	@echo "Includes         (INC_DIR) : $(INC_DIR)"
 	@echo "Fortran modules (FMOD_DIR) : $(FMOD_DIR)"
 	@echo "Binaries         (BIN_DIR) : $(BIN_DIR)"
