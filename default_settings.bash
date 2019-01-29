@@ -31,7 +31,7 @@ function var_N {
 function var_name {
     local var=$1 ; shift
     case $var in
-	VAR) _ps "type(var)" ;;
+	VAR) _ps "type(variable_t)" ;;
 	a) _ps "character(len=1)" ;;
 	s) _ps "real(sp)" ;;
 	d) _ps "real(dp)" ;;
@@ -46,7 +46,7 @@ function var_name {
     esac
 }
 #declare -A name
-#name[VAR]="type(var)"
+#name[VAR]="type(variable_t)"
 #name[a]="character(len=*)"
 #name[s]="real(sp)"
 #name[d]="real(dp)"

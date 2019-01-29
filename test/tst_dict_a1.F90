@@ -7,7 +7,7 @@ program tests
   character(len=1), target:: a(20), b(20)
   character(len=1), pointer :: d(:) => null()
   character(len=20) :: c
-  type(dict) :: da
+  type(dictionary_t) :: da
 
   a = ' '
   b = ' '

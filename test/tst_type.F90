@@ -5,7 +5,7 @@ program tst_type
 
   implicit none
   
-  type(var) :: va
+  type(variable_t) :: va
   type :: tType
      real(dp) :: b(2), c(2,2)
      integer :: i

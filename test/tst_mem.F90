@@ -34,7 +34,7 @@ contains
   subroutine mem(dealloc)
     logical, intent(in) :: dealloc
     real(dp) :: va(400,400) ! roughly 1.22 MB
-    type(var) :: v
+    type(variable_t) :: v
     call assign(v,va)
     if ( dealloc ) call delete(v)
   end subroutine mem

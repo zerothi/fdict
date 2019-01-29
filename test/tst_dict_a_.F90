@@ -5,8 +5,8 @@ program tests
   implicit none
 
   character(len=20) :: a, b
-  type(var) :: v
-  type(dict) :: da
+  type(variable_t) :: v
+  type(dictionary_t) :: da
 
   a = 'Hello world1'
   b = 'Hello world2'
