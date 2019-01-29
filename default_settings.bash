@@ -22,6 +22,9 @@ function var_N {
 #N[h]=3 # short
 #N[i]=3 # integer
 #N[l]=3 # long integer
+#N[cp]=3 # type(c_ptr)
+#N[fp]=3 # type(c_funptr)
+
 
 # Names of the different short-hands
 # DONT change these
@@ -38,6 +41,8 @@ function var_name {
 	h) _ps "integer(ih)" ;;
 	i) _ps "integer(is)" ;;
 	l) _ps "integer(il)" ;;
+	cp) _ps "type(c_ptr)" ;;
+	fp) _ps "type(c_funptr)" ;;
     esac
 }
 #declare -A name
@@ -51,6 +56,8 @@ function var_name {
 #name[h]="integer(ih)"
 #name[i]="integer(is)"
 #name[l]="integer(il)"
+#name[cp]="type(c_ptr)"
+#name[fp]="type(c_funptr)"
 
 function _ps { printf "%b" "$@" ; }
 function _psnl { printf "%b\n" "$@" ; }

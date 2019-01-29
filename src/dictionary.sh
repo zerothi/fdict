@@ -13,7 +13,7 @@ fi
 [ -e $_vpath/settings.bash ] && source $_vpath/settings.bash
 
 # The different settings used in this
-vars=(a s d c z b h i l)
+vars=(a s d c z b h i l cp fp)
 
 {
 _psnl "interface operator(.KV.)"

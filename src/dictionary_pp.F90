@@ -4,6 +4,7 @@
 ! It has the power to contain any data by using the variable type.
 module dictionary
 
+  use, intrinsic :: iso_c_binding
   use variable
 
   implicit none

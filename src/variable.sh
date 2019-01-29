@@ -13,7 +13,7 @@ fi
 [ -e $_vpath/settings.bash ] && source $_vpath/settings.bash
 
 # The different settings used in this
-vars=(a s d c z b h i l)
+vars=(a s d c z b h i l cp fp)
 
 ptr_declarations ${vars[@]} > var_declarations.inc
 {

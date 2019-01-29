@@ -27,6 +27,9 @@ module variable
   !!
   !! The assignment routine behaves like `=` (delete old value)
   !! whereas the associate routine behaves like `=>` (nullify old value).
+
+  ! Load the iso_c_binding for containing a C-pointer
+  use, intrinsic :: iso_c_binding
   
   implicit none
 
@@ -400,6 +403,7 @@ contains
        lhs(i:i) = c(i)
     end do
   end subroutine assign_get_a0_0
+
 
 #ifdef NOT_WORKING
   ! This routine is actually working, but

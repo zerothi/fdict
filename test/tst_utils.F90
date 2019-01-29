@@ -1,5 +1,7 @@
 module tst_utils
 
+  ! Since we load iso_c_binding here we expose to all tests
+  use, intrinsic :: iso_c_binding
   use variable
   use dictionary
 

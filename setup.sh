@@ -88,7 +88,7 @@ while [ $# -gt 0 ]; do
 	    quick_setup $1 $n
 	    shift ;;
 	-A)
-	    quick_setup $1 s d c z b h i l
+	    quick_setup $1 s d c z b h i l cp fp
 	    shift ;;
 	-R)
 	    quick_setup $1 s d
@@ -108,7 +108,7 @@ done
 
 
 # Forcefully set all variables 
-for v in VAR V a s d c z b h i l ; do
+for v in VAR V a s d c z b h i l cp fp ; do
     quick_setup $(var_N $v) $v
 done
 {
