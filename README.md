@@ -69,13 +69,28 @@ up to 4 dimensions and all others up to 3 dimensions you can do this
 ### variable ###
 
 Using this module one gains access to a generic type variable which
-can contain _any_ data format.
+can contain _any_ data format.  
+It currently supports the following data-types:
+
+| Type     | Precision format         | C-type             |
+|----------|--------------------------|--------------------|
+| integer  | selected_int_kind(4)     | short              |
+| integer  | selected_int_kind(9)     | int                |
+| integer  | selected_int_kind(18)    | long               |
+| real     | selected_real_kind(p=6)  | float              |
+| real     | selected_real_kind(p=15) | double             |
+| complex  | selected_real_kind(p=6)  | float complex      |
+| complex  | selected_real_kind(p=15) | double complex     |
+| C_PTR    |                          | void *             |
+| C_FUNPTR |                          | (procedure) void * |
+|----------|--------------------------|--------------------|
+
 
 Basically it is used like this:
 
     use variable
 	integer :: a(3)
-	type(var) :: v
+	type(variable_t) :: v
 	a = 2
 	call assign(v,a)
 	a = 3
@@ -85,7 +100,7 @@ Also the variable contains an abbreviation for assigning pointers to
 not copy data, but retain data locality:
 
 	integer, target :: a(3)
-	type(var) :: v
+	type(variable_t) :: v
 	a = 2
 	call associate(v,a)
 	a = 3
@@ -94,51 +109,68 @@ not copy data, but retain data locality:
 To delete a variable one simply does:
 
 	use variable
-	type(var) :: v
+	type(variable_t) :: v
 	call delete(v)
 
 However, when the variable is using pointers, instead the user can do
 
 	use variable
-	type(var) :: v
+	type(variable_t) :: v
 	call delete(v,dealloc=.false.)
 	! or
 	call nullify(v)
 
 which merely destroys the variable object and thus retains the data
 where it is. As with any other pointer arithmetic it is up to the programmer
-to ensure no memory leaks.
+to ensure there is no memory leaks.
 
 
 ### dictionary ###
 
-Using `type(var)` it becomes easy to create dictionaries in fortran.
+Using `type(variable_t)` it becomes easy to create dictionaries in fortran.
 
 Using this module we implement a dictionary which can contain _any_ data
 format using a `key:val` based formalism. The underlying data structure is a
 linked list sorted according to hash-values of the keys. Hence searching 
-for specific elements in the dictionary is _extremely_ fast. Concatenating 
-dictionaries is also very fast.
+for specific elements in the dictionary is _extremely_ fast. Searching a
+dictionary with 100 keys 300000 times takes less than 0.04 seconds on
+a Haswell laptop.
+Concatenating dictionaries is also very fast.
 
 Creating a dictionary is almost as easy as the Python equivalent:
 
 	use dictionary
-	type(dict) :: dic
-	dic = ('KEY'.kv.1)
+	type(dictionary_t) :: dict
+	dict = ('KEY'.kv.1)
 
 To extend a dictionary one uses the concatenating format:
 
-	dic = dic // ('Hello'.kv.'world') // ('No'.kv.'world')
+	dict = dict // ('Hello'.kv.'world') // ('No'.kv.'world')
 
-Again as is used by the `type(var)` one can with benefit use `.kvp.` to create
+Again as is used by the `type(variable_t)` one can with benefit use `.kvp.` to create
 the dictionary value by pointers instead of copying the content.  
 Hence doing:
 
 	real :: r(4)
-	dic = dic // ('reals'.kvp.r)
+	dict = dict // ('reals'.kvp.r)
 	r = 4
 
-will change the value in the dictionary.
+will change the value in the dictionary.  
+Note that one can easily create memory leaks with dictionaries:
+
+	use dictionary
+	type(dictionary_t) :: dict
+	dict = ('KEY'.kv.1)
+	dict = dict // ('KEY'.kv.2)
+	dict = ('KEY'.kv.3)
+
+The 1st assignement is valid since the dictionary is empty.
+The 2nd assignment concatenates and does not produce any memory leaks.
+In that case the old key `KEY` is deleted and the new value `2` is inserted.
+The 3rd assignment produces a memory leak since the pointer to the original
+dictionary gets lost. Be sure to call `call delete(dict)` prior to single
+assignments.
+
 
 Note that the dictionary can also contain _any_ data type.
 
@@ -148,7 +180,7 @@ extend the code by supplying a few custom routines.
 Intrinsically the dictionary can contain dictionaries by this:
 
 	use dictionary
-	type(dict) :: d1, d2
+	type(dictionary_t) :: d1, d2
 	d1 = ('hello'.kv.'world')
 	d2 = ('hello'.kv.'world')
 	d1 = d1 // ('dict'.kvp.d2)

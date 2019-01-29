@@ -5,7 +5,7 @@
 module variable
   !! A type-free variable module to contain _any_ data in fortran.
   !!
-  !! This module implements a generic variable-type (`type(var)`)
+  !! This module implements a generic variable-type (`type(variable_t)`)
   !! which may contain _any_ data-type (even user-derived type constructs).
   !!
   !! Its basic usage is somewhat different than the regular assignment
@@ -17,7 +17,7 @@ module variable
   !! real :: r
   !! real :: ra(10)
   !! real, target :: rb(10)
-  !! type(var) :: v
+  !! type(variable_t) :: v
   !! call assign(v, r) ! v now contains value of r
   !! call assign(v, ra) ! v now contains array with values of ra
   !! call delete(v) ! delete content
@@ -48,7 +48,7 @@ module variable
   ! Internal variable to hold the size of the "type" switch
   !> Maximum character length of the type specifier in the variable, no
   !! unique identifier may be longer than this.
-  integer, parameter, public :: VAR_TYPE_LENGTH = 4
+  integer, parameter, public :: VARIABLE_TYPE_LENGTH = 4
 
   type :: variable_t
      !! Container for _any_ fortran data-type, intrinsically handles all
@@ -59,14 +59,14 @@ module variable
      !! This enables one to retrieve the pointer position later and thus enables
      !! pointer assignments and easy copying of data.
      
-     character(len=VAR_TYPE_LENGTH) :: t = '    '
+     character(len=VARIABLE_TYPE_LENGTH) :: t = '    '
      ! The encoding placement of all data
      character(len=1), dimension(:), allocatable :: enc
   end type variable_t
   public :: variable_t
 
   interface which
-     !! Type of content stored in the variable (`character(len=VAR_TYPE_LENGTH)`)
+     !! Type of content stored in the variable (`character(len=VARIABLE_TYPE_LENGTH)`)
      module procedure which_
   end interface
   public :: which
@@ -166,7 +166,7 @@ contains
 
   elemental function which_(this) result(t)
     type(variable_t), intent(in) :: this
-    character(len=VAR_TYPE_LENGTH) :: t
+    character(len=VARIABLE_TYPE_LENGTH) :: t
     t = this%t
   end function which_
     

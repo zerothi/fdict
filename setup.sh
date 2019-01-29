@@ -29,7 +29,7 @@ function _help {
     echo "   $0 <options>"
     echo ""
     echo " Several options are allowed to control how many dimensions that will"
-    echo " be accesible in type(var) and type(dict)."
+    echo " be accesible in type(variable_t) and type(dictionary_t)."
     echo " currently you cannot ask for more than 7 dimensions without"
     echo " changing this file and settings.inc"
     echo ""

@@ -3,6 +3,22 @@
 ! Generic purpose dictionary as in any scripting language
 ! It has the power to contain any data by using the variable type.
 module dictionary
+  !! A key-value dictionary module to contain _any_ data in fortran.
+  !!
+  !! This module implements a generic dictionary-type (`type(dictionary_t)`)
+  !! which may contain _any_ data-type using the `variable_t` data-type defined
+  !! in `variable`.
+  !!
+  !! Example:
+  !!
+  !!```fortran
+  !! real :: r
+  !! real :: ra(10)
+  !! real, target :: rb(10)
+  !! type(dictionary_t) :: dict
+  !! dict = ('Value'.kv.r) // ('Pointer'.kvp.rb)
+  !!```
+  !!
 
   use, intrinsic :: iso_c_binding
   use variable
@@ -24,11 +40,12 @@ module dictionary
   ! a better interface.
   !> Maximum character length of the keys in the dictionary, no
   !! index/key can be longer than this.
-  integer, parameter, public :: DICT_KEY_LENGTH = 48
+  integer, parameter :: DICTIONARY_KEY_LENGTH = 48
+  public :: DICTIONARY_KEY_LENGTH
   
   ! A parameter returned if not found.
-  character(len=DICT_KEY_LENGTH), parameter :: DICT_NOT_FOUND = 'ERROR: key not found'
-  public :: DICT_NOT_FOUND
+  character(len=DICTIONARY_KEY_LENGTH), parameter :: DICTIONARY_NOT_FOUND = 'ERROR: key not found'
+  public :: DICTIONARY_NOT_FOUND
 
   !> The dictionary container it-self
   !!
@@ -189,7 +206,7 @@ module dictionary
   ! We need to create a linked list to create arbitrarily long dictionaries...
   ! The dictionary entry is not visible outside.
   type :: dictionary_entry_
-     character(len=DICT_KEY_LENGTH) :: key = ' '
+     character(len=DICTIONARY_KEY_LENGTH) :: key = ' '
      ! in order to extend the dictionary to contain a dictionary
      ! we simply need to add the dictionary type to the variable
      ! library.
@@ -215,7 +232,7 @@ contains
 
     ! Initialize by the FNV_OFF hash for 32 bit
     val = FNV_OFF
-    do i = 1 , min(DICT_KEY_LENGTH,len_trim(key))
+    do i = 1 , min(DICTIONARY_KEY_LENGTH,len_trim(key))
        val = ieor(val,iachar(key(i:i)))
        val = mod(val * FNV_PRIME, MAX_32)
     end do
@@ -226,7 +243,7 @@ contains
     integer :: fac
     val = 0
     fac = mod(iachar(key(1:1)),HASH_MULT)
-    do i = 1 , min(DICT_KEY_LENGTH,len_trim(key))
+    do i = 1 , min(DICTIONARY_KEY_LENGTH,len_trim(key))
        val = val + iachar(key(i:i)) + fac * iachar(key(i:i))
        fac = fac + 1
        if ( fac > HASH_MULT ) then
@@ -244,8 +261,8 @@ contains
     character(len=*), intent(in) :: key
     type(dictionary_t) :: d
     allocate(d%first)
-    if ( len_trim(key) > DICT_KEY_LENGTH ) then
-       d%first%key = key(1:DICT_KEY_LENGTH)
+    if ( len_trim(key) > DICTIONARY_KEY_LENGTH ) then
+       d%first%key = key(1:DICTIONARY_KEY_LENGTH)
     else
        d%first%key = trim(key)
     end if
@@ -258,7 +275,7 @@ contains
   ! We expect that the key will only be called on single element dictionaries...
   pure function key(d)
     type(dictionary_t), intent(in) :: d
-    character(len=DICT_KEY_LENGTH) :: key
+    character(len=DICTIONARY_KEY_LENGTH) :: key
     key = d%first%key
   end function key
 
@@ -632,7 +649,7 @@ contains
        return
     end if
 
-#ifdef DICT_DEBUG
+#ifdef DICTIONARY_DEBUG
     if ( len(this) == 0 ) then
        stop 'Something went wrong'
     end if
@@ -956,7 +973,7 @@ contains
   function d_key_which(this,key) result(t)
     type(dictionary_t), intent(in) :: this
     character(len=*), optional, intent(in) :: key
-    character(len=VAR_TYPE_LENGTH) :: t
+    character(len=VARIABLE_TYPE_LENGTH) :: t
     type(dictionary_t) :: ld
     integer :: hash, lhash
     
