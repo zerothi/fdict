@@ -72,18 +72,17 @@ Using this module one gains access to a generic type variable which
 can contain _any_ data format.  
 It currently supports the following data-types:
 
-| Type     | Precision format         | C-type             |
-|----------|--------------------------|--------------------|
-| integer  | selected_int_kind(4)     | short              |
-| integer  | selected_int_kind(9)     | int                |
-| integer  | selected_int_kind(18)    | long               |
-| real     | selected_real_kind(p=6)  | float              |
-| real     | selected_real_kind(p=15) | double             |
-| complex  | selected_real_kind(p=6)  | float complex      |
-| complex  | selected_real_kind(p=15) | double complex     |
-| C_PTR    |                          | void *             |
-| C_FUNPTR |                          | (procedure) void * |
-|----------|--------------------------|--------------------|
+| Type             | Precision format           | C-type               |
+|------------------|----------------------------|----------------------|
+| `integer`        | `selected_int_kind(4)`     | `short`              |
+| `integer`        | `selected_int_kind(9)`     | `int`                |
+| `integer`        | `selected_int_kind(18)`    | `long`               |
+| `real`           | `selected_real_kind(p=6)`  | `float`              |
+| `real`           | `selected_real_kind(p=15)` | `double`             |
+| `complex`        | `selected_real_kind(p=6)`  | `float complex`      |
+| `complex`        | `selected_real_kind(p=15)` | `double complex`     |
+| `type(c_ptr)`    |                            | `void *`             |
+| `type(c_funptr)` |                            | (procedure) `void *` |
 
 
 Basically it is used like this:
