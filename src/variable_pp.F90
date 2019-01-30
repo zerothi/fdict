@@ -27,6 +27,9 @@ module variable
   !!
   !! The assignment routine behaves like `=` (delete old value)
   !! whereas the associate routine behaves like `=>` (nullify old value).
+  !!
+  !! The data-types allowed in this type is *not* limited by this
+  !! module, but we currently allow integers, reals, complex and C-pointers.
 
   ! Load the iso_c_binding for containing a C-pointer
   use, intrinsic :: iso_c_binding

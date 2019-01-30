@@ -34,13 +34,15 @@ function _help {
     echo " changing this file and settings.inc"
     echo ""
     echo " The following options control how the dimensions are allocated:"
-    for v in -s -d -c -z -b -h -i -l ; do
+    for v in -s -d -c -z -b -h -i -l -cp -fp ; do
 	echo "   $v <num> : allows 0-<num> dimensions of $(var_name ${v:1})"
     done
     echo "   -A <num> : short for all the above options simultaneously"
     echo "   -R <num> : short for -s <num> -d <num>"
     echo "   -C <num> : short for -c <num> -z <num>"
     echo "   -I <num> : short for -h <num> -i <num> -l <num>"
+    echo "   -I <num> : short for -h <num> -i <num> -l <num>"
+    echo "   -P <num> : short for -cp <num> -fp <num>"
     echo " The above options can be combined with the last option taking precedence."
     echo ""
     echo "Example"
@@ -98,6 +100,9 @@ while [ $# -gt 0 ]; do
 	    shift ;;
 	-I)
 	    quick_setup $1 h i l
+	    shift ;;
+	-P)
+	    quick_setup $1 cp fp
 	    shift ;;
 	-help)
 	    _help ; exit ;;

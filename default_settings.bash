@@ -7,6 +7,7 @@ function var_N {
     case $var in
 	VAR) _ps 0 ;;
 	a) _ps 1 ;;
+	cp|fp) _ps 1 ;;
 	*) _ps 3 ;;
     esac
 }
