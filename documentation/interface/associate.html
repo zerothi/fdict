@@ -42,7 +42,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../index.html">fdict <small>0.6.0</small></a>
+          <a class="navbar-brand" href="../index.html">fdict <small>0.7.0</small></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -115,7 +115,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="<p>14.3% of total for procedures.</p>Including implementation: 1506 statements, 311.8% of total for procedures.">69 statements</a>
+    title="<p>14.5% of total for procedures.</p>Including implementation: 1686 statements, 317.5% of total for procedures.">77 statements</a>
      </li> 
      
      
@@ -311,6 +311,22 @@
       
       <a class="list-group-item" href="../interface/associate.html#moduleprocedure-associate_set_l3">associate_set_l3</a>
       
+      <a class="list-group-item" href="../interface/associate.html#moduleprocedure-associate_get_cp0">associate_get_cp0</a>
+      
+      <a class="list-group-item" href="../interface/associate.html#moduleprocedure-associate_set_cp0">associate_set_cp0</a>
+      
+      <a class="list-group-item" href="../interface/associate.html#moduleprocedure-associate_get_cp1">associate_get_cp1</a>
+      
+      <a class="list-group-item" href="../interface/associate.html#moduleprocedure-associate_set_cp1">associate_set_cp1</a>
+      
+      <a class="list-group-item" href="../interface/associate.html#moduleprocedure-associate_get_fp0">associate_get_fp0</a>
+      
+      <a class="list-group-item" href="../interface/associate.html#moduleprocedure-associate_set_fp0">associate_set_fp0</a>
+      
+      <a class="list-group-item" href="../interface/associate.html#moduleprocedure-associate_get_fp1">associate_get_fp1</a>
+      
+      <a class="list-group-item" href="../interface/associate.html#moduleprocedure-associate_set_fp1">associate_set_fp1</a>
+      
     </div>
   </div>
 </div>
@@ -492,6 +508,22 @@
       
       <a class="list-group-item" href="../interface/associate.html#moduleprocedure-associate_set_l3">associate_set_l3</a>
       
+      <a class="list-group-item" href="../interface/associate.html#moduleprocedure-associate_get_cp0">associate_get_cp0</a>
+      
+      <a class="list-group-item" href="../interface/associate.html#moduleprocedure-associate_set_cp0">associate_set_cp0</a>
+      
+      <a class="list-group-item" href="../interface/associate.html#moduleprocedure-associate_get_cp1">associate_get_cp1</a>
+      
+      <a class="list-group-item" href="../interface/associate.html#moduleprocedure-associate_set_cp1">associate_set_cp1</a>
+      
+      <a class="list-group-item" href="../interface/associate.html#moduleprocedure-associate_get_fp0">associate_get_fp0</a>
+      
+      <a class="list-group-item" href="../interface/associate.html#moduleprocedure-associate_set_fp0">associate_set_fp0</a>
+      
+      <a class="list-group-item" href="../interface/associate.html#moduleprocedure-associate_get_fp1">associate_get_fp1</a>
+      
+      <a class="list-group-item" href="../interface/associate.html#moduleprocedure-associate_set_fp1">associate_set_fp1</a>
+      
     </div>
   </div>
 </div>
@@ -540,7 +572,7 @@ private subroutine associate_var(this, rhs, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -555,7 +587,7 @@ private subroutine associate_var(this, rhs, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -651,7 +683,7 @@ private subroutine associate_get_a1(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -732,7 +764,7 @@ private subroutine associate_set_a1(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -828,7 +860,7 @@ private subroutine associate_get_s0(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -909,7 +941,7 @@ private subroutine associate_set_s0(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -1005,7 +1037,7 @@ private subroutine associate_get_s1(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -1086,7 +1118,7 @@ private subroutine associate_set_s1(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -1182,7 +1214,7 @@ private subroutine associate_get_s2(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -1263,7 +1295,7 @@ private subroutine associate_set_s2(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -1359,7 +1391,7 @@ private subroutine associate_get_s3(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -1440,7 +1472,7 @@ private subroutine associate_set_s3(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -1536,7 +1568,7 @@ private subroutine associate_get_d0(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -1617,7 +1649,7 @@ private subroutine associate_set_d0(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -1713,7 +1745,7 @@ private subroutine associate_get_d1(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -1794,7 +1826,7 @@ private subroutine associate_set_d1(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -1890,7 +1922,7 @@ private subroutine associate_get_d2(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -1971,7 +2003,7 @@ private subroutine associate_set_d2(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -2067,7 +2099,7 @@ private subroutine associate_get_d3(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -2148,7 +2180,7 @@ private subroutine associate_set_d3(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -2244,7 +2276,7 @@ private subroutine associate_get_c0(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -2325,7 +2357,7 @@ private subroutine associate_set_c0(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -2421,7 +2453,7 @@ private subroutine associate_get_c1(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -2502,7 +2534,7 @@ private subroutine associate_set_c1(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -2598,7 +2630,7 @@ private subroutine associate_get_c2(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -2679,7 +2711,7 @@ private subroutine associate_set_c2(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -2775,7 +2807,7 @@ private subroutine associate_get_c3(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -2856,7 +2888,7 @@ private subroutine associate_set_c3(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -2952,7 +2984,7 @@ private subroutine associate_get_z0(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -3033,7 +3065,7 @@ private subroutine associate_set_z0(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -3129,7 +3161,7 @@ private subroutine associate_get_z1(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -3210,7 +3242,7 @@ private subroutine associate_set_z1(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -3306,7 +3338,7 @@ private subroutine associate_get_z2(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -3387,7 +3419,7 @@ private subroutine associate_set_z2(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -3483,7 +3515,7 @@ private subroutine associate_get_z3(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -3564,7 +3596,7 @@ private subroutine associate_set_z3(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -3660,7 +3692,7 @@ private subroutine associate_get_b0(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -3741,7 +3773,7 @@ private subroutine associate_set_b0(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -3837,7 +3869,7 @@ private subroutine associate_get_b1(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -3918,7 +3950,7 @@ private subroutine associate_set_b1(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -4014,7 +4046,7 @@ private subroutine associate_get_b2(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -4095,7 +4127,7 @@ private subroutine associate_set_b2(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -4191,7 +4223,7 @@ private subroutine associate_get_b3(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -4272,7 +4304,7 @@ private subroutine associate_set_b3(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -4368,7 +4400,7 @@ private subroutine associate_get_h0(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -4449,7 +4481,7 @@ private subroutine associate_set_h0(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -4545,7 +4577,7 @@ private subroutine associate_get_h1(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -4626,7 +4658,7 @@ private subroutine associate_set_h1(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -4722,7 +4754,7 @@ private subroutine associate_get_h2(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -4803,7 +4835,7 @@ private subroutine associate_set_h2(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -4899,7 +4931,7 @@ private subroutine associate_get_h3(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -4980,7 +5012,7 @@ private subroutine associate_set_h3(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -5076,7 +5108,7 @@ private subroutine associate_get_i0(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -5157,7 +5189,7 @@ private subroutine associate_set_i0(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -5253,7 +5285,7 @@ private subroutine associate_get_i1(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -5334,7 +5366,7 @@ private subroutine associate_set_i1(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -5430,7 +5462,7 @@ private subroutine associate_get_i2(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -5511,7 +5543,7 @@ private subroutine associate_set_i2(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -5607,7 +5639,7 @@ private subroutine associate_get_i3(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -5688,7 +5720,7 @@ private subroutine associate_set_i3(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -5784,7 +5816,7 @@ private subroutine associate_get_l0(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -5865,7 +5897,7 @@ private subroutine associate_set_l0(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -5961,7 +5993,7 @@ private subroutine associate_get_l1(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -6042,7 +6074,7 @@ private subroutine associate_set_l1(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -6138,7 +6170,7 @@ private subroutine associate_get_l2(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -6219,7 +6251,7 @@ private subroutine associate_set_l2(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -6315,7 +6347,7 @@ private subroutine associate_get_l3(lhs, this, dealloc, success)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -6396,7 +6428,7 @@ private subroutine associate_set_l3(this, rhs, dealloc)
   
 <tr>
   
-  <td><span class="anchor" ></span>type(<a href='../type/var.html'>var</a>),</td>
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -6446,6 +6478,714 @@ private subroutine associate_set_l3(this, rhs, dealloc)
   </div>
 
    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-associate_get_cp0"></span><h3>
+private subroutine associate_get_cp0(lhs, this, dealloc, success)
+    
+    
+   
+</h3></div>
+  <div class="panel-body">
+       
+    
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(c_ptr),</td>
+  <td></td>
+  <td></td>
+  
+  <td>pointer</td><td>::</td>
+  <td><strong>lhs</strong></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>this</strong></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>dealloc</strong></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  </div>
+  </div>
+
+   
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-associate_set_cp0"></span><h3>
+private subroutine associate_set_cp0(this, rhs, dealloc)
+    
+    
+   
+</h3></div>
+  <div class="panel-body">
+       
+    
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
+  <td>intent(inout)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>this</strong></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(c_ptr),</td>
+  <td>intent(in),</td>
+  <td></td>
+  
+  <td>target</td><td>::</td>
+  <td><strong>rhs</strong></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>dealloc</strong></td><td></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  </div>
+  </div>
+
+   
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-associate_get_cp1"></span><h3>
+private subroutine associate_get_cp1(lhs, this, dealloc, success)
+    
+    
+   
+</h3></div>
+  <div class="panel-body">
+       
+    
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(c_ptr),</td>
+  <td></td>
+  <td></td>
+  
+  <td>pointer, dimension(:)</td><td>::</td>
+  <td><strong>lhs</strong></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>this</strong></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>dealloc</strong></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  </div>
+  </div>
+
+   
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-associate_set_cp1"></span><h3>
+private subroutine associate_set_cp1(this, rhs, dealloc)
+    
+    
+   
+</h3></div>
+  <div class="panel-body">
+       
+    
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
+  <td>intent(inout)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>this</strong></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(c_ptr),</td>
+  <td>intent(in),</td>
+  <td></td>
+  
+  <td>dimension(:), target</td><td>::</td>
+  <td><strong>rhs</strong></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>dealloc</strong></td><td></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  </div>
+  </div>
+
+   
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-associate_get_fp0"></span><h3>
+private subroutine associate_get_fp0(lhs, this, dealloc, success)
+    
+    
+   
+</h3></div>
+  <div class="panel-body">
+       
+    
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(c_funptr),</td>
+  <td></td>
+  <td></td>
+  
+  <td>pointer</td><td>::</td>
+  <td><strong>lhs</strong></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>this</strong></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>dealloc</strong></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  </div>
+  </div>
+
+   
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-associate_set_fp0"></span><h3>
+private subroutine associate_set_fp0(this, rhs, dealloc)
+    
+    
+   
+</h3></div>
+  <div class="panel-body">
+       
+    
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
+  <td>intent(inout)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>this</strong></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(c_funptr),</td>
+  <td>intent(in),</td>
+  <td></td>
+  
+  <td>target</td><td>::</td>
+  <td><strong>rhs</strong></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>dealloc</strong></td><td></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  </div>
+  </div>
+
+   
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-associate_get_fp1"></span><h3>
+private subroutine associate_get_fp1(lhs, this, dealloc, success)
+    
+    
+   
+</h3></div>
+  <div class="panel-body">
+       
+    
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(c_funptr),</td>
+  <td></td>
+  <td></td>
+  
+  <td>pointer, dimension(:)</td><td>::</td>
+  <td><strong>lhs</strong></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>this</strong></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>dealloc</strong></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(out),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>success</strong></td><td></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  </div>
+  </div>
+
+   
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-associate_set_fp1"></span><h3>
+private subroutine associate_set_fp1(this, rhs, dealloc)
+    
+    
+   
+</h3></div>
+  <div class="panel-body">
+       
+    
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(<a href='../type/variable_t.html'>variable_t</a>),</td>
+  <td>intent(inout)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>this</strong></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(c_funptr),</td>
+  <td>intent(in),</td>
+  <td></td>
+  
+  <td>dimension(:), target</td><td>::</td>
+  <td><strong>rhs</strong></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(in),</td>
+  <td>optional</td>
+  
+  <td></td><td>::</td>
+  <td><strong>dealloc</strong></td><td></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  </div>
+  </div>
+
+   
      
 
  </div>
@@ -6457,7 +7197,7 @@ private subroutine associate_set_l3(this, rhs, dealloc)
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-4"><p>&copy; 2015-2017 
+        <div class="col-xs-6 col-md-4"><p>&copy; 2015-2019 
                                           </p></div>
         <div class="col-xs-6 col-md-4 col-md-push-4">
           <p class="text-right">
