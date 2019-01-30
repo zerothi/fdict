@@ -32,13 +32,13 @@ program tests
 contains
 
   subroutine after_mem()
-    type(dict) :: dic
+    type(dictionary_t) :: dic
     dic = 'hello'.kv.va
     call mem(dic)
   end subroutine after_mem
     
   subroutine mem(dic)
-    type(dict), intent(in) :: dic
+    type(dictionary_t), intent(in) :: dic
 
     integer :: i, N
     ! do nothing with the dictionary, check that it gets deleted

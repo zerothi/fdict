@@ -6,7 +6,7 @@ program tst_dict
 
   integer, parameter :: N = 26
   ! create a really long dict (N**3)
-  type(dict) :: d1,d2
+  type(dictionary_t) :: d1,d2
   character(len=10) :: key
   integer :: i,j,k,l,tot
 

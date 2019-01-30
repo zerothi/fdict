@@ -5,7 +5,7 @@
 module variable
   !! A type-free variable module to contain _any_ data in fortran.
   !!
-  !! This module implements a generic variable-type (`type(var)`)
+  !! This module implements a generic variable-type (`type(variable_t)`)
   !! which may contain _any_ data-type (even user-derived type constructs).
   !!
   !! Its basic usage is somewhat different than the regular assignment
@@ -17,7 +17,7 @@ module variable
   !! real :: r
   !! real :: ra(10)
   !! real, target :: rb(10)
-  !! type(var) :: v
+  !! type(variable_t) :: v
   !! call assign(v, r) ! v now contains value of r
   !! call assign(v, ra) ! v now contains array with values of ra
   !! call delete(v) ! delete content
@@ -27,6 +27,12 @@ module variable
   !!
   !! The assignment routine behaves like `=` (delete old value)
   !! whereas the associate routine behaves like `=>` (nullify old value).
+  !!
+  !! The data-types allowed in this type is *not* limited by this
+  !! module, but we currently allow integers, reals, complex and C-pointers.
+
+  ! Load the iso_c_binding for containing a C-pointer
+  use, intrinsic :: iso_c_binding
   
   implicit none
 
@@ -45,9 +51,9 @@ module variable
   ! Internal variable to hold the size of the "type" switch
   !> Maximum character length of the type specifier in the variable, no
   !! unique identifier may be longer than this.
-  integer, parameter, public :: VAR_TYPE_LENGTH = 4
+  integer, parameter, public :: VARIABLE_TYPE_LENGTH = 4
 
-  type :: var
+  type :: variable_t
      !! Container for _any_ fortran data-type, intrinsically handles all
      !! from fortran and any external type may be added via external routines.
      !!
@@ -56,14 +62,14 @@ module variable
      !! This enables one to retrieve the pointer position later and thus enables
      !! pointer assignments and easy copying of data.
      
-     character(len=VAR_TYPE_LENGTH) :: t = '    '
+     character(len=VARIABLE_TYPE_LENGTH) :: t = '    '
      ! The encoding placement of all data
      character(len=1), dimension(:), allocatable :: enc
-  end type var
-  public :: var
+  end type variable_t
+  public :: variable_t
 
   interface which
-     !! Type of content stored in the variable (`character(len=VAR_TYPE_LENGTH)`)
+     !! Type of content stored in the variable (`character(len=VARIABLE_TYPE_LENGTH)`)
      module procedure which_
   end interface
   public :: which
@@ -152,32 +158,32 @@ module variable
   end interface cunpack
   public :: cunpack
 
-#include "var_interface.inc"
+#include "variable_interface_.inc"
 
 contains
 
   subroutine print_(this)
-    type(var), intent(in) :: this
+    type(variable_t), intent(in) :: this
     write(*,'(t2,a)') this%t
   end subroutine print_
 
   elemental function which_(this) result(t)
-    type(var), intent(in) :: this
-    character(len=VAR_TYPE_LENGTH) :: t
+    type(variable_t), intent(in) :: this
+    character(len=VARIABLE_TYPE_LENGTH) :: t
     t = this%t
   end function which_
     
   subroutine delete_(this,dealloc)
-    type(var), intent(inout) :: this
+    type(variable_t), intent(inout) :: this
     logical, intent(in), optional :: dealloc
     logical :: ldealloc
-#include "var_declarations.inc"
+#include "variable_declarations_.inc"
     integer :: i
 
     ldealloc = .true.
     if ( present(dealloc) ) ldealloc = dealloc
     if ( ldealloc ) then
-#include "var_delete.inc"
+#include "variable_delete_.inc"
        
        if ( this%t == 'a-' ) then
           pa_ = transfer(this%enc,pa_)
@@ -191,7 +197,7 @@ contains
   end subroutine delete_
 
   elemental subroutine nullify_(this)
-    type(var), intent(inout) :: this
+    type(variable_t), intent(inout) :: this
     this%t = '  '
     if ( allocated(this%enc) ) deallocate(this%enc)
   end subroutine nullify_
@@ -206,7 +212,7 @@ contains
   ! If the size of the returning enc is not 
   ! big enough it will be reset to ' '
   subroutine enc_(this,enc)
-    type(var), intent(in) :: this
+    type(variable_t), intent(in) :: this
     character(len=1), intent(out) :: enc(:)
     integer :: i
     if ( this%t == '  ' ) then
@@ -223,7 +229,7 @@ contains
   end subroutine enc_
 
   function size_enc_(this) result(len)
-    type(var), intent(in) :: this
+    type(variable_t), intent(in) :: this
     integer :: len
     if ( this%t == '  ' ) then
        len = 0
@@ -249,7 +255,7 @@ contains
   ! We cannot know for sure whether the encoding actually terminates
   ! in a bit corresponding to char(' ')!
   subroutine associate_type_(this,enc,dealloc)
-    type(var), intent(inout) :: this
+    type(variable_t), intent(inout) :: this
     character(len=1), intent(in) :: enc(:)
     logical, intent(in), optional :: dealloc
     logical :: ldealloc
@@ -289,12 +295,12 @@ contains
   end function cunpack_
   
   subroutine assign_var(this,rhs,dealloc)
-    type(var), intent(inout) :: this
-    type(var), intent(in) :: rhs
+    type(variable_t), intent(inout) :: this
+    type(variable_t), intent(in) :: rhs
     logical, intent(in), optional :: dealloc
     logical :: ldealloc
     integer :: i
-#include "var_declarations2.inc"
+#include "variable_declarations2_.inc"
     ! collect deallocation option (default as =)
     ! ASSIGNMENT in fortran is per default destructive
     ldealloc = .true.
@@ -307,7 +313,7 @@ contains
     end if
     this%t = rhs%t
     ! First allocate the LHS
-#include "var_var_alloc.inc"
+#include "variable_variable_alloc_.inc"
 
     if ( this%t == 'a-' ) then ! character(len=*)
        pa__2 = transfer(rhs%enc, pa__2)
@@ -321,13 +327,13 @@ contains
     end if
 
     ! copy over RHS and Save encoding
-#include "var_var_set.inc"
+#include "variable_variable_set_.inc"
 
   end subroutine assign_var
 
   subroutine associate_var(this,rhs,dealloc,success)
-    type(var), intent(inout) :: this
-    type(var), intent(in) :: rhs
+    type(variable_t), intent(inout) :: this
+    type(variable_t), intent(in) :: rhs
     logical, intent(in), optional :: dealloc
     logical, intent(out), optional :: success
     logical :: ldealloc
@@ -351,14 +357,14 @@ contains
   end subroutine associate_var
 
   pure function associatd_var(this,rhs) result(ret)
-    type(var), intent(in) :: this
-    type(var), intent(in) :: rhs
+    type(variable_t), intent(in) :: this
+    type(variable_t), intent(in) :: rhs
     logical :: ret
-#include "var_declarations2.inc"
+#include "variable_declarations2_.inc"
     ret = this%t==rhs%t
     if ( .not. ret ) return
     
-#include "var_var_assoc.inc"
+#include "variable_variable_assoc_.inc"
     
   end function associatd_var
 
@@ -371,7 +377,7 @@ contains
   ! This ensures that it can be retrieved (via associate)
   ! and mangled through another variable type
   subroutine assign_set_a0_0(this,rhs,dealloc)
-    type(var), intent(inout) :: this
+    type(variable_t), intent(inout) :: this
     character(len=*), intent(in) :: rhs
     logical, intent(in), optional :: dealloc
     character(len=1), pointer :: c(:) => null()
@@ -386,7 +392,7 @@ contains
   end subroutine assign_set_a0_0
   subroutine assign_get_a0_0(lhs,this,success)
     character(len=*), intent(out) :: lhs
-    type(var), intent(inout) :: this
+    type(variable_t), intent(inout) :: this
     logical, intent(out), optional :: success
     character(len=1), pointer :: c(:) => null()
     logical :: lsuccess
@@ -401,12 +407,13 @@ contains
     end do
   end subroutine assign_get_a0_0
 
+
 #ifdef NOT_WORKING
   ! This routine is actually working, but
   ! we do not allow it.
   ! One should use the len=1 version of the characters.
   subroutine associate_set_a0_0(this,rhs,dealloc)
-    type(var), intent(inout) :: this
+    type(variable_t), intent(inout) :: this
     character(len=*), intent(in), target :: rhs
     logical, intent(in), optional :: dealloc
     logical :: ldealloc
@@ -441,7 +448,7 @@ contains
   !! THIS IS NOT WORKING
   subroutine associate_get_a0_0(lhs,this,dealloc,success)
     character(len=*), pointer :: lhs
-    type(var), intent(in) :: this
+    type(variable_t), intent(in) :: this
     logical, intent(in), optional :: dealloc
     logical, intent(out), optional :: success
     logical :: ldealloc, lsuccess
@@ -482,7 +489,7 @@ contains
   end subroutine associate_get_a0_0
 #endif
 
-#include "var_funcs.inc"
+#include "variable_funcs_.inc"
   
 end module variable
 

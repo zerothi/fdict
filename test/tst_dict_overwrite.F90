@@ -4,7 +4,7 @@ program test_dict
 
   implicit none
 
-  type(dict) :: dic
+  type(dictionary_t) :: dic
   integer :: i, N, step
 
   ! fill dictionary

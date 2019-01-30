@@ -31,9 +31,9 @@ contains
 
   subroutine mem_rem(dealloc)
     logical, intent(in) :: dealloc
-    type(dict) :: d
+    type(dictionary_t) :: d
     real(dp) :: va(400,400) ! roughly 1.22 MB
-    type(var) :: v
+    type(variable_t) :: v
     va = 0.
     call extend(d,'hello'.kv.va)
     call associate(v,d,'hello')

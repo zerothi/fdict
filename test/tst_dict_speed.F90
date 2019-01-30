@@ -6,7 +6,7 @@ program tst_dict
 
   integer, parameter :: N = 100, ITT = 300000
   ! create a really long dict (N**3)
-  type(dict) :: d
+  type(dictionary_t) :: d
   character(len=10) :: key
   integer :: i,j, itot
   real :: tic, toc, tot(N), mean, std

@@ -13,9 +13,9 @@ fi
 [ -e $_vpath/settings.bash ] && source $_vpath/settings.bash
 
 # The different settings used in this
-vars=(a s d c z b h i l)
+vars=(a s d c z b h i l cp fp)
 
-ptr_declarations ${vars[@]} > var_declarations.inc
+ptr_declarations ${vars[@]} > variable_declarations_.inc
 {
     _psnl "type :: pta_"
     _psnl " type(pta__), pointer :: p(:) => null()"
@@ -24,8 +24,8 @@ ptr_declarations ${vars[@]} > var_declarations.inc
     _psnl " character(len=1), pointer :: p => null()"
     _psnl "end type pta__"
     _psnl "type(pta_) :: pa_"
-} >> var_declarations.inc
-ptr_declarations -count 2 ${vars[@]} > var_declarations2.inc
+} >> variable_declarations_.inc
+ptr_declarations -count 2 ${vars[@]} > variable_declarations2_.inc
 {
     _psnl "type :: pta_"
     _psnl " type(pta__), pointer :: p(:) => null()"
@@ -34,7 +34,7 @@ ptr_declarations -count 2 ${vars[@]} > var_declarations2.inc
     _psnl " character(len=1), pointer :: p => null()"
     _psnl "end type pta__"
     _psnl "type(pta_) :: pa__1, pa__2"
-} >> var_declarations2.inc
+} >> variable_declarations2_.inc
 
 # Print out to the mod file
 {
@@ -80,7 +80,7 @@ _psnl "end interface"
 _psnl "public :: operator(.$sub.)"
 done
 fi
-} > var_interface.inc
+} > variable_interface_.inc
 
 
 {
@@ -97,7 +97,7 @@ for v in ${vars[@]} ; do
 	_psnl "end if"
     done
 done
-} > var_delete.inc
+} > variable_delete_.inc
 
 
 {
@@ -115,7 +115,7 @@ for v in ${vars[@]} ; do
     done
     _psnl "endif"
 done
-} > var_var_alloc.inc
+} > variable_variable_alloc_.inc
 
 
 {
@@ -136,7 +136,7 @@ done
 _psnl "if ( this%t == 'USER' ) then"
 _psnl "write(*,'(a)') 'var: Cannot assign a UT, USE call associate(..)'"
 _psnl "end if"
-} > var_var_set.inc
+} > variable_variable_set_.inc
 
 
 {
@@ -156,7 +156,7 @@ done
 _psnl "if ( this%t == 'USER' ) then"
 _psnl "ret = all(this%enc == rhs%enc)"
 _psnl "end if"
-} > var_var_assoc.inc
+} > variable_variable_assoc_.inc
 
 
 {
@@ -173,11 +173,11 @@ for v in ${vars[@]} ; do
 	fi
 	_psnl "#define VAR $v$d"
 	_psnl "#define DIM $d"
-	_psnl '#include "var_funcs_inc.inc"'
+	_psnl '#include "variable_funcs_inc.inc"'
 	_psnl "#undef VAR"
 	_psnl "#undef DIM"
 	_psnl "#undef DIMS"
     done
     _psnl "#undef VAR_TYPE"
 done
-} > var_funcs.inc
+} > variable_funcs_.inc

@@ -5,7 +5,7 @@ program test
 
   implicit none
   
-  type(var) :: va
+  type(variable_t) :: va
   character(len=20) :: ca, sa
   character, pointer :: pa(:) => null()
   character :: aa(20)

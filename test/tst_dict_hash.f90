@@ -7,7 +7,7 @@ program tests
   integer :: iu, iostat
   character(len=200) :: line
   integer, target :: i0
-  type(dict) :: d
+  type(dictionary_t) :: d
 
   ! initialize
   line = ' '

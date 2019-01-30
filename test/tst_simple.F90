@@ -5,14 +5,14 @@ program test1
 
   implicit none
   
-  type(var) :: va
+  type(variable_t) :: va
   real(dp) :: a, b(2), c(2,2)
   real(dp), pointer :: pa =>null()
   character(len=15) :: sa, sb
   character(len=20) :: ca, cb
   logical :: success
 
-#include "var_declarations.inc"
+#include "variable_declarations_.inc"
   
   a = 1.0_dp
   b = 2._dp

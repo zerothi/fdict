@@ -29,18 +29,20 @@ function _help {
     echo "   $0 <options>"
     echo ""
     echo " Several options are allowed to control how many dimensions that will"
-    echo " be accesible in type(var) and type(dict)."
+    echo " be accesible in type(variable_t) and type(dictionary_t)."
     echo " currently you cannot ask for more than 7 dimensions without"
     echo " changing this file and settings.inc"
     echo ""
     echo " The following options control how the dimensions are allocated:"
-    for v in -s -d -c -z -b -h -i -l ; do
+    for v in -s -d -c -z -b -h -i -l -cp -fp ; do
 	echo "   $v <num> : allows 0-<num> dimensions of $(var_name ${v:1})"
     done
     echo "   -A <num> : short for all the above options simultaneously"
     echo "   -R <num> : short for -s <num> -d <num>"
     echo "   -C <num> : short for -c <num> -z <num>"
     echo "   -I <num> : short for -h <num> -i <num> -l <num>"
+    echo "   -I <num> : short for -h <num> -i <num> -l <num>"
+    echo "   -P <num> : short for -cp <num> -fp <num>"
     echo " The above options can be combined with the last option taking precedence."
     echo ""
     echo "Example"
@@ -88,7 +90,7 @@ while [ $# -gt 0 ]; do
 	    quick_setup $1 $n
 	    shift ;;
 	-A)
-	    quick_setup $1 s d c z b h i l
+	    quick_setup $1 s d c z b h i l cp fp
 	    shift ;;
 	-R)
 	    quick_setup $1 s d
@@ -99,6 +101,9 @@ while [ $# -gt 0 ]; do
 	-I)
 	    quick_setup $1 h i l
 	    shift ;;
+	-P)
+	    quick_setup $1 cp fp
+	    shift ;;
 	-help)
 	    _help ; exit ;;
 	*)
@@ -108,7 +113,7 @@ done
 
 
 # Forcefully set all variables 
-for v in VAR V a s d c z b h i l ; do
+for v in VAR V a s d c z b h i l cp fp ; do
     quick_setup $(var_N $v) $v
 done
 {

@@ -6,10 +6,10 @@ program test_dict
 
   real :: a, b(2),c(2,2)
   real, pointer :: d => null()
-  type(var) :: v
-  type(dict) :: dic
+  type(variable_t) :: v
+  type(dictionary_t) :: dic
 
-#include "var_declarations.inc"
+#include "variable_declarations_.inc"
 
   a = 1.
   b = 2.
