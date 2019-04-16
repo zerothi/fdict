@@ -58,7 +58,7 @@ install-header: fdict.inc
 
 # Force the deletion of both libraries
 clean:
-	-rm -f $(FDICT_LIB_STATIC) $(FDICT_LIB_SHARED) settings.bash
+	-rm -f $(FDICT_LIB_STATIC) $(FDICT_LIB_SHARED) settings.bash fdict.inc
 
 
 settings.bash:

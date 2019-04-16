@@ -42,8 +42,8 @@ $(src_FPP_SOURCES): INCLUDES += -I$(src_DIR)
 .PHONY: source-src
 source-src: $(src_SOURCES) fdict.inc
 	mkdir -p $(SOURCES_DIR)/src
-	mv $(src_SOURCES) $(SOURCES_DIR)/src
-	mv fdict.inc $(SOURCES_DIR)/src
+	mv $(src_SOURCES) fdict.inc $(SOURCES_DIR)/src
+
 
 .PHONY: clean-src
 clean-src:
