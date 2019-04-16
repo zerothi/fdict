@@ -44,6 +44,18 @@ To link fdict to your program the following can be used in a `Makefile`
     FDICT_LIBS  = -L$(FDICT_PATH) -lfdict
     FDICT_INC   = -I$(FDICT_PATH)
 
+The file `fdict.inc` may be included in projects which exposes the following
+definitions:
+
+    _FDICT_MAJOR_ 0
+    _FDICT_MINOR_ 7
+    _FDICT_MICRO_ 0
+    _FDICT_VERSION_ 0.7.0
+
+which may be used in functional codes to utilize the correct interfaces.
+This is mainly meant as a feature usable when the fdict interface and
+e.g. modules change names.
+
 
 #### Controlling interface parameters ####
 

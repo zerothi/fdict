@@ -20,9 +20,17 @@ dictionary.f90: dictionary_pp.F90 dictionary.sh settings.inc dictionary_funcs_in
 	VPATH="$(TOP_DIR)" $(src_DIR)/dictionary.sh
 	$(FPP) $(FPPFLAGS) $(INCLUDES) -I$(src_DIR) -I. $< | sed -f $(src_DIR)/filter.sed > $@
 
+fdict.inc:
+	@echo "#ifndef _FDICT_INCLUDE_DEFINED" > $@
+	@echo "#define _FDICT_INCLUDE_DEFINED" >> $@
+	@echo "#define _FDICT_MAJOR_ $(PROJECT_MAJOR)" >> $@
+	@echo "#define _FDICT_MINOR_ $(PROJECT_MINOR)" >> $@
+	@echo "#define _FDICT_MICRO_ $(PROJECT_MICRO)" >> $@
+	@echo "#define _FDICT_VERSION_ $(PROJECT_VERSION)" >> $@
+	@echo "#endif" >> $@
 
 # Define objects that needs compilation
-SOURCES += $(src_SOURCES)
+SOURCES += $(src_SOURCES) fdict.inc
 FPP_SOURCES += $(src_FPP_SOURCES)
 F_MODS  += $(src_MODS)
 OBJECTS += $(src_OBJECTS)
@@ -32,10 +40,10 @@ OBJECTS += $(src_OBJECTS)
 $(src_FPP_SOURCES): INCLUDES += -I$(src_DIR)
 
 .PHONY: source-src
-source-src: $(src_SOURCES)
+source-src: $(src_SOURCES) fdict.inc
 	mkdir -p $(SOURCES_DIR)/src
-	mv $(src_FPP_SOURCES) $(SOURCES_DIR)/src
-	@rm *.inc
+	mv $(src_SOURCES) $(SOURCES_DIR)/src
+	mv fdict.inc $(SOURCES_DIR)/src
 
 .PHONY: clean-src
 clean-src:

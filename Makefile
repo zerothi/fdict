@@ -31,7 +31,7 @@ include $(TOP_DIR)/src/Makefile.inc
 $(LIBRARIES): $(OBJECTS)
 
 # Create target
-lib: settings.bash $(LIBRARIES)
+lib: settings.bash fdict.inc $(LIBRARIES)
 
 
 # Include the makefile in the test directory
@@ -46,12 +46,12 @@ include $(TOP_DIR)/test/Makefile.inc
 ifeq ($(TOP_DIR),.)
 copy:
 	@echo ""
-	@echo "make copy does not work when executed from the top ncdf directory"
+	@echo "make copy does not work when executed from the top fdict directory"
 	@echo "Please create an object directory with an appropriate Makefile"
 	@echo ""
 else
 copy:
-	cp $(SOURCES_DIR)/src/*.f90 .
+	cp $(SOURCES_DIR)/src/*.f90 $(SOURCES_DIR)/src/*.inc .
 endif
 
 # Create source target for creating _only_ the sources.
