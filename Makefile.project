@@ -5,7 +5,7 @@ _SMEKA_project = 1
 # Step this version upon new versions
 PROJECT_MAJOR = 0
 PROJECT_MINOR = 7
-PROJECT_MICRO = 0
+PROJECT_MICRO = 1
 PROJECT_VERSION = $(PROJECT_MAJOR).$(PROJECT_MINOR).$(PROJECT_MICRO)
 
 # These are constant default

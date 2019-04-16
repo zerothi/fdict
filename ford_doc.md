@@ -1,5 +1,5 @@
 project: fdict
-version: 0.7.0
+version: 0.7.1
 summary: Documentation of fortran type-free variable and dictionary
 src_dir: sources
 author: Nick R. Papior
