@@ -49,7 +49,7 @@ source-src: $(src_SOURCES) fdict.inc
 clean-src:
 	-rm -f $(src_FPP_SOURCES)
 	-rm -f $(src_OBJECTS)
-	-rm -f *.mod
+	-rm -f *.mod fdict.inc
 	-rm -f $(call addpresuf,dictionary_,_.inc, funcs interface)
 	-rm -f $(call addpresuf,variable_,_.inc, nullify delete content funcs interface declarations declarations2)
 	-rm -f $(call addpresuf,variable_variable_,_.inc, set alloc assoc)
