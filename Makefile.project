@@ -43,22 +43,22 @@ endif
 .NOTPARALLEL: install-mod
 smeka-install: install-mod
 install-mod: $(F_MODS)
-	install -pm $(_OCT_rwrr) -t $(FMOD_DIR) $(F_MODS)
+	$(INSTALL) -pm $(_OCT_rwrr) -t $(DESTDIR)$(FMOD_DIR) $(F_MODS)
 
 .NOTPARALLEL: install-settings
 smeka-install: install-settings
 install-settings: settings.bash
-	install -pm $(_OCT_rwrr) -t $(BIN_DIR) settings.bash
+	$(INSTALL) -pm $(_OCT_rwrr) -t $(DESTDIR)$(BIN_DIR) settings.bash
 
 .NOTPARALLEL: install-header
 smeka-install: install-header
 install-header: fdict.inc
-	install -pm $(_OCT_rwrr) -t $(INC_DIR) fdict.inc
+	$(INSTALL) -pm $(_OCT_rwrr) -t $(DESTDIR)$(INC_DIR) fdict.inc
 
 
 # Force the deletion of both libraries
 clean:
-	-rm -f $(FDICT_LIB_STATIC) $(FDICT_LIB_SHARED) settings.bash fdict.inc
+	-$(RM) $(RM_FLAG_FORCE) $(FDICT_LIB_STATIC) $(FDICT_LIB_SHARED) settings.bash fdict.inc
 
 
 settings.bash:

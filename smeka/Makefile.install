@@ -16,16 +16,16 @@ smeka-install-lib: smeka-install-init-dir
 # Note that the x flag is common practice for libraries
 # although it may surprise first-time users.
 ifneq ($(LIBRARIES),)
-	$(INSTALL) -pm $(_OCT_rwxrxrx) -t $(LIB_DIR) $(LIBRARIES)
+	$(INSTALL) -pm $(_OCT_rwxrxrx) -t $(DESTDIR)$(LIB_DIR) $(LIBRARIES)
 endif
 
 
 .PHONY: smeka-install-init-dir
 .NOTPARALLEL: smeka-install-init-dir
 smeka-install-init-dir:
-	-$(MKDIR) $(MKDIR_FLAG_PARENT) $(INC_DIR)
-	-$(MKDIR) $(MKDIR_FLAG_PARENT) $(LIB_DIR)
-	-$(MKDIR) $(MKDIR_FLAG_PARENT) $(BIN_DIR)
+	-$(MKDIR) $(MKDIR_FLAG_PARENT) $(DESTDIR)$(INC_DIR)
+	-$(MKDIR) $(MKDIR_FLAG_PARENT) $(DESTDIR)$(LIB_DIR)
+	-$(MKDIR) $(MKDIR_FLAG_PARENT) $(DESTDIR)$(BIN_DIR)
 
 
 # Issuing uninstall will forcefully remove the installation directory
@@ -41,7 +41,7 @@ smeka-uninstall-install:
 	@$(ECHO) "  Ctrl + C or ^C"
 	@$(ECHO) ""
 	@$(SLEEP) 2
-	@$(RM) $(RM_FLAG_FORCE) $(RM_FLAG_RECURSE) $(PREFIX)
+	@$(RM) $(RM_FLAG_FORCE) $(RM_FLAG_RECURSE) $(DESTDIR)$(PREFIX)
 uninstall: smeka-uninstall-install
 
 
