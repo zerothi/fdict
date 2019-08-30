@@ -32,8 +32,8 @@ ifneq ("$(wildcard setup.make)","")
 include setup.make
 .PHONY: smeka-settings-setup.make
 smeka-settings-setup.make:
-	@echo "Using make settings in:"
-	@echo "  setup.make"
+	@$(ECHO) "Using make settings in:"
+	@$(ECHO) "  setup.make"
 settings: smeka-settings-setup.make
 
 endif
@@ -80,10 +80,10 @@ endif
 # Add print-out to target
 .PHONY: smeka-settings-custom
 smeka-settings-custom: 
-	@echo ""
-	@echo "Using custom settings:"
-	@echo "  $(SETUP)"
-	@echo ""
+	@$(ECHO) ""
+	@$(ECHO) "Using custom settings:"
+	@$(ECHO) "  $(SETUP)"
+	@$(ECHO) ""
 settings: smeka-settings-custom
 
 endif # only check if SETUP is defined
@@ -92,9 +92,9 @@ endif # only check if SETUP is defined
 # Target for displaying available SETUP=<>
 .PHONY: smeka-setup-list
 smeka-setup-list:
-	@echo ""
+	@$(ECHO) ""
 	$(info Available SETUP arguments are:$(_NL)$(subst .make,,$(subst ./$(SMEKA_DIR)/setup/,$(_NL)  ,$(wildcard ./$(SMEKA_DIR)/setup/*.make))))
-	@echo ""
+	@$(ECHO) ""
 setup-list: smeka-setup-list
 
 

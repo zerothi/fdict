@@ -20,11 +20,11 @@ _SMEKA_pp = 1
 .PHONY: smeka-show-pp
 .NOTPARALLEL: smeka-show-pp
 smeka-show-pp:
-	@echo "  CPP      = $(CPP)"
-	@echo "  CPPFLAGS = $(CPPFLAGS)"
-	@echo "  FPP      = $(FPP)"
-	@echo "  FPPFLAGS = $(FPPFLAGS)"
-	@echo "  INCLUDES = $(INCLUDES)"
+	@$(ECHO) "  CPP      = $(CPP)"
+	@$(ECHO) "  CPPFLAGS = $(CPPFLAGS)"
+	@$(ECHO) "  FPP      = $(FPP)"
+	@$(ECHO) "  FPPFLAGS = $(FPPFLAGS)"
+	@$(ECHO) "  INCLUDES = $(INCLUDES)"
 
 show: smeka-show-pp
 

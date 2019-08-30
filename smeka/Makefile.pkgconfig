@@ -1,0 +1,45 @@
+_SMEKA_pkgconfig = 1
+
+# Template script for creating the <package>.pc file in PKG_DIR
+# When installing a package we will automatically add the pkg-config file *if*
+# the project has a template located here:
+#  $(TOP_DIR)/$(PROJECT_NAME).pc
+ifneq ("$(wildcard $(TOP_DIR)/$(PROJECT_NAME).pc)","")
+_SMEKA_INSTALL_PKG_CONFIG = 1
+_SMEKA_INSTALL_PKG_CONFIG_FILE = $(TOP_DIR)/$(PROJECT_NAME).pc
+else ifneq ("$(wildcard $(TOP_DIR)/$(PROJECT_NAME).pc.in)","")
+_SMEKA_INSTALL_PKG_CONFIG = 1
+_SMEKA_INSTALL_PKG_CONFIG_FILE = $(TOP_DIR)/$(PROJECT_NAME).pc.in
+else ifneq ("$(wildcard $(_SMEKA_INSTALL_PKG_CONFIG_FILE))","")
+# Correctly setup file
+_SMEKA_INSTALL_PKG_CONFIG = 1
+else
+# Ensure it is *unset*
+unexport _SMEKA_INSTALL_PKG_CONFIG_FILE
+_SMEKA_INSTALL_PKG_CONFIG = 0
+endif
+
+.PHONY: smeka-pkgconfig-init-dir
+.NOTPARALLEL: smeka-pkgconfig-init-dir
+smeka-pkgconfig-init-dir: smeka-install-init-dir
+	-$(MKDIR) $(MKDIR_FLAG_PARENT) $(PKG_DIR)
+
+.PHONY: smeka-pkgconfig
+.NOTPARALLEL: smeka-pkgconfig
+smeka-pkgconfig: smeka-pkgconfig-init-dir
+	$(SED) "s:@PREFIX@:$(PREFIX):g;\
+		s:@PROJECT_NAME@:$(PROJECT_NAME):g;\
+		s:@PROJECT_VERSION@:$(PROJECT_VERSION):g;\
+		s:@INC_DIR@:$(INC_DIR):g;\
+		s:@LIB_DIR@:$(LIB_DIR):g;\
+		s:@BIN_DIR@:$(BIN_DIR):g" \
+		$(_SMEKA_INSTALL_PKG_CONFIG_FILE) > $(PKG_DIR)/$(PROJECT_NAME).pc
+
+ifeq ($(_SMEKA_INSTALL_PKG_CONFIG),1)
+smeka-install: smeka-pkgconfig
+endif
+
+
+# Local Variables:
+#  mode: makefile-gmake
+# End:

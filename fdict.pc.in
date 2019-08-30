@@ -1,0 +1,13 @@
+prefix=@PREFIX@
+exec_prefix=${prefix}
+bindir=@BIN_DIR@
+includedir=@INC_DIR@
+libdir=@LIB_DIR@
+
+Name: @PROJECT_NAME@
+Description: Fortran type-free variables and type-free dictionaries
+Version: @PROJECT_VERSION@
+URL: https://github.com/zerothi/fdict
+Cflags: -I${includedir}
+Libs: -L${libdir} -lfdict
+

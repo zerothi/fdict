@@ -17,19 +17,19 @@ LINK_FLAGS ?= -shared
 .PHONY: smeka-show-lib
 .NOTPARALLEL: smeka-show-lib
 smeka-show-lib:
-	@echo ""
-	@echo "Linker (static)"
-	@echo "  AR      = $(AR)"
-	@echo "  ARFLAGS = $(ARFLAGS)"
-	@echo "  RANLIB  = $(RANLIB)"
-	@echo "  RANLIBFLAGS = $(RANLIBFLAGS)"
-	@echo "Linker (shared)"
-	@echo "  LINK    = $(LINK)"
-	@echo "  LINK_FLAGS = $(LINK_FLAGS)"
-	@echo "  LIBS    = $(LIBS)"
-	@echo "  LDFLAGS = $(LDFLAGS)"
-	@echo ""
-	@echo "  $(LINK) $(LINK_FLAGS) $(LIBS) $(LDFLAGS)"
+	@$(ECHO) ""
+	@$(ECHO) "Linker (static)"
+	@$(ECHO) "  AR      = $(AR)"
+	@$(ECHO) "  ARFLAGS = $(ARFLAGS)"
+	@$(ECHO) "  RANLIB  = $(RANLIB)"
+	@$(ECHO) "  RANLIBFLAGS = $(RANLIBFLAGS)"
+	@$(ECHO) "Linker (shared)"
+	@$(ECHO) "  LINK    = $(LINK)"
+	@$(ECHO) "  LINK_FLAGS = $(LINK_FLAGS)"
+	@$(ECHO) "  LIBS    = $(LIBS)"
+	@$(ECHO) "  LDFLAGS = $(LDFLAGS)"
+	@$(ECHO) ""
+	@$(ECHO) "  $(LINK) $(LINK_FLAGS) $(LIBS) $(LDFLAGS)"
 
 show: smeka-show-lib
 

@@ -6,22 +6,22 @@ _SMEKA_clean = 1
 # Remove libraries
 .PHONY: smeka-clean-lib
 smeka-clean-lib:
-	rm -f $(LIBRARIES)
+	$(RM) $(RM_FLAG_FORCE) $(LIBRARIES)
 clean: smeka-clean-lib
 
 .PHONY: smeka-clean-src
 smeka-clean-src:
-	rm -f $(CPP_SOURCES)
+	$(RM) $(RM_FLAG_FORCE) $(CPP_SOURCES)
 clean: smeka-clean-src
 
 .PHONY: smeka-clean-mod
 smeka-clean-mod:
-	rm -f $(F_MODS)
+	$(RM) $(RM_FLAG_FORCE) $(F_MODS)
 clean: smeka-clean-mod
 
 .PHONY: smeka-clean-obj
 smeka-clean-obj:
-	rm -f $(OBJECTS)
+	$(RM) $(RM_FLAG_FORCE) $(OBJECTS)
 clean: smeka-clean-obj
 
 

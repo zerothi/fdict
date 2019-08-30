@@ -38,16 +38,16 @@ ETC_DIR ?= $(PREFIX)/etc
 # Print out settings from this file
 .PHONY: smeka-settings-dir
 smeka-settings-dir:
-	@echo "Directory settings:"
-	@echo "Prefix            (PREFIX) : $(PREFIX)"
-	@echo "Includes         (INC_DIR) : $(INC_DIR)"
-	@echo "Fortran modules (FMOD_DIR) : $(FMOD_DIR)"
-	@echo "Binaries         (BIN_DIR) : $(BIN_DIR)"
-	@echo "Libraries        (LIB_DIR) : $(LIB_DIR)"
-	@echo "Shared         (SHARE_DIR) : $(SHARE_DIR)"
-	@echo "Man              (MAN_DIR) : $(MAN_DIR)"
-	@echo "pkg-config       (PKG_DIR) : $(PKG_DIR)"
-	@echo "etc.             (ETC_DIR) : $(ETC_DIR)"
+	@$(ECHO) "Directory settings:"
+	@$(ECHO) "Prefix            (PREFIX) : $(PREFIX)"
+	@$(ECHO) "Includes         (INC_DIR) : $(INC_DIR)"
+	@$(ECHO) "Fortran modules (FMOD_DIR) : $(FMOD_DIR)"
+	@$(ECHO) "Binaries         (BIN_DIR) : $(BIN_DIR)"
+	@$(ECHO) "Libraries        (LIB_DIR) : $(LIB_DIR)"
+	@$(ECHO) "Shared         (SHARE_DIR) : $(SHARE_DIR)"
+	@$(ECHO) "Man              (MAN_DIR) : $(MAN_DIR)"
+	@$(ECHO) "pkg-config       (PKG_DIR) : $(PKG_DIR)"
+	@$(ECHO) "etc.             (ETC_DIR) : $(ETC_DIR)"
 settings: smeka-settings-dir
 
 # Local Variables:

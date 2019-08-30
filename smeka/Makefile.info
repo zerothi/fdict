@@ -5,22 +5,22 @@ _SMEKA_info = 1
 # smeka installation procedure
 .PHONY: smeka-info
 smeka-info:
-	@echo "Default smeka command line variables:"
-	@echo ""
-	@echo "  OPT=none|debug|weak|medium|hard"
-	@echo "    define the optimization level of the compiler"
-	@echo ""
-	@echo "  VENDOR=gnu|intel"
-	@echo "    compiler vendor, defines the standard compiler variables"
-	@echo "    (comes in C/CXX/F_VENDOR variants to control them individually)"
-	@echo ""
-	@echo "  PIC=1|0"
-	@echo "    if 1 implicitly add the position independent code flag (from vendor)"
-	@echo ""
-	@echo "  SETUP=<file>"
-	@echo "    includes <file> in the Makefile project"
-	@echo "    this may hold any custom changes to the build system"
-	@echo ""
+	@$(ECHO) "Default smeka command line variables:"
+	@$(ECHO) ""
+	@$(ECHO) "  OPT=none|debug|weak|medium|hard"
+	@$(ECHO) "    define the optimization level of the compiler"
+	@$(ECHO) ""
+	@$(ECHO) "  VENDOR=gnu|intel"
+	@$(ECHO) "    compiler vendor, defines the standard compiler variables"
+	@$(ECHO) "    (comes in C/CXX/F_VENDOR variants to control them individually)"
+	@$(ECHO) ""
+	@$(ECHO) "  PIC=1|0"
+	@$(ECHO) "    if 1 implicitly add the position independent code flag (from vendor)"
+	@$(ECHO) ""
+	@$(ECHO) "  SETUP=<file>"
+	@$(ECHO) "    includes <file> in the Makefile project"
+	@$(ECHO) "    this may hold any custom changes to the build system"
+	@$(ECHO) ""
 smeka: smeka-info
 
 # Local Variables:

@@ -59,19 +59,19 @@ RANLIBFLAGS =
 
 
 # Specific options for different OS
-ifeq ($(uname_S),Linux)
+ifeq ($(SMEKA_uname_S),Linux)
 endif
-ifeq ($(uname_S),Darwin)
+ifeq ($(SMEKA_uname_S),Darwin)
 endif
-ifeq ($(uname_S),SunOS)
+ifeq ($(SMEKA_uname_S),SunOS)
 endif
-ifeq ($(uname_S),FreeBSD)
+ifeq ($(SMEKA_uname_S),FreeBSD)
 endif
-ifeq ($(uname_S),OpenBSD)
+ifeq ($(SMEKA_uname_S),OpenBSD)
 endif
-ifeq ($(uname_S),NetBSD)
+ifeq ($(SMEKA_uname_S),NetBSD)
 endif
-ifeq ($(uname_S),Cygwin)
+ifeq ($(SMEKA_uname_S),Cygwin)
 endif
 
 

@@ -3,6 +3,7 @@ _SMEKA_install = 1
 # Basic implementation of installing the different
 # libraries etc.
 
+INSTALL ?= install
 
 .PHONY: install
 .NOTPARALLEL: install
@@ -12,33 +13,35 @@ install: smeka-install-lib smeka-install
 .PHONY: smeka-install-lib
 .NOTPARALLEL: smeka-install-lib
 smeka-install-lib: smeka-install-init-dir
+# Note that the x flag is common practice for libraries
+# although it may surprise first-time users.
 ifneq ($(LIBRARIES),)
-	install -pm $(_OCT_rwxrxrx) -t $(LIB_DIR) $(LIBRARIES)
+	$(INSTALL) -pm $(_OCT_rwxrxrx) -t $(LIB_DIR) $(LIBRARIES)
 endif
 
 
 .PHONY: smeka-install-init-dir
 .NOTPARALLEL: smeka-install-init-dir
 smeka-install-init-dir:
-	-mkdir -p $(INC_DIR)
-	-mkdir -p $(LIB_DIR)
-	-mkdir -p $(BIN_DIR)
+	-$(MKDIR) $(MKDIR_FLAG_PARENT) $(INC_DIR)
+	-$(MKDIR) $(MKDIR_FLAG_PARENT) $(LIB_DIR)
+	-$(MKDIR) $(MKDIR_FLAG_PARENT) $(BIN_DIR)
 
 
 # Issuing uninstall will forcefully remove the installation directory
 .PHONY: smeka-uninstall-install
 .NOTPARALLEL: smeka-uninstall-install
 smeka-uninstall-install:
-	@echo ""
-	@echo "The directory tree:"
-	@echo "  $(PREFIX)"
-	@echo "will be deleted!"
-	@echo "You may abort the operation within 2 secs by pressing:"
-	@echo ""
-	@echo "  Ctrl+C or ^C"
-	@echo ""
-	@sleep 2
-	@rm -rf $(PREFIX)
+	@$(ECHO) ""
+	@$(ECHO) "The directory tree:"
+	@$(ECHO) "  $(PREFIX)"
+	@$(ECHO) "will be deleted!"
+	@$(ECHO) "You may abort the operation within 2 secs by pressing:"
+	@$(ECHO) ""
+	@$(ECHO) "  Ctrl + C or ^C"
+	@$(ECHO) ""
+	@$(SLEEP) 2
+	@$(RM) $(RM_FLAG_FORCE) $(RM_FLAG_RECURSE) $(PREFIX)
 uninstall: smeka-uninstall-install
 
 

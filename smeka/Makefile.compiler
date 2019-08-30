@@ -55,7 +55,7 @@ ifeq ($(OPT), 3)
 endif
 
 # All opt-flags that we process to filter out
-_FILTER_OPT_FLAGS = -Ofast -Os -O0 -O1 -O2 -O3 -O4 -O5 -fast
+_FILTER_OPT_FLAGS = -Ofast -Os -Og O0 -O1 -O2 -O3 -O4 -O5 -fast
 
 ifneq ($(OPT),none)
 
@@ -109,23 +109,23 @@ FC_MODDIR ?= $(V_FC_MODDIR)
 .PHONY: smeka-show-compiler
 .NOTPARALLEL: smeka-show-compiler
 smeka-show-compiler:
-	@echo ""
-	@echo "Used compilation options (VENDOR=$(VENDOR)):"
-	@echo "  CC       = $(CC)"
-	@echo "  CFLAGS   = $(CFLAGS)"
-	@echo "  CXX      = $(CXX)"
-	@echo "  CXXFLAGS = $(CXXFLAGS)"
-	@echo "  FC       = $(FC)"
-	@echo "  FFLAGS   = $(FFLAGS)"
-	@echo ""
-	@echo "Used MPI compilation options:"
-	@echo "  MPICC    = $(MPICC)"
-	@echo "  CFLAGS   = $(CFLAGS)"
-	@echo "  MPICXX   = $(MPICXX)"
-	@echo "  CXXFLAGS = $(CXXFLAGS)"
-	@echo "  MPIFC    = $(MPIFC)"
-	@echo "  FFLAGS   = $(FFLAGS)"
-	@echo ""
+	@$(ECHO) ""
+	@$(ECHO) "Used compilation options (VENDOR=$(VENDOR)):"
+	@$(ECHO) "  CC       = $(CC)"
+	@$(ECHO) "  CFLAGS   = $(CFLAGS)"
+	@$(ECHO) "  CXX      = $(CXX)"
+	@$(ECHO) "  CXXFLAGS = $(CXXFLAGS)"
+	@$(ECHO) "  FC       = $(FC)"
+	@$(ECHO) "  FFLAGS   = $(FFLAGS)"
+	@$(ECHO) ""
+	@$(ECHO) "Used MPI compilation options:"
+	@$(ECHO) "  MPICC    = $(MPICC)"
+	@$(ECHO) "  CFLAGS   = $(CFLAGS)"
+	@$(ECHO) "  MPICXX   = $(MPICXX)"
+	@$(ECHO) "  CXXFLAGS = $(CXXFLAGS)"
+	@$(ECHO) "  MPIFC    = $(MPIFC)"
+	@$(ECHO) "  FFLAGS   = $(FFLAGS)"
+	@$(ECHO) ""
 show: smeka-show-compiler
 
 # Define the default compilation options:

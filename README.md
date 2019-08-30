@@ -49,8 +49,8 @@ definitions:
 
     _FDICT_MAJOR_ 0
     _FDICT_MINOR_ 7
-    _FDICT_MICRO_ 0
-    _FDICT_VERSION_ 0.7.0
+    _FDICT_MICRO_ 2
+    _FDICT_VERSION_ 0.7.2
 
 which may be used in functional codes to utilize the correct interfaces.
 This is mainly meant as a feature usable when the fdict interface and
