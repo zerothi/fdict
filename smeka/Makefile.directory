@@ -14,9 +14,16 @@ else
  BUILD_MAIN_DIR = 1
 endif
 
-
+# Allow lowercase prefix
+ifndef PREFIX
+ifndef prefix
 # Default directories
 PREFIX ?= $(HOME)/$(PROJECT_NAME)
+else
+PREFIX ?= $(prefix)
+endif
+endif
+
 # Include directory (.h)
 INC_DIR ?= $(PREFIX)/include
 # Module directory (.mod)
