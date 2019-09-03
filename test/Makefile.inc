@@ -7,6 +7,7 @@ TEST_COMMON = tst_utils.o
 TEST_EXE_  = tst_simple tst_sp tst_dp tst_mem
 TEST_EXE_ += tst_char
 TEST_EXE_ += tst_type
+TEST_EXE_ += tst_dict_valgrind
 TEST_EXE_ += tst_dict_a_ tst_dict_a1
 TEST_EXE_ += tst_dict tst_dict_long
 TEST_EXE_ += tst_dict_mem1 tst_dict_mem2
@@ -78,6 +79,10 @@ tst_dict: tst_dict.o
 	$(FC) -o $@ $(FFLAGS) $(INCLUDES) $^
 	./$@
 
+tst_dict_valgrind: tst_dict_valgrind.o
+	$(FC) -o $@ $(FFLAGS) $(INCLUDES) $^
+	./$@
+
 tst_dict_a_: tst_dict_a_.o
 	$(FC) -o $@ $(FFLAGS) $(INCLUDES) $^
 	./$@
@@ -134,7 +139,7 @@ tst_dict_dict: tst_dict_dict.o
 
 .PHONY: clean-test
 clean-test:
-	-rm -f $(TEST) $(LIB_TEST) $(TEST_COMMON) *.o *.mod
+	-$(RM) $(RM_FLAG_FORCE) $(TEST) $(LIB_TEST) $(TEST_COMMON) *.o *.mod
 
 clean: clean-test
 

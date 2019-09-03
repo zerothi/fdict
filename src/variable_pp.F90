@@ -269,7 +269,7 @@ contains
     end if
     this%t = 'USER'
     allocate(this%enc(size(enc)))
-    this%enc(:) = enc
+    this%enc(:) = enc(:)
 
   end subroutine associate_type_
 
@@ -293,7 +293,12 @@ contains
     end do
     
   end function cunpack_
-  
+
+  subroutine assignment_(this,rhs)
+    type(variable_t), intent(inout) :: this
+    type(variable_t), intent(in) :: rhs
+    call assign(this,rhs)
+  end subroutine assignment_
   subroutine assign_var(this,rhs,dealloc)
     type(variable_t), intent(inout) :: this
     type(variable_t), intent(in) :: rhs
@@ -324,6 +329,10 @@ contains
        end do
        allocate(this%enc(size(transfer(pa__1, local_enc_type))))
        this%enc(:) = transfer(pa__1, local_enc_type)
+       do i = 1 , size(pa__1%p)
+         nullify(pa__1%p(i)%p)
+       end do
+       nullify(pa__1%p)
     end if
 
     ! copy over RHS and Save encoding
@@ -352,7 +361,7 @@ contains
     ! Association is done by copying the encoding
     this%t = rhs%t
     allocate(this%enc(size(rhs%enc)))
-    this%enc(:) = rhs%enc
+    this%enc(:) = rhs%enc(:)
 
   end subroutine associate_var
 
