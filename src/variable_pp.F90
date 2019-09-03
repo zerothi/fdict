@@ -273,7 +273,7 @@ contains
 
   end subroutine associate_type_
 
-  function cpack_(c) result(car)
+  pure function cpack_(c) result(car)
     character(len=*), intent(in) :: c
     character(len=1) :: car(len(c))
     integer :: i
@@ -283,7 +283,7 @@ contains
     end do
     
   end function cpack_
-  function cunpack_(car) result(c)
+  pure function cunpack_(car) result(c)
     character(len=1), intent(in) :: car(:)
     character(len=size(car)) :: c
     integer :: i
