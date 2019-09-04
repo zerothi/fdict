@@ -3,7 +3,12 @@ _SMEKA_install = 1
 # Basic implementation of installing the different
 # libraries etc.
 
-INSTALL ?= install
+ifeq ($(SMEKA_uname_S),Darwin)
+# MacOS does not have install installed
+INSTALL ?= install-sh
+else
+INSTALL ?= install -p
+endif
 
 .PHONY: install
 .NOTPARALLEL: install
@@ -16,7 +21,7 @@ smeka-install-lib: smeka-install-init-dir
 # Note that the x flag is common practice for libraries
 # although it may surprise first-time users.
 ifneq ($(LIBRARIES),)
-	$(INSTALL) -pm $(_OCT_rwxrxrx) -t $(DESTDIR)$(LIB_DIR) $(LIBRARIES)
+	$(INSTALL) -m $(_OCT_rwxrxrx) -t $(DESTDIR)$(LIB_DIR) $(LIBRARIES)
 endif
 
 
