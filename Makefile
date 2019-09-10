@@ -45,13 +45,13 @@ include $(TOP_DIR)/test/Makefile.inc
 .PHONY: copy
 ifeq ($(TOP_DIR),.)
 copy:
-	@echo ""
-	@echo "make copy does not work when executed from the top fdict directory"
-	@echo "Please create an object directory with an appropriate Makefile"
-	@echo ""
+	@$(ECHO) ""
+	@$(ECHO) "make copy does not work when executed from the top fdict directory"
+	@$(ECHO) "Please create an object directory with an appropriate Makefile"
+	@$(ECHO) ""
 else
 copy:
-	cp $(SOURCES_DIR)/src/*.f90 $(SOURCES_DIR)/src/*.inc .
+	$(CP) $(SOURCES_DIR)/src/*.f90 $(SOURCES_DIR)/src/*.inc .
 endif
 
 # Create source target for creating _only_ the sources.
@@ -74,9 +74,9 @@ dist-fdict:
 # Force the creation of the 3 pre-defined source directories
 	$(MAKE) source
 # Clean up
-	-rm -f *.inc
+	-$(RM) $(RM_FLAG_FORCE) *.inc
 	tar --transform 's,^,fdict-$(PROJECT_VERSION)/,' -rf fdict-$(PROJECT_VERSION).tar sources*
-	-@rm -f fdict-$(PROJECT_VERSION).tar.gz
+	-@$(RM) $(RM_FLAG_FORCE) fdict-$(PROJECT_VERSION).tar.gz
 	gzip fdict-$(PROJECT_VERSION).tar
 
 dist: dist-fdict

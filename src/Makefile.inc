@@ -21,13 +21,13 @@ dictionary.f90: dictionary_pp.F90 dictionary.sh settings.inc dictionary_funcs_in
 	$(FPP) $(FPPFLAGS) $(INCLUDES) -I$(src_DIR) -I. $< | sed -f $(src_DIR)/filter.sed > $@
 
 fdict.inc:
-	@echo "#ifndef _FDICT_INCLUDE_DEFINED" > $@
-	@echo "#define _FDICT_INCLUDE_DEFINED" >> $@
-	@echo "#define _FDICT_MAJOR_ $(PROJECT_MAJOR)" >> $@
-	@echo "#define _FDICT_MINOR_ $(PROJECT_MINOR)" >> $@
-	@echo "#define _FDICT_MICRO_ $(PROJECT_MICRO)" >> $@
-	@echo "#define _FDICT_VERSION_ $(PROJECT_VERSION)" >> $@
-	@echo "#endif" >> $@
+	@$(ECHO) "#ifndef _FDICT_INCLUDE_DEFINED" > $@
+	@$(ECHO) "#define _FDICT_INCLUDE_DEFINED" >> $@
+	@$(ECHO) "#define _FDICT_MAJOR_ $(PROJECT_MAJOR)" >> $@
+	@$(ECHO) "#define _FDICT_MINOR_ $(PROJECT_MINOR)" >> $@
+	@$(ECHO) "#define _FDICT_MICRO_ $(PROJECT_MICRO)" >> $@
+	@$(ECHO) "#define _FDICT_VERSION_ $(PROJECT_VERSION)" >> $@
+	@$(ECHO) "#endif" >> $@
 
 # Define objects that needs compilation
 SOURCES += $(src_SOURCES) fdict.inc
@@ -41,18 +41,18 @@ $(src_FPP_SOURCES): INCLUDES += -I$(src_DIR)
 
 .PHONY: source-src
 source-src: $(src_SOURCES) fdict.inc
-	mkdir -p $(SOURCES_DIR)/src
+	$(MKDIR) $(MKDIR_FLAG_PARENT) $(SOURCES_DIR)/src
 	mv $(src_SOURCES) fdict.inc $(SOURCES_DIR)/src
 
 
 .PHONY: clean-src
 clean-src:
-	-rm -f $(src_FPP_SOURCES)
-	-rm -f $(src_OBJECTS)
-	-rm -f *.mod fdict.inc
-	-rm -f $(call addpresuf,dictionary_,_.inc, funcs interface)
-	-rm -f $(call addpresuf,variable_,_.inc, nullify delete content funcs interface declarations declarations2)
-	-rm -f $(call addpresuf,variable_variable_,_.inc, set alloc assoc)
+	-$(RM) $(RM_FLAG_FORCE) $(src_FPP_SOURCES)
+	-$(RM) $(RM_FLAG_FORCE) $(src_OBJECTS)
+	-$(RM) $(RM_FLAG_FORCE) *.mod fdict.inc
+	-$(RM) $(RM_FLAG_FORCE) $(call addpresuf,dictionary_,_.inc, funcs interface)
+	-$(RM) $(RM_FLAG_FORCE) $(call addpresuf,variable_,_.inc, nullify delete content funcs interface declarations declarations2)
+	-$(RM) $(RM_FLAG_FORCE) $(call addpresuf,variable_variable_,_.inc, set alloc assoc)
 
 clean: clean-src
 
