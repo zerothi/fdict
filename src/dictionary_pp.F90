@@ -360,7 +360,7 @@ contains
        else if ( hash < lhash ) then
           exit search
        else if ( hash == lhash ) then
-          if ( key .eq. .KEY. ld ) then
+          if ( key .eq. (.KEY. ld) ) then
              in = .true.
              return
           end if
@@ -386,7 +386,7 @@ contains
     type(dictionary_t) :: tmp1, tmp2
     bool = len(d1) == len(d2)
     if ( .not. bool ) return
-    bool = .hash. d1 == .hash. d2
+    bool = (.hash. d1) == (.hash. d2)
     if ( .not. bool ) return
     ! if all the keys are going to be the same
     ! the we know that the hash-tags are going to
@@ -394,7 +394,7 @@ contains
     tmp1 = .first. d1
     tmp2 = .first. d2
     do while ( .not. (.empty. tmp1) )
-       bool = .hash. tmp1 == .hash. tmp2
+       bool = (.hash. tmp1) == (.hash. tmp2)
        if ( .not. bool ) return
        tmp1 = .next. tmp1
        tmp2 = .next. tmp2
@@ -411,7 +411,7 @@ contains
     do while ( .not. (.empty. tmp1) )
        tmp2 = .first. d2
        do while ( .not. (.empty. tmp2) )
-          bool = .hash. tmp1 == .hash. tmp2
+          bool = (.hash. tmp1) == (.hash. tmp2)
           if ( bool ) then
              bool = .false.
              return
@@ -623,7 +623,7 @@ contains
     type(dictionary_t), intent(in)  :: d
     type(dictionary_t) :: ld
     ld = .first. d
-    do while ( .not. .empty. ld ) 
+    do while ( .not. (.empty. ld) )
        write(*,'(t2,a,tr1,a,i0,a)') trim(.key. ld), &
             '['/ /trim(ld%first%value%t)/ /'] (',.hash. ld,')'
        ld = .next. ld
@@ -863,7 +863,7 @@ contains
           call val_delete_request(val,dealloc=dealloc)
           exit search
        else if ( hash == lhash ) then
-          if ( key .eq. .KEY. ld ) then
+          if ( key .eq. (.KEY. ld) ) then
              call assign(val,ld%first%value,dealloc=dealloc)
              return
           end if
@@ -901,7 +901,7 @@ contains
           call val_delete_request(val,dealloc=dealloc)
           exit search
        else if ( hash == lhash ) then
-          if ( key .eq. .KEY. ld ) then
+          if ( key .eq. (.KEY. ld) ) then
              call associate(val,ld%first%value,dealloc=dealloc)
              return
           end if
@@ -937,7 +937,7 @@ contains
        else if ( hash < lhash ) then
           exit search
        else if ( hash == lhash ) then
-          if ( key .eq. .KEY. ld ) then
+          if ( key .eq. (.KEY. ld) ) then
              call assign(val, ld%first%value)
              return
           end if
@@ -988,7 +988,7 @@ contains
              t = '  '
              exit search
           else if ( hash == lhash ) then
-             if ( key .eq. .KEY. ld ) then
+             if ( key .eq. (.KEY. ld) ) then
                 t = which(ld%first%value)
                 return
              end if
