@@ -1,61 +1,10 @@
 _SMEKA_default = 1
 
-# We simply default to include the vendor make file for fortran
-# to retrieve the FC_MODDIR variable
-
-# Default vendor setting
-VENDOR ?= gnu
-
-include $(TOP_DIR)/$(SMEKA_DIR)/vendor/$(VENDOR).make
-
-# Generic compiler options
-CC = $(V_CC)
-CXX = $(V_CXX)
-FC = $(V_FC)
-ifdef V_CPP
-CPP = $(V_CPP)
-endif
-MPICC = $(V_MPICC)
-MPICXX = $(V_MPICXX)
-MPIFC = $(V_MPIFC)
-FC_MODDIR = $(V_FC_MODDIR)
-
 ifndef SETUP
 ifneq ("$(wildcard setup.make)","")
 SETUP = setup.make
 endif
 endif
-
-
-# Sadly we MUST force set the
-# default values... :(
-# This seems mostly related to CPP
-# which gets redefined when CC is set...
-
-CFLAGS = 
-CXXFLAGS = 
-FFLAGS = 
-
-# C-preprocessor is a nightmare
-# However, these options seem to work very nicely
-#  cpp -E -x c
-#  cpp -E -P -C -nostdinc
-#  clang -E -x c
-#  clang -E -P -x c
-#  clang -E -P -xc (for clang <= 3.5)
-CPP = $(CC) -E -P -x c
-CPPFLAGS =
-# It may be suspicios that we use the C-preprocessor
-FPP = $(FC) -E -P -x c
-FPPFLAGS =
-
-# Default to not pre-process Fortran files
-SMEKA_CPP_F = 0
-
-AR = ar
-ARFLAGS = -ru
-RANLIB = ranlib
-RANLIBFLAGS =
 
 
 # Specific options for different OS

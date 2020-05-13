@@ -29,6 +29,9 @@ include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.default
 include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.common
 
 
+# Add compiler specific options
+include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.compiler
+
 # Include project specific options
 # These will be pre-initialized before any user
 # settings.
@@ -44,9 +47,6 @@ include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.setup
 # Create the directories
 include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.directory
 
-
-# Add compiler specific options
-include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.compiler
 
 # Add preprocessor definitions
 include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.pp

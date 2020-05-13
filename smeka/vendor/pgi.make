@@ -6,8 +6,8 @@ V_VENDOR = pgi
 V_CC = pgcc
 V_CXX = pgc++
 V_FC = pgfortran
-V_CPP = pgcc -E -P
-V_FPP = pgfortran -E -F
+V_CPP = pgcc -E
+V_FPP = pgfortran -E
 
 V_MPICC = mpicc
 V_MPICXX = mpic++

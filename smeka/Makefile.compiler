@@ -55,7 +55,7 @@ ifeq ($(OPT), 3)
 endif
 
 # All opt-flags that we process to filter out
-_FILTER_OPT_FLAGS = -Ofast -Os -Og O0 -O1 -O2 -O3 -O4 -O5 -fast
+_FILTER_OPT_FLAGS = -Ofast -Os -Og O0 -O1 -O2 -O3 -O4 -O5 -fast -fastsse
 
 ifneq ($(OPT),none)
 
@@ -90,21 +90,42 @@ CXXFLAGS += $(V_PIC)
 FFLAGS += $(V_PIC)
 endif
 
-
 # Generic compiler options
-CC ?= $(V_CC)
-CXX ?= $(V_CXX)
-FC ?= $(V_FC)
-ifdef V_CPP
-CPP ?= $(V_CPP)
-endif
-ifdef V_FPP
-FPP ?= $(V_FPP)
-endif
-MPICC ?= $(V_MPICC)
-MPICXX ?= $(V_MPICXX)
-MPIFC ?= $(V_MPIFC)
+CC = $(V_CC)
+CXX = $(V_CXX)
+FC = $(V_FC)
+MPICC = $(V_MPICC)
+MPICXX = $(V_MPICXX)
+MPIFC = $(V_MPIFC)
 FC_MODDIR ?= $(V_FC_MODDIR)
+
+# C-preprocessor is a nightmare
+# However, these options seem to work very nicely
+#  cpp -E -x c
+#  cpp -E -P -C -nostdinc
+#  clang -E -x c
+#  clang -E -P -x c
+#  clang -E -P -xc (for clang <= 3.5)
+ifdef V_CPP
+CPP = $(V_CPP)
+else
+CPP = $(CC) -E -P -x c
+endif
+CPPFLAGS =
+ifdef V_FPP
+FPP = $(V_FPP)
+else
+FPP = $(FC) -E -P -x c
+endif
+FPPFLAGS =
+
+
+# Linker options
+AR = ar
+ARFLAGS = -ru
+RANLIB = ranlib
+RANLIBFLAGS =
+
 
 .PHONY: smeka-show-compiler
 .NOTPARALLEL: smeka-show-compiler
@@ -129,13 +150,16 @@ smeka-show-compiler:
 show: smeka-show-compiler
 
 # Define the default compilation options:
+# Default to not pre-process Fortran files
+SMEKA_CPP_F = 0
+
 ifeq ($(SMEKA_CPP_F),0)
 %.o: %.F90
 	$(FC) -c -o $@ $(FFLAGS) $(INCLUDES) $(FPPFLAGS) $<
 else
 %.o: %.F90
-	$(FPP) $(INCLUDES) $(FPPFLAGS) $< > $(<:.F90=_cpp.f90)
-	$(FC) -c -o $@ $(FFLAGS) $(INCLUDES) $(<:.F90=_cpp.f90)
+	$(FPP) $(INCLUDES) $(FPPFLAGS) $< > $(<:.F90=_pp.f90)
+	$(FC) -c -o $@ $(FFLAGS) $(INCLUDES) $(<:.F90=_pp.f90)
 endif
 %.o: %.f90
 	$(FC) -c -o $@ $(FFLAGS) $(INCLUDES) $<
