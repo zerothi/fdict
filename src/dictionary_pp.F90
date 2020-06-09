@@ -64,7 +64,7 @@ module dictionary
   end interface
   public :: LEN
 
-  !> Actually count number of elements in the dictionary by forcing the traversing
+  !> Actually count number of elements in the dictionary by forcing traversing the linked-list
   interface llen
      module procedure llen_
   end interface

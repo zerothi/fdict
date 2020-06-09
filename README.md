@@ -84,17 +84,19 @@ Using this module one gains access to a generic type variable which
 can contain _any_ data format.  
 It currently supports the following data-types:
 
-| Type             | Precision format           | C-type               |
-|------------------|----------------------------|----------------------|
-| `integer`        | `selected_int_kind(4)`     | `short`              |
-| `integer`        | `selected_int_kind(9)`     | `int`                |
-| `integer`        | `selected_int_kind(18)`    | `long`               |
-| `real`           | `selected_real_kind(p=6)`  | `float`              |
-| `real`           | `selected_real_kind(p=15)` | `double`             |
-| `complex`        | `selected_real_kind(p=6)`  | `float complex`      |
-| `complex`        | `selected_real_kind(p=15)` | `double complex`     |
-| `type(c_ptr)`    |                            | `void *`             |
-| `type(c_funptr)` |                            | (procedure) `void *` |
+| Type              | Precision format           | C-type               | `which` |
+|-------------------|----------------------------|----------------------|---------|
+| `type(variable_t)`|                            | ---                  | `VAR`   |
+| `character(len=1)`|                            | `char`               | `a`     |
+| `integer`         | `selected_int_kind(4)`     | `short`              | `h`     |
+| `integer`         | `selected_int_kind(9)`     | `int`                | `i`     |
+| `integer`         | `selected_int_kind(18)`    | `long`               | `l`     |
+| `real`            | `selected_real_kind(p=6)`  | `float`              | `r`     |
+| `real`            | `selected_real_kind(p=15)` | `double`             | `d`     |
+| `complex`         | `selected_real_kind(p=6)`  | `float complex`      | `c`     |
+| `complex`         | `selected_real_kind(p=15)` | `double complex`     | `z`     |
+| `type(c_ptr)`     |                            | `void *`             | `cp`    |
+| `type(c_funptr)`  |                            | (procedure) `void *` | `fp`    |
 
 
 Basically it is used like this:
@@ -117,7 +119,7 @@ not copy data, but retain data locality:
 	a = 3
 	! Now v contains a = 3
 
-To delete a variable one simply does:
+To delete a variable do:
 
 	use variable
 	type(variable_t) :: v
@@ -127,13 +129,40 @@ However, when the variable is using pointers, instead the user can do
 
 	use variable
 	type(variable_t) :: v
-	call delete(v,dealloc=.false.)
-	! or
+	! preferred
 	call nullify(v)
+	! or
+	call delete(v,dealloc=.false.)
 
 which merely destroys the variable object and thus retains the data
 where it is. As with any other pointer arithmetic it is up to the programmer
 to ensure there is no memory leaks.
+
+In some cases one does not know which data-type is being stored in a variable.
+Here it may be beneficial to lookup the type of data:
+
+	use variable
+	integer, target :: a(3)
+	type(variable_t) :: v
+	a(:) = 2
+	call associate(v,a)
+	if ( which(v) == 'i1' ) then ! signal integer of 1D (i0 for scalar)
+       call assign(a, v)
+    end if
+
+    ! Another possibility is to *try* to get the value
+    logical :: success
+	integer, target :: i1(3)
+    real, target :: r1(3)
+
+	call assign(r1, v, success=success)
+    if ( .not. success ) then
+        call assign(i1, v, success=success)
+	end if
+    ... etc ...
+
+However, it may be better to explicitly check the type using `which`. The return values from
+`which` are listed in the above table.
 
 
 ### dictionary ###
@@ -183,6 +212,51 @@ dictionary gets lost. Be sure to call `call delete(dict)` prior to single
 assignments.
 
 
+There are various ways to access the data in a dictionary.
+
+1. Accessing specific keys may be exercised using
+
+        use dictionary
+        type(dictionary_t) :: dict
+        type(variable_t) :: var
+        integer :: i
+		real :: r
+		logical :: success
+        dict = ('KEY'.kv.1)
+		call assign(r, dict, 'KEY', success=success)
+		if ( .not. success ) call assign(i, dict, 'KEY', success=success)
+		call assign(var, dict, 'KEY')
+
+   Since values in dictionaries are stored using `variable_t` we have to
+   follow the limitations of that implementation. Therefore it may be better
+   to always use a temporary `variable_t` to retrieve the values stored. This
+   will remove a redundant lookup in the dictionary.
+
+2. Users may find the `.key.` and `.value.` operators which only acts on the first
+   element of the dictionary (which may be a surprise). This is only useful for looping
+   dictionaries.
+
+        use dictionary
+        type(dictionary_t) :: dict, dict_first
+        type(variable_t) :: var
+        character(DICTIONARY_KEY_LENGTH) :: key
+        integer :: i
+		real :: r
+		logical :: success
+        dict = ('KEY'.kv.1)
+		dict = dict // ('KEY1'.kv.3)
+
+        ! start looping
+        dict_first = .first. dict
+	    do while ( .not. (.empty. dict_first) )
+		   ! now .key. and .value. could be used:
+	       key = .key. dict_first
+		   call assign(var, dict_first)
+		   ! Get next dictionary entry
+		   dict_first = .next. dict_first
+        end while
+
+
 Note that the dictionary can also contain _any_ data type.
 
 However, if it needs to do custom data-types the programmer needs to
@@ -197,7 +271,7 @@ Intrinsically the dictionary can contain dictionaries by this:
 	d1 = d1 // ('dict'.kvp.d2)
 
 But it will be up to the user to _know_ the key for data types other than
-integers, reals, complex numbers and characters.
+integers, reals, complex numbers, characters and `c_*` extension types.
 
 Note that the dictionary contained is passed by reference, and thus
 if you delete `d2`, you will have a dangling pointer in `d1`.
