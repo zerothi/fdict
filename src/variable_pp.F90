@@ -254,20 +254,25 @@ contains
   ! passed the full-encoding WITHOUT padding of ' '.
   ! We cannot know for sure whether the encoding actually terminates
   ! in a bit corresponding to char(' ')!
-  subroutine associate_type_(this,enc,dealloc)
+  subroutine associate_type_(this,enc,dealloc,which)
     type(variable_t), intent(inout) :: this
     character(len=1), intent(in) :: enc(:)
     logical, intent(in), optional :: dealloc
+    character(len=*), intent(in), optional :: which
     logical :: ldealloc
     ldealloc = .false.
     if(present(dealloc))ldealloc = dealloc
     if (.not. ldealloc) then
-       ! if we do not deallocate, nullify
-       call nullify(this)
+      ! if we do not deallocate, nullify
+      call nullify(this)
     else
-       call delete(this)
+      call delete(this)
     end if
-    this%t = 'USER'
+    if ( present(which) ) then
+      this%t = trim(which)
+    else
+      this%t = "USER"
+    end if
     allocate(this%enc(size(enc)))
     this%enc(:) = enc(:)
 

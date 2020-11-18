@@ -1027,7 +1027,7 @@ contains
     character(len=1) :: c(1)
     
     pd%d => dic%first
-    call associate_type(v,transfer(pd,c))
+    call associate_type(v,transfer(pd,c), which="dict")
     this = (key.kvp.v)
     call nullify(v)
 
