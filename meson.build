@@ -1,6 +1,7 @@
 project('fdict', 'fortran',
   version : '0.7.2',
   license : 'MPLv2',
+  default_options: ['default_library=static']
 )
 gensettings_files = files([
     'settings.bash',
@@ -8,4 +9,4 @@ gensettings_files = files([
 ])
 subdir('src')
 fdict_lib = library('fdict', fdict_src, install: true)
-fdict_dep = declare_dependency(link_with: fdict_lib, include_directories: fdict_inc)
+fdict_dep = declare_dependency(link_with: fdict_lib)

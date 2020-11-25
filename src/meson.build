@@ -1,6 +1,3 @@
-
-fdict_inc = include_directories('.')
-
 # For variablexxx and dictionaryxxx, the process (from make) is to run variable/dictionary.sh,
 # which produces some .inc files. Then the preprocessor must be run *manually* and then 
 # the sed filter applied to produce the final .F90 file.
@@ -15,7 +12,7 @@ src_dir = meson.current_source_dir()
 
 preprocessor_args = (
     meson.get_compiler('fortran').cmd_array()
-    + ['-E', '-P', '-x', 'c', '-I.', '-I..', '-I@0@'.format(root_dir), '-I@0@'.format(src_dir), '@INPUT0@', '-o', '@OUTPUT@']
+    + ['-E', '-P', '-x', 'c', '-I.', '-I@0@'.format(root_dir), '-I./src', '-I@0@'.format(src_dir), '@INPUT0@', '-o', '@OUTPUT@']
 )
 sedfiltersrc = files(['filter.sed'])[0]
 
@@ -40,7 +37,6 @@ var_sed_src = custom_target(
     'variable_sed.F90',
     command: preprocessor_args,
     input: files(['variable_pp.F90']) + var_incfile_src.to_list(),
-    #depend_files: var_incfile_src,
     output: 'variable_sed.F90'
 )
 var_src = custom_target(
@@ -66,15 +62,16 @@ dict_sed_src = custom_target(
     'dictionary_sed.F90',
     command: preprocessor_args,
     input: files(['dictionary_pp.F90']) + dict_incfile_src.to_list(),
-    #depend_files: dict_incfile_src,
     output: 'dictionary_sed.F90'
 )
 dict_src = custom_target(
     'dictionary.F90',
-    command: ['sed', '-f', sedfiltersrc, '@INPUT@'],
+    command: ['sed', '-f', sedfiltersrc, '@INPUT0@'],
     capture: true,
-    input: dict_sed_src,
+    # Add var_src here to ensure proper compilation ordering...
+    # Apparently auto dependency resolution isn't working properly for generated sources (?)
+    input: [dict_sed_src, var_src],
     output: 'dictionary.F90'
 )
 
-fdict_src = [dict_src, var_src]
+fdict_src = [var_src, dict_src]
