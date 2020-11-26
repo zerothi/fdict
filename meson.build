@@ -7,6 +7,7 @@ gensettings_files = files([
     'settings.bash',
     'default_settings.bash'
 ])
+root_dir = meson.current_source_dir()
 subdir('src')
 fdict_lib = library('fdict', fdict_src, install: true)
 fdict_dep = declare_dependency(link_with: fdict_lib)

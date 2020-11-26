@@ -7,7 +7,6 @@
 # variable.f90: variable_pp.F90 ...
 # $(FPP) $(FPPFLAGS) $(INCLUDES) -I$(src_DIR) -I. $< | sed -f $(src_DIR)/filter.sed > $@
 # expanding (for me) to gfortran -E -P -x c  -I./src -I./src -I. variable_pp.F90 [...]
-root_dir = meson.source_root()
 src_dir = meson.current_source_dir()
 
 preprocessor_args = (
@@ -15,6 +14,7 @@ preprocessor_args = (
     + ['-E', '-P', '-x', 'c', '-I.', '-I@0@'.format(root_dir), '-I./src', '-I@0@'.format(src_dir), '@INPUT0@', '-o', '@OUTPUT@']
 )
 sedfiltersrc = files(['filter.sed'])[0]
+shell_w_vpath = [find_program('env'), 'VPATH=@0@'.format(root_dir)]
 
 var_inc_files = [
     'variable_declarations_.inc',
@@ -29,7 +29,7 @@ var_inc_files = [
 var_inc_deps = files(['settings.inc', 'variable_funcs_inc.inc'])
 var_incfile_src = custom_target(
     'var_incs',
-    command: find_program('variable.sh'),
+    command: shell_w_vpath + [find_program('variable.sh')],
     depend_files: gensettings_files + var_inc_deps,
     output: var_inc_files
 )
@@ -54,7 +54,7 @@ dict_inc_files = [
 dict_inc_deps = files(['settings.inc', 'dictionary_funcs_inc.inc'])
 dict_incfile_src = custom_target(
     'dict_incs',
-    command: find_program('dictionary.sh'),
+    command: shell_w_vpath + [find_program('dictionary.sh')],
     depend_files: gensettings_files + dict_inc_deps,
     output: dict_inc_files
 )
