@@ -59,7 +59,7 @@ install-header: fdict.inc
 # Force the deletion of both libraries
 clean: 
 	-$(RM) $(RM_FLAG_FORCE) $(FDICT_LIB_STATIC) $(FDICT_LIB_SHARED) fdict.inc
-  echo > settings.bash
+	echo > settings.bash
 
 settings.bash:
 	VPATH="$(TOP_DIR)" $(TOP_DIR)/setup.sh --default
