@@ -14,8 +14,14 @@ preprocessor_args = (
     + ['-E', '-P', '-x', 'c', '-I.', '-I@0@'.format(root_dir), '-I./src', '-I@0@'.format(src_dir), '@INPUT0@', '-o', '@OUTPUT@']
 )
 sedfiltersrc = files(['filter.sed'])[0]
+sed_f = [find_program('sed'), '-f', sedfiltersrc]
 shell_w_vpath = [find_program('env'), 'VPATH=@0@'.format(root_dir)]
 
+# Meson does not properly support multiple outputs from configure_file, but we list them here anyway.
+# TODO: Use depfile for gensettings_files + var_inc_deps (to automatically reconfigure upon change).
+# We cannot use custom_target because meson needs to scan the fortran files for proper dependency resolution
+# at configure time, and custom_target is a build time target. So we must use configure_file to generate
+# fortran sources.
 var_inc_files = [
     'variable_declarations_.inc',
     'variable_declarations2_.inc',
@@ -27,50 +33,41 @@ var_inc_files = [
     'variable_funcs_.inc'
 ]
 var_inc_deps = files(['settings.inc', 'variable_funcs_inc.inc'])
-var_incfile_src = custom_target(
-    'var_incs',
+var_incfile_src = configure_file(
     command: shell_w_vpath + [find_program('variable.sh')],
-    depend_files: gensettings_files + var_inc_deps,
-    output: var_inc_files
+    output: var_inc_files[-1]
 )
-var_sed_src = custom_target(
-    'variable_sed.F90',
+var_sed_src = configure_file(
     command: preprocessor_args,
-    input: files(['variable_pp.F90']) + var_incfile_src.to_list(),
+    input: files(['variable_pp.F90']) + [var_incfile_src],
     output: 'variable_sed.F90'
 )
-var_src = custom_target(
-    'variable.F90',
-    command: ['sed', '-f', sedfiltersrc, '@INPUT@'],
+var_src = configure_file(
+    command: sed_f + ['@INPUT@'],
     capture: true,
     input: var_sed_src,
     output: 'variable.F90'
 )
 
+# Same comments as the above for `variable.F90` applies for `dictionary.F90`
 dict_inc_files = [
     'dictionary_interface_.inc',
     'dictionary_funcs_.inc'
 ]
 dict_inc_deps = files(['settings.inc', 'dictionary_funcs_inc.inc'])
-dict_incfile_src = custom_target(
-    'dict_incs',
+dict_incfile_src = configure_file(
     command: shell_w_vpath + [find_program('dictionary.sh')],
-    depend_files: gensettings_files + dict_inc_deps,
-    output: dict_inc_files
+    output: dict_inc_files[-1]
 )
-dict_sed_src = custom_target(
-    'dictionary_sed.F90',
+dict_sed_src = configure_file(
     command: preprocessor_args,
-    input: files(['dictionary_pp.F90']) + dict_incfile_src.to_list(),
+    input: files(['dictionary_pp.F90']) + [dict_incfile_src],
     output: 'dictionary_sed.F90'
 )
-dict_src = custom_target(
-    'dictionary.F90',
-    command: ['sed', '-f', sedfiltersrc, '@INPUT0@'],
+dict_src = configure_file(
+    command: sed_f + ['@INPUT0@'],
     capture: true,
-    # Add var_src here to ensure proper compilation ordering...
-    # Apparently auto dependency resolution isn't working properly for generated sources (?)
-    input: [dict_sed_src, var_src],
+    input: [dict_sed_src],
     output: 'dictionary.F90'
 )
 
