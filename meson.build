@@ -4,12 +4,13 @@ project('fdict', 'fortran',
   default_options: ['default_library=static']
 )
 install = not meson.is_subproject()
+root_dir = meson.current_source_dir()
 
-gensettings_files = files([
-    'settings.bash',
+gensettings_files = [
+  root_dir / 'settings.bash',
+] + files([
     'default_settings.bash'
 ])
-root_dir = meson.current_source_dir()
 
 subdir('src')
 
