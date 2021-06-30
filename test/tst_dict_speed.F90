@@ -53,9 +53,9 @@ program tst_dict
   call cpu_time(toc)
 
   toc = (toc-tic)/N
-  print '(a,i0,a,f15.10,a)','Searched for missing item ',ITT,' times ',&
+  print '(a,i0,a,f15.10,a)','Searched for missing item ',N*ITT,' times ',&
        toc,' seconds'
-  print '(a,f15.10,a)','Difference from std+mean ',mean+std-toc,' seconds'
+  print '(a,f15.10,a)','Outside 1 std it will take ',toc - mean-std,' seconds to search for non-existing items'
 
   call delete(d)
   

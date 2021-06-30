@@ -53,11 +53,23 @@ module dictionary
   type :: dictionary_t
      ! We will keep the dictionary private so that any coding
      ! has to use .KEY. and .VAL. etc.
-     type(dictionary_entry_), pointer :: first => null()
+     type(dictionary_entry_t), pointer :: first => null()
      integer :: len = 0
   end type dictionary_t
   public :: dictionary_t
-  
+
+  ! We need to create a linked list to create arbitrarily long dictionaries...
+  ! The dictionary entry is not visible outside.
+  type :: dictionary_entry_t
+     character(len=DICTIONARY_KEY_LENGTH) :: key = ' '
+     ! in order to extend the dictionary to contain a dictionary
+     ! we simply need to add the dictionary type to the variable
+     ! library.
+     type(variable_t) :: value
+     integer :: hash = 0
+     type(dictionary_entry_t), pointer :: next => null()
+  end type dictionary_entry_t
+
   !> Return the length of a dictionary, by internal counting algorithms
   interface len
      module procedure len_
@@ -203,18 +215,6 @@ module dictionary
   ! Create a dict type: 'key' .KVP. 'pointer'
   public :: operator(.KVP.)
 
-  ! We need to create a linked list to create arbitrarily long dictionaries...
-  ! The dictionary entry is not visible outside.
-  type :: dictionary_entry_
-     character(len=DICTIONARY_KEY_LENGTH) :: key = ' '
-     ! in order to extend the dictionary to contain a dictionary
-     ! we simply need to add the dictionary type to the variable
-     ! library.
-     type(variable_t) :: value
-     integer :: hash = 0
-     type(dictionary_entry_), pointer :: next => null()
-  end type dictionary_entry_
-
 contains
 
   pure function hash_val(key) result(val)
@@ -307,7 +307,7 @@ contains
     logical, intent(in), optional :: max
     integer :: col
     integer :: chash, max_now, same
-    type(dictionary_entry_), pointer :: ld
+    type(dictionary_entry_t), pointer :: ld
 
     col = 0
     if ( .empty. this ) return
@@ -441,7 +441,7 @@ contains
   subroutine sub_d_cat_d(d,d2)
     type(dictionary_t), intent(inout) :: d
     type(dictionary_t), intent(in) :: d2
-    type(dictionary_entry_), pointer :: ladd, lnext
+    type(dictionary_entry_t), pointer :: ladd, lnext
     type(dictionary_t) :: fd
     integer :: kh
     if ( .empty. d ) then
@@ -488,8 +488,8 @@ contains
 
   subroutine d_insert(d,entry)
     type(dictionary_t),    intent(inout) :: d
-    type(dictionary_entry_), intent(inout), pointer :: entry
-    type(dictionary_entry_), pointer :: search, prev
+    type(dictionary_entry_t), intent(inout), pointer :: entry
+    type(dictionary_entry_t), pointer :: search, prev
 
     ! if the dictionary is empty
     ! simply put it first
@@ -550,7 +550,7 @@ contains
     type(dictionary_t), intent(in) :: from
     type(dictionary_t), intent(inout) :: to
 
-    type(dictionary_entry_), pointer :: d
+    type(dictionary_entry_t), pointer :: d
     type(variable_t) :: v
 
     ! Delete the dictionary
@@ -583,7 +583,7 @@ contains
 
   function llen_(this)
     type(dictionary_t), intent(inout) :: this
-    type(dictionary_entry_), pointer :: d
+    type(dictionary_entry_t), pointer :: d
     integer :: llen_
     llen_ = 0
     d => this%first
@@ -635,7 +635,7 @@ contains
     type(dictionary_t), intent(inout) :: this
     character(len=*), intent(in), optional :: key
     logical, intent(in), optional :: dealloc
-    type(dictionary_entry_), pointer :: de, pr
+    type(dictionary_entry_t), pointer :: de, pr
     logical :: ldealloc
     integer :: kh
 
@@ -701,7 +701,7 @@ contains
     end if
        
     ! delete the entire entry-tree
-    call del_dictionary_entry__tree(this%first,dealloc=ldealloc)
+    call del_dictionary_entry_t_tree(this%first,dealloc=ldealloc)
     call delete(this%first%value,dealloc=ldealloc)
     deallocate(this%first)
     nullify(this%first)    
@@ -709,18 +709,18 @@ contains
 
   contains
 
-    recursive subroutine del_dictionary_entry__tree(d,dealloc)
-      type(dictionary_entry_), pointer :: d
+    recursive subroutine del_dictionary_entry_t_tree(d,dealloc)
+      type(dictionary_entry_t), pointer :: d
       logical, intent(in) :: dealloc
       if ( associated(d) ) then
          if ( associated(d%next) ) then
-            call del_dictionary_entry__tree(d%next,dealloc)
+            call del_dictionary_entry_t_tree(d%next,dealloc)
             call delete(d%next%value,dealloc=dealloc)
             deallocate(d%next)
             nullify(d%next)
          end if
       end if
-    end subroutine del_dictionary_entry__tree
+    end subroutine del_dictionary_entry_t_tree
 
   end subroutine delete_
 
@@ -729,7 +729,7 @@ contains
     type(dictionary_t), intent(inout) :: this
     character(len=*), intent(in) :: key
     logical, intent(in), optional :: dealloc
-    type(dictionary_entry_), pointer :: de, pr
+    type(dictionary_entry_t), pointer :: de, pr
 
     ! Here the default is to de-allocate
     ! even though we use the association feature
@@ -784,7 +784,7 @@ contains
   elemental subroutine nullify_key_(this,key)
     type(dictionary_t), intent(inout) :: this
     character(len=*), intent(in) :: key
-    type(dictionary_entry_), pointer :: de, pr
+    type(dictionary_entry_t), pointer :: de, pr
     integer :: kh
 
     ! if no keys are present, simply return
@@ -1019,10 +1019,10 @@ contains
     type(dictionary_t), intent(in) :: dic
     type(dictionary_t) :: this
 
-    type :: pdictionary_entry_
-       type(dictionary_entry_), pointer :: d => null()
-    end type pdictionary_entry_
-    type(pdictionary_entry_) :: pd
+    type :: pdictionary_entry_t
+       type(dictionary_entry_t), pointer :: d => null()
+    end type pdictionary_entry_t
+    type(pdictionary_entry_t) :: pd
     type(variable_t) :: v
     character(len=1) :: c(1)
     
@@ -1071,11 +1071,11 @@ contains
     !  dic1 = ('b'.kv.1)
     !  will make dic1 in dic2 contain ('b'.kv.1)
     ! Specifically because the address of the dic1 does not change.
-    ! However, the dictionary_entry_ pointer is irrespective of parent locality.
-    type :: pdictionary_entry_
-       type(dictionary_entry_), pointer :: d => null()
-    end type pdictionary_entry_
-    type(pdictionary_entry_) :: pd
+    ! However, the dictionary_entry_t pointer is irrespective of parent locality.
+    type :: pdictionary_entry_t
+       type(dictionary_entry_t), pointer :: d => null()
+    end type pdictionary_entry_t
+    type(pdictionary_entry_t) :: pd
     type(dictionary_t) :: ld
     type(variable_t) :: v
     character(len=1), allocatable :: c(:)
@@ -1106,8 +1106,8 @@ contains
     call nullify(v)
 
     ! we need to re-count the number of entries in
-    ! the dictionary_entry_ tree.
-    ! Sadly, this is because we contain the dictionary_entry_
+    ! the dictionary_entry_t tree.
+    ! Sadly, this is because we contain the dictionary_entry_t
     ! type, and NOT the dict type :(
     ! However, it makes the programming style more
     ! intuitive (dependent on how you look at it)
