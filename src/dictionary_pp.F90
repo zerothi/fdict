@@ -530,19 +530,19 @@ contains
        return
     else if ( search%hash == entry%hash ) then
        ! If the key already exists we will simply overwrite
-       if ( search%key == entry%key ) then
+        if ( search%key == entry%key ) then
           call assign(search%value,entry%value)
           return
        end if
     end if
     search_loop: do 
        ! step...
-       prev   => search
+       prev => search
        ! step...
        search => prev%next
        if ( .not. associated(search) ) exit search_loop
        if ( search%hash > entry%hash ) then
-          prev%next  => entry
+          prev%next => entry
           entry%next => search
           d%len = d%len + 1
           return

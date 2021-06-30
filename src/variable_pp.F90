@@ -407,12 +407,21 @@ contains
     logical, intent(in), optional :: dealloc
     character(len=1), pointer :: c(:) => null()
     integer :: i
+    logical :: ldealloc
+    ! ASSIGNMENT in fortran is per default destructive
+    ldealloc = .true.
+    if(present(dealloc)) ldealloc = dealloc
+    if(ldealloc) then
+       call delete(this)
+    else
+       call nullify(this)
+    end if
     allocate(c(len(rhs)))
     do i = 1 , size(c)
        c(i) = rhs(i:i)
     end do
     ! This is still a "copy"
-    call associate(this, c, dealloc)
+    call associate(this, c)
     nullify(c)
   end subroutine assign_set_a0_0
   subroutine assign_get_a0_0(lhs,this,success)

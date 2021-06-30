@@ -7,7 +7,9 @@ program tst_dict_valgrind
   implicit none
 
   real :: a, b(2),c(2,2)
-  real, pointer :: d => null()
+  real, pointer :: d1 => null()
+  real, pointer :: d2 => null()
+
   integer :: i
   type(variable_t) :: v
   type(dictionary_t) :: dic, tmp
@@ -16,14 +18,31 @@ program tst_dict_valgrind
   b = 2.
   c = 3.
 
-  allocate(d)
-  d = 4.
+  allocate(d1)
+  d1 = 4.
+  allocate(d2)
+  d2 = 5.
+
+  ! NO LEAK
+  call assign(v, 'hello')
+  ! NO LEAK
+  call assign(v, 'hello2')
 
   ! fill dictionary
   dic = ('a'.kv.a)
+  ! NO LEAK
   dic = dic // ('b'.kv.b)
-  dic = dic // ('c'.kv.c)
-  dic = dic // ('d'.kvp.d)
+  ! LEAK <
+  dic = dic // ('b'.kv.b)
+  ! NO LEAK
+  dic = dic // ('c'.kv.'hello')
+  ! LEAK <
+  dic = dic // ('c'.kv.'hello2')
+  ! NO LEAK
+  dic = dic // ('d'.kvp.d1)
+  ! LEAK <
+  dic = dic // ('d'.kvp.d2)
+  ! NO LEAK
   dic = dic // ('string'.kv.'Hello world')
 
   ! print all the values
@@ -37,7 +56,8 @@ program tst_dict_valgrind
   call delete(v)
 
   call delete(dic)
-  if ( associated(d) ) print *, 'd associated'
+  if ( associated(d1) ) print *, 'd1 associated'
+  if ( associated(d2) ) print *, 'd2 associated'
   print *,'SUCCESS'
 
 end program tst_dict_valgrind
