@@ -84,6 +84,12 @@ module variable
   end interface
   public :: nullify
 
+  interface empty
+     !! check if empty (equivalent to `nullify(<>)`).
+     module procedure empty_
+  end interface
+  public :: empty
+
   interface print
      !! Print (to std-out) information regarding the variable, i.e. the type.
      module procedure print_
@@ -202,6 +208,11 @@ contains
     if ( allocated(this%enc) ) deallocate(this%enc)
   end subroutine nullify_
 
+  elemental function empty_(this)
+    type(variable_t), intent(in) :: this
+    logical :: empty_
+    empty_ = .not. allocated(this%enc)
+  end function empty_
 
   ! Returns the bare encoding of this variable
   ! This can ease the process of assigning

@@ -131,9 +131,13 @@ module dictionary
 
   ! Retrieve the hash value from a dictionary entry (unary)
   interface operator( .HASH. )
-     module procedure hash
+     module procedure hash_
   end interface
   public :: operator(.HASH.)
+  interface hash
+     module procedure hash_
+  end interface
+  public :: hash
 
   ! Checks for two dicts have all the same keys
   !> Checks whether all keys are the same in two dictionaries.
@@ -155,6 +159,10 @@ module dictionary
      module procedure d_next
   end interface
   public :: operator(.NEXT.)
+  interface next
+     module procedure d_next
+  end interface
+  public :: next
 
   ! Retrieve the first of a dictionary (unary)
   !> Returns the first entry
@@ -163,12 +171,23 @@ module dictionary
   end interface
   public :: operator(.FIRST.)
 
+  interface first
+     module procedure d_first
+  end interface
+  public :: first
+
   ! Check whether the dictionary is empty (unary)
   !> Checks if it is an empty dictionary, i.e. no keys exist
   interface operator( .EMPTY. )
      module procedure d_empty
+     module procedure e_empty
   end interface
   public :: operator(.EMPTY.)
+  interface empty
+     module procedure d_empty
+     module procedure e_empty
+  end interface
+  public :: empty
 
   interface hash_coll
      module procedure hash_coll_
@@ -292,11 +311,11 @@ contains
   end function value_p
 
   ! Returns the hash value of the dictionary first item...
-  pure function hash(d)
+  pure function hash_(d)
     type(dictionary_t), intent(in) :: d
-    integer :: hash
-    hash = d%first%hash
-  end function hash
+    integer :: hash_
+    hash_ = d%first%hash
+  end function hash_
 
   ! Returns number of collisions in the hash-table
   ! The optional keyword 'max' can be used to
@@ -605,6 +624,12 @@ contains
     logical :: d_empty
     d_empty = .not. associated(d%first)
   end function d_empty
+
+  pure function e_empty(e)
+    type(dictionary_entry_t), intent(in) :: e
+    logical :: e_empty
+    e_empty = empty(e%value)
+  end function e_empty
 
   function d_first(d)
     type(dictionary_t), intent(in) :: d
