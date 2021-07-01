@@ -26,5 +26,5 @@ program tests
   call delete(da)
 
   print *,'SUCCESS'
-  
+
 end program tests

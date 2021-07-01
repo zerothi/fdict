@@ -4,13 +4,13 @@ program test
   use variable
 
   implicit none
-  
+
   type(variable_t) :: va
   character(len=20) :: ca, sa
   character, pointer :: pa(:) => null()
   character :: aa(20)
 
-  
+
   call assign(va, 'hello')
   call assign(sa, va)
   ca = sa

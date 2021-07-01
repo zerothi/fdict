@@ -4,18 +4,18 @@ program tst_type
   use variable
 
   implicit none
-  
+
   type(variable_t) :: va
   type :: tType
-     real(dp) :: b(2), c(2,2)
-     integer :: i
-     real(dp), pointer :: pa(:) =>null()
+    real(dp) :: b(2), c(2,2)
+    integer :: i
+    real(dp), pointer :: pa(:) =>null()
   end type tType
 
   ! To not copy all data, we need to retain the 
   ! type in a pointing type
   type :: tpType
-     type(tType), pointer :: t => null()
+    type(tType), pointer :: t => null()
   end type tpType
   type(tType), target :: a
   type(tType), pointer :: b
@@ -39,7 +39,7 @@ program tst_type
   ! We should now have variable a contained in the variable
   call print(va)
   call assert(va%t == 'ut','User-type not asserted.')
-  
+
   ! Try and retrieve data to b
   container%t => b
   lenc = size_enc(va)
@@ -50,13 +50,13 @@ program tst_type
   b => container%t
 
   call assert(abs(b%b - a%b) < 0.0001_dp, &
-       'Copying type did not work, b')
+      'Copying type did not work, b')
   call assert(abs(b%c - a%c) < 0.0001_dp, &
-       'Copying type did not work, c')
+      'Copying type did not work, c')
   call assert(b%i==a%i, &
-       'Copying type did not work, i')
+      'Copying type did not work, i')
   call assert(associated(b%pa,a%pa), &
-       'Copying type did not work, target')
+      'Copying type did not work, target')
 
   call delete(va)
   deallocate(a%pa)

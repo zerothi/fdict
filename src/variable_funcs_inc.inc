@@ -15,9 +15,9 @@ subroutine ROUTINE(assign_set,VAR)(this,rhs,dealloc)
   ldealloc = .true.
   if(present(dealloc))ldealloc = dealloc
   if (ldealloc) then
-     call delete(this)
+    call delete(this)
   else
-     call nullify(this)
+    call nullify(this)
   end if
   ! With pointer transfer we need to deallocate
   ! else bounds might change...
@@ -74,8 +74,8 @@ subroutine ROUTINE(associate_get,VAR)(lhs,this,dealloc,success)
   if(present(dealloc))ldealloc = dealloc
   ! there is one problem, say if lhs is not nullified...
   if (ldealloc.and.associated(lhs)) then
-     deallocate(lhs)
-     nullify(lhs)
+    deallocate(lhs)
+    nullify(lhs)
   end if
   if (.not. lsuccess ) return
   p = transfer(this%enc,p) ! retrieve pointer encoding
@@ -102,9 +102,9 @@ subroutine ROUTINE(associate_set,VAR)(this,rhs,dealloc)
   ldealloc = .false.
   if(present(dealloc))ldealloc = dealloc
   if (ldealloc) then
-     call delete(this)
+    call delete(this)
   else
-     call nullify(this)
+    call nullify(this)
   end if
   this%t = STR(VAR)
   p%p => rhs
@@ -122,9 +122,9 @@ pure function ROUTINE(associatd_l,VAR)(lhs,this) result(ret)
   type(pt) :: p
   ret = this%t == STR(VAR)
   if (ret) then
-     nullify(p%p)
-     p = transfer(this%enc,p)
-     ret = associated(lhs,p%p)
+    nullify(p%p)
+    p = transfer(this%enc,p)
+    ret = associated(lhs,p%p)
   endif
 end function ROUTINE(associatd_l,VAR)
 pure function ROUTINE(associatd_r,VAR)(this,rhs) result(ret)
@@ -137,9 +137,9 @@ pure function ROUTINE(associatd_r,VAR)(this,rhs) result(ret)
   type(pt) :: p
   ret = this%t == STR(VAR)
   if (ret) then	
-     nullify(p%p)
-     p = transfer(this%enc,p)
-     ret = associated(p%p,rhs)
+    nullify(p%p)
+    p = transfer(this%enc,p)
+    ret = associated(p%p,rhs)
   endif
 end function ROUTINE(associatd_r,VAR)
 

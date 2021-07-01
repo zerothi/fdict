@@ -14,7 +14,7 @@ program tests
 
   ! Copying values
   dic_va = ('va'.kv.va)
-  
+
   ! Create dict of dict
   ! Insert dictionary reference into dict
   dic1 = ('dict'.kvp.dic_va)

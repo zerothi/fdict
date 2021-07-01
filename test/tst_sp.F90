@@ -3,14 +3,14 @@ program tests
   use tst_utils
 
   implicit none
-  
+
   type(variable_t) :: va , vb
   real(sp) :: a, b(2), c(2,2)
   real(sp), pointer :: pa =>null(), pb(:)=>null(), pc(:,:)=>null()
   logical :: success
 
 #include "variable_declarations_.inc"
-  
+
   a      = 1.0_sp
   b(:)   = 2._sp
   c(:,:) = 3._sp
@@ -22,19 +22,19 @@ program tests
   ! associate pa with va 'pa => va'
   call associate(pa,va,success=success)
   if ( success ) then
-     print *,'Success: ',pa
+    print *,'Success: ',pa
   else
-     stop 9
+    stop 9
   end if
   if ( associatd(pa,va) ) then
-     print *,'Associated: ',pa
+    print *,'Associated: ',pa
   else
-     stop 9
+    stop 9
   end if
   if ( .not. associatd(pb,va) ) then
-     print *,'Correctly non-associated'
+    print *,'Correctly non-associated'
   else
-     stop 9
+    stop 9
   end if
 
   call assign(va,b)

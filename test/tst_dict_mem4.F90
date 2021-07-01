@@ -3,7 +3,7 @@ program tests
   use tst_utils
 
   implicit none
-  
+
   integer :: i, N, step
 
   N = 500
@@ -12,19 +12,19 @@ program tests
   write(*,*)'Pop and delete var'
   ! we should here allocate around 1Gb
   do i = 1 , N
-     call mem_rem(.true.)
-     if ( mod(i,step) == 0 ) then
-        call show_mem
-     end if
+    call mem_rem(.true.)
+    if ( mod(i,step) == 0 ) then
+      call show_mem
+    end if
   end do
 
   write(*,*)'Pop and NO deallocation'
   ! we should here allocate around 1Gb
   do i = 1 , N
-     call mem_rem(.false.)
-     if ( mod(i,step) == 0 ) then
-        call show_mem
-     end if
+    call mem_rem(.false.)
+    if ( mod(i,step) == 0 ) then
+      call show_mem
+    end if
   end do
 
 contains

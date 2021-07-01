@@ -4,7 +4,7 @@ program test1
   use variable
 
   implicit none
-  
+
   type(variable_t) :: va
   real(dp) :: a, b(2), c(2,2)
   real(dp), pointer :: pa =>null()
@@ -13,17 +13,17 @@ program test1
   logical :: success
 
 #include "variable_declarations_.inc"
-  
+
   a = 1.0_dp
   b = 2._dp
   c = 3._dp
-  
+
   call assign(va,a)
   pd0 = transfer(va%enc,pd0)
   print '(a2,tr1,f4.2)',va%t,pd0%p
   call associate(pa,va,success=success)
   if ( success ) then
-     print *,'Success: ',pa
+    print *,'Success: ',pa
   end if
 
   call assign(va,b)

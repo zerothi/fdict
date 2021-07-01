@@ -3,7 +3,7 @@ program tests
   use tst_utils
 
   implicit none
-  
+
   integer :: i, N, step
 
   N = 500
@@ -12,19 +12,19 @@ program tests
   write(*,*)'Delete and deallocation'
   ! we should here allocate around 1Gb
   do i = 1 , N
-     call mem(.true.)
-     if ( mod(i,step) == 0 ) then
-        call show_mem
-     end if
+    call mem(.true.)
+    if ( mod(i,step) == 0 ) then
+      call show_mem
+    end if
   end do
 
   write(*,*)'Delete and NO deallocation'
   ! we should here allocate around 1Gb
   do i = 1 , N
-     call mem(.false.)
-     if ( mod(i,step) == 0 ) then
-        call show_mem
-     end if
+    call mem(.false.)
+    if ( mod(i,step) == 0 ) then
+      call show_mem
+    end if
   end do
 
   print *, 'SUCCESS'

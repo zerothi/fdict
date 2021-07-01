@@ -21,14 +21,21 @@ program tst_dict
 
   ! fill dictionary
   dic = &
-       ('a'.kv.a)//('b'.kv.b)//('c'.kv.c)//('d'.kvp.d)// &
-       ('string'.kv."Hello world")
+      ('a'.kv.a)//('b'.kv.b)//('c'.kv.c)//('d'.kvp.d)// &
+      ('string'.kv."Hello world")
   if ( len(dic) /= 5 ) stop 9
+  if ( llen(dic) /= 5 ) stop 9
 
   call extend(dic, &
-       ('aa'.kv.a)//('bb'.kv.b)//('cc'.kv.c)//('dd'.kvp.d)// &
-       ('stringa'.kv."Hello world"))
+      ('aa'.kv.a)//('bb'.kv.b)//('cc'.kv.c)//('dd'.kvp.d)// &
+      ('stringa'.kv."Hello world"))
   if ( len(dic) /= 10 ) stop 9
+  if ( llen(dic) /= 10 ) stop 9
+
+  call extend(dic, &
+      ('a'.kv.a)//('stringa'.kv."Hello world"))
+  if ( len(dic) /= 10 ) stop 9
+  if ( llen(dic) /= 10 ) stop 9
 
   ! print all the values
   call print(dic)

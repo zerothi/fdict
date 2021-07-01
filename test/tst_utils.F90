@@ -14,13 +14,13 @@ module tst_utils
   integer, parameter :: dp = selected_real_kind(p=15)
 
   interface assert
-     module procedure assert_0d
-     module procedure assert_1d
-     module procedure assert_2d
+    module procedure assert_0d
+    module procedure assert_1d
+    module procedure assert_2d
   end interface assert
 
   private :: assert_0d, assert_1d, assert_2d
-  
+
 contains
 
   subroutine show_mem()
@@ -32,14 +32,14 @@ contains
     character(len=*) :: msg
     character(len=*), optional :: good
     if ( .not. log ) then
-       write(*,*) msg
-       stop
+      write(*,*) msg
+      stop
     else
-       if ( present(good) ) then
-          write(*,*)'SUCCESS '//trim(good)
-       else
-          write(*,*)'SUCCESS'
-       end if
+      if ( present(good) ) then
+        write(*,*)'SUCCESS '//trim(good)
+      else
+        write(*,*)'SUCCESS'
+      end if
     end if
   end subroutine assert_0d
   subroutine assert_1d(log,msg,good)
@@ -47,14 +47,14 @@ contains
     character(len=*) :: msg
     character(len=*), optional :: good
     if ( .not. all(log) ) then
-       write(*,*) msg
-       stop 9
+      write(*,*) msg
+      stop 9
     else
-       if ( present(good) ) then
-          write(*,*)'SUCCESS '//trim(good)
-       else
-          write(*,*)'SUCCESS'
-       end if
+      if ( present(good) ) then
+        write(*,*)'SUCCESS '//trim(good)
+      else
+        write(*,*)'SUCCESS'
+      end if
     end if
   end subroutine assert_1d
   subroutine assert_2d(log,msg,good)
@@ -62,14 +62,14 @@ contains
     character(len=*) :: msg
     character(len=*), optional :: good
     if ( .not. all(log) ) then
-       write(*,*) msg
-       stop 9
+      write(*,*) msg
+      stop 9
     else
-       if ( present(good) ) then
-          write(*,*)'SUCCESS '//trim(good)
-       else
-          write(*,*)'SUCCESS'
-       end if
+      if ( present(good) ) then
+        write(*,*)'SUCCESS '//trim(good)
+      else
+        write(*,*)'SUCCESS'
+      end if
     end if
   end subroutine assert_2d
 
