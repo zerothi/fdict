@@ -19,6 +19,24 @@ module dictionary
   !! dict = ('Value'.kv.r) // ('Pointer'.kvp.rb)
   !!```
   !!
+  !! Since it is f90 standard there are some limitations to the implementation
+  !! that is perhaps not standard in usage.
+  !! When concatenating two dictionaries one should suspect that the
+  !! conactenated dictionaries are corrupted and should be nullifed after:
+  !!
+  !! ```fortran
+  !! type(dictionary_t) :: d1, d2, d3
+  !! ...
+  !! d1 = d2 // d3
+  !! call nullify(d2)
+  !! call nullify(d3)
+  !! ```
+  !! One should _not_ operate on dictionaries which has
+  !! been concatenated.
+  !! Also, any keys that are in both will delete the *left* one.
+  !! So if you have a pointer stored and you want to retain the values
+  !! you will have to store the pointer somewhere else and nullify the key
+  !! first.
 
   use, intrinsic :: iso_c_binding
   use variable
@@ -276,10 +294,16 @@ contains
 #endif
   end function hash_val
 
-  pure function new_d_key(key) result(d)
+#ifndef _FDICT_DEBUG
+  pure &
+#endif
+      function new_d_key(key) result(d)
     character(len=*), intent(in) :: key
     type(dictionary_t) :: d
     allocate(d%first)
+#ifdef _FDICT_DEBUG
+    write(*,'(a,t25,i16)') 'dict: creating',loc(d%first)
+#endif
     if ( len_trim(key) > DICTIONARY_KEY_LENGTH ) then
       d%first%key = key(1:DICTIONARY_KEY_LENGTH)
     else
@@ -476,32 +500,12 @@ contains
       ! step ...
       lnext => ladd%next ! we need to get the next
       kh = fd%first%hash
-      ! before it gets deassociated
       call d_insert(fd,ladd)
-      ! Now if the hash has changed it means
-      ! that the algorithm has put the new
-      ! key in front of the first one.
-      ! As this can ONLY occur once
-      ! we know that it must be before
-      ! the d%first as well.
-      ! We hence update d%first and
-      ! do not update the fd%first as it points correctly.
-      if ( kh /= fd%first%hash ) then
-        d%first => fd%first
-      else
-        ! The hash table has not been updated.
-        ! Thus the key has been added afterwards
-        ! and we can safely step in the
-        ! linked list wîth our fake dictionary.
-        ! In case the hash values are equivalent
-        ! then the key will be put in sequence
-        ! of arrival, and thus a deterministic pattern
-        ! is achieved.
-        fd%first => ladd
-      end if
       if ( .not. associated(lnext) ) exit
       ladd => lnext
     end do
+    ! Update the first entry
+    d%first => fd%first
     d%len = d%len + fd%len
   end subroutine sub_d_cat_d
 
@@ -520,10 +524,15 @@ contains
 
     nullify(prev)
 
-    ! Initialize search...
     search => d%first
-    ! The easy case...
+
+    ! Matching the first entry
     if ( search%hash > entry%hash ) then
+      ! The added hash is smaller than the first hash
+      ! of the dictionary, so we get a new *first* entry
+#ifdef _FDICT_DEBUG
+      write(*,'(a,t25,i16,tr1,a)') 'dict: adding',loc(entry),'as first entry'
+#endif
       entry%next => d%first
       d%first => entry
       d%len = d%len + 1
@@ -531,10 +540,19 @@ contains
     else if ( search%hash == entry%hash ) then
       ! If the key already exists we will simply overwrite
       if ( search%key == entry%key ) then
-        call assign(search%value,entry%value)
+#ifdef _FDICT_DEBUG
+        write(*,'(a,t25,i16,a,i16)') 'dict: replacing first',loc(search),' <- ', loc(entry)
+#endif
+        ! deletion
+        call delete(search%value)
+        ! key and hash are the same, no need to transfer those
+        entry%next => search%next
+        d%first => entry
+        deallocate(search)
         return
       end if
     end if
+
     search_loop: do 
       ! step...
       prev => search
@@ -542,14 +560,24 @@ contains
       search => prev%next
       if ( .not. associated(search) ) exit search_loop
       if ( search%hash > entry%hash ) then
+#ifdef _FDICT_DEBUG
+        write(*,'(a,t25,i16)') 'dict: adding',loc(search)
+#endif
         prev%next => entry
         entry%next => search
         d%len = d%len + 1
         return
       else if ( search%hash == entry%hash ) then
         ! If the key already exists we will simply overwrite
+        ! If not, we will put it *after* the same hash
         if ( search%key == entry%key ) then
-          call assign(search%value,entry%value)
+#ifdef _FDICT_DEBUG
+          write(*,'(a,t25,i16,a,i16)') 'dict: replacing',loc(search),' <- ', loc(entry)
+#endif
+          call delete(search%value)
+          prev%next => entry
+          entry%next => search%next
+          deallocate(search)
           return
         end if
       end if
@@ -649,8 +677,13 @@ contains
     type(dictionary_t) :: ld
     ld = .first. d
     do while ( .not. (.empty. ld) )
+#ifdef _FDICT_DEBUG
+      write(*,'(t2,a,tr1,a,i0,a,tr4,i0)') trim(.key. ld), &
+          '['/ /trim(ld%first%value%t)/ /'] (',.hash. ld,')',loc(ld%first)
+#else
       write(*,'(t2,a,tr1,a,i0,a)') trim(.key. ld), &
           '['/ /trim(ld%first%value%t)/ /'] (',.hash. ld,')'
+#endif
       ld = .next. ld
     end do
   end subroutine print_
@@ -674,9 +707,9 @@ contains
       return
     end if
 
-#ifdef DICTIONARY_DEBUG
+#ifdef _FDICT_DEBUG
     if ( len(this) == 0 ) then
-      stop 'Something went wrong'
+      stop 'dict: Something went wrong'
     end if
 #endif
 
@@ -691,6 +724,9 @@ contains
         if ( key == pr%key ) then
           this%first => pr%next
           this%len = this%len - 1 
+#ifdef _FDICT_DEBUG
+          write(*,'(a,t25,i16)') 'dict: deleting',loc(pr)
+#endif
           call delete(pr%value,dealloc=ldealloc)
           nullify(pr%next)
           deallocate(pr)
@@ -710,6 +746,9 @@ contains
         if ( de%hash == kh ) then
           if ( de%key == key ) then
             pr%next => de%next
+#ifdef _FDICT_DEBUG
+            write(*,'(a,t25,i16)') 'dict: deleting',loc(pr)
+#endif
             call delete(de%value,dealloc=ldealloc)
             nullify(de%next)
             deallocate(de)
@@ -728,8 +767,11 @@ contains
     ! delete the entire entry-tree
     call del_dictionary_entry_t_tree(this%first,dealloc=ldealloc)
     call delete(this%first%value,dealloc=ldealloc)
+#ifdef _FDICT_DEBUG
+    write(*,'(a,t25,i16)') 'dict: deleting',loc(this%first)
+#endif
     deallocate(this%first)
-    nullify(this%first)    
+    nullify(this%first)
     this%len = 0
 
   contains
@@ -740,6 +782,9 @@ contains
       if ( associated(d) ) then
         if ( associated(d%next) ) then
           call del_dictionary_entry_t_tree(d%next,dealloc)
+#ifdef _FDICT_DEBUG
+          write(*,'(a,t25,i16)') 'dict: deleting',loc(d%next)
+#endif
           call delete(d%next%value,dealloc=dealloc)
           deallocate(d%next)
           nullify(d%next)
