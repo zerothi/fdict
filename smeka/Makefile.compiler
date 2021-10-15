@@ -26,6 +26,26 @@ _SMEKA_SUFFIXES := $(_SMEKA_SUFFIXES) .f90 .F90 .c .cc .cpp
 # those needed.
 
 # Default vendor setting
+ifeq (gfortran,$(findstring gfortran,$(FC)))
+  F_VENDOR ?= gnu
+endif
+ifeq (ifort,$(findstring ifort,$(FC)))
+  F_VENDOR ?= intel
+endif
+ifeq (pgfortran,$(findstring pgfortran,$(FC)))
+  F_VENDOR ?= pgi
+endif
+ifeq (gcc,$(findstring gcc,$(CC)))
+  C_VENDOR ?= gnu
+endif
+ifeq (icc,$(findstring icc,$(CC)))
+  C_VENDOR ?= intel
+endif
+ifeq (pgcc,$(findstring pgcc,$(CC)))
+  C_VENDOR ?= pgi
+endif
+
+# Default for everything
 VENDOR ?= gnu
 
 C_VENDOR ?= $(VENDOR)
@@ -66,20 +86,21 @@ ifneq ($(OPT),none)
   FFLAGS := $(filter-out $(_FILTER_OPT_FLAGS),$(FFLAGS))
 
   # Populate them
-  include $(TOP_DIR)/$(SMEKA_DIR)/vendor/$(C_VENDOR).make
+  include $(TOP_DIR)/$(SMEKA_DIR)/vendor/$(C_VENDOR).c.make
   CFLAGS += $(V_CFLAGS_$(OPT))
 
-  include $(TOP_DIR)/$(SMEKA_DIR)/vendor/$(CXX_VENDOR).make
+  include $(TOP_DIR)/$(SMEKA_DIR)/vendor/$(CXX_VENDOR).cxx.make
   CXXFLAGS += $(V_CXXFLAGS_$(OPT))
 
-  include $(TOP_DIR)/$(SMEKA_DIR)/vendor/$(F_VENDOR).make
+  include $(TOP_DIR)/$(SMEKA_DIR)/vendor/$(F_VENDOR).fortran.make
   FFLAGS += $(V_FFLAGS_$(OPT))
 
 else
 
-  # We simply default to include the vendor make file for fortran
-  # to retrieve the FC_MODDIR variable
-  include $(TOP_DIR)/$(SMEKA_DIR)/vendor/$(VENDOR).make
+  # Populate them
+  include $(TOP_DIR)/$(SMEKA_DIR)/vendor/$(C_VENDOR).c.make
+  include $(TOP_DIR)/$(SMEKA_DIR)/vendor/$(CXX_VENDOR).cxx.make
+  include $(TOP_DIR)/$(SMEKA_DIR)/vendor/$(F_VENDOR).fortran.make
 
 endif
 
@@ -91,12 +112,12 @@ FFLAGS += $(V_PIC)
 endif
 
 # Generic compiler options
-CC = $(V_CC)
-CXX = $(V_CXX)
-FC = $(V_FC)
-MPICC = $(V_MPICC)
-MPICXX = $(V_MPICXX)
-MPIFC = $(V_MPIFC)
+CC ?= $(V_CC)
+CXX ?= $(V_CXX)
+FC ?= $(V_FC)
+MPICC ?= $(V_MPICC)
+MPICXX ?= $(V_MPICXX)
+MPIFC ?= $(V_MPIFC)
 FC_MODDIR ?= $(V_FC_MODDIR)
 
 # C-preprocessor is a nightmare
@@ -107,24 +128,29 @@ FC_MODDIR ?= $(V_FC_MODDIR)
 #  clang -E -P -x c
 #  clang -E -P -xc (for clang <= 3.5)
 ifdef V_CPP
-CPP = $(V_CPP)
+CPP ?= $(V_CPP)
 else
-CPP = $(CC) -E -P -x c
+CPP ?= $(CC) -E -P -x c
 endif
-CPPFLAGS =
+ifdef V_CXXPP
+CXXPP ?= $(V_CXXPP)
+else
+CXXPP ?= $(CC) -E -P -x c
+endif
+CPPFLAGS ?=
 ifdef V_FPP
-FPP = $(V_FPP)
+FPP ?= $(V_FPP)
 else
-FPP = $(FC) -E -P -x c
+FPP ?= $(FC) -E -P -x c
 endif
-FPPFLAGS =
+FPPFLAGS ?=
 
 
 # Linker options
-AR = ar
-ARFLAGS = -ru
-RANLIB = ranlib
-RANLIBFLAGS =
+AR ?= ar
+ARFLAGS ?= -ru
+RANLIB ?= ranlib
+RANLIBFLAGS ?=
 
 
 .PHONY: smeka-show-compiler
@@ -132,10 +158,13 @@ RANLIBFLAGS =
 smeka-show-compiler:
 	@$(ECHO) ""
 	@$(ECHO) "Used compilation options (VENDOR=$(VENDOR)):"
+	@$(ECHO) " C_VENDOR=$(C_VENDOR)"
 	@$(ECHO) "  CC       = $(CC)"
 	@$(ECHO) "  CFLAGS   = $(CFLAGS)"
+	@$(ECHO) " CXX_VENDOR=$(CXX_VENDOR)"
 	@$(ECHO) "  CXX      = $(CXX)"
 	@$(ECHO) "  CXXFLAGS = $(CXXFLAGS)"
+	@$(ECHO) " F_VENDOR=$(F_VENDOR)"
 	@$(ECHO) "  FC       = $(FC)"
 	@$(ECHO) "  FFLAGS   = $(FFLAGS)"
 	@$(ECHO) ""
@@ -151,7 +180,7 @@ show: smeka-show-compiler
 
 # Define the default compilation options:
 # Default to not pre-process Fortran files
-SMEKA_CPP_F = 0
+SMEKA_CPP_F ?= 0
 
 ifeq ($(SMEKA_CPP_F),0)
 %.o: %.F90
