@@ -43,7 +43,7 @@ endif
 .NOTPARALLEL: install-mod
 smeka-install: install-mod
 install-mod: $(F_MODS)
-	$(INSTALL) -m $(_OCT_rwrxrx) -d $(DESTDIR)$(FMOD_DIR)
+	$(INSTALL) -m $(_OCT_rwxrxrx) -d $(DESTDIR)$(FMOD_DIR)
 	$(INSTALL) -m $(_OCT_rwrr) $(F_MODS) $(DESTDIR)$(FMOD_DIR)
 
 .NOTPARALLEL: install-settings
