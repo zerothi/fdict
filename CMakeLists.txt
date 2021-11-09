@@ -23,11 +23,22 @@ include(GNUInstallDirs)
 # Add sub-directory
 add_subdirectory(src)
 
-# Installation
-install(TARGETS fdict
-        EXPORT "${PROJECT_NAME}Targets"
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-        PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCDIR}
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+# Define the settings.bash
 
+# Installation of the fdict library
+install(
+  TARGETS fdict
+  EXPORT "${PROJECT_NAME}Targets"
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+  PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCDIR}
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  )
+
+# Retrieve the header files I need to install
+get_target_property(fdict_headers fdict PUBLIC_HEADERS)
+install(
+  FILES ${fdict_headers}
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  )
+  
