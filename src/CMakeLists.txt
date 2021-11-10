@@ -59,3 +59,5 @@ set_target_properties(fdict
   PUBLIC_HEADERS ${CMAKE_CURRENT_BINARY_DIR}/fdict.inc
   )
 
+install(DIRECTORY ${CMAKE_Fortran_MODULE_DIRECTORY}/ DESTINATION ${CMAKE_CURRENT_SOURCE_DIR})
+

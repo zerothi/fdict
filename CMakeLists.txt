@@ -7,6 +7,8 @@ project(fdict
   DESCRIPTION "Fortran dictionary for arbitrary data-types"
   )
 
+set(CMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/modules)
+
 # Define library specific content
 set(FDICT_AUTHOR       "Nick Papior")
 set(FDICT_DESCRIPTION  "Fortran dictionary for arbitrary data-types")
@@ -20,6 +22,7 @@ set(FDICT_MICRO_VERSION ${PROJECT_VERSION_PATCH})
 # Project installation follows GNU installation directory convention
 include(GNUInstallDirs)
 
+
 # Add sub-directory
 add_subdirectory(src)
 
@@ -31,6 +34,9 @@ add_custom_command(
   COMMENT Creating settings.bash
   )
 
+
+# Ensure module files are installed
+set(CMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_INSTALL_INCDIR})
 
 # Installation of the fdict library
 install(
@@ -49,8 +55,8 @@ install(
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
   )
 
-#install(
-#  FILES settings.bash
-#  DESTINATION ${CMAKE_INSTALL_BINDIR}
-#  )
+install(
+  FILES settings.bash
+  DESTINATION ${CMAKE_INSTALL_BINDIR}
+  )
 
