@@ -23,7 +23,14 @@ include(GNUInstallDirs)
 # Add sub-directory
 add_subdirectory(src)
 
-# Define the settings.bash
+# Define the settings.bash target
+add_custom_command(
+  OUTPUT settings.bash
+  COMMAND VPATH=${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/setup.sh --default
+  VERBATIM
+  COMMENT Creating settings.bash
+  )
+
 
 # Installation of the fdict library
 install(
@@ -41,4 +48,9 @@ install(
   FILES ${fdict_headers}
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
   )
-  
+
+#install(
+#  FILES settings.bash
+#  DESTINATION ${CMAKE_INSTALL_BINDIR}
+#  )
+
