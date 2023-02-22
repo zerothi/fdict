@@ -90,7 +90,7 @@ while [ $# -gt 0 ]; do
 	    quick_setup $1 $n
 	    shift ;;
 	-A)
-	    quick_setup $1 s d c z b h i l cp fp
+	    quick_setup $1 s d c z b h i l
 	    shift ;;
 	-R)
 	    quick_setup $1 s d
