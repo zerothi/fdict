@@ -7,14 +7,24 @@ set_source_files_properties(
   PROPERTIES Fortran_PREPROCESS ON
   )
 
+
+# Preprocess include files to ensure that we have the correct input files
+# present
+
+function (fypp_f90 fyppopts fyppfiles f90files)
+  preprocess("${FYPP}" "${fyppopts}" "fypp" "f90" "${fyppfiles}" _f90files)
+  set(${f90files} ${_f90files} PARENT_SCOPE)
+endfunction()
+
 # Here we create the variable include files
 add_custom_command(
   OUTPUT variable_declarations_.inc variable_declarations2_.inc variable_interface_.inc variable_delete_.inc
          variable_variable_alloc_.inc variable_variable_assoc_.inc variable_funcs_.inc
-  # Command to run to create include file defaults	 
+  # Command to run to create include file defaults
   COMMAND VPATH=${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/variable.sh
   VERBATIM
   COMMENT "Creating variable*.inc files"
+  DEPENDS "settings.bash"
 )
 
 add_custom_command(
@@ -60,4 +70,3 @@ set_target_properties(fdict
   )
 
 install(DIRECTORY ${CMAKE_Fortran_MODULE_DIRECTORY}/ DESTINATION ${CMAKE_CURRENT_SOURCE_DIR})
-
