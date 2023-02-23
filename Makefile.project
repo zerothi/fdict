@@ -16,6 +16,7 @@ FDICT_LIB ?= fdict$(LIB_SUFFIX)
 FDICT_LIB_STATIC ?= lib$(FDICT_LIB).a
 FDICT_LIB_SHARED ?= lib$(FDICT_LIB).so
 
+
 # Define custom options for fdict
 STATIC ?= 1
 # If the library was built previously,

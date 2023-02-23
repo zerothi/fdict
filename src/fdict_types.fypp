@@ -1,0 +1,47 @@
+#:include 'fdict_common.fypp'
+
+module fdict_types
+
+#:if WITH_ISO_C
+#:for kind in ISOC_TYPES
+  use, intrinsic :: iso_c_binding, only: ${kind}$
+#:endfor
+#:endif
+
+#:if WITH_ISO_ENV
+
+#:for kind in INT_KINDS + REAL_KINDS
+  use, intrinsic :: iso_fortran_env, only: ${kind}$
+#:endfor
+#:if WITH_LOG8
+  integer, parameter :: log8 = int8
+#:endif
+  integer, parameter :: log32 = int32
+
+#:else
+
+#:if WITH_INT8
+  integer, parameter :: int8 = selected_int_kind(2)
+#:endif
+#:if WITH_INT16
+  integer, parameter :: int16 = selected_int_kind(4)
+#:endif
+  integer, parameter :: int32 = selected_int_kind(9)
+  integer, parameter :: int64 = selected_int_kind(18)
+
+  integer, parameter :: real32 = selected_real_kind(p=6)
+  integer, parameter :: real64 = selected_real_kind(p=15)
+#:if WITH_REAL128
+  integer, parameter :: real128 = selected_real_kind(p=19)
+#:endif
+
+#:if WITH_LOG8
+  integer, parameter :: log8 = selected_int_kind(2)
+#:endif
+  integer, parameter :: log32 = selected_int_kind(9)
+
+#:endif
+
+  public
+
+end module

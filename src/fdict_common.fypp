@@ -1,0 +1,189 @@
+#:mute
+
+#! Project version number
+#!:set PROJECT_VERSION = "{}.{}.{}".format(PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR, PROJECT_VERSION_PATCH)
+
+
+#! Global definitions of the precision declarations
+
+#! Ranks to be generated when templates are created
+#:if not defined('MAXRANK')
+  #:set MAXRANK = 3
+#:endif
+
+#:if not defined("WITH_ISO_ENV")
+  #:set WITH_ISO_ENV = False
+#:endif
+
+#:if not defined("WITH_ISO_C")
+  #:set WITH_ISO_C = False
+#:endif
+
+#! Quadruple precision
+#:if not defined("WITH_REAL128")
+  #:set WITH_REAL128 = False
+#:endif
+
+#! Short integer
+#:if not defined("WITH_INT16")
+  #:set WITH_INT16 = False
+#:endif
+
+#! byte integer (basically a char)
+#:if not defined("WITH_INT8")
+  #:set WITH_INT8 = False
+#:endif
+
+
+#! byte logical (basically a char)
+#:if not defined("WITH_LOG8")
+  #:set WITH_LOG8 = False
+#:endif
+
+
+
+#! Real kinds to be considered during templating
+#:set REAL_KINDS = ["real32", "real64"]
+#:if WITH_REAL128
+  #:set REAL_KINDS = REAL_KINDS + ["real128"]
+#:endif
+
+#! Create short-hand names for the variables
+#:set REAL_SHORTS = ["r{}".format(int(k[4:]) // 8) for k in REAL_KINDS]
+
+
+#! Complex kinds to be considered during templating
+#:set CMPLX_KINDS = ["real32", "real64"]
+#:if WITH_REAL128
+  #:set CMPLX_KINDS = CMPLX_KINDS + ["real128"]
+#:endif
+
+#! Create short-hand names for the variables
+#:set CMPLX_SHORTS = ["c{}".format(int(k[4:]) // 8) for k in CMPLX_KINDS]
+
+
+#! Integer kinds to be considered during templating
+#:set INT_KINDS = ["int32", "int64"]
+#:if WITH_INT16
+  #:set INT_KINDS = ["int16"] + INT_KINDS
+#:endif
+#:if WITH_INT8
+  #:set INT_KINDS = ["int8"] + INT_KINDS
+#:endif
+
+#! Create short-hand names for the variables
+#:set INT_SHORTS = ["i{}".format(int(k[3:]) // 8) for k in INT_KINDS]
+
+
+#! Logical kinds to be considered during templating
+#:set LOG_KINDS = ["int32"]
+#:if WITH_LOG8
+  #:set LOG_KINDS = ["int8"] + LOG_KINDS
+#:endif
+
+#! Create short-hand names for the variables
+#:set LOG_SHORTS = ["l{}".format(int(k[3:]) // 8) for k in LOG_KINDS]
+
+
+#! Character types
+#:set CHAR_KINDS = ["len=1"]
+#:set CHAR_SHORTS = ["a1"]
+
+
+#:if WITH_ISO_C
+  #:set ISOC_KINDS = ["c_ptr", "c_funptr"]
+  #:set ISOC_SHORTS = ["pt", "fpt"]
+#:else
+  #:set ISOC_KINDS = []
+  #:set ISOC_SHORTS = []
+#:endif
+
+
+#! Definitions used throughout
+
+#! Types to be considered during templating
+#:set REAL_TYPES = ["real({})".format(k) for k in REAL_KINDS]
+#:set CMPLX_TYPES = ["complex({})".format(k) for k in CMPLX_KINDS]
+#:set INT_TYPES = ["integer({})".format(k) for k in INT_KINDS]
+#:set LOG_TYPES = ["logical({})".format(k) for k in LOG_KINDS]
+#:set CHAR_TYPES = ["character({})".format(k) for k in CHAR_KINDS]
+#:set ISOC_TYPES = ["type({})".format(k) for k in ISOC_KINDS]
+
+#! Max-ranks for the different types
+#:set REAL_MIN_RANKS = [0 for k in REAL_KINDS]
+#:set REAL_MAX_RANKS = [MAXRANK for k in REAL_KINDS]
+#:set CMPLX_MIN_RANKS = [0 for k in CMPLX_KINDS]
+#:set CMPLX_MAX_RANKS = [MAXRANK for k in CMPLX_KINDS]
+#:set INT_MIN_RANKS = [0 for k in INT_KINDS]
+#:set INT_MAX_RANKS = [MAXRANK for k in INT_KINDS]
+#! The character(len=*) will be type matched with character(len=1), hence we do not allow
+#!   character(len=1) :: a
+#! to be stored.
+#:set CHAR_MIN_RANKS = [1 for k in CHAR_KINDS]
+#:set CHAR_MAX_RANKS = [1 for k in CHAR_KINDS]
+#:set LOG_MIN_RANKS = [0 for k in LOG_KINDS]
+#:set LOG_MAX_RANKS = [MAXRANK for k in LOG_KINDS]
+#:set ISOC_MIN_RANKS = [0 for k in ISOC_KINDS]
+#:set ISOC_MAX_RANKS = [1 for k in ISOC_KINDS]
+
+
+#! Define a list of all available types
+#:set ALL_SHORTS_KINDS_TYPES_RANKS = list(zip( &
+       INT_SHORTS + REAL_SHORTS + CMPLX_SHORTS + LOG_SHORTS + CHAR_SHORTS + ISOC_SHORTS, &
+       INT_KINDS + REAL_KINDS + CMPLX_KINDS + LOG_KINDS + CHAR_KINDS + ISOC_KINDS, &
+       INT_TYPES + REAL_TYPES + CMPLX_TYPES + LOG_TYPES + CHAR_TYPES + ISOC_TYPES, &
+       INT_MIN_RANKS + REAL_MIN_RANKS + CMPLX_MIN_RANKS + LOG_MIN_RANKS + CHAR_MIN_RANKS + ISOC_MIN_RANKS, &
+       INT_MAX_RANKS + REAL_MAX_RANKS + CMPLX_MAX_RANKS + LOG_MAX_RANKS + CHAR_MAX_RANKS + ISOC_MAX_RANKS))
+
+
+#! Get the encoding string that defines a specific short-hand notation
+#!
+#! Args:
+#!     short (str): Short-hand name for the variable
+#!     rank (int): rank of the variable
+#!
+#! Returns:
+#!     {}{}.format(short, rank)
+#!
+#:def typename(short, rank)
+${"{}{}".format(short, rank)}$
+#:enddef
+
+#:def len_typename(short, rank)
+${len(typename(short, rank))}$
+#:enddef
+
+
+
+#! Generates an array rank suffix.
+#!
+#! Args:
+#!     rank (int): Rank of the variable
+#!
+#! Returns:
+#!     Array rank suffix string (e.g. (:,:) if rank = 2)
+#!
+#:def ranksuffix(rank)
+#{if rank > 0}#(${":" + ",:" * (rank - 1)}$)#{endif}#
+#:enddef
+
+#:def rankdimension(rank)
+#{if rank > 0}#, dimension${ranksuffix(rank)}$#{endif}#
+#:enddef
+
+
+#! Declare a variable with the pointer dimensions
+#!
+#! Args:
+#!   name (str): Variable name, for instance: real(dp)
+#!   rank (int): number of dimensions
+#!
+#! Returns:
+#!   Lines stripped and joined with the given string.
+#!
+#:def ptr_declare(name, rank)
+type :: pt${name + str(rank)}$
+#!${prefix + joinstr.join([line.strip() for line in txt.split("\n")]) + suffix}$
+#:enddef
+
+#:endmute

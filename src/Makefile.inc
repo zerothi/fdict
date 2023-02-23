@@ -4,16 +4,18 @@ VPATH := $(VPATH):$(src_DIR)
 
 
 # Define sources in this src directory
-src_OBJECTS = variable.o dictionary.o
+src_OBJECTS = fdict_types.o variable.o dictionary.o
 src_SOURCES = $(patsubst %.o, %.f90, $(src_OBJECTS))
-src_FPP_SOURCES = variable.f90 dictionary.f90
+src_FPP_SOURCES = fdict_types.f90 variable.f90 dictionary.f90
 src_MODS = $(patsubst %.f90, %.mod, $(src_SOURCES))
 
 
 # Create dependency tree such that we may bypass phony targets
-variable.f90: variable_pp.F90 variable.sh settings.inc variable_funcs_inc.inc
-	VPATH="$(TOP_DIR)" $(src_DIR)/variable.sh
-	$(FPP) $(FPPFLAGS) $(INCLUDES) -I$(src_DIR) -I. $< | sed -f $(src_DIR)/filter.sed > $@
+fdict_types.f90: fdict_types.fypp
+	$(FYPP) $(FYPPFLAGS) $< > $@
+
+variable.f90: variable.fypp fdict_types.o
+	$(FYPP) $(FYPPFLAGS) $< > $@
 
 dictionary.o: variable.o
 dictionary.f90: dictionary_pp.F90 dictionary.sh settings.inc dictionary_funcs_inc.inc
@@ -51,8 +53,6 @@ clean-src:
 	-$(RM) $(RM_FLAG_FORCE) $(src_OBJECTS)
 	-$(RM) $(RM_FLAG_FORCE) *.mod fdict.inc
 	-$(RM) $(RM_FLAG_FORCE) $(call addpresuf,dictionary_,_.inc, funcs interface)
-	-$(RM) $(RM_FLAG_FORCE) $(call addpresuf,variable_,_.inc, nullify delete content funcs interface declarations declarations2)
-	-$(RM) $(RM_FLAG_FORCE) $(call addpresuf,variable_variable_,_.inc, set alloc assoc)
 
 clean: clean-src
 
