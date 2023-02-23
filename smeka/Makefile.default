@@ -6,6 +6,10 @@ SETUP = setup.make
 endif
 endif
 
+# Default fypp commands
+FYPP = fypp
+FYPPFLAGS =
+
 
 # Specific options for different OS
 ifeq ($(SMEKA_uname_S),Linux)
