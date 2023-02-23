@@ -4,6 +4,10 @@
 #!:set PROJECT_VERSION = "{}.{}.{}".format(PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR, PROJECT_VERSION_PATCH)
 
 
+#:if not defined("FDICT_DEBUG")
+  #:set FDICT_DEBUG = 0
+#:endif
+
 #! Global definitions of the precision declarations
 
 #! Ranks to be generated when templates are created

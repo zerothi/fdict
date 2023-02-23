@@ -9,18 +9,18 @@ src_SOURCES = $(patsubst %.o, %.f90, $(src_OBJECTS))
 src_FPP_SOURCES = fdict_types.f90 variable.f90 dictionary.f90
 src_MODS = $(patsubst %.f90, %.mod, $(src_SOURCES))
 
+variable.o: fdict_types.o
+dictionary.o: variable.o fdict_types.o
 
 # Create dependency tree such that we may bypass phony targets
 fdict_types.f90: fdict_types.fypp
 	$(FYPP) $(FYPPFLAGS) $< > $@
 
-variable.f90: variable.fypp fdict_types.o
+variable.f90: variable.fypp
 	$(FYPP) $(FYPPFLAGS) $< > $@
 
-dictionary.o: variable.o
-dictionary.f90: dictionary_pp.F90 dictionary.sh settings.inc dictionary_funcs_inc.inc
-	VPATH="$(TOP_DIR)" $(src_DIR)/dictionary.sh
-	$(FPP) $(FPPFLAGS) $(INCLUDES) -I$(src_DIR) -I. $< | sed -f $(src_DIR)/filter.sed > $@
+dictionary.f90: dictionary.fypp
+	$(FYPP) $(FYPPFLAGS) $< > $@
 
 fdict.inc:
 	@$(ECHO) "#ifndef _FDICT_INCLUDE_DEFINED" > $@
@@ -52,7 +52,6 @@ clean-src:
 	-$(RM) $(RM_FLAG_FORCE) $(src_FPP_SOURCES)
 	-$(RM) $(RM_FLAG_FORCE) $(src_OBJECTS)
 	-$(RM) $(RM_FLAG_FORCE) *.mod fdict.inc
-	-$(RM) $(RM_FLAG_FORCE) $(call addpresuf,dictionary_,_.inc, funcs interface)
 
 clean: clean-src
 

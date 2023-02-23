@@ -118,7 +118,16 @@ module variable
   ! Internal variable to hold the size of the "type" switch
   !> Maximum character length of the type specifier in the variable, no
   !! unique identifier may be longer than this.
-  integer, parameter, public :: VARIABLE_TYPE_LENGTH = 4
+#! We need to figure out the maximum length, so it automatically determines
+#! the correct size.
+#:set length = 4
+#!:for sh, k, t, minr, maxr in ALL_SHORTS_KINDS_TYPES_RANKS
+ #!:if length < len_typename(sh, maxr)
+   #!:set length = len_typename(sh, maxr)
+ #!:endif
+#!:endfor
+  integer, parameter, public :: VARIABLE_TYPE_LENGTH = ${length}$
+#:del length
 
   type :: variable_t
     !! Container for _any_ fortran data-type, intrinsically handles all
@@ -254,6 +263,7 @@ module variable
    module procedure ${"associate_set_{}{}".format(sh, ir)}$
   #:endfor
  #:endfor
+   module procedure associate_var
   end interface
   public :: associate
 
