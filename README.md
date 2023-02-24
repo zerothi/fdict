@@ -44,6 +44,15 @@ To link fdict to your program the following can be used in a `Makefile`
     FDICT_LIBS  = -L$(FDICT_PATH) -lfdict
     FDICT_INC   = -I$(FDICT_PATH)
 
+For parent programs that uses `fdict` there are 2 ways of knowing which `fdict`
+version one is using:
+
+1. A simple header file (like C-preprocessor statements), this information
+   is found in `fdict.inc`
+2. A `fypp` compatible include file which contains library version and
+   which data types are included in the built library, see the file `fdict.fypp`
+
+
 The file `fdict.inc` may be included in projects which exposes the following
 definitions:
 
@@ -52,9 +61,17 @@ definitions:
     _FDICT_PATCH_ 0
     _FDICT_VERSION_ 0.9.0
 
-which may be used in functional codes to utilize the correct interfaces.
 This is mainly meant as a feature usable when the fdict interface and
 e.g. modules change names.
+
+Alternatively the `fdict.fypp` inclusion file exposes variables such as:
+- the library version numbers (as above)
+- which data-types are enabled
+- the number of ranks for each kind
+
+The `fdict.fypp` file is handy when you are already relying on `fypp`
+whereas the regular `fdict.inc` header files are easy to use in standard
+fortran source compilation.
 
 
 #### Controlling interfaces ####
