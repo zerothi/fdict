@@ -45,6 +45,7 @@ $(TEST): $(TEST_COMMON) $(TEST_LIB)
 # There are *.inc files in the src directory that is
 # needed
 $(TEST): INCLUDES += -I$(src_DIR) -I.
+$(TEST): FYPPFLAGS += -I$(src_DIR)
 
 
 .PHONY: test
@@ -52,6 +53,8 @@ $(TEST): INCLUDES += -I$(src_DIR) -I.
 test: $(TEST_LIB) $(TEST)
 
 
+tst_simple.f90: tst_simple.fypp
+	$(FYPP) $(FYPPFLAGS) $< > $@
 tst_simple: tst_simple.o
 	$(FC) -o $@ $(FFLAGS) $(INCLUDES) $^
 	./$@
@@ -60,10 +63,14 @@ tst_char: tst_char.o
 	$(FC) -o $@ $(FFLAGS) $(INCLUDES) $^
 	./$@
 
+tst_sp.f90: tst_sp.fypp
+	$(FYPP) $(FYPPFLAGS) $< > $@
 tst_sp: tst_sp.o
 	$(FC) -o $@ $(FFLAGS) $(INCLUDES) $^
 	./$@
 
+tst_dp.f90: tst_dp.fypp
+	$(FYPP) $(FYPPFLAGS) $< > $@
 tst_dp: tst_dp.o
 	$(FC) -o $@ $(FFLAGS) $(INCLUDES) $^
 	./$@
@@ -133,6 +140,8 @@ tst_dict_multiple: tst_dict_multiple.o
 	$(FC) -o $@ $(FFLAGS) $(INCLUDES) $^
 	./$@
 
+tst_dict_remove.f90: tst_dict_remove.fypp
+	$(FYPP) $(FYPPFLAGS) $< > $@
 tst_dict_remove: tst_dict_remove.o
 	$(FC) -o $@ $(FFLAGS) $(INCLUDES) $^
 	./$@

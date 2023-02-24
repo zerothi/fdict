@@ -1,0 +1,57 @@
+#:include 'fdict_common.fypp'
+
+program test1
+
+  use tst_utils
+
+  implicit none
+
+  type(variable_t) :: va
+  real(real64) :: a, b(2), c(2,2)
+  real(real64), pointer :: pa =>null()
+  character(len=15) :: sa, sb
+  character(len=20) :: ca, cb
+  logical :: success
+
+#:for sh, k, t, minr, maxr in ALL_SHORTS_KINDS_TYPES_RANKS
+#:for ir in range(minr, maxr + 1)
+ $:ptr_declare_define(t, sh, ir, 1)
+#:endfor
+#:endfor
+
+  a = 1.0_real64
+  b = 2._real64
+  c = 3._real64
+
+  call assign(va,a)
+  pr8_0 = transfer(va%enc,pr8_0)
+  print '(a2,tr1,f4.2)',va%t,pr8_0%p
+  call associate(pa,va,success=success)
+  if ( success ) then
+    print *,'Success: ',pa
+  end if
+
+  call assign(va,b)
+  call assign(b,va)
+  pr8_1 = transfer(va%enc,pr8_1)
+  print '(a2,2(tr1,f4.2))',va%t,pr8_1%p
+
+  call assign(va,c)
+  pr8_2 = transfer(va%enc,pr8_2)
+  print '(a2,4(tr1,f4.2))',va%t,pr8_2%p
+
+  call assign(va,1)
+  pi4_0 = transfer(va%enc,pi4_0)
+  print '(a2,tr1,i0)',va%t,pi4_0%p
+
+  ca = 'hello world'
+  sa = ca
+  call assign(va,sa)
+
+  call assign(sb,va)
+  cb = sb
+  print *,cb
+
+  call delete(va)
+
+end program test1

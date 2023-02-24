@@ -1,78 +1,5 @@
 #:include 'fdict_common.fypp'
 
-#! Define some helper funcions for unpacking data
-
-#! Retrieve the name of a given pointre variable
-#!
-#! Args:
-#!   type (str): Variable declaration, for instance: real(8) or type(c_ptr)
-#!   short (str): Variable short name, for instance: r8
-#!   rank (int): number of dimensions
-#!
-#! Returns:
-#!   A new type containing Lines stripped and joined with the given string.
-#!
-#:def ptr_name(short, rank, suffix="")
-${"p{}_{}{}".format(short, rank, suffix)}$
-#:enddef
-
-
-#! Declare a type with the pointer dimensions
-#!
-#! Args:
-#!   type (str): Variable declaration, for instance: real(8) or type(c_ptr)
-#!   short (str): Variable short name, for instance: r8
-#!   rank (int): number of dimensions
-#!
-#! Returns:
-#!   A new type containing Lines stripped and joined with the given string.
-#!
-#:def ptr_declare(type, short, rank)
- type :: ${ptr_name(short, rank, "_t")}$
-   ${type}$, pointer :: p${ranksuffix(rank)}$
- end type
-#:enddef
-
-
-#! Define `n` variables (suffixed by count) of type
-#! The declared pointer originates from the ptr_declare routine
-#!
-#! Args:
-#!   type (str): Variable declaration, for instance: real(8) or type(c_ptr)
-#!   short (str): Variable short name, for instance: r8
-#!   rank (int): number of dimensions
-#!   count (int): number of variables (defaults to 1)
-#!
-#! Returns:
-#!   A new type containing Lines stripped and joined with the given string.
-#!
-#:def ptr_define(short, rank, count=1)
- #:if count == 1
- type(${ptr_name(short, rank, "_t")}$) :: ${ptr_name(short, rank)}$
- #:else
- type(${ptr_name(short, rank, "_t")}$) ::#{for c in range(1, count + 1)}##{if c>1}#,#{endif}# ${ptr_name(short, rank, "_{}".format(c))}$#{endfor}#
- #:endif
-#:enddef
-
-#! A combination of ptr_declare and ptr_define
-#:def ptr_declare_define(type, short, rank, count=1)
- $:ptr_declare(type, short, rank)
- $:ptr_define(short, rank, count)
-#:enddef
-
-
-#! A function which allocates a variable by using the same
-#! sizes as a reference variable
-#:def alloc_reference(var, ref, rank)
-#:if rank == 0
-  allocate(${var}$)
-#:elif rank == 1
-  allocate(${var}$(size(${ref}$)))
-#:else
-#:set sr = "size({}".format(ref)
-  allocate(${var}$(${sr}$,1)#{for i in range(2,rank+1)}#,${sr}$,${i}$)#{endfor}#))
-#:endif
-#:enddef
 ! @LICENSE@, see README.md
 
 ! Generic purpose variable as in any scripting language
@@ -121,11 +48,9 @@ module variable
 #! We need to figure out the maximum length, so it automatically determines
 #! the correct size.
 #:set length = 4
-#!:for sh, k, t, minr, maxr in ALL_SHORTS_KINDS_TYPES_RANKS
- #!:if length < len_typename(sh, maxr)
-   #!:set length = len_typename(sh, maxr)
- #!:endif
-#!:endfor
+#:for sh, _, _, _, maxr in ALL_SHORTS_KINDS_TYPES_RANKS
+  #:set length = max(length, len(typename(sh, maxr)))
+#:endfor
   integer, parameter, public :: VARIABLE_TYPE_LENGTH = ${length}$
 #:del length
 
@@ -138,7 +63,7 @@ module variable
     !! This enables one to retrieve the pointer position later and thus enables
     !! pointer assignments and easy copying of data.
 
-    character(len=VARIABLE_TYPE_LENGTH) :: t = '    '
+    character(len=VARIABLE_TYPE_LENGTH) :: t = ' '
     ! The encoding placement of all data
     character(len=1), dimension(:), allocatable :: enc
   end type variable_t
@@ -301,14 +226,6 @@ contains
 #:endfor
 #:endfor
 
-#! Define our character array pointers
-#! The case usage is a bit different since the character(len=1) is
-#! packed in another type...
-#! char1_0 is the container type that is not exposed to users
- $:ptr_declare("character(len=1)", "char1_0", 0)
- $:ptr_declare_define("type({})".format(ptr_name("char1_0", 0, "_t")), "a_0", 1, 1)
-    integer :: i
-
     ldealloc = .true.
     if ( present(dealloc) ) ldealloc = dealloc
     lsuccess = .true.
@@ -321,12 +238,6 @@ contains
         deallocate(${ptr_name(sh, ir)}$%p)
 #:endfor
 #:endfor
-      case ( "${typename("a_0", 1)}$" )
-        ${ptr_name("a_0", 1)}$ = transfer(this%enc,${ptr_name("a_0", 1)}$)
-        do i = 1 , size(${ptr_name("a_0", 1)}$%p)
-          deallocate(${ptr_name("a_0", 1)}$%p(i)%p)
-        end do
-        deallocate(${ptr_name("a_0", 1)}$%p)
       case default
         lsuccess = .false.
       end select
@@ -449,11 +360,12 @@ contains
     call assign(this,rhs)
   end subroutine assignment_
 
-  subroutine assign_var(this,rhs,dealloc)
+  subroutine assign_var(this,rhs,dealloc,success)
     type(variable_t), intent(inout) :: this
     type(variable_t), intent(in) :: rhs
     logical, intent(in), optional :: dealloc
-    logical :: ldealloc
+    logical, intent(out), optional :: success
+    logical :: ldealloc, lsuccess
     integer :: i
 #:for sh, k, t, minr, maxr in ALL_SHORTS_KINDS_TYPES_RANKS
 #:for ir in range(minr, maxr + 1)
@@ -461,15 +373,10 @@ contains
 #:endfor
 #:endfor
 
-#! Define our character array pointers
-#! The case usage is a bit different since the character(len=1) is
-#! packed in another type...
- $:ptr_declare_define("character(len=1)", "a1", 0, 2)
- $:ptr_declare_define("type({})".format(ptr_name("a1", 0, "_t")), "aS", 1, 2)
-
     ! collect deallocation option (default as =)
     ! ASSIGNMENT in fortran is per default destructive
     ldealloc = .true.
+    lsuccess = .true.
     if(present(dealloc))ldealloc = dealloc
     if (.not. ldealloc) then
       ! if we do not deallocate, nullify
@@ -495,20 +402,11 @@ contains
  #:endfor
 #:endfor
 
-    case ( "${typename('aS', 0)}$" )
-      ! character(len=*) uses the character(len=1), dimension(:) type
-      #:set p1 = "{}_1".format(ptr_name("a1", 1))
-      #:set p2 = "{}_2".format(ptr_name("a1", 1))
-
-      ${p2}$ = transfer(rhs%enc, ${p2}$)
-      nullify(${p1}$%p)
-      $:alloc_reference("{}%p".format(p1), "{}%p".format(p2), 1)
-      ${p1}$%p = ${p2}$%p
-      allocate(this%enc(size(transfer(${p1}$, VARIABLE_ENC_TYPE))))
-      this%enc(:) = transfer(${p1}$, VARIABLE_ENC_TYPE)
-      nullify(${p1}$%p)
-
+    case default
+      lsuccess = .false.
     end select
+
+    if ( present(success) ) success = lsuccess
 
   end subroutine assign_var
 

@@ -1,7 +1,6 @@
 program tests
 
   use tst_utils
-  use variable
 
   implicit none
 
@@ -11,7 +10,7 @@ program tests
   step = 25
 
   write(*,*)'Running with deallocation'
-  ! 
+  !
   ! we should here allocate around 1Gb
   do i = 1 , N
     call mem(.true.)
@@ -33,7 +32,7 @@ contains
 
   subroutine mem(dealloc)
     logical, intent(in) :: dealloc
-    real(dp) :: va(400,400) ! roughly 1.22 MB
+    real(real64) :: va(400,400) ! roughly 1.22 MB
     type(variable_t) :: v
     call assign(v,va)
     if ( dealloc ) call delete(v)

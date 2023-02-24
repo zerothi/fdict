@@ -3,7 +3,7 @@
 module fdict_types
 
 #:if WITH_ISO_C
-#:for kind in ISOC_TYPES
+#:for kind in ISOC_KINDS
   use, intrinsic :: iso_c_binding, only: ${kind}$
 #:endfor
 #:endif
@@ -11,12 +11,24 @@ module fdict_types
 #:if WITH_ISO_ENV
 
 #:for kind in INT_KINDS + REAL_KINDS
+#: if kind != "real80"
   use, intrinsic :: iso_fortran_env, only: ${kind}$
+#: endif
 #:endfor
 #:if WITH_LOG8
   integer, parameter :: log8 = int8
 #:endif
+#:if WITH_LOG16
+  integer, parameter :: log16 = int16
+#:endif
   integer, parameter :: log32 = int32
+#:if WITH_LOG64
+  integer, parameter :: log64 = int64
+#:endif
+#:if WITH_REAL80
+  #! Not part of the iso_fortran_env
+  integer, parameter :: real80 = selected_real_kind(18)
+#:endif
 
 #:else
 
@@ -29,16 +41,25 @@ module fdict_types
   integer, parameter :: int32 = selected_int_kind(9)
   integer, parameter :: int64 = selected_int_kind(18)
 
-  integer, parameter :: real32 = selected_real_kind(p=6)
-  integer, parameter :: real64 = selected_real_kind(p=15)
+  integer, parameter :: real32 = selected_real_kind(6)
+  integer, parameter :: real64 = selected_real_kind(15)
+#:if WITH_REAL80
+  integer, parameter :: real80 = selected_real_kind(18)
+#:endif
 #:if WITH_REAL128
-  integer, parameter :: real128 = selected_real_kind(p=19)
+  integer, parameter :: real128 = selected_real_kind(30)
 #:endif
 
 #:if WITH_LOG8
   integer, parameter :: log8 = selected_int_kind(2)
 #:endif
+#:if WITH_LOG16
+  integer, parameter :: log16 = selected_int_kind(4)
+#:endif
   integer, parameter :: log32 = selected_int_kind(9)
+#:if WITH_LOG64
+  integer, parameter :: log64 = int64
+#:endif
 
 #:endif
 

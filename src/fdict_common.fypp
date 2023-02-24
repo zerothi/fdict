@@ -12,7 +12,7 @@
 
 #! Ranks to be generated when templates are created
 #:if not defined('MAXRANK')
-  #:set MAXRANK = 3
+  #:set MAXRANK = 5
 #:endif
 
 #:if not defined("WITH_ISO_ENV")
@@ -23,6 +23,10 @@
   #:set WITH_ISO_C = False
 #:endif
 
+#! Extended double precision
+#:if not defined("WITH_REAL80")
+  #:set WITH_REAL80 = False
+#:endif
 #! Quadruple precision
 #:if not defined("WITH_REAL128")
   #:set WITH_REAL128 = False
@@ -38,7 +42,6 @@
   #:set WITH_INT8 = False
 #:endif
 
-
 #! byte logical (basically a char)
 #:if not defined("WITH_LOG8")
   #:set WITH_LOG8 = False
@@ -48,6 +51,9 @@
 
 #! Real kinds to be considered during templating
 #:set REAL_KINDS = ["real32", "real64"]
+#:if WITH_REAL80
+  #:set REAL_KINDS = REAL_KINDS + ["real80"]
+#:endif
 #:if WITH_REAL128
   #:set REAL_KINDS = REAL_KINDS + ["real128"]
 #:endif
@@ -58,6 +64,9 @@
 
 #! Complex kinds to be considered during templating
 #:set CMPLX_KINDS = ["real32", "real64"]
+#:if WITH_REAL80
+  #:set CMPLX_KINDS = CMPLX_KINDS + ["real80"]
+#:endif
 #:if WITH_REAL128
   #:set CMPLX_KINDS = CMPLX_KINDS + ["real128"]
 #:endif
@@ -114,21 +123,41 @@
 #:set ISOC_TYPES = ["type({})".format(k) for k in ISOC_KINDS]
 
 #! Max-ranks for the different types
-#:set REAL_MIN_RANKS = [0 for k in REAL_KINDS]
-#:set REAL_MAX_RANKS = [MAXRANK for k in REAL_KINDS]
-#:set CMPLX_MIN_RANKS = [0 for k in CMPLX_KINDS]
-#:set CMPLX_MAX_RANKS = [MAXRANK for k in CMPLX_KINDS]
-#:set INT_MIN_RANKS = [0 for k in INT_KINDS]
-#:set INT_MAX_RANKS = [MAXRANK for k in INT_KINDS]
+#:set REAL_MIN_RANKS = [0 for _ in REAL_KINDS]
+#:if defined("MAXRANK_REAL")
+#: set REAL_MAX_RANKS = [MAXRANK_REAL for _ in REAL_KINDS]
+#:else
+#: set REAL_MAX_RANKS = [MAXRANK for _ in REAL_KINDS]
+#:endif
+#:set CMPLX_MIN_RANKS = [0 for _ in CMPLX_KINDS]
+#:if defined("MAXRANK_CMPLX")
+#: set CMPLX_MAX_RANKS = [MAXRANK_CMPLX for _ in CMPLX_KINDS]
+#:else
+#: set CMPLX_MAX_RANKS = [MAXRANK for _ in CMPLX_KINDS]
+#:endif
+#:set INT_MIN_RANKS = [0 for _ in INT_KINDS]
+#:if defined("MAXRANK_INT")
+#: set INT_MAX_RANKS = [MAXRANK_INT for _ in INT_KINDS]
+#:else
+#: set INT_MAX_RANKS = [MAXRANK for _ in INT_KINDS]
+#:endif
+#:set LOG_MIN_RANKS = [0 for _ in LOG_KINDS]
+#:if defined("MAXRANK_LOG")
+#: set LOG_MAX_RANKS = [MAXRANK_LOG for _ in LOG_KINDS]
+#:else
+#: set LOG_MAX_RANKS = [MAXRANK for _ in LOG_KINDS]
+#:endif
 #! The character(len=*) will be type matched with character(len=1), hence we do not allow
 #!   character(len=1) :: a
 #! to be stored.
-#:set CHAR_MIN_RANKS = [1 for k in CHAR_KINDS]
-#:set CHAR_MAX_RANKS = [1 for k in CHAR_KINDS]
-#:set LOG_MIN_RANKS = [0 for k in LOG_KINDS]
-#:set LOG_MAX_RANKS = [MAXRANK for k in LOG_KINDS]
-#:set ISOC_MIN_RANKS = [0 for k in ISOC_KINDS]
-#:set ISOC_MAX_RANKS = [1 for k in ISOC_KINDS]
+#:set CHAR_MIN_RANKS = [1 for _ in CHAR_KINDS]
+#:set CHAR_MAX_RANKS = [1 for _ in CHAR_KINDS]
+#:set ISOC_MIN_RANKS = [0 for _ in ISOC_KINDS]
+#:if defined("MAXRANK_ISO_C")
+#: set ISOC_MAX_RANKS = [MAXRANK_ISO_C for _ in ISOC_KINDS]
+#:else
+#: set ISOC_MAX_RANKS = [1 for _ in ISOC_KINDS]
+#:endif
 
 
 #! Define a list of all available types
@@ -153,11 +182,6 @@
 ${"{}{}".format(short, rank)}$
 #:enddef
 
-#:def len_typename(short, rank)
-${len(typename(short, rank))}$
-#:enddef
-
-
 
 #! Generates an array rank suffix.
 #!
@@ -171,23 +195,80 @@ ${len(typename(short, rank))}$
 #{if rank > 0}#(${":" + ",:" * (rank - 1)}$)#{endif}#
 #:enddef
 
-#:def rankdimension(rank)
-#{if rank > 0}#, dimension${ranksuffix(rank)}$#{endif}#
-#:enddef
 
+#! Define some helper funcions for unpacking data
 
-#! Declare a variable with the pointer dimensions
+#! Retrieve the name of a given pointre variable
 #!
 #! Args:
-#!   name (str): Variable name, for instance: real(dp)
+#!   type (str): Variable declaration, for instance: real(8) or type(c_ptr)
+#!   short (str): Variable short name, for instance: r8
 #!   rank (int): number of dimensions
 #!
 #! Returns:
-#!   Lines stripped and joined with the given string.
+#!   A new type containing Lines stripped and joined with the given string.
 #!
-#:def ptr_declare(name, rank)
-type :: pt${name + str(rank)}$
-#!${prefix + joinstr.join([line.strip() for line in txt.split("\n")]) + suffix}$
+#:def ptr_name(short, rank, suffix="")
+${"p{}_{}{}".format(short, rank, suffix)}$
 #:enddef
+
+
+#! Declare a type with the pointer dimensions
+#!
+#! Args:
+#!   type (str): Variable declaration, for instance: real(8) or type(c_ptr)
+#!   short (str): Variable short name, for instance: r8
+#!   rank (int): number of dimensions
+#!
+#! Returns:
+#!   A new type containing Lines stripped and joined with the given string.
+#!
+#:def ptr_declare(type, short, rank)
+ type :: ${ptr_name(short, rank, "_t")}$
+   ${type}$, pointer :: p${ranksuffix(rank)}$
+ end type
+#:enddef
+
+
+#! Define `n` variables (suffixed by count) of type
+#! The declared pointer originates from the ptr_declare routine
+#!
+#! Args:
+#!   type (str): Variable declaration, for instance: real(8) or type(c_ptr)
+#!   short (str): Variable short name, for instance: r8
+#!   rank (int): number of dimensions
+#!   count (int): number of variables (defaults to 1)
+#!
+#! Returns:
+#!   A new type containing Lines stripped and joined with the given string.
+#!
+#:def ptr_define(short, rank, count=1)
+ #:if count == 1
+ type(${ptr_name(short, rank, "_t")}$) :: ${ptr_name(short, rank)}$
+ #:else
+ type(${ptr_name(short, rank, "_t")}$) ::#{for c in range(1, count + 1)}##{if c>1}#,#{endif}# ${ptr_name(short, rank, "_{}".format(c))}$#{endfor}#
+ #:endif
+#:enddef
+
+#! A combination of ptr_declare and ptr_define
+#:def ptr_declare_define(type, short, rank, count=1)
+ $:ptr_declare(type, short, rank)
+ $:ptr_define(short, rank, count)
+#:enddef
+
+
+#! A function which allocates a variable by using the same
+#! sizes as a reference variable
+#:def alloc_reference(var, ref, rank)
+#:if rank == 0
+  allocate(${var}$)
+#:elif rank == 1
+  allocate(${var}$(size(${ref}$)))
+#:else
+#:set sr = "size({}".format(ref)
+  allocate(${var}$(${sr}$,1)#{for i in range(2,rank+1)}#,${sr}$,${i}$)#{endfor}#))
+#:endif
+#:enddef
+!
 
 #:endmute

@@ -4,7 +4,7 @@ program tests
 
   implicit none
 
-  real(dp) :: va(400,400) ! roughly 1.22 MB
+  real(real64) :: va(400,400) ! roughly 1.22 MB
 
   integer :: i, N, step
 
