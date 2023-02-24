@@ -246,31 +246,32 @@ module dictionary
 
 
   interface operator (.KV.)
+    module procedure d_kv_var
+    module procedure d_kv_aS_0
  #:for sh, k, t, minr, maxr in ALL_SHORTS_KINDS_TYPES_RANKS
   #:for ir in range(minr, maxr + 1)
     module procedure ${"d_kv_{}{}".format(sh, ir)}$
   #:endfor
  #:endfor
-    module procedure d_kv_var
   end interface
   ! Create a dict type: 'key' .KV. 'val'
   public :: operator(.KV.)
 
   interface operator (.KVP.)
+    module procedure d_kvp_var
+    module procedure d_kvp_dict
  #:for sh, k, t, minr, maxr in ALL_SHORTS_KINDS_TYPES_RANKS
   #:for ir in range(minr, maxr + 1)
     module procedure ${"d_kvp_{}{}".format(sh, ir)}$
   #:endfor
  #:endfor
-    module procedure d_kvp_var
-    module procedure d_kvp_dict
   end interface
   ! Create a dict type: 'key' .KVP. 'pointer'
   public :: operator(.KVP.)
 
   interface assign
     module procedure d_get_val
-    module procedure d_get_val_a_
+    module procedure d_get_val_aS_0
  #:for sh, k, t, minr, maxr in ALL_SHORTS_KINDS_TYPES_RANKS
   #:for ir in range(minr, maxr + 1)
     module procedure ${"d_get_val_{}{}".format(sh, ir)}$
@@ -1018,7 +1019,7 @@ contains
 
   end subroutine d_get_p_val
 
-  subroutine d_get_val_a_(val,d,key,dealloc)
+  subroutine d_get_val_aS_0(val,d,key,dealloc)
     character(len=*), intent(out) :: val
     type(dictionary_t), intent(inout) :: d
     character(len=*), intent(in), optional :: key
@@ -1054,13 +1055,13 @@ contains
 
   end subroutine d_get_val_a_
 
-  function d_kv_a0_0(key,val) result(this)
+  function d_kv_aS_0(key,val) result(this)
     character(len=*), intent(in) :: key
     character(len=*), intent(in) :: val
     type(dictionary_t) :: this
     this = new_d_key(key)
     call assign(this%first%value,val)
-  end function d_kv_a0_0
+  end function
 
   function d_kv_var(key,val) result(this)
     character(len=*), intent(in) :: key

@@ -33,7 +33,7 @@ contains
 
   subroutine mem(dealloc)
     logical, intent(in) :: dealloc
-    real(dp) :: va(400,400) ! roughly 1.22 MB
+    real(real64) :: va(400,400) ! roughly 1.22 MB
     type(dictionary_t) :: d
     va = 0.
     d = 'hello'.kv.va

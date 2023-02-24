@@ -25,7 +25,7 @@ program tests
   ! retrive values
   call assign(vb,av)
   call assert(vb == va,'Retrieval of values not correct')
-  vb = 0._dp
+  vb = 0._real64
   call assign(vb,dic2,'va')
   call assert(vb == va,'Retrieval of values not correct')
 
