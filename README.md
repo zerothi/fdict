@@ -48,9 +48,9 @@ The file `fdict.inc` may be included in projects which exposes the following
 definitions:
 
     _FDICT_MAJOR_ 0
-    _FDICT_MINOR_ 8
-    _FDICT_MICRO_ 1
-    _FDICT_VERSION_ 0.8.1
+    _FDICT_MINOR_ 9
+    _FDICT_PATCH_ 0
+    _FDICT_VERSION_ 0.9.0
 
 which may be used in functional codes to utilize the correct interfaces.
 This is mainly meant as a feature usable when the fdict interface and
@@ -74,28 +74,28 @@ be beneficial to reduce maximum ranks to the used range.
 
 Currently the `fdict` library supports the types listed in the below table:
 
-| Type              | Precision format (GNU)   | C-type               | `which` | Default |
-|-------------------|--------------------------|----------------------|---------|---------|
-| `type(variable_t)`|                          | ---                  | `VAR`   | yes     |
-| `character(len=1)`|                          | `char`               | `a`     | yes     |
-| `integer`         | `selected_int_kind(2)`   | `byte`               | `i1`    | no      |
-| `integer`         | `selected_int_kind(4)`   | `short`              | `i2`    | no      |
-| `integer`         | `selected_int_kind(9)`   | `int`                | `i4`    | yes     |
-| `integer`         | `selected_int_kind(18)`  | `long`               | `i8`    | yes     |
-| `real`            | `selected_real_kind(6)`  | `float`              | `r4`    | yes     |
-| `real`            | `selected_real_kind(15)` | `double`             | `r8`    | yes     |
-| `real`            | `selected_real_kind(18)` | `ext. double`        | `r10`   | no      |
-| `real`            | `selected_real_kind(30)` | `quad`               | `r16`   | no      |
-| `complex`         | `selected_real_kind(6)`  | `float complex`      | `c4`    | yes     |
-| `complex`         | `selected_real_kind(15)` | `double complex`     | `c8`    | yes     |
-| `complex`         | `selected_real_kind(18)` | `ext. double complex`| `c10`   | no      |
-| `complex`         | `selected_real_kind(30)` | `quad complex`       | `c16`   | no      |
-| `logical`         | `selected_int_kind(2)`   | `byte`               | `l1`    | no      |
-| `logical`         | `selected_int_kind(4)`   | `short`              | `l2`    | no      |
-| `logical`         | `selected_int_kind(9)`   | `int`                | `l4`    | yes     |
-| `logical`         | `selected_int_kind(18)`  | `long`               | `l8`    | no      |
-| `type(c_ptr)`     |                          | `void *`             | `cp`    | no      |
-| `type(c_funptr)`  |                          | (procedure) `void *` | `fp`    | no      |
+| Type              | Precision format (GNU)   | C-type               | Default |
+|-------------------|--------------------------|----------------------|---------|
+| `type(variable_t)`|                          | ---                  | yes     |
+| `character(len=1)`|                          | `char`               | yes     |
+| `integer`         | `selected_int_kind(2)`   | `byte`               | no      |
+| `integer`         | `selected_int_kind(4)`   | `short`              | no      |
+| `integer`         | `selected_int_kind(9)`   | `int`                | yes     |
+| `integer`         | `selected_int_kind(18)`  | `long`               | yes     |
+| `real`            | `selected_real_kind(6)`  | `float`              | yes     |
+| `real`            | `selected_real_kind(15)` | `double`             | yes     |
+| `real`            | `selected_real_kind(18)` | `ext. double`        | no      |
+| `real`            | `selected_real_kind(30)` | `quad`               | no      |
+| `complex`         | `selected_real_kind(6)`  | `float complex`      | yes     |
+| `complex`         | `selected_real_kind(15)` | `double complex`     | yes     |
+| `complex`         | `selected_real_kind(18)` | `ext. double complex`| no      |
+| `complex`         | `selected_real_kind(30)` | `quad complex`       | no      |
+| `logical`         | `selected_int_kind(2)`   | `byte`               | no      |
+| `logical`         | `selected_int_kind(4)`   | `short`              | no      |
+| `logical`         | `selected_int_kind(9)`   | `int`                | yes     |
+| `logical`         | `selected_int_kind(18)`  | `long`               | no      |
+| `type(c_ptr)`     |                          | `void *`             | no      |
+| `type(c_funptr)`  |                          | (procedure) `void *` | no      |
 
 In the `Default` column one can see which data-types are enabled by default. The most
 commonly used data-types are enabled.
@@ -104,6 +104,8 @@ To enable the non-default data types you can do so with (Makefile scheme):
 
     FYPPFLAGS += -DWITH_INT8=1 # for int kind(2)
     FYPPFLAGS += -DWITH_INT16=1 # for int kind(4)
+    # Note that not all compilers support extended precisions
+    # If you experience compiler errors, this is likely the cause.
     FYPPFLAGS += -DWITH_REAL80=1 # for real and complex kind(18)
     FYPPFLAGS += -DWITH_REAL128=1 # for real and complex kind(30)
     FYPPFLAGS += -DWITH_LOG8=1 # for logical kind(2)
@@ -190,7 +192,7 @@ Here it may be beneficial to lookup the type of data:
 	type(variable_t) :: v
 	a(:) = 2
 	call associate(v,a)
-	if ( which(v) == 'i1' ) then ! signal integer of 1D (i0 for scalar)
+	if ( which(v) == which(a) ) then ! signal integer of 1D (i0 for scalar)
        call assign(a, v)
     end if
 
@@ -205,8 +207,10 @@ Here it may be beneficial to lookup the type of data:
 	end if
     ... etc ...
 
-However, it may be better to explicitly check the type using `which`. The return values from
-`which` are listed in the above table.
+However, it may be better to explicitly check the type using `which`.
+For consistency and API changes, it is encouraged to use `which(<type>)` to
+ensure that the data-types are as expected. I.e. `which([real(real64) ::])`
+is the preferred way of forcing a data-type contained in a variable.
 
 
 ### dictionary ###

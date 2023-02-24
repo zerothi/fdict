@@ -330,7 +330,7 @@ contains
 #:else
 #:stop "HASH_ALGO has erroneous value, only -1, 0 are currently implemented"
 #:endif
-  end function hash_val
+  end function
 
 #:if FDICT_DEBUG < 1
   pure &
@@ -350,7 +350,7 @@ contains
     d%first%hash = hash_val(key)
     d%len = 1
     nullify(d%first%next)
-  end function new_d_key
+  end function
 
   ! Retrieves the key value in a dictionary type (or a list)
   ! We expect that the key will only be called on single element dictionaries...
@@ -358,26 +358,26 @@ contains
     type(dictionary_t), intent(in) :: d
     character(len=DICTIONARY_KEY_LENGTH) :: key
     key = d%first%key
-  end function key
+  end function
 
   ! Retrieves the value value in a dictionary type (or a list)
   function value(d)
     type(dictionary_t), intent(in) :: d
     type(variable_t) :: value
     call assign(value,d%first%value)
-  end function value
+  end function
   function value_p(d)
     type(dictionary_t), intent(in) :: d
     type(variable_t) :: value_p
     call associate(value_p,d%first%value)
-  end function value_p
+  end function
 
   ! Returns the hash value of the dictionary first item...
   pure function hash_(d)
     type(dictionary_t), intent(in) :: d
     integer :: hash_
     hash_ = d%first%hash
-  end function hash_
+  end function
 
   ! Returns number of collisions in the hash-table
   ! The optional keyword 'max' can be used to
@@ -423,7 +423,7 @@ contains
 
     ! return col
 
-  end function hash_coll_
+  end function
 
   function in(key,d)
     character(len=*), intent(in) :: key
@@ -450,14 +450,14 @@ contains
     end do search
     in = .false.
 
-  end function in
+  end function
 
   function nin(key,d)
     character(len=*), intent(in) :: key
     type(dictionary_t), intent(in) :: d
     logical :: nin
     nin = .not. in(key,d)
-  end function nin
+  end function
 
   ! Compares two dict types against each other
   ! Will do comparison by hash.
@@ -480,7 +480,7 @@ contains
       tmp1 = .next. tmp1
       tmp2 = .next. tmp2
     end do
-  end function d_eq_d
+  end function
 
   ! Compares two dict types against each other
   ! not necessarily the negative of .eq.
@@ -501,7 +501,7 @@ contains
       end do
       tmp1 = .next. tmp1
     end do
-  end function d_ne_d
+  end function
 
   ! Concatenate two dictionaries to one dictionary...
   ! it does not work with elemental as the
@@ -515,7 +515,7 @@ contains
     end if
     call copy_assign(d1,d)
     call sub_d_cat_d(d,d2)
-  end function d_cat_d
+  end function
 
   ! Concatenate two dictionaries to one dictionary...
   ! it does not work with elemental as the
@@ -545,7 +545,7 @@ contains
     ! Update the first entry
     d%first => fd%first
     d%len = d%len + fd%len
-  end subroutine sub_d_cat_d
+  end subroutine
 
   subroutine d_insert(d,entry)
     type(dictionary_t),    intent(inout) :: d
@@ -627,7 +627,7 @@ contains
     ! As we could insert from a dictionary we have to reset, to not do endless loops...
     nullify(entry%next)
 
-  end subroutine d_insert
+  end subroutine
 
 
   !> Generate the copy routine
@@ -656,7 +656,7 @@ contains
     call nullify(v)
     nullify(d)
 
-  end subroutine copy_
+  end subroutine
 
 
   ! Retrieve the length of the dictionary...
@@ -664,7 +664,7 @@ contains
     type(dictionary_t), intent(in) :: d
     integer :: len_
     len_ = d%len
-  end function len_
+  end function
 
   function llen_(this)
     type(dictionary_t), intent(inout) :: this
@@ -676,39 +676,39 @@ contains
       llen_ = llen_ + 1
       d => d%next
     end do
-  end function llen_
+  end function
 
   function d_next(d)
     type(dictionary_t), intent(in) :: d
     type(dictionary_t) :: d_next
     d_next%first => d%first%next
     d_next%len = d%len - 1
-  end function d_next
+  end function
 
   pure function d_empty(d)
     type(dictionary_t), intent(in) :: d
     logical :: d_empty
     d_empty = .not. associated(d%first)
-  end function d_empty
+  end function
 
   pure function e_empty(e)
     type(dictionary_entry_t), intent(in) :: e
     logical :: e_empty
     e_empty = empty(e%value)
-  end function e_empty
+  end function
 
   function d_first(d)
     type(dictionary_t), intent(in) :: d
     type(dictionary_t) :: d_first
     call copy_assign(d,d_first)
-  end function d_first
+  end function
 
   subroutine copy_assign(din,dcopy)
     type(dictionary_t), intent(in)  :: din
     type(dictionary_t), intent(inout) :: dcopy
     dcopy%first => din%first
     dcopy%len = din%len
-  end subroutine copy_assign
+  end subroutine
 
   subroutine print_(d)
     type(dictionary_t), intent(in)  :: d
@@ -724,7 +724,7 @@ contains
 #:endif
       ld = .next. ld
     end do
-  end subroutine print_
+  end subroutine
 
 
   subroutine delete_(this,key,dealloc)
@@ -828,9 +828,9 @@ contains
           nullify(d%next)
         end if
       end if
-    end subroutine del_dictionary_entry_t_tree
+    end subroutine
 
-  end subroutine delete_
+  end subroutine
 
   subroutine pop_(val,this,key,dealloc)
     type(variable_t), intent(inout) :: val
@@ -887,7 +887,7 @@ contains
       de => de%next
     end do
 
-  end subroutine pop_
+  end subroutine
 
   elemental subroutine nullify_key_(this,key)
     type(dictionary_t), intent(inout) :: this
@@ -931,7 +931,7 @@ contains
       de => de%next
     end do
 
-  end subroutine nullify_key_
+  end subroutine
 
   elemental subroutine nullify_(this)
     type(dictionary_t), intent(inout) :: this
@@ -941,7 +941,7 @@ contains
     nullify(this%first)
     this%len = 0
 
-  end subroutine nullify_
+  end subroutine
 
   subroutine d_get_val(val,d,key,dealloc)
     type(variable_t), intent(inout) :: val
@@ -979,7 +979,7 @@ contains
       ld = .next. ld
     end do search
 
-  end subroutine d_get_val
+  end subroutine
 
   subroutine d_get_p_val(val,d,key,dealloc)
     type(variable_t), intent(inout) :: val
@@ -1017,7 +1017,7 @@ contains
       ld = .next. ld
     end do search
 
-  end subroutine d_get_p_val
+  end subroutine
 
   subroutine d_get_val_aS_0(val,d,key,dealloc)
     character(len=*), intent(out) :: val
@@ -1053,7 +1053,7 @@ contains
       ld = .next. ld
     end do search
 
-  end subroutine d_get_val_a_
+  end subroutine
 
   function d_kv_aS_0(key,val) result(this)
     character(len=*), intent(in) :: key
@@ -1069,14 +1069,14 @@ contains
     type(dictionary_t) :: this
     this = new_d_key(key)
     call assign(this%first%value,val)
-  end function d_kv_var
+  end function
   function d_kvp_var(key,val) result(this)
     character(len=*), intent(in) :: key
     type(variable_t), intent(in) :: val
     type(dictionary_t) :: this
     this = new_d_key(key)
     call associate(this%first%value,val)
-  end function d_kvp_var
+  end function
 
   function d_key_which(this,key) result(t)
     type(dictionary_t), intent(in) :: this
@@ -1106,7 +1106,7 @@ contains
     else
       t = which(this%first%value)
     end if
-  end function d_key_which
+  end function
 
 
  #:for sh, k, t, minr, maxr in ALL_SHORTS_KINDS_TYPES_RANKS
@@ -1181,7 +1181,7 @@ end subroutine
       if ( dealloc ) call delete(val)
     end if
     call nullify(val)
-  end subroutine val_delete_request
+  end subroutine
 
   ! Create a routine for making the dictionary point to the data
   ! key.
@@ -1202,7 +1202,7 @@ end subroutine
     this = (key.kvp.v)
     call nullify(v)
 
-  end function d_kvp_dict
+  end function
 
   ! In case the value of the dictionary is a dictionary we can request that
   ! dictionary directly
@@ -1216,7 +1216,7 @@ end subroutine
     ! be copying the entire dictionary.
     call d_get_p_dict(dic,d,key=key,dealloc=dealloc)
 
-  end subroutine d_key2dict
+  end subroutine
 
   subroutine d_get_p_dict(dic,d,key,dealloc)
     type(dictionary_t), intent(inout) :: dic
@@ -1289,6 +1289,6 @@ end subroutine
       ld = .next. ld
     end do
 
-  end subroutine d_get_p_dict
+  end subroutine
 
 end module dictionary

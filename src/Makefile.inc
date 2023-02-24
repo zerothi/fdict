@@ -22,12 +22,15 @@ variable.f90: variable.fypp
 dictionary.f90: dictionary.fypp
 	$(FYPP) $(FYPPFLAGS) $< > $@
 
+fdict.fypp: fdict.fypp.in
+	$(FYPP) $(FYPPFLAGS) $< > $@
+	cat $(src_DIR)/fdict_common.fypp >> $@
 fdict.inc:
 	@$(ECHO) "#ifndef _FDICT_INCLUDE_DEFINED" > $@
 	@$(ECHO) "#define _FDICT_INCLUDE_DEFINED" >> $@
 	@$(ECHO) "#define _FDICT_MAJOR_ $(PROJECT_MAJOR)" >> $@
 	@$(ECHO) "#define _FDICT_MINOR_ $(PROJECT_MINOR)" >> $@
-	@$(ECHO) "#define _FDICT_MICRO_ $(PROJECT_MICRO)" >> $@
+	@$(ECHO) "#define _FDICT_PATCH_ $(PROJECT_PATCH)" >> $@
 	@$(ECHO) "#define _FDICT_VERSION_ $(PROJECT_VERSION)" >> $@
 	@$(ECHO) "#endif" >> $@
 
@@ -44,14 +47,14 @@ $(src_FPP_SOURCES): INCLUDES += -I$(src_DIR)
 .PHONY: source-src
 source-src: $(src_SOURCES) fdict.inc
 	$(MKDIR) $(MKDIR_FLAG_PARENT) $(SOURCES_DIR)/src
-	mv $(src_SOURCES) fdict.inc $(SOURCES_DIR)/src
+	mv $(src_SOURCES) fdict.inc fdict.fypp $(SOURCES_DIR)/src
 
 
 .PHONY: clean-src
 clean-src:
 	-$(RM) $(RM_FLAG_FORCE) $(src_FPP_SOURCES)
 	-$(RM) $(RM_FLAG_FORCE) $(src_OBJECTS)
-	-$(RM) $(RM_FLAG_FORCE) *.mod fdict.inc
+	-$(RM) $(RM_FLAG_FORCE) *.mod fdict.inc fdict.fypp
 
 clean: clean-src
 

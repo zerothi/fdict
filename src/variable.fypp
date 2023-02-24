@@ -71,7 +71,13 @@ module variable
 
   interface which
     !! Type of content stored in the variable (`character(len=VARIABLE_TYPE_LENGTH)`)
-    module procedure which_
+    module procedure which_var
+    module procedure which_aS_0
+ #:for sh, k, t, minr, maxr in ALL_SHORTS_KINDS_TYPES_RANKS
+  #:for ir in range(minr, maxr + 1)
+    module procedure ${"which_{}{}".format(sh, ir)}$
+  #:endfor
+ #:endfor
   end interface which
   public :: which
   interface delete
@@ -207,13 +213,13 @@ contains
   subroutine print_(this)
     type(variable_t), intent(in) :: this
     write(*,'(t2,a)') this%t
-  end subroutine print_
+  end subroutine
 
-  elemental function which_(this) result(t)
+  pure function which_var(this) result(t)
     type(variable_t), intent(in) :: this
     character(len=VARIABLE_TYPE_LENGTH) :: t
     t = this%t
-  end function which_
+  end function
 
   subroutine delete_(this,dealloc, success)
     type(variable_t), intent(inout) :: this
@@ -244,19 +250,19 @@ contains
     end if
     call nullify(this)
     if ( present(success) ) success = lsuccess
-  end subroutine delete_
+  end subroutine
 
   elemental subroutine nullify_(this)
     type(variable_t), intent(inout) :: this
     this%t = '  '
     if ( allocated(this%enc) ) deallocate(this%enc)
-  end subroutine nullify_
+  end subroutine
 
   elemental function empty_(this)
     type(variable_t), intent(in) :: this
     logical :: empty_
     empty_ = .not. allocated(this%enc)
-  end function empty_
+  end function
 
   ! Returns the bare encoding of this variable
   ! This can ease the process of assigning
@@ -281,7 +287,7 @@ contains
         enc(1:i) = this%enc
       end if
     end if
-  end subroutine enc_
+  end subroutine
 
   function size_enc_(this) result(len)
     type(variable_t), intent(in) :: this
@@ -292,7 +298,7 @@ contains
       len = size(this%enc)
     end if
 
-  end function size_enc_
+  end function
 
   ! We allow the user to pass an encoding field.
   ! As this is the same as passing a char
@@ -331,7 +337,7 @@ contains
     allocate(this%enc(size(enc)))
     this%enc(:) = enc(:)
 
-  end subroutine associate_type_
+  end subroutine
 
   pure function cpack_(c) result(car)
     character(len=*), intent(in) :: c
@@ -342,7 +348,7 @@ contains
       car(i) = c(i:i)
     end do
 
-  end function cpack_
+  end function
   pure function cunpack_(car) result(c)
     character(len=1), intent(in) :: car(:)
     character(len=size(car)) :: c
@@ -352,13 +358,13 @@ contains
       c(i:i) = car(i)
     end do
 
-  end function cunpack_
+  end function
 
   subroutine assignment_(this,rhs)
     type(variable_t), intent(inout) :: this
     type(variable_t), intent(in) :: rhs
     call assign(this,rhs)
-  end subroutine assignment_
+  end subroutine
 
   subroutine assign_var(this,rhs,dealloc,success)
     type(variable_t), intent(inout) :: this
@@ -408,7 +414,7 @@ contains
 
     if ( present(success) ) success = lsuccess
 
-  end subroutine assign_var
+  end subroutine
 
   subroutine associate_var(this,rhs,dealloc,success)
     type(variable_t), intent(inout) :: this
@@ -433,7 +439,7 @@ contains
     allocate(this%enc(size(rhs%enc)))
     this%enc(:) = rhs%enc(:)
 
-  end subroutine associate_var
+  end subroutine
 
   pure function associatd_var(this,rhs) result(ret)
     type(variable_t), intent(in) :: this
@@ -466,7 +472,13 @@ contains
        if ( ret ) ret = all(this%enc == rhs%enc)
     end select
 
-  end function associatd_var
+  end function
+
+  pure function which_aS_0(this) result(t)
+    character(len=*), intent(in) :: this
+    character(len=VARIABLE_TYPE_LENGTH) :: t
+    t = "${typename('a1_1', 1)}$"
+  end function
 
   ! The character(len=*) is a bit difficult because
   ! there is no way to generate a specific type for _all_
@@ -523,6 +535,13 @@ contains
 
 #:for sh, k, t, minr, maxr in ALL_SHORTS_KINDS_TYPES_RANKS
  #:for ir in range(minr, maxr + 1)
+
+pure function ${"which_{}{}".format(sh, ir)}$(this) result(t)
+  ${t}$, intent(in) :: this${ranksuffix(ir)}$
+  character(len=VARIABLE_TYPE_LENGTH) :: t
+  t = "${typename(sh, ir)}$"
+end function
+
 subroutine ${"assign_set_{}{}".format(sh, ir)}$(this, rhs, dealloc)
   type(variable_t), intent(inout) :: this
   ${t}$, intent(in) :: rhs${ranksuffix(ir)}$

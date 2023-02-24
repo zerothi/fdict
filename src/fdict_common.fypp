@@ -1,14 +1,22 @@
 #:mute
 
-#! Project version number
-#!:set PROJECT_VERSION = "{}.{}.{}".format(PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR, PROJECT_VERSION_PATCH)
-
-
 #:if not defined("FDICT_DEBUG")
   #:set FDICT_DEBUG = 0
 #:endif
 
 #! Global definitions of the precision declarations
+#:if defined("WITH_ALL")
+#: set WITH_ISO_C = True
+#: set WITH_ISO_ENV = True
+#: set WITH_REAL80 = True
+#: set WITH_REAL128 = True
+#: set WITH_INT8 = True
+#: set WITH_INT16 = True
+#: set WITH_LOG8 = True
+#: set WITH_LOG16 = True
+#: set WITH_LOG64 = True
+#:endif
+
 
 #! Ranks to be generated when templates are created
 #:if not defined('MAXRANK')
@@ -47,7 +55,15 @@
   #:set WITH_LOG8 = False
 #:endif
 
+#! Short logical
+#:if not defined("WITH_LOG16")
+  #:set WITH_LOG16 = False
+#:endif
 
+#! Long logical
+#:if not defined("WITH_LOG64")
+  #:set WITH_LOG64 = False
+#:endif
 
 #! Real kinds to be considered during templating
 #:set REAL_KINDS = ["real32", "real64"]
@@ -90,8 +106,14 @@
 
 #! Logical kinds to be considered during templating
 #:set LOG_KINDS = ["int32"]
+#:if WITH_LOG16
+  #:set LOG_KINDS = ["int16"] + LOG_KINDS
+#:endif
 #:if WITH_LOG8
   #:set LOG_KINDS = ["int8"] + LOG_KINDS
+#:endif
+#:if WITH_LOG64
+  #:set LOG_KINDS = LOG_KINDS + ["int64"]
 #:endif
 
 #! Create short-hand names for the variables
