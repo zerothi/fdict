@@ -1,4 +1,11 @@
+#:include 'fdict_common.fypp'
 ! @LICENSE@, see README.md
+
+
+#:if not defined("HASH_ALGO")
+#: set HASH_ALGO = 0
+#:endif
+
 
 ! Generic purpose dictionary as in any scripting language
 ! It has the power to contain any data by using the variable type.
@@ -38,19 +45,13 @@ module dictionary
   !! you will have to store the pointer somewhere else and nullify the key
   !! first.
 
-  use, intrinsic :: iso_c_binding
+  ! Use all precision variables
+  use fdict_types
   use variable
 
   implicit none
 
   private
-
-  integer, parameter :: ih = selected_int_kind(4)
-  integer, parameter :: is = selected_int_kind(9)
-  integer, parameter :: il = selected_int_kind(18)
-  integer, parameter :: sp = selected_real_kind(p=6)
-  integer, parameter :: dp = selected_real_kind(p=15)
-
 
   ! Internal variables for determining the maximum size of the dictionaries.
   ! We could consider changing this to a variable size string
@@ -60,7 +61,7 @@ module dictionary
   !! index/key can be longer than this.
   integer, parameter :: DICTIONARY_KEY_LENGTH = 48
   public :: DICTIONARY_KEY_LENGTH
-  
+
   ! A parameter returned if not found.
   character(len=DICTIONARY_KEY_LENGTH), parameter :: DICTIONARY_NOT_FOUND = 'ERROR: key not found'
   public :: DICTIONARY_NOT_FOUND
@@ -87,7 +88,7 @@ module dictionary
     integer :: hash = 0
     type(dictionary_entry_t), pointer :: next => null()
   end type dictionary_entry_t
-  
+
   !> Return the length of a dictionary, by internal counting algorithms
   interface len
     module procedure len_
@@ -108,12 +109,12 @@ module dictionary
 
   ! Concatenate dicts or list of dicts to list of dicts
   !> Concatenate, or extend, dictionaries, this can
-  !! be done on it-self `dic = dic / / ('key'.kv.1)
-  interface operator( / / )
+  !! be done on it-self `dic = dic // ('key'.kv.1)
+  interface operator( // )
     module procedure d_cat_d
   end interface
-  public :: operator( / / )
-  
+  public :: operator( // )
+
   ! Retrieve the key from a dictionary (unary)
   !> Returns the key of the current _top_ entry,
   interface operator( .KEY. )
@@ -243,14 +244,54 @@ module dictionary
   end interface which
   public :: which
 
-  public :: assign, associate
 
-#include "dictionary_interface_.inc"
-
+  interface operator (.KV.)
+    module procedure d_kv_var
+    module procedure d_kv_aS_0
+ #:for sh, k, t, minr, maxr in ALL_SHORTS_KINDS_TYPES_RANKS
+  #:for ir in range(minr, maxr + 1)
+    module procedure ${"d_kv_{}{}".format(sh, ir)}$
+  #:endfor
+ #:endfor
+  end interface
   ! Create a dict type: 'key' .KV. 'val'
   public :: operator(.KV.)
+
+  interface operator (.KVP.)
+    module procedure d_kvp_var
+    module procedure d_kvp_dict
+ #:for sh, k, t, minr, maxr in ALL_SHORTS_KINDS_TYPES_RANKS
+  #:for ir in range(minr, maxr + 1)
+    module procedure ${"d_kvp_{}{}".format(sh, ir)}$
+  #:endfor
+ #:endfor
+  end interface
   ! Create a dict type: 'key' .KVP. 'pointer'
   public :: operator(.KVP.)
+
+  interface assign
+    module procedure d_get_val
+    module procedure d_get_val_aS_0
+ #:for sh, k, t, minr, maxr in ALL_SHORTS_KINDS_TYPES_RANKS
+  #:for ir in range(minr, maxr + 1)
+    module procedure ${"d_get_val_{}{}".format(sh, ir)}$
+    module procedure ${"d_get_val_first_{}{}".format(sh, ir)}$
+  #:endfor
+ #:endfor
+  end interface
+  public :: assign
+
+  interface associate
+    module procedure d_get_p_val
+    module procedure d_get_p_dict
+ #:for sh, k, t, minr, maxr in ALL_SHORTS_KINDS_TYPES_RANKS
+  #:for ir in range(minr, maxr + 1)
+    module procedure ${"d_get_p_{}{}".format(sh, ir)}$
+    module procedure ${"d_get_p_first_{}{}".format(sh, ir)}$
+  #:endfor
+ #:endfor
+  end interface
+  public :: associate
 
 contains
 
@@ -258,10 +299,7 @@ contains
     character(len=*), intent(in) :: key
     integer :: val
     integer :: i
-#ifndef HASH_ALGO
-# define HASH_ALGO 0
-#endif
-#if HASH_ALGO == 0
+#:if HASH_ALGO == 0
     ! This is 32-bit integers, hence a 32-bit hash
     integer, parameter :: FNV_OFF = 28491 ! see crt_hash_basis.f90
     integer, parameter :: FNV_PRIME = 16777619
@@ -273,7 +311,7 @@ contains
       val = ieor(val,iachar(key(i:i)))
       val = mod(val * FNV_PRIME, MAX_32)
     end do
-#elif HASH_ALGO == -1
+#:elif HASH_ALGO == -1
     ! My own hash table, has a lot of collisions
     integer, parameter :: HASH_SIZE = 149087 ! a prime !
     integer, parameter :: HASH_MULT = 67
@@ -289,21 +327,21 @@ contains
     end do
     ! A hash has to be distinguished from the "empty"
     val = 1 + mod(val*HASH_MULT,HASH_SIZE)
-#else
-#error "HASH_ALGO has erroneous value, only -1, 0 are currently implemented"
-#endif
-  end function hash_val
+#:else
+#:stop "HASH_ALGO has erroneous value, only -1, 0 are currently implemented"
+#:endif
+  end function
 
-#ifndef _FDICT_DEBUG
+#:if FDICT_DEBUG < 1
   pure &
-#endif
+#:endif
       function new_d_key(key) result(d)
     character(len=*), intent(in) :: key
     type(dictionary_t) :: d
     allocate(d%first)
-#ifdef _FDICT_DEBUG
+#:if FDICT_DEBUG > 0
     write(*,'(a,t25,i16)') 'dict: creating',loc(d%first)
-#endif
+#:endif
     if ( len_trim(key) > DICTIONARY_KEY_LENGTH ) then
       d%first%key = key(1:DICTIONARY_KEY_LENGTH)
     else
@@ -312,7 +350,7 @@ contains
     d%first%hash = hash_val(key)
     d%len = 1
     nullify(d%first%next)
-  end function new_d_key
+  end function
 
   ! Retrieves the key value in a dictionary type (or a list)
   ! We expect that the key will only be called on single element dictionaries...
@@ -320,26 +358,26 @@ contains
     type(dictionary_t), intent(in) :: d
     character(len=DICTIONARY_KEY_LENGTH) :: key
     key = d%first%key
-  end function key
+  end function
 
   ! Retrieves the value value in a dictionary type (or a list)
-  function value(d) 
+  function value(d)
     type(dictionary_t), intent(in) :: d
     type(variable_t) :: value
     call assign(value,d%first%value)
-  end function value
-  function value_p(d) 
+  end function
+  function value_p(d)
     type(dictionary_t), intent(in) :: d
     type(variable_t) :: value_p
     call associate(value_p,d%first%value)
-  end function value_p
+  end function
 
   ! Returns the hash value of the dictionary first item...
   pure function hash_(d)
     type(dictionary_t), intent(in) :: d
     integer :: hash_
     hash_ = d%first%hash
-  end function hash_
+  end function
 
   ! Returns number of collisions in the hash-table
   ! The optional keyword 'max' can be used to
@@ -385,7 +423,7 @@ contains
 
     ! return col
 
-  end function hash_coll_
+  end function
 
   function in(key,d)
     character(len=*), intent(in) :: key
@@ -412,14 +450,14 @@ contains
     end do search
     in = .false.
 
-  end function in
+  end function
 
   function nin(key,d)
     character(len=*), intent(in) :: key
     type(dictionary_t), intent(in) :: d
     logical :: nin
     nin = .not. in(key,d)
-  end function nin
+  end function
 
   ! Compares two dict types against each other
   ! Will do comparison by hash.
@@ -442,7 +480,7 @@ contains
       tmp1 = .next. tmp1
       tmp2 = .next. tmp2
     end do
-  end function d_eq_d
+  end function
 
   ! Compares two dict types against each other
   ! not necessarily the negative of .eq.
@@ -463,10 +501,10 @@ contains
       end do
       tmp1 = .next. tmp1
     end do
-  end function d_ne_d
+  end function
 
   ! Concatenate two dictionaries to one dictionary...
-  ! it does not work with elemental as the 
+  ! it does not work with elemental as the
   function d_cat_d(d1,d2) result(d)
     type(dictionary_t), intent(in) :: d1,d2
     type(dictionary_t) :: d
@@ -477,10 +515,10 @@ contains
     end if
     call copy_assign(d1,d)
     call sub_d_cat_d(d,d2)
-  end function d_cat_d
+  end function
 
   ! Concatenate two dictionaries to one dictionary...
-  ! it does not work with elemental as the 
+  ! it does not work with elemental as the
   subroutine sub_d_cat_d(d,d2)
     type(dictionary_t), intent(inout) :: d
     type(dictionary_t), intent(in) :: d2
@@ -496,7 +534,7 @@ contains
     ladd => d2%first
     fd%len = 0
     fd%first => d%first
-    do 
+    do
       ! step ...
       lnext => ladd%next ! we need to get the next
       kh = fd%first%hash
@@ -507,7 +545,7 @@ contains
     ! Update the first entry
     d%first => fd%first
     d%len = d%len + fd%len
-  end subroutine sub_d_cat_d
+  end subroutine
 
   subroutine d_insert(d,entry)
     type(dictionary_t),    intent(inout) :: d
@@ -530,9 +568,9 @@ contains
     if ( search%hash > entry%hash ) then
       ! The added hash is smaller than the first hash
       ! of the dictionary, so we get a new *first* entry
-#ifdef _FDICT_DEBUG
+#:if FDICT_DEBUG > 0
       write(*,'(a,t25,i16,tr1,a)') 'dict: adding',loc(entry),'as first entry'
-#endif
+#:endif
       entry%next => d%first
       d%first => entry
       d%len = d%len + 1
@@ -540,9 +578,9 @@ contains
     else if ( search%hash == entry%hash ) then
       ! If the key already exists we will simply overwrite
       if ( search%key == entry%key ) then
-#ifdef _FDICT_DEBUG
+#:if FDICT_DEBUG > 0
         write(*,'(a,t25,i16,a,i16)') 'dict: replacing first',loc(search),' <- ', loc(entry)
-#endif
+#:endif
         ! deletion
         call delete(search%value)
         ! key and hash are the same, no need to transfer those
@@ -553,16 +591,16 @@ contains
       end if
     end if
 
-    search_loop: do 
+    search_loop: do
       ! step...
       prev => search
       ! step...
       search => prev%next
       if ( .not. associated(search) ) exit search_loop
       if ( search%hash > entry%hash ) then
-#ifdef _FDICT_DEBUG
+#:if FDICT_DEBUG > 0
         write(*,'(a,t25,i16)') 'dict: adding',loc(search)
-#endif
+#:endif
         prev%next => entry
         entry%next => search
         d%len = d%len + 1
@@ -571,9 +609,9 @@ contains
         ! If the key already exists we will simply overwrite
         ! If not, we will put it *after* the same hash
         if ( search%key == entry%key ) then
-#ifdef _FDICT_DEBUG
+#:if FDICT_DEBUG > 0
           write(*,'(a,t25,i16,a,i16)') 'dict: replacing',loc(search),' <- ', loc(entry)
-#endif
+#:endif
           call delete(search%value)
           prev%next => entry
           entry%next => search%next
@@ -589,7 +627,7 @@ contains
     ! As we could insert from a dictionary we have to reset, to not do endless loops...
     nullify(entry%next)
 
-  end subroutine d_insert
+  end subroutine
 
 
   !> Generate the copy routine
@@ -618,7 +656,7 @@ contains
     call nullify(v)
     nullify(d)
 
-  end subroutine copy_
+  end subroutine
 
 
   ! Retrieve the length of the dictionary...
@@ -626,7 +664,7 @@ contains
     type(dictionary_t), intent(in) :: d
     integer :: len_
     len_ = d%len
-  end function len_
+  end function
 
   function llen_(this)
     type(dictionary_t), intent(inout) :: this
@@ -634,59 +672,59 @@ contains
     integer :: llen_
     llen_ = 0
     d => this%first
-    do while ( associated(d) ) 
+    do while ( associated(d) )
       llen_ = llen_ + 1
       d => d%next
     end do
-  end function llen_
+  end function
 
   function d_next(d)
     type(dictionary_t), intent(in) :: d
     type(dictionary_t) :: d_next
     d_next%first => d%first%next
     d_next%len = d%len - 1
-  end function d_next
+  end function
 
   pure function d_empty(d)
     type(dictionary_t), intent(in) :: d
     logical :: d_empty
     d_empty = .not. associated(d%first)
-  end function d_empty
+  end function
 
   pure function e_empty(e)
     type(dictionary_entry_t), intent(in) :: e
     logical :: e_empty
     e_empty = empty(e%value)
-  end function e_empty
+  end function
 
   function d_first(d)
     type(dictionary_t), intent(in) :: d
     type(dictionary_t) :: d_first
     call copy_assign(d,d_first)
-  end function d_first
+  end function
 
   subroutine copy_assign(din,dcopy)
     type(dictionary_t), intent(in)  :: din
     type(dictionary_t), intent(inout) :: dcopy
     dcopy%first => din%first
     dcopy%len = din%len
-  end subroutine copy_assign
+  end subroutine
 
   subroutine print_(d)
     type(dictionary_t), intent(in)  :: d
     type(dictionary_t) :: ld
     ld = .first. d
     do while ( .not. (.empty. ld) )
-#ifdef _FDICT_DEBUG
+#:if FDICT_DEBUG > 0
       write(*,'(t2,a,tr1,a,i0,a,tr4,i0)') trim(.key. ld), &
-          '['/ /trim(ld%first%value%t)/ /'] (',.hash. ld,')',loc(ld%first)
-#else
+          '['//trim(ld%first%value%t)//'] (',.hash. ld,')',loc(ld%first)
+#:else
       write(*,'(t2,a,tr1,a,i0,a)') trim(.key. ld), &
-          '['/ /trim(ld%first%value%t)/ /'] (',.hash. ld,')'
-#endif
+          '['//trim(ld%first%value%t)//'] (',.hash. ld,')'
+#:endif
       ld = .next. ld
     end do
-  end subroutine print_
+  end subroutine
 
 
   subroutine delete_(this,key,dealloc)
@@ -707,11 +745,11 @@ contains
       return
     end if
 
-#ifdef _FDICT_DEBUG
+#:if FDICT_DEBUG > 0
     if ( len(this) == 0 ) then
       stop 'dict: Something went wrong'
     end if
-#endif
+#:endif
 
     if ( present(key) ) then
 
@@ -723,10 +761,10 @@ contains
       if ( kh == pr%hash ) then
         if ( key == pr%key ) then
           this%first => pr%next
-          this%len = this%len - 1 
-#ifdef _FDICT_DEBUG
+          this%len = this%len - 1
+#:if FDICT_DEBUG > 0
           write(*,'(a,t25,i16)') 'dict: deleting',loc(pr)
-#endif
+#:endif
           call delete(pr%value,dealloc=ldealloc)
           nullify(pr%next)
           deallocate(pr)
@@ -746,13 +784,13 @@ contains
         if ( de%hash == kh ) then
           if ( de%key == key ) then
             pr%next => de%next
-#ifdef _FDICT_DEBUG
+#:if FDICT_DEBUG > 0
             write(*,'(a,t25,i16)') 'dict: deleting',loc(pr)
-#endif
+#:endif
             call delete(de%value,dealloc=ldealloc)
             nullify(de%next)
             deallocate(de)
-            this%len = this%len - 1 
+            this%len = this%len - 1
             exit
           end if
         end if
@@ -767,9 +805,9 @@ contains
     ! delete the entire entry-tree
     call del_dictionary_entry_t_tree(this%first,dealloc=ldealloc)
     call delete(this%first%value,dealloc=ldealloc)
-#ifdef _FDICT_DEBUG
+#:if FDICT_DEBUG > 0
     write(*,'(a,t25,i16)') 'dict: deleting',loc(this%first)
-#endif
+#:endif
     deallocate(this%first)
     nullify(this%first)
     this%len = 0
@@ -782,17 +820,17 @@ contains
       if ( associated(d) ) then
         if ( associated(d%next) ) then
           call del_dictionary_entry_t_tree(d%next,dealloc)
-#ifdef _FDICT_DEBUG
+#:if FDICT_DEBUG > 0
           write(*,'(a,t25,i16)') 'dict: deleting',loc(d%next)
-#endif
+#:endif
           call delete(d%next%value,dealloc=dealloc)
           deallocate(d%next)
           nullify(d%next)
         end if
       end if
-    end subroutine del_dictionary_entry_t_tree
+    end subroutine
 
-  end subroutine delete_
+  end subroutine
 
   subroutine pop_(val,this,key,dealloc)
     type(variable_t), intent(inout) :: val
@@ -849,7 +887,7 @@ contains
       de => de%next
     end do
 
-  end subroutine pop_
+  end subroutine
 
   elemental subroutine nullify_key_(this,key)
     type(dictionary_t), intent(inout) :: this
@@ -893,7 +931,7 @@ contains
       de => de%next
     end do
 
-  end subroutine nullify_key_
+  end subroutine
 
   elemental subroutine nullify_(this)
     type(dictionary_t), intent(inout) :: this
@@ -903,7 +941,7 @@ contains
     nullify(this%first)
     this%len = 0
 
-  end subroutine nullify_
+  end subroutine
 
   subroutine d_get_val(val,d,key,dealloc)
     type(variable_t), intent(inout) :: val
@@ -941,7 +979,7 @@ contains
       ld = .next. ld
     end do search
 
-  end subroutine d_get_val
+  end subroutine
 
   subroutine d_get_p_val(val,d,key,dealloc)
     type(variable_t), intent(inout) :: val
@@ -979,9 +1017,9 @@ contains
       ld = .next. ld
     end do search
 
-  end subroutine d_get_p_val
+  end subroutine
 
-  subroutine d_get_val_a_(val,d,key,dealloc)
+  subroutine d_get_val_aS_0(val,d,key,dealloc)
     character(len=*), intent(out) :: val
     type(dictionary_t), intent(inout) :: d
     character(len=*), intent(in), optional :: key
@@ -1015,15 +1053,15 @@ contains
       ld = .next. ld
     end do search
 
-  end subroutine d_get_val_a_
+  end subroutine
 
-  function d_kv_a0_0(key,val) result(this)
+  function d_kv_aS_0(key,val) result(this)
     character(len=*), intent(in) :: key
     character(len=*), intent(in) :: val
     type(dictionary_t) :: this
     this = new_d_key(key)
     call assign(this%first%value,val)
-  end function d_kv_a0_0
+  end function
 
   function d_kv_var(key,val) result(this)
     character(len=*), intent(in) :: key
@@ -1031,14 +1069,14 @@ contains
     type(dictionary_t) :: this
     this = new_d_key(key)
     call assign(this%first%value,val)
-  end function d_kv_var
+  end function
   function d_kvp_var(key,val) result(this)
     character(len=*), intent(in) :: key
     type(variable_t), intent(in) :: val
     type(dictionary_t) :: this
     this = new_d_key(key)
     call associate(this%first%value,val)
-  end function d_kvp_var
+  end function
 
   function d_key_which(this,key) result(t)
     type(dictionary_t), intent(in) :: this
@@ -1068,9 +1106,72 @@ contains
     else
       t = which(this%first%value)
     end if
-  end function d_key_which
+  end function
 
-#include "dictionary_funcs_.inc"
+
+ #:for sh, k, t, minr, maxr in ALL_SHORTS_KINDS_TYPES_RANKS
+  #:for ir in range(minr, maxr + 1)
+
+  function ${"d_kv_{}{}".format(sh, ir)}$(key,val) result(this)
+character(len=*), intent(in) :: key
+${t}$, intent(in) :: val${ranksuffix(ir)}$
+type(dictionary_t) :: this
+this = new_d_key(key)
+call assign(this%first%value,val)
+end function
+
+function ${"d_kvp_{}{}".format(sh, ir)}$(key, val) result(this)
+character(len=*), intent(in) :: key
+#! Setting the intent(inout) ensures that no constants
+#! will be able to be passed.
+#! However, the dictionary type does not allow
+#! this due to OPERATORS, hence we keep it as this
+#! and proclaim that any user creating a pointer
+#! to a constant is insane...
+${t}$, intent(in), target :: val${ranksuffix(ir)}$
+type(dictionary_t) :: this
+this = new_d_key(key)
+call associate(this%first%value,val)
+end function
+
+subroutine ${"d_get_val_{}{}".format(sh, ir)}$(val,this,key,success)
+${t}$, intent(out) :: val${ranksuffix(ir)}$
+type(dictionary_t), intent(inout) :: this
+character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
+type(variable_t) :: v
+call associate(v,this,key=key)
+call assign(val,v,success=success)
+call nullify(v)
+end subroutine
+
+subroutine ${"d_get_val_first_{}{}".format(sh, ir)}$(val,this,success)
+${t}$, intent(out) :: val${ranksuffix(ir)}$
+type(dictionary_t), intent(inout) :: this
+logical, intent(out), optional :: success
+call assign(val,this%first%value,success=success)
+end subroutine
+
+subroutine ${"d_get_p_{}{}".format(sh, ir)}$(val,this,key,success)
+${t}$, pointer :: val${ranksuffix(ir)}$
+type(dictionary_t), intent(inout) :: this
+character(len=*), intent(in) :: key
+logical, intent(out), optional :: success
+type(variable_t) :: v
+call associate(v,this,key=key)
+call associate(val,v,success=success)
+call nullify(v)
+end subroutine
+
+subroutine ${"d_get_p_first_{}{}".format(sh, ir)}$(val,this,success)
+${t}$, pointer :: val${ranksuffix(ir)}$
+type(dictionary_t), intent(inout) :: this
+logical, intent(out), optional :: success
+call associate(val,this%first%value,success=success)
+end subroutine
+
+#:endfor
+#:endfor
 
   ! helper routines for often used stuff
   subroutine val_delete_request(val,dealloc)
@@ -1080,7 +1181,7 @@ contains
       if ( dealloc ) call delete(val)
     end if
     call nullify(val)
-  end subroutine val_delete_request
+  end subroutine
 
   ! Create a routine for making the dictionary point to the data
   ! key.
@@ -1101,9 +1202,9 @@ contains
     this = (key.kvp.v)
     call nullify(v)
 
-  end function d_kvp_dict
+  end function
 
-  ! In case the value of the dictionary is a dictionary we can request that 
+  ! In case the value of the dictionary is a dictionary we can request that
   ! dictionary directly
   subroutine d_key2dict(dic,d,key,dealloc)
     type(dictionary_t), intent(inout) :: dic
@@ -1115,7 +1216,7 @@ contains
     ! be copying the entire dictionary.
     call d_get_p_dict(dic,d,key=key,dealloc=dealloc)
 
-  end subroutine d_key2dict
+  end subroutine
 
   subroutine d_get_p_dict(dic,d,key,dealloc)
     type(dictionary_t), intent(inout) :: dic
@@ -1127,7 +1228,7 @@ contains
     ! we save the first pointer.
     ! This will allow greater flexibility as the
     ! parent container can then be re-used with out
-    ! worries. 
+    ! worries.
     ! I.e.
     !  if one uses :
     !    type :: pdict
@@ -1188,6 +1289,6 @@ contains
       ld = .next. ld
     end do
 
-  end subroutine d_get_p_dict
+  end subroutine
 
 end module dictionary

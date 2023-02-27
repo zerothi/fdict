@@ -4,13 +4,13 @@ program tests
 
   implicit none
 
-  real(dp) :: va(400,400) ! roughly 1.22 MB
-  real(dp) :: vb(400,400) ! roughly 1.22 MB
+  real(real64) :: va(400,400) ! roughly 1.22 MB
+  real(real64) :: vb(400,400) ! roughly 1.22 MB
   type(dictionary_t) :: dic1, dic2, dic_va
   type(variable_t) :: av
 
   ! Create dictionary
-  va = 1._dp
+  va = 1._real64
 
   ! Copying values
   dic_va = ('va'.kv.va)
@@ -25,7 +25,7 @@ program tests
   ! retrive values
   call assign(vb,av)
   call assert(vb == va,'Retrieval of values not correct')
-  vb = 0._dp
+  vb = 0._real64
   call assign(vb,dic2,'va')
   call assert(vb == va,'Retrieval of values not correct')
 

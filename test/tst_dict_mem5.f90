@@ -27,19 +27,21 @@ program tests
     end if
   end do
 
-  print *, 'SUCCESS'
+  print *,'SUCCESS'
 
 contains
 
   subroutine mem(dealloc)
     logical, intent(in) :: dealloc
-    real(dp) :: va(400,400) ! roughly 1.22 MB
-    type(dictionary_t) :: d
+    real(real64) :: va(400,400) ! roughly 1.22 MB
+    type(dictionary_t) :: d1, d2
     va = 0.
-    d = 'hello'.kv.va
-    if ( dealloc ) call delete(d,'hello')
-    d = 'hello'.kv.va
-    if ( dealloc ) call delete(d)
+    d1 = 'hello'.kv.va
+    if ( dealloc ) call delete(d1,'hello')
+
+    call copy(d1, d2)
+    if ( dealloc ) call delete(d2)
+
   end subroutine mem
 
 end program tests

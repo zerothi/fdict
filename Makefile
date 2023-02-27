@@ -31,7 +31,7 @@ include $(TOP_DIR)/src/Makefile.inc
 $(LIBRARIES): $(OBJECTS)
 
 # Create target
-lib: settings.bash fdict.inc $(LIBRARIES)
+lib: fdict.inc fdict.fypp $(LIBRARIES)
 
 
 # Include the makefile in the test directory
@@ -80,4 +80,3 @@ dist-fdict:
 	gzip fdict-$(PROJECT_VERSION).tar
 
 dist: dist-fdict
-

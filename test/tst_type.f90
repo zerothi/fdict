@@ -1,18 +1,17 @@
 program tst_type
 
   use tst_utils
-  use variable
 
   implicit none
 
   type(variable_t) :: va
   type :: tType
-    real(dp) :: b(2), c(2,2)
+    real(real64) :: b(2), c(2,2)
     integer :: i
-    real(dp), pointer :: pa(:) =>null()
+    real(real64), pointer :: pa(:) =>null()
   end type tType
 
-  ! To not copy all data, we need to retain the 
+  ! To not copy all data, we need to retain the
   ! type in a pointing type
   type :: tpType
     type(tType), pointer :: t => null()
@@ -25,12 +24,12 @@ program tst_type
   integer :: lenc
 
   ! Create a
-  a%b = 1._dp
-  a%b(2) = 0.2_dp
-  a%c = 0._dp
+  a%b = 1._real64
+  a%b(2) = 0.2_real64
+  a%c = 0._real64
   a%i = -1
   allocate(a%pa(3))
-  a%pa = 0.2_dp
+  a%pa = 0.2_real64
 
   ! Try and save the type in the variable
   container%t => a
@@ -49,9 +48,9 @@ program tst_type
   deallocate(tmp_enc)
   b => container%t
 
-  call assert(abs(b%b - a%b) < 0.0001_dp, &
+  call assert(abs(b%b - a%b) < 0.0001_real64, &
       'Copying type did not work, b')
-  call assert(abs(b%c - a%c) < 0.0001_dp, &
+  call assert(abs(b%c - a%c) < 0.0001_real64, &
       'Copying type did not work, c')
   call assert(b%i==a%i, &
       'Copying type did not work, i')

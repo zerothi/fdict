@@ -19,7 +19,7 @@ that can contain _any_ data-type allowed by the variable module.
 
 ## Downloading and installation ##
 
-Installing fdict requires a download of the library 
+Installing fdict requires a download of the library
 hosted at [github](https://github.com/) at [fdict@git].
 
 Extract and create an `setup.make` file for compilation, a minimal
@@ -28,7 +28,7 @@ Extract and create an `setup.make` file for compilation, a minimal
 	FC=gfortran
 	FFLAGS = -g
 
-Type `make` and a library called `libfdict.a` is created.  
+Type `make` and a library called `libfdict.a` is created.
 Subsequently the installation may be performed by:
 
     make PREFIX=/papth/to/fdict install
@@ -44,80 +44,143 @@ To link fdict to your program the following can be used in a `Makefile`
     FDICT_LIBS  = -L$(FDICT_PATH) -lfdict
     FDICT_INC   = -I$(FDICT_PATH)
 
+For parent programs that uses `fdict` there are 2 ways of knowing which `fdict`
+version one is using:
+
+1. A simple header file (like C-preprocessor statements), this information
+   is found in `fdict.inc`
+2. A `fypp` compatible include file which contains library version and
+   which data types are included in the built library, see the file `fdict.fypp`
+
+
 The file `fdict.inc` may be included in projects which exposes the following
 definitions:
 
     _FDICT_MAJOR_ 0
-    _FDICT_MINOR_ 8
-    _FDICT_MICRO_ 1
-    _FDICT_VERSION_ 0.8.1
+    _FDICT_MINOR_ 9
+    _FDICT_PATCH_ 0
+    _FDICT_VERSION_ 0.9.0
 
-which may be used in functional codes to utilize the correct interfaces.
 This is mainly meant as a feature usable when the fdict interface and
 e.g. modules change names.
 
+Alternatively the `fdict.fypp` inclusion file exposes variables such as:
+- the library version numbers (as above)
+- which data-types are enabled
+- the number of ranks for each kind
 
-#### Controlling interface parameters ####
+The `fdict.fypp` file is handy when you are already relying on `fypp`
+whereas the regular `fdict.inc` header files are easy to use in standard
+fortran source compilation.
+
+
+#### Controlling interfaces ####
 
 __Typically not needed__: allows for customization of different interfaces.
 
-By default the number of dimensions allowed by the library is 3, i.e.
-there is no interface created for `real a(:,:,:,:)`, etc. However,
-to accomodate arbitrary dimensions you can call a _setup_ script
-which initializes a different number of dimensions, which can
-be controlled individually.
+By default the number of dimensions allowed by the library is 5, i.e.
+there is no interface created for `real a(:,:,:,:,:,:)`, etc. However,
+to accomodate arbitrary dimensions you must define constants in your
+`setup.make` file.
 
-Run `./setup.sh` to get options regarding the setup.
+There are several fine-tuning options that allows creating more or fewer
+interfaces. As the number of dimensions increases, so does the library
+size. If only a specific maximum range of ranks are required, it might
+be beneficial to reduce maximum ranks to the used range.
 
-For instance, if you require interfaces for `real` and `real(kind(0.d0))`
-up to 4 dimensions and all others up to 3 dimensions you can do this
 
-    # -A == all data-types, s = single, d = double
-    ./setup.sh -A 3 -s 4 -d 4
-    # -R is a shorthand for both -s and -d
-    ./setup.sh -A 3 -R 4
+Currently the `fdict` library supports the types listed in the below table:
+
+| Type              | Precision format (GNU)   | C-type               | Default |
+|-------------------|--------------------------|----------------------|---------|
+| `type(variable_t)`|                          | ---                  | yes     |
+| `character(len=1)`|                          | `char`               | yes     |
+| `integer`         | `selected_int_kind(2)`   | `byte`               | no      |
+| `integer`         | `selected_int_kind(4)`   | `short`              | no      |
+| `integer`         | `selected_int_kind(9)`   | `int`                | yes     |
+| `integer`         | `selected_int_kind(18)`  | `long`               | yes     |
+| `real`            | `selected_real_kind(6)`  | `float`              | yes     |
+| `real`            | `selected_real_kind(15)` | `double`             | yes     |
+| `real`            | `selected_real_kind(18)` | `ext. double`        | no      |
+| `real`            | `selected_real_kind(30)` | `quad`               | no      |
+| `complex`         | `selected_real_kind(6)`  | `float complex`      | yes     |
+| `complex`         | `selected_real_kind(15)` | `double complex`     | yes     |
+| `complex`         | `selected_real_kind(18)` | `ext. double complex`| no      |
+| `complex`         | `selected_real_kind(30)` | `quad complex`       | no      |
+| `logical`         | `selected_int_kind(2)`   | `byte`               | no      |
+| `logical`         | `selected_int_kind(4)`   | `short`              | no      |
+| `logical`         | `selected_int_kind(9)`   | `int`                | yes     |
+| `logical`         | `selected_int_kind(18)`  | `long`               | no      |
+| `type(c_ptr)`     |                          | `void *`             | no      |
+| `type(c_funptr)`  |                          | (procedure) `void *` | no      |
+
+In the `Default` column one can see which data-types are enabled by default. The most
+commonly used data-types are enabled.
+
+To enable the non-default data types you can do so with (Makefile scheme):
+
+    FYPPFLAGS += -DWITH_INT8=1 # for int kind(2)
+    FYPPFLAGS += -DWITH_INT16=1 # for int kind(4)
+    # Note that not all compilers support extended precisions
+    # If you experience compiler errors, this is likely the cause.
+    FYPPFLAGS += -DWITH_REAL80=1 # for real and complex kind(18)
+    FYPPFLAGS += -DWITH_REAL128=1 # for real and complex kind(30)
+    FYPPFLAGS += -DWITH_LOG8=1 # for logical kind(2)
+    FYPPFLAGS += -DWITH_LOG16=1 # for logical kind(4)
+    FYPPFLAGS += -DWITH_LOG64=1 # for logical kind(18)
+    FYPPFLAGS += -DWITH_ISO_C=1 # for enabling c_ptr and c_funptr
+
+By default `fdict` generates the kind specifications from the `selected_*_kind` routines,
+however, if one wishes to use the `iso_fortran_env` module simply add `FYPPFLAGS += -DWITH_ISO_ENV`.
+
+To control the maximum ranks in the interfaces one can add these:
+
+    # type(c_ptr), type(c_funptr) and character(len=1)
+    # are data types that are not affected by the MAXRANK variable
+
+    # globally define the maximum ranks of all but the above listed
+    FYPPFLAGS += -DMAXRANK=n
+
+    # integer(*) types maximum rank
+    FYPPFLAGS += -DMAXRANK_INT=n
+
+    # real(*) types maximum rank
+    FYPPFLAGS += -DMAXRANK_REAL=n
+
+    # complex(*) types maximum rank
+    FYPPFLAGS += -DMAXRANK_CMPLX=n
+
+    # logical(*) types maximum rank
+    FYPPFLAGS += -DMAXRANK_LOG=n
+
+    # type(c_ptr), type(c_funptr) types maximum rank
+    FYPPFLAGS += -DMAXRANK_ISO_C=n
 
 
 ### variable ###
 
 Using this module one gains access to a generic type variable which
-can contain _any_ data format.  
-It currently supports the following data-types:
+can contain _any_ data format.
 
-| Type              | Precision format           | C-type               | `which` |
-|-------------------|----------------------------|----------------------|---------|
-| `type(variable_t)`|                            | ---                  | `VAR`   |
-| `character(len=1)`|                            | `char`               | `a`     |
-| `integer`         | `selected_int_kind(4)`     | `short`              | `h`     |
-| `integer`         | `selected_int_kind(9)`     | `int`                | `i`     |
-| `integer`         | `selected_int_kind(18)`    | `long`               | `l`     |
-| `real`            | `selected_real_kind(p=6)`  | `float`              | `r`     |
-| `real`            | `selected_real_kind(p=15)` | `double`             | `d`     |
-| `complex`         | `selected_real_kind(p=6)`  | `float complex`      | `c`     |
-| `complex`         | `selected_real_kind(p=15)` | `double complex`     | `z`     |
-| `type(c_ptr)`     |                            | `void *`             | `cp`    |
-| `type(c_funptr)`  |                            | (procedure) `void *` | `fp`    |
-
-
-Basically it is used like this:
+It is used like this:
 
     use variable
-	integer :: a(3)
-	type(variable_t) :: v
-	a = 2
-	call assign(v,a)
-	a = 3
-	call assign(a,v)
+    integer :: a(3
+    type(variable_t) :: v
+    a = 2
+    call assign(v,a)
+    a = 3
+    call assign(a,v)
 
-Also the variable contains an abbreviation for assigning pointers to 
+Also the variable contains an abbreviation for assigning pointers to
 not copy data, but retain data locality:
 
-	integer, target :: a(3)
-	type(variable_t) :: v
-	a = 2
-	call associate(v,a)
-	a = 3
-	! Now v contains a = 3
+    integer, target :: a(3)
+    type(variable_t) :: v
+    a = 2
+    call associate(v,a)
+    a = 3
+    ! Now v contains a = 3
 
 To delete a variable do:
 
@@ -146,7 +209,7 @@ Here it may be beneficial to lookup the type of data:
 	type(variable_t) :: v
 	a(:) = 2
 	call associate(v,a)
-	if ( which(v) == 'i1' ) then ! signal integer of 1D (i0 for scalar)
+	if ( which(v) == which(a) ) then ! signal integer of 1D (i0 for scalar)
        call assign(a, v)
     end if
 
@@ -161,8 +224,10 @@ Here it may be beneficial to lookup the type of data:
 	end if
     ... etc ...
 
-However, it may be better to explicitly check the type using `which`. The return values from
-`which` are listed in the above table.
+However, it may be better to explicitly check the type using `which`.
+For consistency and API changes, it is encouraged to use `which(<type>)` to
+ensure that the data-types are as expected. I.e. `which([real(real64) ::])`
+is the preferred way of forcing a data-type contained in a variable.
 
 
 ### dictionary ###
@@ -171,7 +236,7 @@ Using `type(variable_t)` it becomes easy to create dictionaries in fortran.
 
 Using this module we implement a dictionary which can contain _any_ data
 format using a `key:val` based formalism. The underlying data structure is a
-linked list sorted according to hash-values of the keys. Hence searching 
+linked list sorted according to hash-values of the keys. Hence searching
 for specific elements in the dictionary is _extremely_ fast. Searching a
 dictionary with 100 keys 300000 times takes less than 0.04 seconds on
 a Haswell laptop.
@@ -188,14 +253,14 @@ To extend a dictionary one uses the concatenating format:
 	dict = dict // ('Hello'.kv.'world') // ('No'.kv.'world')
 
 Again as is used by the `type(variable_t)` one can with benefit use `.kvp.` to create
-the dictionary value by pointers instead of copying the content.  
+the dictionary value by pointers instead of copying the content.
 Hence doing:
 
 	real :: r(4)
 	dict = dict // ('reals'.kvp.r)
 	r = 4
 
-will change the value in the dictionary.  
+will change the value in the dictionary.
 Note that one can easily create memory leaks with dictionaries:
 
 	use dictionary

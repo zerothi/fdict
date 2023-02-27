@@ -1,7 +1,6 @@
 program test
 
   use tst_utils
-  use variable
 
   implicit none
 

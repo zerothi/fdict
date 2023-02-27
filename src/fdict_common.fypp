@@ -1,0 +1,296 @@
+#:mute
+
+#:if not defined("FDICT_DEBUG")
+  #:set FDICT_DEBUG = 0
+#:endif
+
+#! Global definitions of the precision declarations
+#:if defined("WITH_ALL")
+#: set WITH_ISO_C = True
+#: set WITH_ISO_ENV = True
+#: set WITH_REAL80 = True
+#: set WITH_REAL128 = True
+#: set WITH_INT8 = True
+#: set WITH_INT16 = True
+#: set WITH_LOG8 = True
+#: set WITH_LOG16 = True
+#: set WITH_LOG64 = True
+#:endif
+
+
+#! Ranks to be generated when templates are created
+#:if not defined('MAXRANK')
+  #:set MAXRANK = 5
+#:endif
+
+#:if not defined("WITH_ISO_ENV")
+  #:set WITH_ISO_ENV = False
+#:endif
+
+#:if not defined("WITH_ISO_C")
+  #:set WITH_ISO_C = False
+#:endif
+
+#! Extended double precision
+#:if not defined("WITH_REAL80")
+  #:set WITH_REAL80 = False
+#:endif
+#! Quadruple precision
+#:if not defined("WITH_REAL128")
+  #:set WITH_REAL128 = False
+#:endif
+
+#! Short integer
+#:if not defined("WITH_INT16")
+  #:set WITH_INT16 = False
+#:endif
+
+#! byte integer (basically a char)
+#:if not defined("WITH_INT8")
+  #:set WITH_INT8 = False
+#:endif
+
+#! byte logical (basically a char)
+#:if not defined("WITH_LOG8")
+  #:set WITH_LOG8 = False
+#:endif
+
+#! Short logical
+#:if not defined("WITH_LOG16")
+  #:set WITH_LOG16 = False
+#:endif
+
+#! Long logical
+#:if not defined("WITH_LOG64")
+  #:set WITH_LOG64 = False
+#:endif
+
+#! Real kinds to be considered during templating
+#:set REAL_KINDS = ["real32", "real64"]
+#:if WITH_REAL80
+  #:set REAL_KINDS = REAL_KINDS + ["real80"]
+#:endif
+#:if WITH_REAL128
+  #:set REAL_KINDS = REAL_KINDS + ["real128"]
+#:endif
+
+#! Create short-hand names for the variables
+#:set REAL_SHORTS = ["r{}".format(int(k[4:]) // 8) for k in REAL_KINDS]
+
+
+#! Complex kinds to be considered during templating
+#:set CMPLX_KINDS = ["real32", "real64"]
+#:if WITH_REAL80
+  #:set CMPLX_KINDS = CMPLX_KINDS + ["real80"]
+#:endif
+#:if WITH_REAL128
+  #:set CMPLX_KINDS = CMPLX_KINDS + ["real128"]
+#:endif
+
+#! Create short-hand names for the variables
+#:set CMPLX_SHORTS = ["c{}".format(int(k[4:]) // 8) for k in CMPLX_KINDS]
+
+
+#! Integer kinds to be considered during templating
+#:set INT_KINDS = ["int32", "int64"]
+#:if WITH_INT16
+  #:set INT_KINDS = ["int16"] + INT_KINDS
+#:endif
+#:if WITH_INT8
+  #:set INT_KINDS = ["int8"] + INT_KINDS
+#:endif
+
+#! Create short-hand names for the variables
+#:set INT_SHORTS = ["i{}".format(int(k[3:]) // 8) for k in INT_KINDS]
+
+
+#! Logical kinds to be considered during templating
+#:set LOG_KINDS = ["int32"]
+#:if WITH_LOG16
+  #:set LOG_KINDS = ["int16"] + LOG_KINDS
+#:endif
+#:if WITH_LOG8
+  #:set LOG_KINDS = ["int8"] + LOG_KINDS
+#:endif
+#:if WITH_LOG64
+  #:set LOG_KINDS = LOG_KINDS + ["int64"]
+#:endif
+
+#! Create short-hand names for the variables
+#:set LOG_SHORTS = ["l{}".format(int(k[3:]) // 8) for k in LOG_KINDS]
+
+
+#! Character types
+#:set CHAR_KINDS = ["len=1"]
+#:set CHAR_SHORTS = ["a1"]
+
+
+#:if WITH_ISO_C
+  #:set ISOC_KINDS = ["c_ptr", "c_funptr"]
+  #:set ISOC_SHORTS = ["pt", "fpt"]
+#:else
+  #:set ISOC_KINDS = []
+  #:set ISOC_SHORTS = []
+#:endif
+
+
+#! Definitions used throughout
+
+#! Types to be considered during templating
+#:set REAL_TYPES = ["real({})".format(k) for k in REAL_KINDS]
+#:set CMPLX_TYPES = ["complex({})".format(k) for k in CMPLX_KINDS]
+#:set INT_TYPES = ["integer({})".format(k) for k in INT_KINDS]
+#:set LOG_TYPES = ["logical({})".format(k) for k in LOG_KINDS]
+#:set CHAR_TYPES = ["character({})".format(k) for k in CHAR_KINDS]
+#:set ISOC_TYPES = ["type({})".format(k) for k in ISOC_KINDS]
+
+#! Max-ranks for the different types
+#:set REAL_MIN_RANKS = [0 for _ in REAL_KINDS]
+#:if defined("MAXRANK_REAL")
+#: set REAL_MAX_RANKS = [MAXRANK_REAL for _ in REAL_KINDS]
+#:else
+#: set REAL_MAX_RANKS = [MAXRANK for _ in REAL_KINDS]
+#:endif
+#:set CMPLX_MIN_RANKS = [0 for _ in CMPLX_KINDS]
+#:if defined("MAXRANK_CMPLX")
+#: set CMPLX_MAX_RANKS = [MAXRANK_CMPLX for _ in CMPLX_KINDS]
+#:else
+#: set CMPLX_MAX_RANKS = [MAXRANK for _ in CMPLX_KINDS]
+#:endif
+#:set INT_MIN_RANKS = [0 for _ in INT_KINDS]
+#:if defined("MAXRANK_INT")
+#: set INT_MAX_RANKS = [MAXRANK_INT for _ in INT_KINDS]
+#:else
+#: set INT_MAX_RANKS = [MAXRANK for _ in INT_KINDS]
+#:endif
+#:set LOG_MIN_RANKS = [0 for _ in LOG_KINDS]
+#:if defined("MAXRANK_LOG")
+#: set LOG_MAX_RANKS = [MAXRANK_LOG for _ in LOG_KINDS]
+#:else
+#: set LOG_MAX_RANKS = [MAXRANK for _ in LOG_KINDS]
+#:endif
+#! The character(len=*) will be type matched with character(len=1), hence we do not allow
+#!   character(len=1) :: a
+#! to be stored.
+#:set CHAR_MIN_RANKS = [1 for _ in CHAR_KINDS]
+#:set CHAR_MAX_RANKS = [1 for _ in CHAR_KINDS]
+#:set ISOC_MIN_RANKS = [0 for _ in ISOC_KINDS]
+#:if defined("MAXRANK_ISO_C")
+#: set ISOC_MAX_RANKS = [MAXRANK_ISO_C for _ in ISOC_KINDS]
+#:else
+#: set ISOC_MAX_RANKS = [1 for _ in ISOC_KINDS]
+#:endif
+
+
+#! Define a list of all available types
+#:set ALL_SHORTS_KINDS_TYPES_RANKS = list(zip( &
+       INT_SHORTS + REAL_SHORTS + CMPLX_SHORTS + LOG_SHORTS + CHAR_SHORTS + ISOC_SHORTS, &
+       INT_KINDS + REAL_KINDS + CMPLX_KINDS + LOG_KINDS + CHAR_KINDS + ISOC_KINDS, &
+       INT_TYPES + REAL_TYPES + CMPLX_TYPES + LOG_TYPES + CHAR_TYPES + ISOC_TYPES, &
+       INT_MIN_RANKS + REAL_MIN_RANKS + CMPLX_MIN_RANKS + LOG_MIN_RANKS + CHAR_MIN_RANKS + ISOC_MIN_RANKS, &
+       INT_MAX_RANKS + REAL_MAX_RANKS + CMPLX_MAX_RANKS + LOG_MAX_RANKS + CHAR_MAX_RANKS + ISOC_MAX_RANKS))
+
+
+#! Get the encoding string that defines a specific short-hand notation
+#!
+#! Args:
+#!     short (str): Short-hand name for the variable
+#!     rank (int): rank of the variable
+#!
+#! Returns:
+#!     {}{}.format(short, rank)
+#!
+#:def typename(short, rank)
+${"{}{}".format(short, rank)}$
+#:enddef
+
+
+#! Generates an array rank suffix.
+#!
+#! Args:
+#!     rank (int): Rank of the variable
+#!
+#! Returns:
+#!     Array rank suffix string (e.g. (:,:) if rank = 2)
+#!
+#:def ranksuffix(rank)
+#{if rank > 0}#(${":" + ",:" * (rank - 1)}$)#{endif}#
+#:enddef
+
+
+#! Define some helper funcions for unpacking data
+
+#! Retrieve the name of a given pointre variable
+#!
+#! Args:
+#!   type (str): Variable declaration, for instance: real(8) or type(c_ptr)
+#!   short (str): Variable short name, for instance: r8
+#!   rank (int): number of dimensions
+#!
+#! Returns:
+#!   A new type containing Lines stripped and joined with the given string.
+#!
+#:def ptr_name(short, rank, suffix="")
+${"p{}_{}{}".format(short, rank, suffix)}$
+#:enddef
+
+
+#! Declare a type with the pointer dimensions
+#!
+#! Args:
+#!   type (str): Variable declaration, for instance: real(8) or type(c_ptr)
+#!   short (str): Variable short name, for instance: r8
+#!   rank (int): number of dimensions
+#!
+#! Returns:
+#!   A new type containing Lines stripped and joined with the given string.
+#!
+#:def ptr_declare(type, short, rank)
+ type :: ${ptr_name(short, rank, "_t")}$
+   ${type}$, pointer :: p${ranksuffix(rank)}$
+ end type
+#:enddef
+
+
+#! Define `n` variables (suffixed by count) of type
+#! The declared pointer originates from the ptr_declare routine
+#!
+#! Args:
+#!   type (str): Variable declaration, for instance: real(8) or type(c_ptr)
+#!   short (str): Variable short name, for instance: r8
+#!   rank (int): number of dimensions
+#!   count (int): number of variables (defaults to 1)
+#!
+#! Returns:
+#!   A new type containing Lines stripped and joined with the given string.
+#!
+#:def ptr_define(short, rank, count=1)
+ #:if count == 1
+ type(${ptr_name(short, rank, "_t")}$) :: ${ptr_name(short, rank)}$
+ #:else
+ type(${ptr_name(short, rank, "_t")}$) ::#{for c in range(1, count + 1)}##{if c>1}#,#{endif}# ${ptr_name(short, rank, "_{}".format(c))}$#{endfor}#
+ #:endif
+#:enddef
+
+#! A combination of ptr_declare and ptr_define
+#:def ptr_declare_define(type, short, rank, count=1)
+ $:ptr_declare(type, short, rank)
+ $:ptr_define(short, rank, count)
+#:enddef
+
+
+#! A function which allocates a variable by using the same
+#! sizes as a reference variable
+#:def alloc_reference(var, ref, rank)
+#:if rank == 0
+  allocate(${var}$)
+#:elif rank == 1
+  allocate(${var}$(size(${ref}$)))
+#:else
+#:set sr = "size({}".format(ref)
+  allocate(${var}$(${sr}$,1)#{for i in range(2,rank+1)}#,${sr}$,${i}$)#{endfor}#))
+#:endif
+#:enddef
+!
+
+#:endmute

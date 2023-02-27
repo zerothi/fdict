@@ -1,3 +1,5 @@
+#:include 'fdict_common.fypp'
+
 ! @LICENSE@, see README.md
 
 ! Generic purpose variable as in any scripting language
@@ -31,27 +33,26 @@ module variable
   !! The data-types allowed in this type is *not* limited by this
   !! module, but we currently allow integers, reals, complex and C-pointers.
 
-  ! Load the iso_c_binding for containing a C-pointer
-  use, intrinsic :: iso_c_binding
+  use fdict_types
 
   implicit none
 
-  private 
+  private
 
-  integer, parameter :: ih = selected_int_kind(4)
-  integer, parameter :: is = selected_int_kind(9)
-  integer, parameter :: il = selected_int_kind(18)
-  integer, parameter :: sp = selected_real_kind(p=6)
-  integer, parameter :: dp = selected_real_kind(p=15)
-
-  ! To create a constant transfer data-type of the 
-  ! pointer methods
-  character(len=1) :: local_enc_type(1)
+  ! To create a constant transfer data-type of the pointer methods
+  character(len=1), dimension(1) :: VARIABLE_ENC_TYPE
 
   ! Internal variable to hold the size of the "type" switch
   !> Maximum character length of the type specifier in the variable, no
   !! unique identifier may be longer than this.
-  integer, parameter, public :: VARIABLE_TYPE_LENGTH = 4
+#! We need to figure out the maximum length, so it automatically determines
+#! the correct size.
+#:set length = 4
+#:for sh, _, _, _, maxr in ALL_SHORTS_KINDS_TYPES_RANKS
+  #:set length = max(length, len(typename(sh, maxr)))
+#:endfor
+  integer, parameter, public :: VARIABLE_TYPE_LENGTH = ${length}$
+#:del length
 
   type :: variable_t
     !! Container for _any_ fortran data-type, intrinsically handles all
@@ -62,7 +63,7 @@ module variable
     !! This enables one to retrieve the pointer position later and thus enables
     !! pointer assignments and easy copying of data.
 
-    character(len=VARIABLE_TYPE_LENGTH) :: t = '    '
+    character(len=VARIABLE_TYPE_LENGTH) :: t = ' '
     ! The encoding placement of all data
     character(len=1), dimension(:), allocatable :: enc
   end type variable_t
@@ -70,7 +71,13 @@ module variable
 
   interface which
     !! Type of content stored in the variable (`character(len=VARIABLE_TYPE_LENGTH)`)
-    module procedure which_
+    module procedure which_var
+    module procedure which_aS_0
+ #:for sh, k, t, minr, maxr in ALL_SHORTS_KINDS_TYPES_RANKS
+  #:for ir in range(minr, maxr + 1)
+    module procedure ${"which_{}{}".format(sh, ir)}$
+  #:endfor
+ #:endfor
   end interface which
   public :: which
   interface delete
@@ -101,6 +108,7 @@ module variable
     module procedure associate_type_
   end interface associate_type
   public :: associate_type
+
   interface enc
     !! The encoding of the stored pointer (`character, dimension(:)`)
     !!
@@ -164,55 +172,97 @@ module variable
   end interface cunpack
   public :: cunpack
 
-#include "variable_interface_.inc"
+  interface assign
+ #:for sh, k, t, minr, maxr in ALL_SHORTS_KINDS_TYPES_RANKS
+  #:for ir in range(minr, maxr + 1)
+   module procedure ${"assign_get_{}{}".format(sh, ir)}$
+   module procedure ${"assign_set_{}{}".format(sh, ir)}$
+  #:endfor
+ #:endfor
+
+   #! additional manually defined routines
+   module procedure assign_var
+   module procedure assign_set_aS_0
+   module procedure assign_get_aS_0
+  end interface
+  public :: assign
+
+  interface associate
+ #:for sh, k, t, minr, maxr in ALL_SHORTS_KINDS_TYPES_RANKS
+  #:for ir in range(minr, maxr + 1)
+   module procedure ${"associate_get_{}{}".format(sh, ir)}$
+   module procedure ${"associate_set_{}{}".format(sh, ir)}$
+  #:endfor
+ #:endfor
+   module procedure associate_var
+  end interface
+  public :: associate
+
+  interface associatd
+ #:for sh, k, t, minr, maxr in ALL_SHORTS_KINDS_TYPES_RANKS
+  #:for ir in range(minr, maxr + 1)
+   module procedure ${"associatd_l_{}{}".format(sh, ir)}$
+   module procedure ${"associatd_r_{}{}".format(sh, ir)}$
+  #:endfor
+ #:endfor
+  end interface
+  public :: associatd
 
 contains
 
   subroutine print_(this)
     type(variable_t), intent(in) :: this
     write(*,'(t2,a)') this%t
-  end subroutine print_
+  end subroutine
 
-  elemental function which_(this) result(t)
+  pure function which_var(this) result(t)
     type(variable_t), intent(in) :: this
     character(len=VARIABLE_TYPE_LENGTH) :: t
     t = this%t
-  end function which_
+  end function
 
-  subroutine delete_(this,dealloc)
+  subroutine delete_(this,dealloc, success)
     type(variable_t), intent(inout) :: this
     logical, intent(in), optional :: dealloc
-    logical :: ldealloc
-#include "variable_declarations_.inc"
-    integer :: i
+    logical, intent(out), optional :: success
+    logical :: ldealloc, lsuccess
+#:for sh, k, t, minr, maxr in ALL_SHORTS_KINDS_TYPES_RANKS
+#:for ir in range(minr, maxr + 1)
+ $:ptr_declare_define(t, sh, ir, 1)
+#:endfor
+#:endfor
 
     ldealloc = .true.
     if ( present(dealloc) ) ldealloc = dealloc
+    lsuccess = .true.
     if ( ldealloc ) then
-#include "variable_delete_.inc"
-
-      if ( this%t == 'a-' ) then
-        pa_ = transfer(this%enc,pa_)
-        do i = 1 , size(pa_%p)
-          deallocate(pa_%p(i)%p)
-        end do
-        deallocate(pa_%p)
-      end if
+      select case ( this%t )
+#:for sh, k, t, minr, maxr in ALL_SHORTS_KINDS_TYPES_RANKS
+#:for ir in range(minr, maxr)
+      case ( "${typename(sh, ir)}$" )
+        ${ptr_name(sh, ir)}$ = transfer(this%enc, ${ptr_name(sh, ir)}$)
+        deallocate(${ptr_name(sh, ir)}$%p)
+#:endfor
+#:endfor
+      case default
+        lsuccess = .false.
+      end select
     end if
     call nullify(this)
-  end subroutine delete_
+    if ( present(success) ) success = lsuccess
+  end subroutine
 
   elemental subroutine nullify_(this)
     type(variable_t), intent(inout) :: this
     this%t = '  '
     if ( allocated(this%enc) ) deallocate(this%enc)
-  end subroutine nullify_
+  end subroutine
 
   elemental function empty_(this)
     type(variable_t), intent(in) :: this
     logical :: empty_
     empty_ = .not. allocated(this%enc)
-  end function empty_
+  end function
 
   ! Returns the bare encoding of this variable
   ! This can ease the process of assigning
@@ -220,7 +270,7 @@ contains
   ! An encoding might be 2, or 10000000 bytes big.
   ! Therefore we use a subroutine to determine
   ! the size of the returning encoding characters.
-  ! If the size of the returning enc is not 
+  ! If the size of the returning enc is not
   ! big enough it will be reset to ' '
   subroutine enc_(this,enc)
     type(variable_t), intent(in) :: this
@@ -237,7 +287,7 @@ contains
         enc(1:i) = this%enc
       end if
     end if
-  end subroutine enc_
+  end subroutine
 
   function size_enc_(this) result(len)
     type(variable_t), intent(in) :: this
@@ -248,7 +298,7 @@ contains
       len = size(this%enc)
     end if
 
-  end function size_enc_
+  end function
 
   ! We allow the user to pass an encoding field.
   ! As this is the same as passing a char
@@ -287,7 +337,7 @@ contains
     allocate(this%enc(size(enc)))
     this%enc(:) = enc(:)
 
-  end subroutine associate_type_
+  end subroutine
 
   pure function cpack_(c) result(car)
     character(len=*), intent(in) :: c
@@ -298,7 +348,7 @@ contains
       car(i) = c(i:i)
     end do
 
-  end function cpack_
+  end function
   pure function cunpack_(car) result(c)
     character(len=1), intent(in) :: car(:)
     character(len=size(car)) :: c
@@ -308,23 +358,31 @@ contains
       c(i:i) = car(i)
     end do
 
-  end function cunpack_
+  end function
 
   subroutine assignment_(this,rhs)
     type(variable_t), intent(inout) :: this
     type(variable_t), intent(in) :: rhs
     call assign(this,rhs)
-  end subroutine assignment_
-  subroutine assign_var(this,rhs,dealloc)
+  end subroutine
+
+  subroutine assign_var(this,rhs,dealloc,success)
     type(variable_t), intent(inout) :: this
     type(variable_t), intent(in) :: rhs
     logical, intent(in), optional :: dealloc
-    logical :: ldealloc
+    logical, intent(out), optional :: success
+    logical :: ldealloc, lsuccess
     integer :: i
-#include "variable_declarations2_.inc"
+#:for sh, k, t, minr, maxr in ALL_SHORTS_KINDS_TYPES_RANKS
+#:for ir in range(minr, maxr + 1)
+ $:ptr_declare_define(t, sh, ir, 2)
+#:endfor
+#:endfor
+
     ! collect deallocation option (default as =)
     ! ASSIGNMENT in fortran is per default destructive
     ldealloc = .true.
+    lsuccess = .true.
     if(present(dealloc))ldealloc = dealloc
     if (.not. ldealloc) then
       ! if we do not deallocate, nullify
@@ -333,28 +391,30 @@ contains
       call delete(this)
     end if
     this%t = rhs%t
-    ! First allocate the LHS
-#include "variable_variable_alloc_.inc"
 
-    if ( this%t == 'a-' ) then ! character(len=*)
-      pa__2 = transfer(rhs%enc, pa__2)
-      allocate(pa__1%p(size(pa__2%p)))
-      do i = 1 , size(pa__2%p)
-        allocate(pa__1%p(i)%p)
-        pa__1%p(i)%p = pa__2%p(i)%p
-      end do
-      allocate(this%enc(size(transfer(pa__1, local_enc_type))))
-      this%enc(:) = transfer(pa__1, local_enc_type)
-      do i = 1 , size(pa__1%p)
-        nullify(pa__1%p(i)%p)
-      end do
-      nullify(pa__1%p)
-    end if
+    select case ( this%t )
+#:for sh, k, t, minr, maxr in ALL_SHORTS_KINDS_TYPES_RANKS
+ #:for ir in range(minr, maxr + 1)
+    case ( '${typename(sh, ir)}$' )
+      #: set p1 = "{}_1".format(ptr_name(sh, ir))
+      #: set p2 = "{}_2".format(ptr_name(sh, ir))
+      ${p2}$ = transfer(rhs%enc, ${p2}$)
+      nullify(${p1}$%p)
+      $:alloc_reference("{}%p".format(p1), "{}%p".format(p2), ir)
+      ${p1}$%p = ${p2}$%p
+      allocate(this%enc(size(transfer(${p1}$, VARIABLE_ENC_TYPE))))
+      this%enc(:) = transfer(${p1}$, VARIABLE_ENC_TYPE)
+      nullify(${p1}$%p)
+ #:endfor
+#:endfor
 
-    ! copy over RHS and Save encoding
-#include "variable_variable_set_.inc"
+    case default
+      lsuccess = .false.
+    end select
 
-  end subroutine assign_var
+    if ( present(success) ) success = lsuccess
+
+  end subroutine
 
   subroutine associate_var(this,rhs,dealloc,success)
     type(variable_t), intent(inout) :: this
@@ -379,19 +439,46 @@ contains
     allocate(this%enc(size(rhs%enc)))
     this%enc(:) = rhs%enc(:)
 
-  end subroutine associate_var
+  end subroutine
 
   pure function associatd_var(this,rhs) result(ret)
     type(variable_t), intent(in) :: this
     type(variable_t), intent(in) :: rhs
     logical :: ret
-#include "variable_declarations2_.inc"
+#:for sh, k, t, minr, maxr in ALL_SHORTS_KINDS_TYPES_RANKS
+#:for ir in range(minr, maxr + 1)
+ $:ptr_declare_define(t, sh, ir, 2)
+#:endfor
+#:endfor
+
     ret = this%t==rhs%t
     if ( .not. ret ) return
 
-#include "variable_variable_assoc_.inc"
+    select case ( this%t )
+#:for sh, k, t, minr, maxr in ALL_SHORTS_KINDS_TYPES_RANKS
+ #:for ir in range(minr, maxr + 1)
+  #:set p1 = "{}_1".format(ptr_name(sh, ir))
+  #:set p2 = "{}_2".format(ptr_name(sh, ir))
+    case ( '${typename(sh, ir)}$' )
+      ${p1}$ = transfer(this%enc, ${p1}$)
+      ${p2}$ = transfer(rhs%enc, ${p2}$)
+      ret = associated(${p1}$%p, ${p2}$%p)
+      nullify(${p1}$%p, ${p2}$%p)
+ #:endfor
+#:endfor
 
-  end function associatd_var
+    case default
+       ret = len(this%enc) == len(rhs%enc)
+       if ( ret ) ret = all(this%enc == rhs%enc)
+    end select
+
+  end function
+
+  pure function which_aS_0(this) result(t)
+    character(len=*), intent(in) :: this
+    character(len=VARIABLE_TYPE_LENGTH) :: t
+    t = "${typename('a1_1', 1)}$"
+  end function
 
   ! The character(len=*) is a bit difficult because
   ! there is no way to generate a specific type for _all_
@@ -401,14 +488,14 @@ contains
   ! and store a pointer to this.
   ! This ensures that it can be retrieved (via associate)
   ! and mangled through another variable type
-  subroutine assign_set_a0_0(this,rhs,dealloc)
+  subroutine assign_set_aS_0(this,rhs,dealloc)
     type(variable_t), intent(inout) :: this
     character(len=*), intent(in) :: rhs
     logical, intent(in), optional :: dealloc
-    character(len=1), pointer :: c(:) => null()
+    character(len=1), pointer :: c(:)
     integer :: i
     logical :: ldealloc
-    ! ASSIGNMENT in fortran is per default destructive
+    #! Assignment in fortran is per default destructive
     ldealloc = .true.
     if(present(dealloc)) ldealloc = dealloc
     if(ldealloc) then
@@ -416,6 +503,7 @@ contains
     else
       call nullify(this)
     end if
+    nullify(c)
     allocate(c(len(rhs)))
     do i = 1 , size(c)
       c(i) = rhs(i:i)
@@ -423,107 +511,179 @@ contains
     ! This is still a "copy"
     call associate(this, c)
     nullify(c)
-  end subroutine assign_set_a0_0
-  subroutine assign_get_a0_0(lhs,this,success)
+  end subroutine
+  subroutine assign_get_aS_0(lhs,this,success)
     character(len=*), intent(out) :: lhs
     type(variable_t), intent(inout) :: this
     logical, intent(out), optional :: success
-    character(len=1), pointer :: c(:) => null()
+    character(len=1), pointer :: c(:)
     logical :: lsuccess
     integer :: i
     call associate(c, this, success=lsuccess)
     if ( lsuccess ) lsuccess = len(lhs) >= size(c)
     if ( present(success) ) success = lsuccess
-    lhs = ' '
     if ( .not. lsuccess ) return
     do i = 1 , size(c)
       lhs(i:i) = c(i)
     end do
-  end subroutine assign_get_a0_0
-
-
-#ifdef NOT_WORKING
-  ! This routine is actually working, but
-  ! we do not allow it.
-  ! One should use the len=1 version of the characters.
-  subroutine associate_set_a0_0(this,rhs,dealloc)
-    type(variable_t), intent(inout) :: this
-    character(len=*), intent(in), target :: rhs
-    logical, intent(in), optional :: dealloc
-    logical :: ldealloc
-    type :: pta_
-      type(pta__), pointer :: p(:) => null()
-    end type pta_
-    type :: pta__
-      character(len=1), pointer :: p => null()
-    end type pta__
-    type(pta_) :: p
-    integer :: i
-    ! ASSOCIATION in fortran is per default non-destructive
-    ldealloc = .false.
-    if(present(dealloc))ldealloc = dealloc
-    if (ldealloc) then
-      call delete(this)
-    else
-      call nullify(this)
+    ! set everything else to ''
+    if ( size(c) < len(lhs) ) then
+      lhs(size(c)+1:) = ' '
     end if
-    ! With pointer transfer we need to deallocate
-    ! else bounds might change...
-    this%t = 'a-'
-    allocate(p%p(len(rhs)))
-    do i = 1 , len(rhs)
-      p%p(i)%p => rhs(i:i)
-    end do
-    allocate(this%enc(size(transfer(p, local_enc_type)))) ! allocate encoding
-    this%enc(:) = transfer(p, local_enc_type) ! transfer pointer type to the encoding
+  end subroutine
+
+
+#:for sh, k, t, minr, maxr in ALL_SHORTS_KINDS_TYPES_RANKS
+ #:for ir in range(minr, maxr + 1)
+
+pure function ${"which_{}{}".format(sh, ir)}$(this) result(t)
+  ${t}$, intent(in) :: this${ranksuffix(ir)}$
+  character(len=VARIABLE_TYPE_LENGTH) :: t
+  t = "${typename(sh, ir)}$"
+end function
+
+subroutine ${"assign_set_{}{}".format(sh, ir)}$(this, rhs, dealloc)
+  type(variable_t), intent(inout) :: this
+  ${t}$, intent(in) :: rhs${ranksuffix(ir)}$
+  logical, intent(in), optional :: dealloc
+  logical :: ldealloc
+  type :: pt
+    ${t}$, pointer :: p${ranksuffix(ir)}$
+  end type
+  type(pt) :: p
+
+  #! Assignment in fortran is per default destructive
+  ldealloc = .true.
+  if ( present(dealloc) ) ldealloc = dealloc
+  if ( ldealloc ) then
+     call delete(this)
+  else
+     call nullify(this)
+  end if
+  ! with pointer transfer we need to deallocate else bounds might change
+  this%t = "${typename(sh, ir)}$"
+  nullify(p%p)
+  ${alloc_reference("p%p", "rhs", ir)}$
+  p%p = rhs
+  allocate(this%enc(size(transfer(p, VARIABLE_ENC_TYPE))))
+  this%enc(:) = transfer(p, VARIABLE_ENC_TYPE)
+  nullify(p%p)
+end subroutine
+
+subroutine ${"assign_get_{}{}".format(sh, ir)}$(lhs, this, success)
+  ${t}$, intent(out) :: lhs${ranksuffix(ir)}$
+  type(variable_t), intent(in) :: this
+  logical, intent(out), optional :: success
+  logical :: lsuccess
+  type :: pt
+    ${t}$, pointer :: p${ranksuffix(ir)}$
+  end type
+  type(pt) :: p
+  lsuccess = this%t == "${typename(sh, ir)}$"
+#:if ir > 0
+  if (lsuccess) then
+    p = transfer(this%enc,p) ! retrieve pointer encoding
+    lsuccess = all(shape(p%p)==shape(lhs))
+    #! .and. all((lbound(p%p) == lbound(lhs))) &
+    #! .and. all((ubound(p%p) == ubound(lhs)))
+  end if
+#:endif
+  if (present(success)) success = lsuccess
+  if (.not. lsuccess) return
+#:if ir == 0
+  p = transfer(this%enc,p) ! retrieve pointer encoding
+#:endif
+  lhs = p%p
+end subroutine
+
+subroutine ${"associate_get_{}{}".format(sh, ir)}$(lhs,this,dealloc,success)
+  ${t}$, pointer :: lhs${ranksuffix(ir)}$
+  type(variable_t), intent(in) :: this
+  logical, intent(in), optional :: dealloc
+  logical, intent(out), optional :: success
+  logical :: ldealloc, lsuccess
+  type :: pt
+    ${t}$, pointer :: p${ranksuffix(ir)}$
+  end type
+  type(pt) :: p
+  lsuccess = this%t == "${typename(sh, ir)}$"
+  if (present(success)) success = lsuccess
+  #! ASSOCIATION in fortran is per default non-destructive
+  ldealloc = .false.
+  if(present(dealloc))ldealloc = dealloc
+  #! this will assume that lhs is nullified in case dealloc = .true.
+  if ( ldealloc ) then
+    if (associated(lhs)) then
+      deallocate(lhs)
+      nullify(lhs)
+    end if
+  end if
+  if (.not. lsuccess ) return
+  p = transfer(this%enc,p) ! retrieve pointer encoding
+  lhs => p%p
+end subroutine
+
+subroutine ${"associate_set_{}{}".format(sh, ir)}$(this,rhs,dealloc)
+  type(variable_t), intent(inout) :: this
+  #! Setting the intent(inout) ensures that no constants
+  #! will be able to be passed.
+  #! However, the dictionary type does not allow
+  #! this due to OPERATORS, hence we keep it as this
+  #! and proclaim that any user creating a pointer
+  #! to a constant is insane...
+  ${t}$, intent(in), target :: rhs${ranksuffix(ir)}$
+  logical, intent(in), optional :: dealloc
+  logical :: ldealloc
+  type :: pt
+    ${t}$, pointer :: p${ranksuffix(ir)}$
+  end type
+  type(pt) :: p
+  #! ASSOCIATION in fortran is per default non-destructive
+  ldealloc = .false.
+  if(present(dealloc))ldealloc = dealloc
+  if (ldealloc) then
+    call delete(this)
+  else
+    call nullify(this)
+  end if
+  this%t = "${typename(sh, ir)}$"
+  p%p => rhs
+  allocate(this%enc(size(transfer(p, VARIABLE_ENC_TYPE))))
+  this%enc(:) = transfer(p, VARIABLE_ENC_TYPE)
+end subroutine
+
+pure function ${"associatd_l_{}{}".format(sh, ir)}$(lhs,this) result(ret)
+  ${t}$, pointer :: lhs${ranksuffix(ir)}$
+  type(variable_t), intent(in) :: this
+  logical :: ret
+  type :: pt
+    ${t}$, pointer :: p${ranksuffix(ir)}$
+  end type
+  type(pt) :: p
+  ret = this%t == "${typename(sh, ir)}$"
+  if (ret) then
     nullify(p%p)
-  end subroutine associate_set_a0_0
+    p = transfer(this%enc,p)
+    ret = associated(lhs,p%p)
+  endif
+end function
+pure function ${"associatd_r_{}{}".format(sh, ir)}$(this,rhs) result(ret)
+  type(variable_t), intent(in) :: this
+  ${t}$, pointer :: rhs${ranksuffix(ir)}$
+  logical :: ret
+  type :: pt
+    ${t}$, pointer :: p${ranksuffix(ir)}$
+  end type
+  type(pt) :: p
+  ret = this%t == "${typename(sh, ir)}$"
+  if (ret) then
+    nullify(p%p)
+    p = transfer(this%enc,p)
+    ret = associated(rhs,p%p)
+  endif
+end function
 
-  !! THIS IS NOT WORKING
-  subroutine associate_get_a0_0(lhs,this,dealloc,success)
-    character(len=*), pointer :: lhs
-    type(variable_t), intent(in) :: this
-    logical, intent(in), optional :: dealloc
-    logical, intent(out), optional :: success
-    logical :: ldealloc, lsuccess
-    type :: pt
-      type(ptc), pointer :: p(:) => null()
-    end type pt
-    type :: ptc
-      character(len=1), pointer :: p => null()
-    end type ptc
-    type(pt) :: p
-    integer :: i, ns
-    lsuccess = this%t == 'a-'
-    if ( lsuccess ) then
-      p = transfer(this%enc, p)
-      ! Figure out the trimmed length of the string
-      ! If it is smaller or equal to the output string
-      ! then all is good, else we consider it a failure
-      ns = size(p%p)
-      do i = size(p%p), 1, -1
-        if ( p%p(i)%p == ' ' ) then
-          ns = i-1
-        else
-          exit
-        end if
-      end do
-      lsuccess = len(lhs) >= ns
-    end if
-    ldealloc = .false.
-    if( present(dealloc) ) ldealloc = dealloc
-    if ( ldealloc .and. associated(lhs) ) deallocate(lhs)
-    nullify(lhs)
-    if ( present(success) ) success = lsuccess
-    if ( .not. lsuccess ) return
-    ns = min(ns, size(p%p))
-    do i = 1, ns
-      lhs(i:i) => p%p(i)%p(1:1)
-    end do
-  end subroutine associate_get_a0_0
-#endif
-
-#include "variable_funcs_.inc"
+ #:endfor
+#:endfor
 
 end module variable
-
