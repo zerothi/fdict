@@ -28,9 +28,9 @@ fdict.fypp: fdict.fypp.in
 fdict.inc:
 	@$(ECHO) "#ifndef _FDICT_INCLUDE_DEFINED" > $@
 	@$(ECHO) "#define _FDICT_INCLUDE_DEFINED" >> $@
-	@$(ECHO) "#define _FDICT_MAJOR_ $(PROJECT_MAJOR)" >> $@
-	@$(ECHO) "#define _FDICT_MINOR_ $(PROJECT_MINOR)" >> $@
-	@$(ECHO) "#define _FDICT_PATCH_ $(PROJECT_PATCH)" >> $@
+	@$(ECHO) "#define _FDICT_MAJOR_ $(PROJECT_VERSION_MAJOR)" >> $@
+	@$(ECHO) "#define _FDICT_MINOR_ $(PROJECT_VERSION_MINOR)" >> $@
+	@$(ECHO) "#define _FDICT_PATCH_ $(PROJECT_VERSION_PATCH)" >> $@
 	@$(ECHO) "#define _FDICT_VERSION_ $(PROJECT_VERSION)" >> $@
 	@$(ECHO) "#endif" >> $@
 

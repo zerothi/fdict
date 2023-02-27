@@ -1,72 +1,75 @@
 # Make CMake run the scripts for creating the input files
+# Define this directory's module location
+set(CMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/modules/)
 
-# Ensure that the cpp flags are added when preprocessing the fortran files
-# This currently does not work
-set_source_files_properties(
-  variable_pp.F90 dictionary_pp.F90
-  PROPERTIES Fortran_PREPROCESS ON
-  )
-
-
-# Preprocess include files to ensure that we have the correct input files
-# present
-
-function (fypp_f90 fyppopts fyppfiles f90files)
-  preprocess("${FYPP}" "${fyppopts}" "fypp" "f90" "${fyppfiles}" _f90files)
-  set(${f90files} ${_f90files} PARENT_SCOPE)
-endfunction()
-
-# Here we create the variable include files
-add_custom_command(
-  OUTPUT variable_declarations_.inc variable_declarations2_.inc variable_interface_.inc variable_delete_.inc
-         variable_variable_alloc_.inc variable_variable_assoc_.inc variable_funcs_.inc
-  # Command to run to create include file defaults
-  COMMAND VPATH=${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/variable.sh
-  VERBATIM
-  COMMENT "Creating variable*.inc files"
-  DEPENDS "settings.bash"
+# Define the files that needs to be fyppified
+set(fyppFiles
+	fdict_types.fypp
+	variable.fypp
+	dictionary.fypp
 )
 
-add_custom_command(
-  OUTPUT variable.f90
-  DEPENDS variable_declarations_.inc variable_declarations2_.inc variable_interface_.inc variable_delete_.inc
-          variable_variable_alloc_.inc variable_variable_assoc_.inc variable_funcs_.inc
-  COMMAND gfortran -E -P -x c -I. -I${CMAKE_SOURCE_LIST_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/variable_pp.F90 | sed -f ${CMAKE_CURRENT_SOURCE_DIR}/filter.sed > variable.f90
-  VERBATIM
-  COMMENT "Preprocessing variable.f90"
-  )
 
+# Do the preprocessing
+fyppify(
+	EXTIN "fypp" EXTOUT "f90"
+	FLAGS ${FYPPFLAGS}
+	COMMENT "fyppifying source codes"
+	FILES ${fyppFiles}
+	OUTPUT outFiles
+)
 
-# Here we create the dictionary include files
-add_custom_command(
-  OUTPUT dictionary_interface_.inc dictionary_funcs_.inc
-  COMMAND VPATH=${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/dictionary.sh
-  VERBATIM
-  COMMENT "Creating dictionary*.inc files"
-  )
+set(SRC
+	${outFiles}
+)
 
-add_custom_command(
-  OUTPUT dictionary.f90
-  DEPENDS dictionary_interface_.inc dictionary_funcs_.inc
-  COMMAND gfortran -E -P -I. -I${CMAKE_SOURCE_LIST_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/dictionary_pp.F90 | sed -f ${CMAKE_CURRENT_SOURCE_DIR}/filter.sed > dictionary.f90
-  VERBATIM
-  COMMENT "Preprocessing dictionary.f90"
-  )
+# Also fyppify the global inclusion file
+fyppify(
+	EXTIN "fypp.in" EXTOUT "fypp"
+	FLAGS "${FYPPFLAGS}"
+	COMMENT "fyppifying global input file"
+	FILES fdict.fypp.in
+	OUTPUT outFiles
+	)
 
+# Ensure it is a target
+add_custom_target(fdict.fypp ALL DEPENDS ${outFiles})
 
 # Generate the include file for discovering versions
-configure_file(fdict-template.inc fdict.inc @ONLY)
+configure_file(
+	"${CMAKE_CURRENT_SOURCE_DIR}/fdict.inc.in"
+	"${CMAKE_CURRENT_BINARY_DIR}/fdict.inc"
+	@ONLY
+)
+
+# Define all
+set(INTERFACES
+	${outFiles}
+	${CMAKE_CURRENT_BINARY_DIR}/fdict.inc
+)
+
+install(FILES ${INTERFACES}
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
 
 # Finally define the fdict library
-add_library(fdict
-  variable.f90
-  dictionary.f90
-  )
+add_library(${PROJECT_NAME} ${SRC})
 
-# Attach a property to the fdict library
-set_target_properties(fdict
+# Attach the headers to the target
+set_target_properties(${PROJECT_NAME}
   PROPERTIES
-  PUBLIC_HEADERS ${CMAKE_CURRENT_BINARY_DIR}/fdict.inc
-  )
+  POSITION_INDEPENDENT_CODE ON
+)
 
-install(DIRECTORY ${CMAKE_Fortran_MODULE_DIRECTORY}/ DESTINATION ${CMAKE_CURRENT_SOURCE_DIR})
+# Install all modules
+install(DIRECTORY ${CMAKE_Fortran_MODULE_DIRECTORY} DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+
+# Install the library targets
+install(TARGETS ${PROJECT_NAME}
+	EXPORT "${PROJECT_NAME}-targets"
+	RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
+	ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+	LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+	PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+	INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+)

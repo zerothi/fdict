@@ -130,6 +130,8 @@ To enable the non-default data types you can do so with (Makefile scheme):
     FYPPFLAGS += -DWITH_LOG64=1 # for logical kind(18)
     FYPPFLAGS += -DWITH_ISO_C=1 # for enabling c_ptr and c_funptr
 
+For `cmake` the same arguments can be made.
+
 By default `fdict` generates the kind specifications from the `selected_*_kind` routines,
 however, if one wishes to use the `iso_fortran_env` module simply add `FYPPFLAGS += -DWITH_ISO_ENV`.
 
