@@ -7,7 +7,7 @@ set(CMAKE_USER_MAKE_RULES_OVERRIDE ${CMAKE_CURRENT_SOURCE_DIR}/config/DefaultFla
 project(fdict
   LANGUAGES Fortran
   DESCRIPTION "Fortran dictionary for arbitrary data-types"
-  )
+)
 
 
 # Define project versions
@@ -30,44 +30,28 @@ message("** PROJECT_NAME = ${PROJECT_NAME}")
 message("** Please report any build problems here: ${PROJECT_URL}")
 
 
-# Define the module temporary location
-#set(CMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/modules/)
-
 list(APPEND FYPPFLAGS
 	"-DPROJECT_NAME=\\\"${PROJECT_NAME}\\\""
 	"-DPROJECT_VERSION=\\\"${PROJECT_VERSION}\\\""
 	"-DPROJECT_VERSION_MAJOR=${PROJECT_VERSION_MAJOR}"
 	"-DPROJECT_VERSION_MINOR=${PROJECT_VERSION_MINOR}"
 	"-DPROJECT_VERSION_PATCH=${PROJECT_VERSION_PATCH}"
-	)
+)
 
 
 # Add our custom definitions
 add_subdirectory(config)
-
-# Define the allocatable array sizes
-set(F_ARRAY ":")
-foreach(IR RANGE 2 ${CMAKE_MAXIMUM_RANK})
-  list(APPEND F_ARRAY ":")
-endforeach()
-string(REPLACE ";" "," F_ARRAY "${F_ARRAY}")
-
-# Once we have the sizes of the settings defined, we will add a check that the compiler will actually handle this.
-check_fortran_source_compiles("real, allocatable :: array(${F_ARRAY}); end" fmaximum_rank SRC_EXT f90)
-unset(F_ARRAY)
-check_fortran_source_runs("use, intrinsic :: iso_fortran_env, only : real128; real(real128) :: x; x = x+1; end" f03real128)
-
-foreach(V IN ITEMS fmaximum_rank f03real128)
-  if(NOT ${${V}})
-    message(FATAL_ERROR "Could not succesfully test compiler capability: ${V}")
-  endif()
-endforeach()
-
-
 add_subdirectory(src)
 
 
+# Install project
 install(EXPORT ${PROJECT_NAME}-targets
-        NAMESPACE ${PROJECT_NAME}::
-        DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}"
+  NAMESPACE ${PROJECT_NAME}::
+  DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}"
+)
+
+# Export a cmake configuration for the targets
+export(EXPORT ${PROJECT_NAME}-targets
+  NAMESPACE ${PROJECT_NAME}::
+  FILE "${CMAKE_CURRENT_BINARY_DIR}/cmake/${PROJECT_NAME}-targets.cmake"
 )

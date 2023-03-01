@@ -1,6 +1,10 @@
 # Make CMake run the scripts for creating the input files
-# Define this directory's module location
-set(CMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/modules/)
+
+# The output directory of the module files
+set(LIB_MOD_DIR ${CMAKE_CURRENT_BINARY_DIR}/modules)
+if(NOT EXISTS ${LIB_MOD_DIR})
+  make_directory(${LIB_MOD_DIR})
+endif()
 
 # Define the files that needs to be fyppified
 set(fyppFiles
@@ -32,7 +36,7 @@ fyppify(
 	OUTPUT outFiles
 	)
 
-# Ensure it is a target
+# Ensure it is a target (otherwise installation will not fyppify it)
 add_custom_target(fdict.fypp ALL DEPENDS ${outFiles})
 
 # Generate the include file for discovering versions
@@ -59,10 +63,18 @@ add_library(${PROJECT_NAME} ${SRC})
 set_target_properties(${PROJECT_NAME}
   PROPERTIES
   POSITION_INDEPENDENT_CODE ON
+  Fortran_MODULE_DIRECTORY ${LIB_MOD_DIR}
 )
 
 # Install all modules
-install(DIRECTORY ${CMAKE_Fortran_MODULE_DIRECTORY} DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+install(DIRECTORY ${LIB_MOD_DIR}/ DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+
+# Ensure that the target contains the headers/modules/include files
+target_include_directories(${PROJECT_NAME}
+  PUBLIC
+  $<BUILD_INTERFACE:${LIB_MOD_DIR}>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+)
 
 # Install the library targets
 install(TARGETS ${PROJECT_NAME}

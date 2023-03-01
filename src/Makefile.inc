@@ -45,7 +45,7 @@ OBJECTS += $(src_OBJECTS)
 $(src_FPP_SOURCES): INCLUDES += -I$(src_DIR)
 
 .PHONY: source-src
-source-src: $(src_SOURCES) fdict.inc
+source-src: $(src_SOURCES) fdict.inc fdict.fypp
 	$(MKDIR) $(MKDIR_FLAG_PARENT) $(SOURCES_DIR)/src
 	mv $(src_SOURCES) fdict.inc fdict.fypp $(SOURCES_DIR)/src
 

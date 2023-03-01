@@ -6,6 +6,9 @@ if(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
   )
   set(
     CMAKE_Fortran_FLAGS_RELEASE_INIT
+    "-O3"
+    "-ftree-vectorize"
+    "-fprefetch-loop-arrays"
   )
   set(
     CMAKE_Fortran_FLAGS_DEBUG_INIT
@@ -20,6 +23,7 @@ elseif(CMAKE_Fortran_COMPILER_ID MATCHES "^Intel")
   )
   set(
     CMAKE_Fortran_FLAGS_RELEASE_INIT
+    "-O2"
   )
   set(
     CMAKE_Fortran_FLAGS_DEBUG_INIT

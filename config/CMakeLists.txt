@@ -3,11 +3,12 @@
 # Project installation follows GNU installation directory convention
 include(GNUInstallDirs)
 
-include(ProjectOptions.cmake)
-
 # --- compiler feature checks
 include(CheckFortranSourceCompiles)
 include(CheckFortranSourceRuns)
+
+
+include(ProjectOptions.cmake)
 
 set(CMAKE_INSTALL_CMAKECONFIG_DIR
   "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}"
@@ -34,7 +35,7 @@ include(CMakePackageConfigHelpers)
 # Export a cmake package configure file
 configure_package_config_file(
   "${CMAKE_CURRENT_SOURCE_DIR}/template.cmake"
-  "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
   INSTALL_DESTINATION "${CMAKE_INSTALL_CMAKECONFIG_DIR}"
 )
 
@@ -49,17 +50,16 @@ endif()
 
 # Export a package version file
 write_basic_package_version_file(
-  "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake"
-  VERSION "${PROJECT_VERSION}"
+  ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+  VERSION ${PROJECT_VERSION}
   COMPATIBILITY ${COMPATIBILITY}
 )
 
 # Install cmake configuration files
-install(
-  FILES
-  "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
-  "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake"
-  DESTINATION "${CMAKE_INSTALL_CMAKECONFIG_DIR}"
+install(FILES
+  ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+  ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+  DESTINATION ${CMAKE_INSTALL_CMAKECONFIG_DIR}
 )
 
 
