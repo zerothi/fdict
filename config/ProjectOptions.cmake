@@ -87,6 +87,29 @@ if(NOT FYPP)
 endif()
 
 
+# Figure out if the compiler supports pure interfaces
+set(source "
+print *, pure_func()
+contains
+pure function pure_func() result(out)
+character(len=4) :: out
+out = 'TRUE'
+end function
+end")
+message(CHECK_START "Use PURE interfaces")
+list(APPEND CMAKE_MESSAGE_INDENT "  ")
+check_fortran_source_compiles("${source}" f90_pure_interface SRC_EXT f90)
+list(POP_BACK CMAKE_MESSAGE_INDENT)
+option(WITH_PURE_INTERFACE "Use PURE interfaces where possible" "${f90_pure_interface}")
+if(${WITH_PURE_INTERFACE})
+  message(CHECK_PASS "using")
+else()
+  message(CHECK_FAIL "not using")
+  list(APPEND FYPPFLAGS "-DWITH_PURE_INTERFACE=$<BOOL:FALSE>")
+endif()
+
+
+
 # Whether we should use the iso_fortran_env for data-types
 message(CHECK_START "Requested use of intrinsic fortran module (iso_fortran_env) for data-types")
 option(WITH_ISO_ENV "Use intrinsic fortran module iso_fortran_env" OFF)
@@ -160,7 +183,7 @@ endforeach()
 # Now for the 1-default dimensions
 set(var "ISO_C")
 message(CHECK_START "rank size of ${var} (MAXRANK_${var})")
-set(MAXRANK_${var} 1 CACHE STRING "Maximum rank for data types ${var}")
+set(MAXRANK_${var} "1" CACHE STRING "Maximum rank for data types ${var}")
 
 # Test the compilation of the datatype
 list(APPEND CMAKE_MESSAGE_INDENT "  ")

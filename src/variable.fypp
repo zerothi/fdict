@@ -215,7 +215,7 @@ contains
     write(*,'(t2,a)') this%t
   end subroutine
 
-  pure function which_var(this) result(t)
+  ${_pure}$ function which_var(this) result(t)
     type(variable_t), intent(in) :: this
     character(len=VARIABLE_TYPE_LENGTH) :: t
     t = this%t
@@ -252,13 +252,13 @@ contains
     if ( present(success) ) success = lsuccess
   end subroutine
 
-  elemental subroutine nullify_(this)
+  ${_elemental}$ subroutine nullify_(this)
     type(variable_t), intent(inout) :: this
     this%t = '  '
     if ( allocated(this%enc) ) deallocate(this%enc)
   end subroutine
 
-  elemental function empty_(this)
+  ${_elemental}$ function empty_(this)
     type(variable_t), intent(in) :: this
     logical :: empty_
     empty_ = .not. allocated(this%enc)
@@ -339,7 +339,7 @@ contains
 
   end subroutine
 
-  pure function cpack_(c) result(car)
+  ${_pure}$ function cpack_(c) result(car)
     character(len=*), intent(in) :: c
     character(len=1) :: car(len(c))
     integer :: i
@@ -349,7 +349,7 @@ contains
     end do
 
   end function
-  pure function cunpack_(car) result(c)
+  ${_pure}$ function cunpack_(car) result(c)
     character(len=1), intent(in) :: car(:)
     character(len=size(car)) :: c
     integer :: i
@@ -441,7 +441,7 @@ contains
 
   end subroutine
 
-  pure function associatd_var(this,rhs) result(ret)
+  ${_pure}$ function associatd_var(this,rhs) result(ret)
     type(variable_t), intent(in) :: this
     type(variable_t), intent(in) :: rhs
     logical :: ret
@@ -474,7 +474,7 @@ contains
 
   end function
 
-  pure function which_aS_0(this) result(t)
+  ${_pure}$ function which_aS_0(this) result(t)
     character(len=*), intent(in) :: this
     character(len=VARIABLE_TYPE_LENGTH) :: t
     t = "${typename('a1_1', 1)}$"
@@ -536,7 +536,7 @@ contains
 #:for sh, k, t, minr, maxr in ALL_SHORTS_KINDS_TYPES_RANKS
  #:for ir in range(minr, maxr + 1)
 
-pure function ${"which_{}{}".format(sh, ir)}$(this) result(t)
+${_pure}$ function ${"which_{}{}".format(sh, ir)}$(this) result(t)
   ${t}$, intent(in) :: this${ranksuffix(ir)}$
   character(len=VARIABLE_TYPE_LENGTH) :: t
   t = "${typename(sh, ir)}$"
@@ -652,7 +652,7 @@ subroutine ${"associate_set_{}{}".format(sh, ir)}$(this,rhs,dealloc)
   this%enc(:) = transfer(p, VARIABLE_ENC_TYPE)
 end subroutine
 
-pure function ${"associatd_l_{}{}".format(sh, ir)}$(lhs,this) result(ret)
+${_pure}$ function ${"associatd_l_{}{}".format(sh, ir)}$(lhs,this) result(ret)
   ${t}$, pointer :: lhs${ranksuffix(ir)}$
   type(variable_t), intent(in) :: this
   logical :: ret
@@ -667,7 +667,7 @@ pure function ${"associatd_l_{}{}".format(sh, ir)}$(lhs,this) result(ret)
     ret = associated(lhs,p%p)
   endif
 end function
-pure function ${"associatd_r_{}{}".format(sh, ir)}$(this,rhs) result(ret)
+${_pure}$ function ${"associatd_r_{}{}".format(sh, ir)}$(this,rhs) result(ret)
   type(variable_t), intent(in) :: this
   ${t}$, pointer :: rhs${ranksuffix(ir)}$
   logical :: ret

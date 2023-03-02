@@ -4,73 +4,65 @@
   #:set FDICT_DEBUG = 0
 #:endif
 
+
+#:def bool(variable, default=True)
+#: if str(variable).lower() in ["true", "on", "1", "yes", "y"]
+1
+#: elif str(variable).lower() in ["false", "off", "0", "no", "n"]
+0
+#: elif str(variable) == ""
+${default}$
+#: else
+#: stop "Wrong boolean value: {}".format(variable)
+#: endif
+#:enddef
+
+
 #! Global definitions of the precision declarations
 #:if defined("WITH_ALL")
-#: set WITH_ISO_C = True
-#: set WITH_ISO_ENV = True
-#: set WITH_REAL80 = True
-#: set WITH_REAL128 = True
-#: set WITH_INT8 = True
-#: set WITH_INT16 = True
-#: set WITH_LOG8 = True
-#: set WITH_LOG16 = True
-#: set WITH_LOG64 = True
+#: set def_all = True
+#:else
+#: set def_all = False
 #:endif
 
 
-#! Ranks to be generated when templates are created
-#:if not defined('MAXRANK')
-  #:set MAXRANK = 5
+#! Cray compilers do not like pure interfaces
+#! this is a way to disable it
+$:setvar("WITH_PURE_INTERFACE", bool(getvar("WITH_PURE_INTERFACE", True)))
+#:if WITH_PURE_INTERFACE == 1
+#: set _pure = "pure"
+#: set _elemental = "elemental"
+#:else
+#: set _pure = ""
+#: set _elemental = ""
 #:endif
 
-#:if not defined("WITH_ISO_ENV")
-  #:set WITH_ISO_ENV = False
-#:endif
 
-#:if not defined("WITH_ISO_C")
-  #:set WITH_ISO_C = False
-#:endif
 
-#! Extended double precision
-#:if not defined("WITH_REAL80")
-  #:set WITH_REAL80 = False
-#:endif
-#! Quadruple precision
-#:if not defined("WITH_REAL128")
-  #:set WITH_REAL128 = False
-#:endif
+$:setvar("WITH_ISO_ENV", bool(getvar("WITH_ISO_ENV", def_all)))
+$:setvar("WITH_ISO_C", bool(getvar("WITH_ISO_C", def_all)))
 
-#! Short integer
-#:if not defined("WITH_INT16")
-  #:set WITH_INT16 = False
-#:endif
+#! extended and quadruple precision
+$:setvar("WITH_REAL80", bool(getvar("WITH_REAL80", def_all)))
+$:setvar("WITH_REAL128", bool(getvar("WITH_REAL128", def_all)))
 
-#! byte integer (basically a char)
-#:if not defined("WITH_INT8")
-  #:set WITH_INT8 = False
-#:endif
+#! byte, short and long logical
+$:setvar("WITH_LOG8", bool(getvar("WITH_LOG8", def_all)))
+$:setvar("WITH_LOG16", bool(getvar("WITH_LOG16", def_all)))
+$:setvar("WITH_LOG64", bool(getvar("WITH_LOG64", def_all)))
 
-#! byte logical (basically a char)
-#:if not defined("WITH_LOG8")
-  #:set WITH_LOG8 = False
-#:endif
+#! byte and short integer
+$:setvar("WITH_INT8", bool(getvar("WITH_INT8", WITH_LOG8)))
+$:setvar("WITH_INT16", bool(getvar("WITH_INT16", WITH_LOG16)))
 
-#! Short logical
-#:if not defined("WITH_LOG16")
-  #:set WITH_LOG16 = False
-#:endif
 
-#! Long logical
-#:if not defined("WITH_LOG64")
-  #:set WITH_LOG64 = False
-#:endif
 
 #! Real kinds to be considered during templating
 #:set REAL_KINDS = ["real32", "real64"]
-#:if WITH_REAL80
+#:if WITH_REAL80 == 1
   #:set REAL_KINDS = REAL_KINDS + ["real80"]
 #:endif
-#:if WITH_REAL128
+#:if WITH_REAL128 == 1
   #:set REAL_KINDS = REAL_KINDS + ["real128"]
 #:endif
 
@@ -80,10 +72,10 @@
 
 #! Complex kinds to be considered during templating
 #:set CMPLX_KINDS = ["real32", "real64"]
-#:if WITH_REAL80
+#:if WITH_REAL80 == 1
   #:set CMPLX_KINDS = CMPLX_KINDS + ["real80"]
 #:endif
-#:if WITH_REAL128
+#:if WITH_REAL128 == 1
   #:set CMPLX_KINDS = CMPLX_KINDS + ["real128"]
 #:endif
 
@@ -93,10 +85,10 @@
 
 #! Integer kinds to be considered during templating
 #:set INT_KINDS = ["int32", "int64"]
-#:if WITH_INT16
+#:if WITH_INT16 == 1
   #:set INT_KINDS = ["int16"] + INT_KINDS
 #:endif
-#:if WITH_INT8
+#:if WITH_INT8 == 1
   #:set INT_KINDS = ["int8"] + INT_KINDS
 #:endif
 
@@ -106,13 +98,13 @@
 
 #! Logical kinds to be considered during templating
 #:set LOG_KINDS = ["int32"]
-#:if WITH_LOG16
+#:if WITH_LOG16 == 1
   #:set LOG_KINDS = ["int16"] + LOG_KINDS
 #:endif
-#:if WITH_LOG8
+#:if WITH_LOG8 == 1
   #:set LOG_KINDS = ["int8"] + LOG_KINDS
 #:endif
-#:if WITH_LOG64
+#:if WITH_LOG64 == 1
   #:set LOG_KINDS = LOG_KINDS + ["int64"]
 #:endif
 
@@ -125,7 +117,7 @@
 #:set CHAR_SHORTS = ["a1"]
 
 
-#:if WITH_ISO_C
+#:if WITH_ISO_C == 1
   #:set ISOC_KINDS = ["c_ptr", "c_funptr"]
   #:set ISOC_SHORTS = ["pt", "fpt"]
 #:else
@@ -144,42 +136,36 @@
 #:set CHAR_TYPES = ["character({})".format(k) for k in CHAR_KINDS]
 #:set ISOC_TYPES = ["type({})".format(k) for k in ISOC_KINDS]
 
+
+#! Ranks to be generated when templates are created
+#:set MAXRANK = getvar("MAXRANK", 5)
+
 #! Max-ranks for the different types
 #:set REAL_MIN_RANKS = [0 for _ in REAL_KINDS]
-#:if defined("MAXRANK_REAL")
-#: set REAL_MAX_RANKS = [MAXRANK_REAL for _ in REAL_KINDS]
-#:else
-#: set REAL_MAX_RANKS = [MAXRANK for _ in REAL_KINDS]
-#:endif
+$:setvar("MAXRANK_REAL", getvar("MAXRANK_REAL", MAXRANK))
+#:set REAL_MAX_RANKS = [MAXRANK_REAL for _ in REAL_KINDS]
+
 #:set CMPLX_MIN_RANKS = [0 for _ in CMPLX_KINDS]
-#:if defined("MAXRANK_CMPLX")
-#: set CMPLX_MAX_RANKS = [MAXRANK_CMPLX for _ in CMPLX_KINDS]
-#:else
-#: set CMPLX_MAX_RANKS = [MAXRANK for _ in CMPLX_KINDS]
-#:endif
+$:setvar("MAXRANK_CMPLX", getvar("MAXRANK_CMPLX", MAXRANK))
+#:set CMPLX_MAX_RANKS = [MAXRANK_CMPLX for _ in CMPLX_KINDS]
+
 #:set INT_MIN_RANKS = [0 for _ in INT_KINDS]
-#:if defined("MAXRANK_INT")
-#: set INT_MAX_RANKS = [MAXRANK_INT for _ in INT_KINDS]
-#:else
-#: set INT_MAX_RANKS = [MAXRANK for _ in INT_KINDS]
-#:endif
+$:setvar("MAXRANK_INT", getvar("MAXRANK_INT", MAXRANK))
+#:set INT_MAX_RANKS = [MAXRANK_INT for _ in INT_KINDS]
+
 #:set LOG_MIN_RANKS = [0 for _ in LOG_KINDS]
-#:if defined("MAXRANK_LOG")
-#: set LOG_MAX_RANKS = [MAXRANK_LOG for _ in LOG_KINDS]
-#:else
-#: set LOG_MAX_RANKS = [MAXRANK for _ in LOG_KINDS]
-#:endif
+$:setvar("MAXRANK_LOG", getvar("MAXRANK_LOG", MAXRANK))
+#:set LOG_MAX_RANKS = [MAXRANK_LOG for _ in LOG_KINDS]
+
 #! The character(len=*) will be type matched with character(len=1), hence we do not allow
 #!   character(len=1) :: a
 #! to be stored.
 #:set CHAR_MIN_RANKS = [1 for _ in CHAR_KINDS]
 #:set CHAR_MAX_RANKS = [1 for _ in CHAR_KINDS]
 #:set ISOC_MIN_RANKS = [0 for _ in ISOC_KINDS]
-#:if defined("MAXRANK_ISO_C")
-#: set ISOC_MAX_RANKS = [MAXRANK_ISO_C for _ in ISOC_KINDS]
-#:else
-#: set ISOC_MAX_RANKS = [1 for _ in ISOC_KINDS]
-#:endif
+
+$:setvar("MAXRANK_ISO_C", getvar("MAXRANK_ISO_C", 1))
+#:set ISOC_MAX_RANKS = [MAXRANK_ISO_C for _ in ISOC_KINDS]
 
 
 #! Define a list of all available types

@@ -8,7 +8,13 @@ include(CheckFortranSourceCompiles)
 include(CheckFortranSourceRuns)
 
 
+# Parse user-options
 include(ProjectOptions.cmake)
+# return variables required
+foreach(var IN ITEMS FYPP FYPPFLAGS)
+  set(${var} "${${var}}" PARENT_SCOPE)
+endforeach()
+
 
 set(CMAKE_INSTALL_CMAKECONFIG_DIR
   "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}"

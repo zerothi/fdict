@@ -17,7 +17,7 @@ set(fyppFiles
 # Do the preprocessing
 fyppify(
 	EXTIN "fypp" EXTOUT "f90"
-	FLAGS ${FYPPFLAGS}
+	FLAGS "${FYPPFLAGS}"
 	COMMENT "fyppifying source codes"
 	FILES ${fyppFiles}
 	OUTPUT outFiles
@@ -66,7 +66,7 @@ set_target_properties(${PROJECT_NAME}
   Fortran_MODULE_DIRECTORY ${LIB_MOD_DIR}
 )
 
-# Install all modules
+# Install all modules (omitting the directory)
 install(DIRECTORY ${LIB_MOD_DIR}/ DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
 
 # Ensure that the target contains the headers/modules/include files

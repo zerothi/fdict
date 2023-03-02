@@ -1,38 +1,34 @@
-#! Define all constants
+#! Ensure we get the constants as defined in fdict_common
+#! This is after all the parsing file that is used to create
+#! the source code.
 #:include 'fdict_common.fypp'
-#:def set_constant(name, value)
-${"#:set {} = {}".format(name, value)}$
+
+#! Simple function to create the text that defines
+#! the values used.
+#:def set_constant(name, value=None, default=0)
+#:if value == None
+$:"#:set {} = {}".format(name, getvar(name, default))
+#:else
+$:"#:set {} = {}".format(name, value)
+#:endif
 #:enddef
 #!
-#:if defined("WITH_ALL")
-${set_constant("WITH_ALL", WITH_ALL)
-#:endif
-${set_constant("FDICT_VERSION", "'{}.{}.{}'".format(PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR, PROJECT_VERSION_PATCH))}$
-${set_constant("FDICT_MAJOR", PROJECT_VERSION_MAJOR)}$
-${set_constant("FDICT_MINOR", PROJECT_VERSION_MINOR)}$
-${set_constant("FDICT_PATCH", PROJECT_VERSION_PATCH)}$
-${set_constant("WITH_ISO_C", WITH_ISO_C)}$
-${set_constant("WITH_ISO_ENV", WITH_ISO_ENV)}$
-${set_constant("MAXRANK", MAXRANK)}$
-${set_constant("WITH_REAL80", WITH_REAL80)}$
-${set_constant("WITH_REAL128", WITH_REAL128)}$
-${set_constant("WITH_INT8", WITH_INT8)}$
-${set_constant("WITH_INT16", WITH_INT16)}$
-${set_constant("WITH_LOG8", WITH_LOG8)}$
-${set_constant("WITH_LOG16", WITH_LOG16)}$
-${set_constant("WITH_LOG64", WITH_LOG64)}$
-#:if defined("MAXRANK_INT")
-${set_constant("MAXRANK_INT", MAXRANK_INT)}$
-#:endif
-#:if defined("MAXRANK_REAL")
-${set_constant("MAXRANK_REAL", MAXRANK_REAL)}$
-#:endif
-#:if defined("MAXRANK_CMPLX")
-${set_constant("MAXRANK_CMPLX", MAXRANK_CMPLX)}$
-#:endif
-#:if defined("MAXRANK_LOG")
-${set_constant("MAXRANK_LOG", MAXRANK_LOG)}$
-#:endif
-#:if defined("MAXRANK_ISO_C")
-${set_constant("MAXRANK_ISO_C", MAXRANK_ISO_C)}$
-#:endif
+$:set_constant("FDICT_VERSION", "'{}.{}.{}'".format(PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR, PROJECT_VERSION_PATCH))
+$:set_constant("FDICT_MAJOR", PROJECT_VERSION_MAJOR)
+$:set_constant("FDICT_MINOR", PROJECT_VERSION_MINOR)
+$:set_constant("FDICT_PATCH", PROJECT_VERSION_PATCH)
+
+#! customizability of the code
+$:set_constant("WITH_PURE_INTERFACE")
+
+#:for v in ["ISO_C", "ISO_ENV", &
+	& "REAL80", "REAL128", &
+	& "INT8", "INT16", &
+	& "LOG8", "LOG16", "LOG64"]
+$:set_constant("WITH_{}".format(v))
+#:endfor
+
+$:set_constant("MAXRANK")
+#:for v in ["INT", "REAL", "CMPLX", "LOG", "ISO_C"]
+$:set_constant("MAXRANK_{}".format(v))
+#:endfor

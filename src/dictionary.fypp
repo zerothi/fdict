@@ -295,7 +295,7 @@ module dictionary
 
 contains
 
-  pure function hash_val(key) result(val)
+  ${_pure}$ function hash_val(key) result(val)
     character(len=*), intent(in) :: key
     integer :: val
     integer :: i
@@ -332,10 +332,7 @@ contains
 #:endif
   end function
 
-#:if FDICT_DEBUG < 1
-  pure &
-#:endif
-      function new_d_key(key) result(d)
+  ${_pure}$ function new_d_key(key) result(d)
     character(len=*), intent(in) :: key
     type(dictionary_t) :: d
     allocate(d%first)
@@ -354,7 +351,7 @@ contains
 
   ! Retrieves the key value in a dictionary type (or a list)
   ! We expect that the key will only be called on single element dictionaries...
-  pure function key(d)
+  ${_pure}$ function key(d)
     type(dictionary_t), intent(in) :: d
     character(len=DICTIONARY_KEY_LENGTH) :: key
     key = d%first%key
@@ -373,7 +370,7 @@ contains
   end function
 
   ! Returns the hash value of the dictionary first item...
-  pure function hash_(d)
+  ${_pure}$ function hash_(d)
     type(dictionary_t), intent(in) :: d
     integer :: hash_
     hash_ = d%first%hash
@@ -660,7 +657,7 @@ contains
 
 
   ! Retrieve the length of the dictionary...
-  pure function len_(d)
+  ${_pure}$ function len_(d)
     type(dictionary_t), intent(in) :: d
     integer :: len_
     len_ = d%len
@@ -685,13 +682,13 @@ contains
     d_next%len = d%len - 1
   end function
 
-  pure function d_empty(d)
+  ${_pure}$ function d_empty(d)
     type(dictionary_t), intent(in) :: d
     logical :: d_empty
     d_empty = .not. associated(d%first)
   end function
 
-  pure function e_empty(e)
+  ${_pure}$ function e_empty(e)
     type(dictionary_entry_t), intent(in) :: e
     logical :: e_empty
     e_empty = empty(e%value)
@@ -889,7 +886,7 @@ contains
 
   end subroutine
 
-  elemental subroutine nullify_key_(this,key)
+  ${_elemental}$ subroutine nullify_key_(this,key)
     type(dictionary_t), intent(inout) :: this
     character(len=*), intent(in) :: key
     type(dictionary_entry_t), pointer :: de, pr
@@ -933,7 +930,7 @@ contains
 
   end subroutine
 
-  elemental subroutine nullify_(this)
+  ${_elemental }$ subroutine nullify_(this)
     type(dictionary_t), intent(inout) :: this
 
     ! This will simply nullify the dictionary, thereby
