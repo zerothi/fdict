@@ -1,9 +1,9 @@
-prefix=@PREFIX@
+prefix=@CMAKE_INSTALL_PREFIX@
 exec_prefix=${prefix}
-bindir=@BIN_DIR@
-includedir=@INC_DIR@
-libdir=@LIB_DIR@
-moduledir=@INC_DIR@
+bindir=${prefix}/@CMAKE_INSTALL_BINDIR@
+includedir=${prefix}/@CMAKE_INSTALL_INCLUDEDIR@
+libdir=${prefix}/@CMAKE_INSTALL_LIBDIR@
+moduledir=${prefix}/@CMAKE_INSTALL_INCLUDEDIR@
 
 Name: @PROJECT_NAME@
 Description: Fortran type-free variables and type-free dictionaries

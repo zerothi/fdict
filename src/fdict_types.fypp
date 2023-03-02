@@ -15,6 +15,10 @@ module fdict_types
   use, intrinsic :: iso_fortran_env, only: ${kind}$
 #: endif
 #:endfor
+
+#! This might produce errors if int8 is not set, but log8 is
+#! to handle more beautiful
+
 #:if WITH_LOG8 == 1
   integer, parameter :: log8 = int8
 #:endif

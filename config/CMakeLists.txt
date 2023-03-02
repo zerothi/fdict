@@ -1,15 +1,5 @@
 # Ensure we use some basic packages
 
-# Project installation follows GNU installation directory convention
-include(GNUInstallDirs)
-
-# --- compiler feature checks
-include(CheckFortranSourceCompiles)
-include(CheckFortranSourceRuns)
-
-
-# Parse user-options
-include(ProjectOptions.cmake)
 # return variables required
 foreach(var IN ITEMS FYPP FYPPFLAGS)
   set(${var} "${${var}}" PARENT_SCOPE)

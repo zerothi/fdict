@@ -9,6 +9,9 @@ project(fdict
   DESCRIPTION "Fortran dictionary for arbitrary data-types"
 )
 
+# Project installation follows GNU installation directory convention
+include(GNUInstallDirs)
+
 
 # Define project versions
 file(STRINGS "${PROJECT_SOURCE_DIR}/VERSION" PROJECT_VERSION)
@@ -37,6 +40,9 @@ list(APPEND FYPPFLAGS
 	"-DPROJECT_VERSION_MINOR=${PROJECT_VERSION_MINOR}"
 	"-DPROJECT_VERSION_PATCH=${PROJECT_VERSION_PATCH}"
 )
+
+# Add project options
+include(${CMAKE_CURRENT_SOURCE_DIR}/config/ProjectOptions.cmake)
 
 
 # Add our custom definitions

@@ -1,5 +1,10 @@
 # Here we define all options that are related to fdict
 
+# --- compiler feature checks
+include(CheckFortranSourceCompiles)
+include(CheckFortranSourceRuns)
+
+
 function(fortran_conv_type type result)
   if("${type}" STREQUAL "INT")
     set(${result} "integer" PARENT_SCOPE)
