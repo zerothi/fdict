@@ -22,18 +22,22 @@ endif
 .PHONY: smeka-pkgconfig-init-dir
 .NOTPARALLEL: smeka-pkgconfig-init-dir
 smeka-pkgconfig-init-dir: smeka-install-init-dir
-	-$(MKDIR) $(MKDIR_FLAG_PARENT) $(DESTDIR)$(PKG_DIR)
+	-$(MKDIR) $(MKDIR_FLAG_PARENT) $(DESTDIR)$(PREFIX)/$(PKG_DIR)
 
 .PHONY: smeka-pkgconfig
 .NOTPARALLEL: smeka-pkgconfig
 smeka-pkgconfig: smeka-pkgconfig-init-dir
 	$(SED) "s:@PREFIX@:$(PREFIX):g;\
+		s:@CMAKE_INSTALL_PREFIX@:$(PREFIX):g;\
 		s:@PROJECT_NAME@:$(PROJECT_NAME):g;\
 		s:@PROJECT_VERSION@:$(PROJECT_VERSION):g;\
 		s:@INC_DIR@:$(INC_DIR):g;\
+		s:@CMAKE_INSTALL_INCLUDEDIR@:$(INC_DIR):g;\
 		s:@LIB_DIR@:$(LIB_DIR):g;\
-		s:@BIN_DIR@:$(BIN_DIR):g" \
-		$(_SMEKA_INSTALL_PKG_CONFIG_FILE) > $(DESTDIR)$(PKG_DIR)/$(PROJECT_NAME).pc
+		s:@CMAKE_INSTALL_LIBDIR@:$(LIB_DIR):g;\
+		s:@BIN_DIR@:$(BIN_DIR):g;\
+		s:@CMAKE_INSTALL_BINDIR@:$(BIN_DIR):g" \
+		$(_SMEKA_INSTALL_PKG_CONFIG_FILE) > $(DESTDIR)$(PREFIX)/$(PKG_DIR)/$(PROJECT_NAME).pc
 
 ifeq ($(_SMEKA_INSTALL_PKG_CONFIG),1)
 smeka-install: smeka-pkgconfig

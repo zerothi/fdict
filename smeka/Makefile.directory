@@ -25,21 +25,21 @@ endif
 endif
 
 # Include directory (.h)
-INC_DIR ?= $(PREFIX)/include
+INC_DIR ?= include
 # Module directory (.mod)
 FMOD_DIR ?= $(INC_DIR)
 # Executables
-BIN_DIR ?= $(PREFIX)/bin
+BIN_DIR ?= bin
 # Library directory (.a/.so)
-LIB_DIR ?= $(PREFIX)/lib
+LIB_DIR ?= lib
 # shared folder
-SHARE_DIR ?= $(PREFIX)/share
+SHARE_DIR ?= share
 # Manual folder (man ***)
 MAN_DIR ?= $(SHARE_DIR)/man
 # pkg-config files
 PKG_DIR ?= $(LIB_DIR)/pkgconfig
 # additional files (settings etc.)
-ETC_DIR ?= $(PREFIX)/etc
+ETC_DIR ?= etc
 
 
 # Print out settings from this file
@@ -47,14 +47,14 @@ ETC_DIR ?= $(PREFIX)/etc
 smeka-settings-dir:
 	@$(ECHO) "Directory settings:"
 	@$(ECHO) "Prefix            (PREFIX) : $(PREFIX)"
-	@$(ECHO) "Includes         (INC_DIR) : $(INC_DIR)"
-	@$(ECHO) "Fortran modules (FMOD_DIR) : $(FMOD_DIR)"
-	@$(ECHO) "Binaries         (BIN_DIR) : $(BIN_DIR)"
-	@$(ECHO) "Libraries        (LIB_DIR) : $(LIB_DIR)"
-	@$(ECHO) "Shared         (SHARE_DIR) : $(SHARE_DIR)"
-	@$(ECHO) "Man              (MAN_DIR) : $(MAN_DIR)"
-	@$(ECHO) "pkg-config       (PKG_DIR) : $(PKG_DIR)"
-	@$(ECHO) "etc.             (ETC_DIR) : $(ETC_DIR)"
+	@$(ECHO) "Includes         (INC_DIR) : $(PREFIX)/$(INC_DIR)"
+	@$(ECHO) "Fortran modules (FMOD_DIR) : $(PREFIX)/$(FMOD_DIR)"
+	@$(ECHO) "Binaries         (BIN_DIR) : $(PREFIX)/$(BIN_DIR)"
+	@$(ECHO) "Libraries        (LIB_DIR) : $(PREFIX)/$(LIB_DIR)"
+	@$(ECHO) "Shared         (SHARE_DIR) : $(PREFIX)/$(SHARE_DIR)"
+	@$(ECHO) "Man              (MAN_DIR) : $(PREFIX)/$(MAN_DIR)"
+	@$(ECHO) "pkg-config       (PKG_DIR) : $(PREFIX)/$(PKG_DIR)"
+	@$(ECHO) "etc.             (ETC_DIR) : $(PREFIX)/$(ETC_DIR)"
 settings: smeka-settings-dir
 
 # Local Variables:
