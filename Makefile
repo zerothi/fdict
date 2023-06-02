@@ -24,6 +24,24 @@ include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.smeka
 
 # SMEKAENDSETTINGS (DO NOT DELETE)
 
+
+# Define the creation of the inclusion data
+fdict.inc:
+	@$(ECHO) "Creating $@ version inclusion file"
+	@$(ECHO) "! fdict version inclusion" > $@
+	@$(ECHO) "#ifndef _FDICT_INCLUDE_DEFINED" >> $@
+	@$(ECHO) "#define _FDICT_INCLUDE_DEFINED" >> $@
+	@$(ECHO) "#define _FDICT_MAJOR_ $(PROJECT_VERSION_MAJOR)" >> $@
+	@$(ECHO) "#define _FDICT_MINOR_ $(PROJECT_VERSION_MINOR)" >> $@
+	@$(ECHO) "#define _FDICT_PATCH_ $(PROJECT_VERSION_PATCH)" >> $@
+	@$(ECHO) "#define _FDICT_VERSION_ $(PROJECT_VERSION)" >> $@
+	@$(ECHO) "#endif" >> $@
+
+
+# Dependent on the option we can fake a VPATH to contain
+# any pre-created sources, if they exist we can simply use those
+SOURCES_DIR = $(TOP_DIR)/sources
+
 # Include the makefile in the src directory
 include $(TOP_DIR)/src/Makefile.inc
 
@@ -32,7 +50,6 @@ $(LIBRARIES): $(OBJECTS)
 
 # Create target
 lib: fdict.inc fdict.fypp $(LIBRARIES)
-
 
 # Include the makefile in the test directory
 include $(TOP_DIR)/test/Makefile.inc
@@ -51,19 +68,15 @@ copy:
 	@$(ECHO) ""
 else
 copy:
-	$(CP) $(SOURCES_DIR)/src/*.f90 $(SOURCES_DIR)/src/*.inc .
+	$(CP) $(SOURCES_DIR)/src/*.f90 $(SOURCES_DIR)/src/*.inc $(SOURCES_DIR)/*.inc .
 endif
+
 
 # Create source target for creating _only_ the sources.
 .PHONY: source
-source: source-src
-
-# Dependent on the option we can fake a VPATH to contain
-# any pre-created sources, if they exist we can simply use those
-SOURCES_DIR = $(TOP_DIR)/sources
-
-# Create target
-source: source-src
+source: fdict-inc source-src
+	$(MKDIR) $(MKDIR_FLAG_PARENT) $(SOURCES_DIR)
+	mv fdict.inc $(SOURCES_DIR)
 
 ##
 # Distribution targets for creating the distribution of flook

@@ -25,17 +25,9 @@ dictionary.f90: dictionary.fypp
 fdict.fypp: fdict.fypp.in
 	$(FYPP) $(FYPPFLAGS) $< > $@
 	cat $(src_DIR)/fdict_common.fypp >> $@
-fdict.inc:
-	@$(ECHO) "#ifndef _FDICT_INCLUDE_DEFINED" > $@
-	@$(ECHO) "#define _FDICT_INCLUDE_DEFINED" >> $@
-	@$(ECHO) "#define _FDICT_MAJOR_ $(PROJECT_VERSION_MAJOR)" >> $@
-	@$(ECHO) "#define _FDICT_MINOR_ $(PROJECT_VERSION_MINOR)" >> $@
-	@$(ECHO) "#define _FDICT_PATCH_ $(PROJECT_VERSION_PATCH)" >> $@
-	@$(ECHO) "#define _FDICT_VERSION_ $(PROJECT_VERSION)" >> $@
-	@$(ECHO) "#endif" >> $@
 
 # Define objects that needs compilation
-SOURCES += $(src_SOURCES) fdict.inc
+SOURCES += $(src_SOURCES)
 FPP_SOURCES += $(src_FPP_SOURCES)
 F_MODS  += $(src_MODS)
 OBJECTS += $(src_OBJECTS)
@@ -44,19 +36,19 @@ OBJECTS += $(src_OBJECTS)
 # Ensure that the objects are built with the correct module path
 $(src_FPP_SOURCES): INCLUDES += -I$(src_DIR)
 
+
 .PHONY: source-src
-source-src: $(src_SOURCES) fdict.inc fdict.fypp
+source-src: $(src_SOURCES) fdict.fypp
 	$(MKDIR) $(MKDIR_FLAG_PARENT) $(SOURCES_DIR)/src
-	mv $(src_SOURCES) fdict.inc fdict.fypp $(SOURCES_DIR)/src
+	mv $(src_SOURCES) fdict.fypp $(SOURCES_DIR)/src
 
 
 .PHONY: clean-src
 clean-src:
 	-$(RM) $(RM_FLAG_FORCE) $(src_FPP_SOURCES)
 	-$(RM) $(RM_FLAG_FORCE) $(src_OBJECTS)
-	-$(RM) $(RM_FLAG_FORCE) *.mod fdict.inc fdict.fypp
+	-$(RM) $(RM_FLAG_FORCE) *.mod dict.fypp
 
-clean: clean-src
 
 # Local Variables:
 #  mode: makefile-gmake

@@ -1,64 +1,3 @@
-# Ensure we use some basic packages
-
-# return variables required
-foreach(var IN ITEMS FYPP FYPPFLAGS)
-  set(${var} "${${var}}" PARENT_SCOPE)
-endforeach()
-
-
-set(CMAKE_INSTALL_CMAKECONFIG_DIR
-  "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}"
-)
-
-
-# Export a pkg-config file
-configure_file(
-  "${PROJECT_SOURCE_DIR}/fdict.pc.in"
-  "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc"
-  @ONLY
-)
-
-# Install pkg-config files
-install(
-  FILES
-  "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc"
-  DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig"
-)
-
-# Export CMake package file
-include(CMakePackageConfigHelpers)
-
-# Export a cmake package configure file
-configure_package_config_file(
-  "${CMAKE_CURRENT_SOURCE_DIR}/template.cmake"
-  "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-  INSTALL_DESTINATION "${CMAKE_INSTALL_CMAKECONFIG_DIR}"
-)
-
-if(BUILD_SHARED_LIBS OR PROJECT_VERSION_MAJOR EQUAL 0)
-  # Due to the uncertain ABI compatibility of Fortran shared libraries
-  # limit compatibility for dynamic linking to same minor version.
-  set(COMPATIBILITY SameMinorVersion)
-else()
-  # Require API compatibility via semantic versioning for static linking.
-  set(COMPATIBILITY SameMajorVersion)
-endif()
-
-# Export a package version file
-write_basic_package_version_file(
-  ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
-  VERSION ${PROJECT_VERSION}
-  COMPATIBILITY ${COMPATIBILITY}
-)
-
-# Install cmake configuration files
-install(FILES
-  ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
-  ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
-  DESTINATION ${CMAKE_INSTALL_CMAKECONFIG_DIR}
-)
-
-
 # Preprocesses a list of files with given preprocessor and preprocessor options
 #
 # Args:
@@ -69,23 +8,23 @@ install(FILES
 #     srcfiles [in]: List of the source files
 #     trgfiles [out]: Contains the list of the preprocessed files on exit
 #
-function(preprocess preproc preprocopts srcext trgext srcfiles trgfiles)
+function(fdict_preprocess preproc preprocopts srcext trgext srcfiles trgfiles)
 
   set(_trgfiles)
   foreach(srcfile IN LISTS srcfiles)
     string(REGEX REPLACE "\\.${srcext}$" ".${trgext}" trgfile ${srcfile})
     add_custom_command(
-      OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${trgfile}
-      COMMAND ${preproc} ${preprocopts} ${CMAKE_CURRENT_SOURCE_DIR}/${srcfile} ${CMAKE_CURRENT_BINARY_DIR}/${trgfile}
-      MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/${srcfile})
-    list(APPEND _trgfiles ${CMAKE_CURRENT_BINARY_DIR}/${trgfile})
+      OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${trgfile}"
+      COMMAND ${preproc} ${preprocopts} "${CMAKE_CURRENT_SOURCE_DIR}/${srcfile}" "${CMAKE_CURRENT_BINARY_DIR}/${trgfile}"
+      MAIN_DEPENDENCY "${CMAKE_CURRENT_SOURCE_DIR}/${srcfile}")
+    list(APPEND _trgfiles "${CMAKE_CURRENT_BINARY_DIR}/${trgfile}")
   endforeach()
   set(${trgfiles} ${_trgfiles} PARENT_SCOPE)
 
 endfunction()
 
 # Define a function for fyppifying sources
-function(fyppify)
+function(fdict_fyppify)
  # Parse arguments
  set(options "")
  set(oneValueArgs FYPP EXTIN EXTOUT COMMENT OUTPUT)
@@ -138,7 +77,7 @@ function(fyppify)
  ]==]
 
  # Lets do the preprocessing
- preprocess("${_fyppify_FYPP}" "${_fyppify_FLAGS}"
+ fdict_preprocess("${_fyppify_FYPP}" "${_fyppify_FLAGS}"
    "${_fyppify_EXTIN}" "${_fyppify_EXTOUT}"
    "${_fyppify_FILES}" _outfiles)
  if(DEFINED _fyppify_OUTPUT)
@@ -146,3 +85,4 @@ function(fyppify)
  endif()
 
 endfunction()
+

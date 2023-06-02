@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.17 FATAL_ERROR)
 
 # Include overwrites before setting up the project
-set(CMAKE_USER_MAKE_RULES_OVERRIDE ${CMAKE_CURRENT_SOURCE_DIR}/config/DefaultFlags.cmake)
+set(CMAKE_USER_MAKE_RULES_OVERRIDE "${CMAKE_CURRENT_SOURCE_DIR}/cmake/fdictDefaultFlags.cmake")
 
 # Define fdict project and languages used
 project(fdict
@@ -29,8 +29,10 @@ set(PROJECT_AUTHOR       "Nick Papior")
 set(PROJECT_DESCRIPTION  "Fortran dictionary for arbitrary data-types")
 set(PROJECT_URL          "https://github.com/zerothi/fdict")
 set(PROJECT_LICENSE      "Mozilla Public License, 2.0 (MPL-2.0)")
-message("** PROJECT_NAME = ${PROJECT_NAME}")
-message("** Please report any build problems here: ${PROJECT_URL}")
+message(STATUS "
+** PROJECT_NAME = ${PROJECT_NAME}
+** Please report any build problems here: ${PROJECT_URL}
+")
 
 
 list(APPEND FYPPFLAGS
@@ -42,22 +44,92 @@ list(APPEND FYPPFLAGS
 )
 
 # Add project options
-include(${CMAKE_CURRENT_SOURCE_DIR}/config/ProjectOptions.cmake)
+include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/fdictOptions.cmake")
+include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/fdictFyppify.cmake")
 
-
-# Add our custom definitions
-add_subdirectory(config)
+# create library.
 add_subdirectory(src)
+
+
+# Now for installing stuff.
+
+# Generate the version include file
+configure_file(
+  "${CMAKE_CURRENT_SOURCE_DIR}/fdict.inc.in"
+	"${CMAKE_CURRENT_BINARY_DIR}/fdict.inc"
+	@ONLY
+)
+install(
+  FILES
+	  "${CMAKE_CURRENT_BINARY_DIR}/fdict.inc"
+	DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+)
+
+# Globally define a place where we will install
+# cmake configuration stuff, *Target.cmake *Version.cmake etc.
+set(CMAKE_INSTALL_CMAKECONFIG_DIR
+  "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}"
+  CACHE STRING
+  "Determine where the CMake configuration files will be installed"
+)
+mark_as_advanced(CMAKE_INSTALL_CMAKECONFIG_DIR)
+
+
+# Create pkg-config file
+configure_file(
+  "${CMAKE_CURRENT_SOURCE_DIR}/fdict.pc.in"
+  "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc"
+  @ONLY
+)
+install(
+  FILES
+  "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc"
+  DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig"
+)
+
+# Export CMake package file
+include(CMakePackageConfigHelpers)
+
+# Export a cmake package configure file
+configure_package_config_file(
+  "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Config.cmake.in"
+  "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+  INSTALL_DESTINATION "${CMAKE_INSTALL_CMAKECONFIG_DIR}"
+)
+
+if(BUILD_SHARED_LIBS OR PROJECT_VERSION_MAJOR EQUAL 0)
+  # Due to the uncertain ABI compatibility of Fortran shared libraries
+  # limit compatibility for dynamic linking to same minor version.
+  set(COMPATIBILITY SameMinorVersion)
+else()
+  # Require API compatibility via semantic versioning for static linking.
+  set(COMPATIBILITY SameMajorVersion)
+endif()
+
+# Export a package version file
+write_basic_package_version_file(
+  "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+  VERSION ${PROJECT_VERSION}
+  COMPATIBILITY ${COMPATIBILITY}
+)
+
+# Install cmake configuration files
+install(FILES
+  "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+  DESTINATION "${CMAKE_INSTALL_CMAKECONFIG_DIR}"
+)
 
 
 # Install project
 install(EXPORT ${PROJECT_NAME}-targets
+  FILE ${PROJECT_NAME}Targets.cmake
   NAMESPACE ${PROJECT_NAME}::
-  DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}"
+  DESTINATION "${CMAKE_INSTALL_CMAKECONFIG_DIR}"
 )
 
-# Export a cmake configuration for the targets
+# Export a cmake configuration for the targets if used as a sub-project
 export(EXPORT ${PROJECT_NAME}-targets
   NAMESPACE ${PROJECT_NAME}::
-  FILE "${CMAKE_CURRENT_BINARY_DIR}/cmake/${PROJECT_NAME}-targets.cmake"
+  FILE "${PROJECT_NAME}Targets.cmake"
 )
