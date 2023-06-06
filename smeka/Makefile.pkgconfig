@@ -27,8 +27,8 @@ smeka-pkgconfig-init-dir: smeka-install-init-dir
 .PHONY: smeka-pkgconfig
 .NOTPARALLEL: smeka-pkgconfig
 smeka-pkgconfig: smeka-pkgconfig-init-dir
-	$(SED) "s:@PREFIX@:$(PREFIX):g;\
-		s:@CMAKE_INSTALL_PREFIX@:$(PREFIX):g;\
+	$(SED) "s:@PREFIX@:$(realpath $(PREFIX)):g;\
+		s:@CMAKE_INSTALL_PREFIX@:$(realpath $(PREFIX)):g;\
 		s:@PROJECT_NAME@:$(PROJECT_NAME):g;\
 		s:@PROJECT_VERSION@:$(PROJECT_VERSION):g;\
 		s:@INC_DIR@:$(INC_DIR):g;\
