@@ -22,18 +22,40 @@ that can contain _any_ data-type allowed by the variable module.
 Installing fdict requires a download of the library
 hosted at [github](https://github.com/) at [fdict@git].
 
+Installation can be done via 2 different back-ends. 1)
+[smeka](https://github.com/zerothi/smeka) build system, or 2)
+CMake build.
+
+### smeka build system
+
 Extract and create an `setup.make` file for compilation, a minimal
 `setup.make` file can look like this
 
 	FC=gfortran
 	FFLAGS = -g
+  # if in a build directory, also add this:
+  PREFIX = <path to fdict top directory>
 
 Type `make` and a library called `libfdict.a` is created.
 Subsequently the installation may be performed by:
 
-    make PREFIX=/papth/to/fdict install
+    make PREFIX=/path/to/fdict install
 
 which installs the required files (modules and libraries) to the folder.
+It will also install pkg-config files for auto-detection.
+
+### CMake
+
+CMake procedure can be done via the normal procedure:
+
+    cmake -S. -Bbuild-fdict
+    cmake --build build-fdict
+
+fdict should also be able to be used in a sub-project. If problems
+occur, feel free to open up an issue.
+
+
+### Linking to fdict
 
 To use the dictionary you need to add include statements for the
 modules as well as linking to the program.
@@ -43,6 +65,9 @@ To link fdict to your program the following can be used in a `Makefile`
     FDICT_PATH  = /path/to/fdict/parent
     FDICT_LIBS  = -L$(FDICT_PATH) -lfdict
     FDICT_INC   = -I$(FDICT_PATH)
+
+Alternatively, one can use pkg-config for obtaining the include flags and
+libraries.
 
 For parent programs that uses `fdict` there are 2 ways of knowing which `fdict`
 version one is using:
@@ -130,7 +155,7 @@ To enable the non-default data types you can do so with (Makefile scheme):
     FYPPFLAGS += -DWITH_LOG64=1 # for logical kind(18)
     FYPPFLAGS += -DWITH_ISO_C=1 # for enabling c_ptr and c_funptr
 
-For `cmake` the same arguments can be made.
+For `cmake` the same arguments can be made at the command-line.
 
 By default `fdict` generates the kind specifications from the `selected_*_kind` routines,
 however, if one wishes to use the `iso_fortran_env` module simply add `FYPPFLAGS += -DWITH_ISO_ENV`.
