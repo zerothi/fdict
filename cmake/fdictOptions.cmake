@@ -87,7 +87,7 @@ endfunction()
 
 # Ensure we have the program fypp installed
 find_program(FYPP fypp
-  HINTS ${CMAKE_SOURCE_DIR}/utils
+  HINTS "${PROJECT_SOURCE_DIR}/utils"
   )
 if(NOT FYPP)
   message(FATAL_ERROR "Could not find executable fypp -- it is required for the pre-processing step")
