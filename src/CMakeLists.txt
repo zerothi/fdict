@@ -31,7 +31,7 @@ fdict_fyppify(
 	)
 
 # Ensure it is a target (otherwise installation will not fyppify it)
-add_custom_target(fdict.fypp ALL DEPENDS ${outFiles})
+add_custom_target(fdict.fypp.input ALL DEPENDS ${outFiles})
 
 
 install(
@@ -47,18 +47,18 @@ add_library(${PROJECT_NAME} ${fdict_sources})
 set_target_properties(${PROJECT_NAME}
   PROPERTIES
   POSITION_INDEPENDENT_CODE ON
-  Fortran_MODULE_DIRECTORY ${LIB_MOD_DIR}
+  Fortran_MODULE_DIRECTORY "${LIB_MOD_DIR}"
 )
 
 # Install all modules (omitting the directory)
-install(DIRECTORY ${LIB_MOD_DIR}/ DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+install(DIRECTORY "${LIB_MOD_DIR}/" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
 
 # Ensure that the target contains the headers/modules/include files
 # and that it gets exported with the Targets output
 target_include_directories(${PROJECT_NAME}
   INTERFACE
-  $<BUILD_INTERFACE:${LIB_MOD_DIR}>
-  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+  $<BUILD_INTERFACE:"${LIB_MOD_DIR}">
+  $<INSTALL_INTERFACE:"${CMAKE_INSTALL_INCLUDEDIR}">
 )
 
 # Install the library targets
