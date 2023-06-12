@@ -3,7 +3,7 @@
 # The output directory of the module files
 set(LIB_MOD_DIR "${CMAKE_CURRENT_BINARY_DIR}/modules")
 if(NOT EXISTS "${LIB_MOD_DIR}")
-  make_directory("${LIB_MOD_DIR}")
+  file(MAKE_DIRECTORY "${LIB_MOD_DIR}")
 endif()
 
 
