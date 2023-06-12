@@ -1,11 +1,5 @@
 # Make CMake run the scripts for creating the input files
 
-# The output directory of the module files
-set(LIB_MOD_DIR "${CMAKE_CURRENT_BINARY_DIR}/modules")
-if(NOT EXISTS "${LIB_MOD_DIR}")
-  file(MAKE_DIRECTORY "${LIB_MOD_DIR}")
-endif()
-
 
 # Do the preprocessing
 fdict_fyppify(
@@ -42,12 +36,6 @@ install(
 
 # Finally define the fdict library
 add_library(${PROJECT_NAME} ${fdict_sources})
-
-# Attach the headers to the target
-set_target_properties(${PROJECT_NAME}
-  PROPERTIES
-  POSITION_INDEPENDENT_CODE ON
-)
 
 # Install all modules (omitting the directory)
 # TODO: Move to single module interface and move the other modules to subfolder
