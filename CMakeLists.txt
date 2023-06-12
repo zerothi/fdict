@@ -9,6 +9,10 @@ project(fdict
   DESCRIPTION "Fortran dictionary for arbitrary data-types"
 )
 
+if (NOT DEFINED CMAKE_Fortran_MODULE_DIRECTORY)
+	set(CMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/fortran_modules)
+endif ()
+
 # Project installation follows GNU installation directory convention
 include(GNUInstallDirs)
 
