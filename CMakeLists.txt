@@ -61,7 +61,7 @@ add_subdirectory(src)
 # TODO: This file should not be necessary
 #  This file is already parsed in the preprocessor
 #  Instead move this information into fortran functions to extract the version
-configure_file(fdict.inc.in fdict.inc)
+configure_file(fdict.inc.in fdict.inc @ONLY)
 install(
   FILES
 	  "${CMAKE_CURRENT_BINARY_DIR}/fdict.inc"
@@ -70,13 +70,12 @@ install(
 
 # Globally define a place where we will install
 # cmake configuration stuff, *Target.cmake *Version.cmake etc.
-# TODO: Do not set cache variables that can conflict with variables in other projects
-set(CMAKE_INSTALL_CMAKECONFIG_DIR
+set(FDICT_INSTALL_CMAKECONFIG_DIR
   "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}"
   CACHE STRING
   "Determine where the CMake configuration files will be installed"
 )
-mark_as_advanced(CMAKE_INSTALL_CMAKECONFIG_DIR)
+mark_as_advanced(FDICT_INSTALL_CMAKECONFIG_DIR)
 
 
 # Create pkg-config file
@@ -94,7 +93,7 @@ include(CMakePackageConfigHelpers)
 configure_package_config_file(
   "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Config.cmake.in"
   "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-  INSTALL_DESTINATION "${CMAKE_INSTALL_CMAKECONFIG_DIR}"
+  INSTALL_DESTINATION "${FDICT_INSTALL_CMAKECONFIG_DIR}"
 )
 
 if(BUILD_SHARED_LIBS OR PROJECT_VERSION_MAJOR EQUAL 0)
@@ -117,7 +116,7 @@ write_basic_package_version_file(
 install(FILES
   "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
   "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-  DESTINATION "${CMAKE_INSTALL_CMAKECONFIG_DIR}"
+  DESTINATION "${FDICT_INSTALL_CMAKECONFIG_DIR}"
 )
 
 
@@ -125,7 +124,7 @@ install(FILES
 install(EXPORT ${PROJECT_NAME}-targets
   FILE ${PROJECT_NAME}Targets.cmake
   NAMESPACE ${PROJECT_NAME}::
-  DESTINATION "${CMAKE_INSTALL_CMAKECONFIG_DIR}"
+  DESTINATION "${FDICT_INSTALL_CMAKECONFIG_DIR}"
 )
 
 # Export a cmake configuration for the targets if used as a sub-project
