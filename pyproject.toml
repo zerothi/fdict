@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fdict-dev"
+version = "0.0.0"
+description = "Development environment for fdict"
+readme = "README.md"
+license = { file = "LICENSE" }
+
+[project.optional-dependencies]
+docs = [
+]
+test = [
+]
+dev = [
+    "fdict-dev[test]",
+    "pre-commit",
+]
+
+[tool.setuptools]
+packages = []
