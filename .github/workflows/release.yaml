@@ -1,0 +1,27 @@
+name: release
+run-name: Prepare release
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+      - "v[0-9]+.[0-9]+.[0-9]+-rc[0-9]+"
+
+jobs:
+  tests:
+    uses: ./.github/workflows/test.yaml
+    secrets: inherit
+  release:
+    needs: [ tests ]
+    name: Create release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: softprops/action-gh-release@v1
+        with:
+          name: Fdict ${{ github.ref_name }}
+          draft: true
+          prerelease: ${{ contains(github.ref, 'rc') }}
+          generate_release_notes: true
