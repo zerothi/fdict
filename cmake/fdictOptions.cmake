@@ -25,10 +25,10 @@ endfunction()
 function(fortran_test_type type result)
   # type = INT,real,REAL for data-type checking
   # define the source code that should be compiled
-  
+
   # Create unique test-name
   string(REGEX REPLACE "[\\(\\)]" "_" testname "f90_type_${type}")
-  
+
   # get the data type
   fortran_conv_type(${type} actual_type)
   if("${type}" STREQUAL "ISO_C")
@@ -65,11 +65,11 @@ function(fortran_test_rank_size type rank result)
 
   # get data-type
   fortran_conv_type(${type} actual_type)
-  
+
   if("${type}" STREQUAL "ISO_C")
     set(source "
     use, intrinsic :: iso_c_binding
-    ${actual_type}, allocatable :: p${_dims} 
+    ${actual_type}, allocatable :: p${_dims}
     end")
   else()
     set(source "
@@ -131,7 +131,7 @@ if(${WITH_ISO_ENV})
   end")
   check_fortran_source_runs("${source}" result)
   list(POP_BACK CMAKE_MESSAGE_INDENT "  ")
- 
+
   if(NOT "${result}")
     message(CHECK_FAIL "could not compile source: ${source}")
     message(FATAL_ERROR "Requested use of iso_fortran_env, but the compiler does not support it! Remove WITH_ISO_ENV=true from command line or change compiler!")

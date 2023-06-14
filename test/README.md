@@ -1,5 +1,5 @@
-Tests
------
+## Tests
+
 Tests for `fdict`. Currently many of the tests are leaking memory,
 some on purpose on others because it was easier to implement
 the test.

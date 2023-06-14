@@ -1,0 +1,69 @@
+name: test
+run-name: Run tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_call:
+
+jobs:
+  pre-commit:
+    name: Check pre-commit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+      - uses: pre-commit/action@v3.0.0
+
+  ctest:
+    name: Check ${{ matrix.toolchain }} Ctests
+    runs-on: ubuntu-latest
+    # Contains pre-installed toolchains
+    container: ghcr.io/lecrisut/dev-env:f37
+    needs: [ pre-commit ]
+    continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      fail-fast: false
+      matrix:
+        experimental: [ false ]
+        toolchain: [ gcc, intel ]
+    steps:
+      - name: Activate Intel compilers
+        run: |
+          source /opt/intel/oneapi/setvars.sh
+          printenv >> $GITHUB_ENV
+          echo $PATH >> $GITHUB_PATH
+        if: matrix.toolchain == 'intel'
+      - uses: actions/checkout@v3
+      - uses: lukka/get-cmake@latest
+      - name: Run CMake configuration for ${{ matrix.toolchain }} toolchain
+        uses: lukka/run-cmake@v10.5
+        with:
+          workflowPreset: "${{ matrix.toolchain }}-ci"
+
+  coverage:
+    name: Run test coverage
+    runs-on: ubuntu-latest
+    container: ghcr.io/lecrisut/dev-env:f37
+    needs: [ ctest ]
+    if: false
+    steps:
+      - uses: actions/checkout@v3
+      - uses: lukka/get-cmake@latest
+      - name: Get test coverage
+        uses: lukka/run-cmake@v10.5
+        with:
+          workflowPreset: ci-coverage
+      - name: Get lcov data
+        uses: danielealbano/lcov-action@v3
+        with:
+          # Note lcov-action prepends and appends wild-cards *. Account for those
+          # https://github.com/danielealbano/lcov-action/issues/11
+          remove_patterns: /test/,/cmake-build*/
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: coverage.info
+          verbose: true

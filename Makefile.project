@@ -55,7 +55,7 @@ install-mod: $(F_MODS)
 .NOTPARALLEL: install-header
 smeka-install: install-header
 install-header: fdict.inc smeka-install-init-dir
-	$(INSTALL) -m $(_OCT_rwrr) -t $(DESTDIR)$(PREFIX)/$(INC_DIR) fdict.inc fdict.fypp 
+	$(INSTALL) -m $(_OCT_rwrr) -t $(DESTDIR)$(PREFIX)/$(INC_DIR) fdict.inc fdict.fypp
 
 
 # Force the deletion of both libraries

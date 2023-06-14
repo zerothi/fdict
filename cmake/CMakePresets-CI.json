@@ -1,0 +1,195 @@
+{
+  "version": 6,
+  "include": [
+    "CMakePresets-defaults.json"
+  ],
+  "configurePresets": [
+    {
+      "name": "ci-base",
+      "hidden": true,
+      "generator": "Ninja",
+      "inherits": [
+        "default"
+      ],
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": {
+          "type": "STRING",
+          "value": "RelWithDebInfo"
+        }
+      },
+      "errors": {
+        "deprecated": true
+      }
+    },
+    {
+      "name": "ci-coverage",
+      "displayName": "Configure preset for test coverage",
+      "inherits": [
+        "ci-base"
+      ],
+      "binaryDir": "cmake-build-coverage",
+      "cacheVariables": {
+        "CMAKE_Fortran_COMPILER": {
+          "type": "FILEPATH",
+          "value": "gfortran"
+        }
+      },
+      "errors": {
+        "deprecated": false
+      }
+    },
+    {
+      "name": "gcc-ci",
+      "displayName": "Configure preset for GCC toolchain",
+      "inherits": [
+        "ci-base"
+      ],
+      "binaryDir": "cmake-build-ci-gcc",
+      "cacheVariables": {
+        "CMAKE_Fortran_COMPILER": {
+          "type": "FILEPATH",
+          "value": "gfortran"
+        }
+      }
+    },
+    {
+      "name": "intel-ci",
+      "displayName": "Configure preset for Intel toolchain",
+      "inherits": [
+        "ci-base"
+      ],
+      "binaryDir": "cmake-build-ci-intel",
+      "cacheVariables": {
+        "CMAKE_Fortran_COMPILER": {
+          "type": "FILEPATH",
+          "value": "ifx"
+        }
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "ci-base",
+      "hidden": true,
+      "inherits": [
+        "default"
+      ],
+      "cleanFirst": true
+    },
+    {
+      "name": "ci-coverage",
+      "displayName": "Build preset for test coverage",
+      "inherits": [
+        "ci-base"
+      ],
+      "configurePreset": "ci-coverage"
+    },
+    {
+      "name": "gcc-ci",
+      "displayName": "Build preset for GCC toolchain",
+      "inherits": [
+        "ci-base"
+      ],
+      "configurePreset": "gcc-ci"
+    },
+    {
+      "name": "intel-ci",
+      "displayName": "Build preset for Intel toolchain",
+      "inherits": [
+        "ci-base"
+      ],
+      "configurePreset": "intel-ci"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "ci-base",
+      "hidden": true,
+      "inherits": [
+        "default"
+      ],
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "ci-coverage",
+      "inherits": [
+        "default"
+      ],
+      "configurePreset": "ci-coverage"
+    },
+    {
+      "name": "gcc-ci",
+      "displayName": "Test preset for GCC toolchain",
+      "inherits": [
+        "ci-base"
+      ],
+      "configurePreset": "gcc-ci"
+    },
+    {
+      "name": "intel-ci",
+      "displayName": "Test preset for Intel toolchain",
+      "inherits": [
+        "ci-base"
+      ],
+      "configurePreset": "intel-ci"
+    }
+  ],
+  "workflowPresets": [
+    {
+      "name": "gcc-ci",
+      "displayName": "CI test for GCC toolchain",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "gcc-ci"
+        },
+        {
+          "type": "build",
+          "name": "gcc-ci"
+        },
+        {
+          "type": "test",
+          "name": "gcc-ci"
+        }
+      ]
+    },
+    {
+      "name": "intel-ci",
+      "displayName": "CI test for Intel toolchain",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "intel-ci"
+        },
+        {
+          "type": "build",
+          "name": "intel-ci"
+        },
+        {
+          "type": "test",
+          "name": "intel-ci"
+        }
+      ]
+    },
+    {
+      "name": "ci-coverage",
+      "displayName": "Coverage tests",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "ci-coverage"
+        },
+        {
+          "type": "build",
+          "name": "ci-coverage"
+        },
+        {
+          "type": "test",
+          "name": "ci-coverage"
+        }
+      ]
+    }
+  ]
+}
