@@ -1,11 +1,5 @@
 # Make CMake run the scripts for creating the input files
 
-# The output directory of the module files
-set(LIB_MOD_DIR "${CMAKE_CURRENT_BINARY_DIR}/modules")
-if(NOT EXISTS "${LIB_MOD_DIR}")
-  make_directory("${LIB_MOD_DIR}")
-endif()
-
 
 # Do the preprocessing
 fdict_fyppify(
@@ -43,22 +37,21 @@ install(
 # Finally define the fdict library
 add_library(${PROJECT_NAME} ${fdict_sources})
 
-# Attach the headers to the target
-set_target_properties(${PROJECT_NAME}
-  PROPERTIES
-  POSITION_INDEPENDENT_CODE ON
-  Fortran_MODULE_DIRECTORY "${LIB_MOD_DIR}"
-)
-
 # Install all modules (omitting the directory)
-install(DIRECTORY "${LIB_MOD_DIR}/" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+# TODO: Move to single module interface and move the other modules to subfolder
+#  This is to avoid name-clashing (similar to how C projects structure their include)
+install(FILES
+		${CMAKE_Fortran_MODULE_DIRECTORY}/dictionary.mod
+		${CMAKE_Fortran_MODULE_DIRECTORY}/variable.mod
+		${CMAKE_Fortran_MODULE_DIRECTORY}/fdict_types.mod
+		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 # Ensure that the target contains the headers/modules/include files
 # and that it gets exported with the Targets output
 target_include_directories(${PROJECT_NAME}
-  INTERFACE
-  $<BUILD_INTERFACE:"${LIB_MOD_DIR}">
-  $<INSTALL_INTERFACE:"${CMAKE_INSTALL_INCLUDEDIR}">
+  PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_Fortran_MODULE_DIRECTORY}>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
 # Install the library targets

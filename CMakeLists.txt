@@ -9,6 +9,10 @@ project(fdict
   DESCRIPTION "Fortran dictionary for arbitrary data-types"
 )
 
+if (NOT DEFINED CMAKE_Fortran_MODULE_DIRECTORY)
+	set(CMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/fortran_modules)
+endif ()
+
 # Project installation follows GNU installation directory convention
 include(GNUInstallDirs)
 
@@ -44,8 +48,8 @@ list(APPEND FYPPFLAGS
 )
 
 # Add project options
-include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/fdictOptions.cmake")
-include("${CMAKE_CURRENT_SOURCE_DIR}/cmake/fdictFyppify.cmake")
+include(cmake/fdictOptions.cmake)
+include(cmake/fdictFyppify.cmake)
 
 # create library.
 add_subdirectory(src)
@@ -54,11 +58,10 @@ add_subdirectory(src)
 # Now for installing stuff.
 
 # Generate the version include file
-configure_file(
-  "${CMAKE_CURRENT_SOURCE_DIR}/fdict.inc.in"
-	"${CMAKE_CURRENT_BINARY_DIR}/fdict.inc"
-	@ONLY
-)
+# TODO: This file should not be necessary
+#  This file is already parsed in the preprocessor
+#  Instead move this information into fortran functions to extract the version
+configure_file(fdict.inc.in fdict.inc)
 install(
   FILES
 	  "${CMAKE_CURRENT_BINARY_DIR}/fdict.inc"
@@ -67,6 +70,7 @@ install(
 
 # Globally define a place where we will install
 # cmake configuration stuff, *Target.cmake *Version.cmake etc.
+# TODO: Do not set cache variables that can conflict with variables in other projects
 set(CMAKE_INSTALL_CMAKECONFIG_DIR
   "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}"
   CACHE STRING
@@ -76,11 +80,7 @@ mark_as_advanced(CMAKE_INSTALL_CMAKECONFIG_DIR)
 
 
 # Create pkg-config file
-configure_file(
-  "${CMAKE_CURRENT_SOURCE_DIR}/fdict.pc.in"
-  "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc"
-  @ONLY
-)
+configure_file(fdict.pc.in fdict.pc @ONLY)
 install(
   FILES
   "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc"
