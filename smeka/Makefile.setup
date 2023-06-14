@@ -79,7 +79,7 @@ endif
 
 # Add print-out to target
 .PHONY: smeka-settings-custom
-smeka-settings-custom: 
+smeka-settings-custom:
 	@$(ECHO) ""
 	@$(ECHO) "Using custom settings:"
 	@$(ECHO) "  $(SETUP)"

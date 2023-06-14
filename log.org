@@ -5,7 +5,7 @@
 Every section in this part lists the change of the versions
 
 The dictionary will make use of the var format for retaining any type of
-data. This will allow for greater structure 
+data. This will allow for greater structure
 ** Changed build system <2016-05-14 Sat>
 Now the build system has been changed.
 I still need to document the build system, but essentially one
@@ -92,7 +92,7 @@ The problem with user-types in dictionaries is that deleting
 a variable with a custom type is not well defined.
 Hence, a deletion of a dictionary will NOT delete custom types
 for obvious reasons.
-It will not even delete dictionaries as it does not 
+It will not even delete dictionaries as it does not
 know the value of a custom type to be a dictionary.
 A small test example has been added.
 
@@ -106,18 +106,18 @@ However, the fact that any information regarding the contained data
 type is hidden for the variable type means that there are certain
 limitations.
 
-1. The user cannot assign user-types. It makes no sense as the 
+1. The user cannot assign user-types. It makes no sense as the
    data cannot be copied, we can only copy the pointer.
 2. Retrieval of data of a variable has to be done by the programmer
-   (add variable retrieval in the code that defines the data type, 
+   (add variable retrieval in the code that defines the data type,
     and thats it)
-3. 
+3.
 
 ** Added dealloc specifier for delete <2014-10-19 Sun>
 When deleting a dictionary, or key in dictionary one
-can now only delete the reference. 
+can now only delete the reference.
 This is handy if the <key>.kvp.<val> has been used.
-Also improved specific key deletion by adding a 
+Also improved specific key deletion by adding a
 hash-check.
 
 ** Added .NIN. and .VALP. routines <2014-10-19 Sun>
@@ -137,7 +137,7 @@ is saved via an encoding realised as:
  type(ptr) :: p
  character(len=1), allocatable :: enc(:)
  real :: a(2)
- 
+
  allocate(enc(size(transfer(a,p)))
  enc = transfer(a,p)
 
@@ -164,7 +164,7 @@ I had forgotten to enable direct assignment "call assign(val,dic)"
 this has been fixed.
 
 ** Added a which(this,key) for the dictionary <2014-05-30 Fri>
-It enables a direct look on the data type to assert without 
+It enables a direct look on the data type to assert without
 having to fetch to a type(var)
 
 ** Renamed add => extend <2014-05-30 Fri>
@@ -199,12 +199,12 @@ dictionary code.
 For calling routines:
   call routine('hello'.kv.'h')
 we have a memory leak. This is obvious due to the pointer
-nature of the data associated. 
+nature of the data associated.
 A test has been added to demonstrate this effect:
   tst_dict_mem3
 
 ** Renamed .HAS. to .IN. <2014-05-25 Sun>
-A more appropriate name has been chosen for checking 
+A more appropriate name has been chosen for checking
 existence of keys in dictionaries. Much like python we
 rely on the <key> .IN. <dict> to check for the existence.
 
@@ -218,8 +218,7 @@ This is the expected behaviour in any language.
 The dictionary values are now the type(var) which eases
 the interfacing between different segments of the code.
 We allow to fully utilise the "assign" and "associate"
-function calls in the assignment of the dictionary by following the 
+function calls in the assignment of the dictionary by following the
 operators:
    .KV. (assign)
    .KPV. (associate)
-

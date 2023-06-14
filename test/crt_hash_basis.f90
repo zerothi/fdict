@@ -6,7 +6,7 @@ program fnv_hash
   integer :: offset
   character(len=36) :: b = 'fdict \\./o\\/ <Nick Rubner Papior>'
   integer :: i
-  
+
   print '(2a)','Basis offset: ',trim(b)
   offset = 0
   hash_mod = 2**16
@@ -16,5 +16,5 @@ program fnv_hash
   end do
 
   print *,offset
-  
+
 end program fnv_hash
