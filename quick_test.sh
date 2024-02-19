@@ -5,7 +5,7 @@
 
 _old_arch=
 if [ -L arch.make ]; then
-    # We assume the arch.make is 
+    # We assume the arch.make is
     # a link to .arch.make
     # Simply delete it, we will re-instantiate it
     rm arch.make

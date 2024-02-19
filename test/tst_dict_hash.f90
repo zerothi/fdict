@@ -21,9 +21,9 @@ program tests
 
      ! add to dictionary
      d = d // (trim(line).kvp.i0)
-     
+
   end do
-  
+
   ! close the file handle
   close(iu)
 
@@ -36,5 +36,5 @@ program tests
   call delete(d,dealloc=.false.)
 
   print *,'SUCCESS'
-  
+
 end program tests
