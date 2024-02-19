@@ -58,9 +58,6 @@ add_subdirectory(src)
 # Now for installing stuff.
 
 # Generate the version include file
-# TODO: This file should not be necessary
-#  This file is already parsed in the preprocessor
-#  Instead move this information into fortran functions to extract the version
 configure_file(fdict.inc.in fdict.inc @ONLY)
 install(
   FILES
